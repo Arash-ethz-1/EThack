@@ -21,12 +21,23 @@ Method, in full:
      (share = 1.0 when no "(NN%)" is present). A facility's total emissions are
      multiplied by each owner's share before being attributed to that owner.
   3. Each owner name is matched to `universe/sp500.csv` by normalising both sides
-     (uppercase, drop Inc/Corp/Corporation/Co/Company/LLC/LLP/LP/PLC/Ltd/Holdings/
-     Group/plc punctuation) and requiring the full normalised S&P 500 name (>= 6
-     characters, to avoid one-word/short-name false positives) to appear in the
-     normalised owner text. Matched shares are summed per ticker + year. Every match
-     is written to environmental/raw/ghg_intensity_matches.csv for a human to
-     spot-check (AGENTS.md rule 6) - only substring matches, never inferred/guessed.
+     (uppercase, drop Inc/Corp/Corporation/Co/Company/The/LLC/LLP/LP/PLC/Ltd/
+     Holdings/Group/plc, punctuation) and requiring the full normalised S&P 500 name
+     (>= 6 characters, to avoid short-name false positives) to appear in the
+     normalised owner text as a whole word (word-boundary, not a raw substring - a
+     3-letter ticker cannot match inside an unrelated longer word). A name that
+     normalises to a common English/geographic word alone (e.g. "Southern Co" ->
+     "SOUTHERN", which also matches "Southern California Public Power Authority", or
+     "Waste Management, Inc." -> "WASTE MANAGEMENT", which also matches dozens of
+     unrelated county "Solid Waste Management" agencies) is required to match the
+     owner text *exactly* instead - see GENERIC_NAMES. An owner segment naming a
+     government/municipal body (county, city, authority, district, cooperative, ...)
+     is skipped outright before matching - see GOVERNMENT_ENTITY_RE - since no
+     S&P 500 company's own name contains those words. Both found by hand-checking
+     the match log per AGENTS.md rule 6. Matched shares are summed per ticker + year.
+     Every match is written to environmental/raw/ghg_intensity_matches.csv for a
+     human to spot-check; this remains a heuristic name match, not a certified
+     ownership record - re-check the log after every rebuild.
   4. Revenue per ticker + fiscal year from SEC XBRL companyconcept: first of
      Revenues / RevenueFromContractWithCustomerExcludingAssessedTax /
      RevenueFromContractWithCustomerIncludingAssessedTax / SalesRevenueNet that has
@@ -104,10 +115,39 @@ MATCHES_PATH = raw_dir(CATEGORY) / "ghg_intensity_matches.csv"
 RAW_RATIO_PATH = raw_dir(CATEGORY) / "ghg_intensity_raw_ratio.csv"
 
 SUFFIX_RE = re.compile(
-    r"\b(INCORPORATED|CORPORATION|COMPANY|HOLDINGS?|GROUP|LLC|LLP|LP|PLC|LTD|CORP|CO|INC)\b"
+    r"\b(INCORPORATED|CORPORATION|COMPANY|HOLDINGS?|GROUP|LLC|LLP|LP|PLC|LTD|CORP|CO|INC|THE)\b"
 )
 PUNCT_RE = re.compile(r"[^A-Z0-9 ]")
 PCT_RE = re.compile(r"^(.*?)\(([\d.]+)\s*%\)\s*$")
+
+# Common English/geographic words or generic industry phrases that survive
+# normalisation as a company's whole name (e.g. "Southern Co" -> "SOUTHERN", "Waste
+# Management, Inc." -> "WASTE MANAGEMENT") but also occur as, or inside, unrelated
+# entities' names (e.g. "Southern California Public Power Authority", "Broome
+# County Div of Solid Waste Management") - a name in this set must match the owner
+# text exactly, never as a substring/prefix, or a facility gets attributed to the
+# wrong company. Found by hand-checking the 2018-23 GHGRP match log (AGENTS.md rule
+# 6); extended defensively with names in the same category not yet seen.
+GENERIC_NAMES = {
+    "SOUTHERN", "NORTHERN", "EASTERN", "WESTERN", "CENTRAL", "NATIONAL", "GENERAL",
+    "AMERICAN", "UNITED", "FIRST", "PUBLIC", "FEDERAL", "STATE", "MUNICIPAL",
+    "REGIONAL", "GLOBAL", "TARGET", "WATERS", "AUTHORITY", "DISTRICT", "COUNTY",
+    "PROGRESSIVE", "WASTE MANAGEMENT", "CORNING",
+}
+
+# Government/municipal bodies (county solid-waste districts, city utilities, water
+# authorities, ...) routinely use ordinary business words in their own names ("Waste
+# Management", "Southern", "Electric Cooperative") without being related to any
+# S&P 500 company - a facility owner containing one of these markers is skipped
+# entirely rather than matched, since no S&P 500 company's own legal/subsidiary name
+# contains them (found the same way, via the match log: e.g. "Old Dominion Electric
+# Cooperative" wrongly matching Old Dominion Freight Line (ODFL), "Cumberland County
+# Solid Waste Management" wrongly matching Waste Management Inc (WM)).
+GOVERNMENT_ENTITY_RE = re.compile(
+    r"\b(CITY OF|COUNTY|TOWNSHIP|TOWN OF|VILLAGE OF|STATE OF|AUTHORITY|DISTRICT|"
+    r"MUNICIPAL|COOPERATIVE|COMMISSION|BOARD OF|AGENCY|DEPARTMENT|DEPT OF|DIV OF|"
+    r"PUBLIC WORKS)\b"
+)
 
 
 def normalise(name: str) -> str:
@@ -195,8 +235,17 @@ def match_year(year: int, name_index: dict[str, str]) -> tuple[pd.DataFrame, pd.
     for _, row in joined.iterrows():
         for owner_name, share in parse_owners(row["parent_company"]):
             norm = normalise(owner_name)
+            if GOVERNMENT_ENTITY_RE.search(norm):
+                continue  # a government/municipal body, never an S&P 500 company
             for sp500_norm, ticker in name_index.items():
-                if len(sp500_norm) >= 6 and sp500_norm in norm:
+                if len(sp500_norm) < 6:
+                    continue
+                is_match = (
+                    norm == sp500_norm
+                    if sp500_norm in GENERIC_NAMES
+                    else bool(re.search(rf"\b{re.escape(sp500_norm)}\b", norm))
+                )
+                if is_match:
                     co2e = row["co2e_tonnes"] * share
                     attributed[ticker] = attributed.get(ticker, 0.0) + co2e
                     matches.append(
