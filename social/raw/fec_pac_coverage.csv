@@ -1,0 +1,504 @@
+ticker,data_status,n_committees,committee_ids,n_transactions,unresolved_cycles,evidence
+A,no_pac,0,,0,,no committee in the FEC committee master names this company as sponsor
+AAPL,unresolved,0,,0,,FEC committee master has: apple for people; apple party; apple pie
+ABBV,downloaded,1,C00536573,2775,,"1 matched committee(s), 2775 transactions"
+ABNB,unresolved,0,,0,,FEC committee master has: airbnb; airbnb pac airbnb pac
+ABT,downloaded,1,C00040279,2612,,"1 matched committee(s), 2612 transactions"
+ACGL,downloaded,1,C00433912,60,,"1 matched committee(s), 60 transactions"
+ACN,downloaded,1,C00300707,573,,"1 matched committee(s), 573 transactions"
+ADBE,no_pac,0,,0,,no committee in the FEC committee master names this company as sponsor
+ADI,no_pac,0,,0,,no committee in the FEC committee master names this company as sponsor
+ADM,downloaded,1,C00093963,789,,"1 matched committee(s), 789 transactions"
+ADP,no_pac,0,,0,,no committee in the FEC committee master names this company as sponsor
+ADSK,no_pac,0,,0,,no committee in the FEC committee master names this company as sponsor
+AEE,downloaded,1,C00206136,1160,,"1 matched committee(s), 1160 transactions"
+AEP,downloaded,1,C00096842,814,,"1 matched committee(s), 814 transactions"
+AES,downloaded,2,C00102947|C00507962,986,,"2 matched committee(s), 986 transactions"
+AFL,downloaded,1,C00034157,5108,,"1 matched committee(s), 5108 transactions"
+AIG,downloaded,2,C00097725|C00617944,124,,"2 matched committee(s), 124 transactions"
+AIZ,downloaded,1,C00185694,377,,"1 matched committee(s), 377 transactions"
+AJG,no_pac,0,,0,,no committee in the FEC committee master names this company as sponsor
+AKAM,no_pac,0,,0,,no committee in the FEC committee master names this company as sponsor
+ALB,downloaded,1,C00377333,34,,"1 matched committee(s), 34 transactions"
+ALGN,no_pac,0,,0,,no committee in the FEC committee master names this company as sponsor
+ALL,downloaded,1,C00040253,1377,,"1 matched committee(s), 1377 transactions"
+ALLE,no_pac,0,,0,,no committee in the FEC committee master names this company as sponsor
+AMAT,downloaded,1,C00406892,314,,"1 matched committee(s), 314 transactions"
+AMCR,no_pac,0,,0,,no committee in the FEC committee master names this company as sponsor
+AMD,downloaded,1,C00404483,73,,"1 matched committee(s), 73 transactions"
+AME,no_pac,0,,0,,no committee in the FEC committee master names this company as sponsor
+AMGN,downloaded,1,C00251876,3886,,"1 matched committee(s), 3886 transactions"
+AMP,downloaded,1,C00414474,1198,,"1 matched committee(s), 1198 transactions"
+AMT,no_pac,0,,0,,no committee in the FEC committee master names this company as sponsor
+AMZN,downloaded,1,C00360354,3982,,"1 matched committee(s), 3982 transactions"
+ANET,no_pac,0,,0,,no committee in the FEC committee master names this company as sponsor
+AON,downloaded,1,C00211250,322,,"1 matched committee(s), 322 transactions"
+AOS,no_pac,0,,0,,no committee in the FEC committee master names this company as sponsor
+APA,no_pac,0,,0,,no committee in the FEC committee master names this company as sponsor
+APD,downloaded,1,C00127258,147,,"1 matched committee(s), 147 transactions"
+APH,no_pac,0,,0,,no committee in the FEC committee master names this company as sponsor
+APO,no_pac,0,,0,,no committee in the FEC committee master names this company as sponsor
+APP,no_pac,0,,0,,no committee in the FEC committee master names this company as sponsor
+APTV,downloaded,1,C00346130,28,,"1 matched committee(s), 28 transactions"
+ARE,no_pac,0,,0,,no committee in the FEC committee master names this company as sponsor
+ARES,no_pac,0,,0,,no committee in the FEC committee master names this company as sponsor
+ATO,downloaded,1,C00381954,318,,"1 matched committee(s), 318 transactions"
+AVGO,downloaded,2,C00477919|C00680504,126,,"2 matched committee(s), 126 transactions"
+AVY,downloaded,1,C00467340,0,,"1 matched committee(s), 0 transactions"
+AWK,downloaded,1,C00354548,266,,"1 matched committee(s), 266 transactions"
+AXON,unresolved,0,,0,,FEC committee master has: axon enterprise; axon enterprise political action committee
+AXP,downloaded,1,C00040535,2010,,"1 matched committee(s), 2010 transactions"
+AZO,downloaded,1,C00233056,86,,"1 matched committee(s), 86 transactions"
+BA,downloaded,1,C00142711,8802,,"1 matched committee(s), 8802 transactions"
+BAC,downloaded,2,C00043489|C00364778,2275,,"2 matched committee(s), 2275 transactions"
+BALL,downloaded,1,C00039461,859,,"1 matched committee(s), 859 transactions"
+BAX,no_pac,0,,0,,no committee in the FEC committee master names this company as sponsor
+BBY,downloaded,1,C00405076,1266,,"1 matched committee(s), 1266 transactions"
+BDX,downloaded,1,C00376582,846,,"1 matched committee(s), 846 transactions"
+BEN,downloaded,1,C00874982,156,,"1 matched committee(s), 156 transactions"
+BF.B,downloaded,1,C00059733,409,,"1 matched committee(s), 409 transactions"
+BG,no_pac,0,,0,,no committee in the FEC committee master names this company as sponsor
+BIIB,downloaded,1,C00390351,416,,"1 matched committee(s), 416 transactions"
+BKNG,no_pac,0,,0,,no committee in the FEC committee master names this company as sponsor
+BKR,no_pac,0,,0,,no committee in the FEC committee master names this company as sponsor
+BLDR,no_pac,0,,0,,no committee in the FEC committee master names this company as sponsor
+BLK,downloaded,1,C00479246,1260,,"1 matched committee(s), 1260 transactions"
+BMY,downloaded,1,C00035675,1551,,"1 matched committee(s), 1551 transactions"
+BNY,downloaded,2,C00017558|C00494534,1389,,"2 matched committee(s), 1389 transactions"
+BR,unresolved,0,,0,,FEC committee master has: broadridge financial solutions; broadridge financial solutions pac
+BRK.B,downloaded,2,C00324483|C00424010,652,,"2 matched committee(s), 652 transactions"
+BRO,no_pac,0,,0,,no committee in the FEC committee master names this company as sponsor
+BSX,downloaded,1,C00357863,1567,,"1 matched committee(s), 1567 transactions"
+BX,no_pac,0,,0,,no committee in the FEC committee master names this company as sponsor
+BXP,no_pac,0,,0,,no committee in the FEC committee master names this company as sponsor
+C,downloaded,2,C00008474|C00039305,3160,,"2 matched committee(s), 3160 transactions"
+CAH,downloaded,1,C00332833,1040,,"1 matched committee(s), 1040 transactions"
+CARR,downloaded,1,C00740704,191,,"1 matched committee(s), 191 transactions"
+CASY,no_pac,0,,0,,no committee in the FEC committee master names this company as sponsor
+CAT,downloaded,1,C00148031,1866,,"1 matched committee(s), 1866 transactions"
+CB,downloaded,2,C00229203|C00348938,602,,"2 matched committee(s), 602 transactions"
+CBOE,downloaded,1,C00100693,818,,"1 matched committee(s), 818 transactions"
+CBRE,no_pac,0,,0,,no committee in the FEC committee master names this company as sponsor
+CCI,no_pac,0,,0,,no committee in the FEC committee master names this company as sponsor
+CCL,downloaded,1,C00287714,103,,"1 matched committee(s), 103 transactions"
+CDNS,no_pac,0,,0,,no committee in the FEC committee master names this company as sponsor
+CDW,no_pac,0,,0,,no committee in the FEC committee master names this company as sponsor
+CEG,downloaded,1,C00793711,813,,"1 matched committee(s), 813 transactions"
+CF,downloaded,1,C00076588,129,,"1 matched committee(s), 129 transactions"
+CFG,downloaded,1,C00307249,678,,"1 matched committee(s), 678 transactions"
+CHD,no_pac,0,,0,,no committee in the FEC committee master names this company as sponsor
+CHRW,downloaded,1,C00512673,116,,"1 matched committee(s), 116 transactions"
+CHTR,downloaded,1,C00426775,4762,,"1 matched committee(s), 4762 transactions"
+CI,downloaded,1,C00085316,2770,,"1 matched committee(s), 2770 transactions"
+CIEN,no_pac,0,,0,,no committee in the FEC committee master names this company as sponsor
+CINF,no_pac,0,,0,,no committee in the FEC committee master names this company as sponsor
+CL,no_pac,0,,0,,no committee in the FEC committee master names this company as sponsor
+CLX,downloaded,1,C00062224,119,,"1 matched committee(s), 119 transactions"
+CMCSA,downloaded,1,C00248716,8037,,"1 matched committee(s), 8037 transactions"
+CME,downloaded,1,C00076299,2442,,"1 matched committee(s), 2442 transactions"
+CMG,unresolved,0,,0,,FEC committee master has: chipotle mexican grill pac chipotle pac
+CMI,downloaded,1,C00377952,1144,,"1 matched committee(s), 1144 transactions"
+CMS,downloaded,1,C00075473,728,,"1 matched committee(s), 728 transactions"
+CNC,downloaded,2,C00230789|C00397851,1433,,"2 matched committee(s), 1433 transactions"
+CNP,downloaded,2,C00240069|C00333534,401,,"2 matched committee(s), 401 transactions"
+COF,downloaded,1,C00326595,2667,,"1 matched committee(s), 2667 transactions"
+COHR,downloaded,1,C00377960,26,,"1 matched committee(s), 26 transactions"
+COIN,no_pac,0,,0,,no committee in the FEC committee master names this company as sponsor
+COO,unresolved,0,,0,,FEC committee master has: cooper; cooper 4 congress ga; cooper for az 04
+COP,downloaded,1,C00112896,638,,"1 matched committee(s), 638 transactions"
+COR,downloaded,1,C00400929,2211,,"1 matched committee(s), 2211 transactions"
+COST,no_pac,0,,0,,no committee in the FEC committee master names this company as sponsor
+CPAY,no_pac,0,,0,,no committee in the FEC committee master names this company as sponsor
+CPRT,downloaded,1,C00452581,72,,"1 matched committee(s), 72 transactions"
+CPT,no_pac,0,,0,,no committee in the FEC committee master names this company as sponsor
+CRH,no_pac,0,,0,,no committee in the FEC committee master names this company as sponsor
+CRL,unresolved,0,,0,,FEC committee master has: charles river laboratories international; charles river laboratories international pac
+CRM,downloaded,1,C00511600,257,,"1 matched committee(s), 257 transactions"
+CRWD,no_pac,0,,0,,no committee in the FEC committee master names this company as sponsor
+CSCO,downloaded,1,C00362707,936,,"1 matched committee(s), 936 transactions"
+CSGP,no_pac,0,,0,,no committee in the FEC committee master names this company as sponsor
+CSX,downloaded,1,C00163832,2730,,"1 matched committee(s), 2730 transactions"
+CTAS,downloaded,1,C00449165,255,,"1 matched committee(s), 255 transactions"
+CTSH,downloaded,1,C00485979,173,,"1 matched committee(s), 173 transactions"
+CTVA,downloaded,1,C00247981,360,,"1 matched committee(s), 360 transactions"
+CVNA,no_pac,0,,0,,no committee in the FEC committee master names this company as sponsor
+CVS,downloaded,1,C00384818,2003,,"1 matched committee(s), 2003 transactions"
+CVX,downloaded,2,C00035006|C00558759,2372,,"2 matched committee(s), 2372 transactions"
+D,downloaded,3,C00108209|C00200907|C00545319,1978,,"3 matched committee(s), 1978 transactions"
+DAL,downloaded,1,C00104802,3259,,"1 matched committee(s), 3259 transactions"
+DASH,unresolved,0,,0,,FEC committee master has: doordash; doordash political action committee dashpac
+DD,downloaded,1,C00171926,280,,"1 matched committee(s), 280 transactions"
+DDOG,no_pac,0,,0,,no committee in the FEC committee master names this company as sponsor
+DE,downloaded,1,C00204099,1030,,"1 matched committee(s), 1030 transactions"
+DECK,no_pac,0,,0,,no committee in the FEC committee master names this company as sponsor
+DELL,downloaded,1,C00369751,1905,,"1 matched committee(s), 1905 transactions"
+DG,no_pac,0,,0,,no committee in the FEC committee master names this company as sponsor
+DGX,downloaded,1,C00329185,497,,"1 matched committee(s), 497 transactions"
+DHI,no_pac,0,,0,,no committee in the FEC committee master names this company as sponsor
+DHR,no_pac,0,,0,,no committee in the FEC committee master names this company as sponsor
+DIS,downloaded,1,C00197749,939,,"1 matched committee(s), 939 transactions"
+DLR,no_pac,0,,0,,no committee in the FEC committee master names this company as sponsor
+DLTR,unresolved,0,,0,,FEC committee master has: dollar tree; dollar tree governmental initiative
+DOC,no_pac,0,,0,,no committee in the FEC committee master names this company as sponsor
+DOV,no_pac,0,,0,,no committee in the FEC committee master names this company as sponsor
+DOW,downloaded,2,C00074096|C00386672,1489,,"2 matched committee(s), 1489 transactions"
+DPZ,no_pac,0,,0,,no committee in the FEC committee master names this company as sponsor
+DRI,downloaded,1,C00108282,43,,"1 matched committee(s), 43 transactions"
+DTE,downloaded,1,C00081547,1140,,"1 matched committee(s), 1140 transactions"
+DUK,downloaded,2,C00083535|C00144824,2703,,"2 matched committee(s), 2703 transactions"
+DVA,downloaded,1,C00340943,3005,,"1 matched committee(s), 3005 transactions"
+DVN,downloaded,1,C00354753,338,,"1 matched committee(s), 338 transactions"
+DXCM,unresolved,0,,0,,FEC committee master has: dexcom; dexcom political action committee dexcom pac
+EBAY,downloaded,1,C00342394,638,,"1 matched committee(s), 638 transactions"
+ECHO,downloaded,1,C00330647,786,,"1 matched committee(s), 786 transactions"
+ECL,downloaded,1,C00101485,807,,"1 matched committee(s), 807 transactions"
+ED,downloaded,1,C00407635,76,,"1 matched committee(s), 76 transactions"
+EFX,downloaded,1,C00143867,432,,"1 matched committee(s), 432 transactions"
+EG,no_pac,0,,0,,no committee in the FEC committee master names this company as sponsor
+EIX,downloaded,1,C00019653,1373,,"1 matched committee(s), 1373 transactions"
+EL,no_pac,0,,0,,no committee in the FEC committee master names this company as sponsor
+ELV,downloaded,1,C00197228,4298,,"1 matched committee(s), 4298 transactions"
+EME,no_pac,0,,0,,no committee in the FEC committee master names this company as sponsor
+EMR,downloaded,1,C00080515,457,,"1 matched committee(s), 457 transactions"
+EOG,no_pac,0,,0,,no committee in the FEC committee master names this company as sponsor
+EQIX,no_pac,0,,0,,no committee in the FEC committee master names this company as sponsor
+EQT,downloaded,1,C00151175,145,,"1 matched committee(s), 145 transactions"
+ERIE,downloaded,1,C00153577,370,,"1 matched committee(s), 370 transactions"
+ES,downloaded,1,C00102160,222,,"1 matched committee(s), 222 transactions"
+ESS,no_pac,0,,0,,no committee in the FEC committee master names this company as sponsor
+ETN,downloaded,1,C00034827,277,,"1 matched committee(s), 277 transactions"
+ETR,downloaded,1,C00363879,2031,,"1 matched committee(s), 2031 transactions"
+EVRG,downloaded,1,C00111310,157,,"1 matched committee(s), 157 transactions"
+EW,downloaded,1,C00411900,1244,,"1 matched committee(s), 1244 transactions"
+EXC,downloaded,2,C00141218|C00385849,2029,,"2 matched committee(s), 2029 transactions"
+EXE,downloaded,1,C00389288,497,,"1 matched committee(s), 497 transactions"
+EXPD,no_pac,0,,0,,no committee in the FEC committee master names this company as sponsor
+EXPE,unresolved,0,,0,,FEC committee master has: expedia; expedia political action commitee; expedia political action committee
+EXR,no_pac,0,,0,,no committee in the FEC committee master names this company as sponsor
+F,downloaded,1,C00046474,2501,,"1 matched committee(s), 2501 transactions"
+FANG,downloaded,1,C00135855,155,,"1 matched committee(s), 155 transactions"
+FAST,no_pac,0,,0,,no committee in the FEC committee master names this company as sponsor
+FCX,downloaded,1,C00320101,240,,"1 matched committee(s), 240 transactions"
+FDS,no_pac,0,,0,,no committee in the FEC committee master names this company as sponsor
+FDX,downloaded,1,C00068692,4726,,"1 matched committee(s), 4726 transactions"
+FDXF,no_pac,0,,0,,no committee in the FEC committee master names this company as sponsor
+FE,downloaded,1,C00140855,1009,,"1 matched committee(s), 1009 transactions"
+FERG,no_pac,0,,0,,no committee in the FEC committee master names this company as sponsor
+FFIV,no_pac,0,,0,,no committee in the FEC committee master names this company as sponsor
+FICO,downloaded,1,C00792127,187,,"1 matched committee(s), 187 transactions"
+FIS,no_pac,0,,0,,no committee in the FEC committee master names this company as sponsor
+FISV,downloaded,1,C00378166,1,2020|2022|2024|2026,"1 matched committee(s), 1 transactions; no matched committee registered in cycle(s) 2020/2022/2024/2026 while another same-named committee is - those years are dropped"
+FITB,downloaded,3,C00290502|C00393173|C00817395,1527,,"3 matched committee(s), 1527 transactions"
+FIX,no_pac,0,,0,,no committee in the FEC committee master names this company as sponsor
+FLEX,no_pac,0,,0,,no committee in the FEC committee master names this company as sponsor
+FOX,downloaded,2,C00330019|C00693002,1188,2016,"2 matched committee(s), 1188 transactions; no matched committee registered in cycle(s) 2016 while another same-named committee is - those years are dropped"
+FOXA,downloaded,2,C00330019|C00693002,1188,2016,"2 matched committee(s), 1188 transactions; no matched committee registered in cycle(s) 2016 while another same-named committee is - those years are dropped"
+FRT,no_pac,0,,0,,no committee in the FEC committee master names this company as sponsor
+FSLR,downloaded,1,C00489534,101,,"1 matched committee(s), 101 transactions"
+FTNT,no_pac,0,,0,,no committee in the FEC committee master names this company as sponsor
+FTV,no_pac,0,,0,,no committee in the FEC committee master names this company as sponsor
+GD,downloaded,1,C00078451,7754,,"1 matched committee(s), 7754 transactions"
+GDDY,no_pac,0,,0,,no committee in the FEC committee master names this company as sponsor
+GE,downloaded,2,C00024869|C00492223,5695,,"2 matched committee(s), 5695 transactions"
+GEHC,downloaded,1,C00830208,399,,"1 matched committee(s), 399 transactions"
+GEN,downloaded,1,C00394031,147,,"1 matched committee(s), 147 transactions"
+GEV,downloaded,1,C00861161,109,,"1 matched committee(s), 109 transactions"
+GILD,downloaded,1,C00396895,1018,,"1 matched committee(s), 1018 transactions"
+GIS,downloaded,1,C00062646,509,,"1 matched committee(s), 509 transactions"
+GL,downloaded,1,C00167460,115,,"1 matched committee(s), 115 transactions"
+GLW,downloaded,1,C00033589,1035,,"1 matched committee(s), 1035 transactions"
+GM,downloaded,1,C00076810,4525,,"1 matched committee(s), 4525 transactions"
+GNRC,no_pac,0,,0,,no committee in the FEC committee master names this company as sponsor
+GOOG,unresolved,0,,0,,FEC committee master has: alphabet; google netpac
+GOOGL,unresolved,0,,0,,FEC committee master has: alphabet; google netpac
+GPC,no_pac,0,,0,,no committee in the FEC committee master names this company as sponsor
+GPN,downloaded,2,C00441980|C00863670,258,,"2 matched committee(s), 258 transactions"
+GRMN,downloaded,1,C00660894,223,,"1 matched committee(s), 223 transactions"
+GS,downloaded,1,C00350744,2949,,"1 matched committee(s), 2949 transactions"
+GWW,no_pac,0,,0,,no committee in the FEC committee master names this company as sponsor
+HAL,downloaded,1,C00035691,865,,"1 matched committee(s), 865 transactions"
+HAS,no_pac,0,,0,,no committee in the FEC committee master names this company as sponsor
+HBAN,downloaded,1,C00165589,1291,,"1 matched committee(s), 1291 transactions"
+HCA,downloaded,1,C00067231,847,,"1 matched committee(s), 847 transactions"
+HD,downloaded,1,C00284885,5421,,"1 matched committee(s), 5421 transactions"
+HIG,downloaded,2,C00168864|C00511444,1269,,"2 matched committee(s), 1269 transactions"
+HII,downloaded,2,C00325092|C00364851,3303,,"2 matched committee(s), 3303 transactions"
+HLT,downloaded,1,C00213074,496,,"1 matched committee(s), 496 transactions"
+HON,downloaded,2,C00096156|C00895235,10127,,"2 matched committee(s), 10127 transactions"
+HONA,unresolved,0,,0,,FEC committee master has: honeywell aerospace us; honeywell aerospace us public affairs council hona pac
+HOOD,downloaded,1,C00780304,107,,"1 matched committee(s), 107 transactions"
+HPE,downloaded,1,C00196725,1159,,"1 matched committee(s), 1159 transactions"
+HPQ,downloaded,1,C00626648,104,2024|2026,"1 matched committee(s), 104 transactions; no matched committee registered in cycle(s) 2024/2026 while another same-named committee is - those years are dropped"
+HRL,unresolved,0,,0,,FEC committee master has: hormel foods; hormel foods pac aka hormel pac
+HSIC,no_pac,0,,0,,no committee in the FEC committee master names this company as sponsor
+HST,no_pac,0,,0,,no committee in the FEC committee master names this company as sponsor
+HSY,downloaded,1,C00200139,229,,"1 matched committee(s), 229 transactions"
+HUBB,no_pac,0,,0,,no committee in the FEC committee master names this company as sponsor
+HUM,downloaded,1,C00271007,2274,,"1 matched committee(s), 2274 transactions"
+HWM,downloaded,3,C00501106|C00552679|C00728030,575,,"3 matched committee(s), 575 transactions"
+IBKR,no_pac,0,,0,,no committee in the FEC committee master names this company as sponsor
+IBM,no_pac,0,,0,,no committee in the FEC committee master names this company as sponsor
+ICE,downloaded,1,C00443168,462,,"1 matched committee(s), 462 transactions"
+IDXX,no_pac,0,,0,,no committee in the FEC committee master names this company as sponsor
+IEX,no_pac,0,,0,,no committee in the FEC committee master names this company as sponsor
+IFF,no_pac,0,,0,,no committee in the FEC committee master names this company as sponsor
+INCY,no_pac,0,,0,,no committee in the FEC committee master names this company as sponsor
+INTC,downloaded,1,C00125641,2025,,"1 matched committee(s), 2025 transactions"
+INTU,downloaded,1,C00361741,307,,"1 matched committee(s), 307 transactions"
+INVH,no_pac,0,,0,,no committee in the FEC committee master names this company as sponsor
+IP,downloaded,2,C00034405|C00789602,2460,,"2 matched committee(s), 2460 transactions"
+IQV,no_pac,0,,0,,no committee in the FEC committee master names this company as sponsor
+IR,unresolved,0,,0,,FEC committee master has: ingersoll rand; ingersoll rand political action committee; trane technologies
+IRM,downloaded,1,C00523936,445,,"1 matched committee(s), 445 transactions"
+ISRG,downloaded,1,C00462622,4,,"1 matched committee(s), 4 transactions"
+IT,no_pac,0,,0,,no committee in the FEC committee master names this company as sponsor
+ITW,no_pac,0,,0,,no committee in the FEC committee master names this company as sponsor
+IVZ,downloaded,1,C00253369,863,,"1 matched committee(s), 863 transactions"
+J,downloaded,1,C00142299,897,,"1 matched committee(s), 897 transactions"
+JBHT,no_pac,0,,0,,no committee in the FEC committee master names this company as sponsor
+JBL,no_pac,0,,0,,no committee in the FEC committee master names this company as sponsor
+JCI,no_pac,0,,0,,no committee in the FEC committee master names this company as sponsor
+JKHY,no_pac,0,,0,,no committee in the FEC committee master names this company as sponsor
+JNJ,downloaded,1,C00010983,2646,,"1 matched committee(s), 2646 transactions"
+JPM,downloaded,2,C00104299|C00128512,3054,,"2 matched committee(s), 3054 transactions"
+KDP,downloaded,1,C00484451,206,,"1 matched committee(s), 206 transactions"
+KEY,downloaded,2,C00073155|C00399063,467,,"2 matched committee(s), 467 transactions"
+KEYS,no_pac,0,,0,,no committee in the FEC committee master names this company as sponsor
+KHC,downloaded,2,C00077701|C00336040,557,,"2 matched committee(s), 557 transactions"
+KIM,no_pac,0,,0,,no committee in the FEC committee master names this company as sponsor
+KKR,no_pac,0,,0,,no committee in the FEC committee master names this company as sponsor
+KLAC,no_pac,0,,0,,no committee in the FEC committee master names this company as sponsor
+KMB,no_pac,0,,0,,no committee in the FEC committee master names this company as sponsor
+KMI,no_pac,0,,0,,no committee in the FEC committee master names this company as sponsor
+KO,downloaded,1,C00012468,1418,,"1 matched committee(s), 1418 transactions"
+KR,downloaded,1,C00059238,640,,"1 matched committee(s), 640 transactions"
+KVUE,no_pac,0,,0,,no committee in the FEC committee master names this company as sponsor
+L,downloaded,1,C00416495,234,,"1 matched committee(s), 234 transactions"
+LDOS,downloaded,1,C00546234,3195,,"1 matched committee(s), 3195 transactions"
+LEN,no_pac,0,,0,,no committee in the FEC committee master names this company as sponsor
+LH,downloaded,1,C00314997,618,,"1 matched committee(s), 618 transactions"
+LHX,downloaded,3,C00100321|C00129122|C00141002,3801,,"3 matched committee(s), 3801 transactions"
+LII,unresolved,0,,0,,FEC committee master has: lennox employee advocacy program lennox international; lennox international; none
+LIN,downloaded,2,C00283440|C00471193,250,,"2 matched committee(s), 250 transactions"
+LITE,no_pac,0,,0,,no committee in the FEC committee master names this company as sponsor
+LLY,downloaded,1,C00082792,2504,,"1 matched committee(s), 2504 transactions"
+LMT,downloaded,1,C00303024,11852,,"1 matched committee(s), 11852 transactions"
+LNT,downloaded,1,C00132092,426,,"1 matched committee(s), 426 transactions"
+LOW,downloaded,1,C00251751,1794,,"1 matched committee(s), 1794 transactions"
+LRCX,no_pac,0,,0,,no committee in the FEC committee master names this company as sponsor
+LULU,no_pac,0,,0,,no committee in the FEC committee master names this company as sponsor
+LUV,downloaded,1,C00341602,960,,"1 matched committee(s), 960 transactions"
+LVS,downloaded,1,C00399642,108,,"1 matched committee(s), 108 transactions"
+LYB,no_pac,0,,0,,no committee in the FEC committee master names this company as sponsor
+LYV,unresolved,0,,0,,FEC committee master has: live nation entertainment; live nation entertainment political action committee live nation pac
+MA,downloaded,1,C00410274,1192,,"1 matched committee(s), 1192 transactions"
+MAA,no_pac,0,,0,,no committee in the FEC committee master names this company as sponsor
+MAR,downloaded,1,C00284810,609,,"1 matched committee(s), 609 transactions"
+MAS,unresolved,0,,0,,FEC committee master has: masco; masco political action committee
+MCD,downloaded,1,C00063164,1596,,"1 matched committee(s), 1596 transactions"
+MCHP,no_pac,0,,0,,no committee in the FEC committee master names this company as sponsor
+MCK,downloaded,2,C00108035|C00465583,1436,,"2 matched committee(s), 1436 transactions"
+MCO,no_pac,0,,0,,no committee in the FEC committee master names this company as sponsor
+MDLZ,downloaded,1,C00529073,350,,"1 matched committee(s), 350 transactions"
+MDT,downloaded,1,C00311878,1264,,"1 matched committee(s), 1264 transactions"
+MET,downloaded,2,C00040923|C00493551,2011,,"2 matched committee(s), 2011 transactions"
+META,downloaded,1,C00502906,1385,,"1 matched committee(s), 1385 transactions"
+MGM,downloaded,1,C00299321,431,,"1 matched committee(s), 431 transactions"
+MKC,unresolved,0,,0,,FEC committee master has: american renewal pac; mccormick; mccormick for congress
+MLM,no_pac,0,,0,,no committee in the FEC committee master names this company as sponsor
+MMM,downloaded,1,C00084475,561,,"1 matched committee(s), 561 transactions"
+MNST,no_pac,0,,0,,no committee in the FEC committee master names this company as sponsor
+MO,downloaded,1,C00089136,3710,,"1 matched committee(s), 3710 transactions"
+MOS,unresolved,0,,0,,FEC committee master has: mosaic; mosaic political action committee mosaicpac; mosaic renewable sustainable energy pac
+MPC,downloaded,1,C00496307,2113,,"1 matched committee(s), 2113 transactions"
+MPWR,no_pac,0,,0,,no committee in the FEC committee master names this company as sponsor
+MRK,downloaded,1,C00097485,2503,,"1 matched committee(s), 2503 transactions"
+MRNA,no_pac,0,,0,,no committee in the FEC committee master names this company as sponsor
+MRSH,downloaded,1,C00457234,1251,,"1 matched committee(s), 1251 transactions"
+MRVL,no_pac,0,,0,,no committee in the FEC committee master names this company as sponsor
+MS,downloaded,1,C00337626,2732,,"1 matched committee(s), 2732 transactions"
+MSCI,no_pac,0,,0,,no committee in the FEC committee master names this company as sponsor
+MSFT,downloaded,1,C00227546,3732,,"1 matched committee(s), 3732 transactions"
+MSI,downloaded,1,C00075341,1276,,"1 matched committee(s), 1276 transactions"
+MTB,downloaded,1,C00137273,235,,"1 matched committee(s), 235 transactions"
+MTD,no_pac,0,,0,,no committee in the FEC committee master names this company as sponsor
+MU,downloaded,1,C00443671,359,,"1 matched committee(s), 359 transactions"
+NCLH,no_pac,0,,0,,no committee in the FEC committee master names this company as sponsor
+NDAQ,downloaded,1,C00366013,614,,"1 matched committee(s), 614 transactions"
+NDSN,no_pac,0,,0,,no committee in the FEC committee master names this company as sponsor
+NEE,downloaded,1,C00064774,3212,,"1 matched committee(s), 3212 transactions"
+NEM,downloaded,1,C00206672,126,,"1 matched committee(s), 126 transactions"
+NFLX,unresolved,0,,0,,FEC committee master has: netflix; netflix pac flixpac
+NI,downloaded,1,C00051979,954,,"1 matched committee(s), 954 transactions"
+NKE,downloaded,1,C00142786,844,,"1 matched committee(s), 844 transactions"
+NOC,downloaded,2,C00088591|C00250209,7889,,"2 matched committee(s), 7889 transactions"
+NOW,no_pac,0,,0,,no committee in the FEC committee master names this company as sponsor
+NRG,downloaded,1,C00366559,222,,"1 matched committee(s), 222 transactions"
+NSC,downloaded,1,C00009282,2325,,"1 matched committee(s), 2325 transactions"
+NTAP,no_pac,0,,0,,no committee in the FEC committee master names this company as sponsor
+NTRS,downloaded,2,C00024935|C00515148,230,,"2 matched committee(s), 230 transactions"
+NUE,downloaded,1,C00379628,1526,,"1 matched committee(s), 1526 transactions"
+NVDA,unresolved,0,,0,,FEC committee master has: nvidia; nvidia employees federal political action committee nvpac
+NVR,no_pac,0,,0,,no committee in the FEC committee master names this company as sponsor
+NWS,downloaded,1,C00546101,248,,"1 matched committee(s), 248 transactions"
+NWSA,downloaded,1,C00546101,248,,"1 matched committee(s), 248 transactions"
+NXPI,no_pac,0,,0,,no committee in the FEC committee master names this company as sponsor
+O,no_pac,0,,0,,no committee in the FEC committee master names this company as sponsor
+ODFL,downloaded,1,C00496836,426,,"1 matched committee(s), 426 transactions"
+OKE,downloaded,1,C00215384,405,,"1 matched committee(s), 405 transactions"
+OMC,no_pac,0,,0,,no committee in the FEC committee master names this company as sponsor
+ON,no_pac,0,,0,,no committee in the FEC committee master names this company as sponsor
+ORCL,downloaded,1,C00323048,1344,,"1 matched committee(s), 1344 transactions"
+ORLY,no_pac,0,,0,,no committee in the FEC committee master names this company as sponsor
+OTIS,downloaded,1,C00742239,39,,"1 matched committee(s), 39 transactions"
+OXY,downloaded,1,C00083857,773,,"1 matched committee(s), 773 transactions"
+PANW,no_pac,0,,0,,no committee in the FEC committee master names this company as sponsor
+PAYX,no_pac,0,,0,,no committee in the FEC committee master names this company as sponsor
+PCAR,downloaded,1,C00034355,162,,"1 matched committee(s), 162 transactions"
+PCG,downloaded,1,C00177469,2273,,"1 matched committee(s), 2273 transactions"
+PEG,downloaded,1,C00383489,607,,"1 matched committee(s), 607 transactions"
+PEP,downloaded,1,C00039321,605,,"1 matched committee(s), 605 transactions"
+PFE,downloaded,2,C00016683|C00788661,4196,,"2 matched committee(s), 4196 transactions"
+PFG,no_pac,0,,0,,no committee in the FEC committee master names this company as sponsor
+PG,downloaded,1,C00257329,1106,,"1 matched committee(s), 1106 transactions"
+PGR,unresolved,0,,0,,FEC committee master has: battleground blue pac; congressional progressive caucus pac; dem turnout 2026
+PH,downloaded,1,C00135459,88,,"1 matched committee(s), 88 transactions"
+PHM,downloaded,1,C00560839,91,,"1 matched committee(s), 91 transactions"
+PKG,no_pac,0,,0,,no committee in the FEC committee master names this company as sponsor
+PLD,no_pac,0,,0,,no committee in the FEC committee master names this company as sponsor
+PLTR,downloaded,1,C00498691,54,,"1 matched committee(s), 54 transactions"
+PM,no_pac,0,,0,,no committee in the FEC committee master names this company as sponsor
+PNC,downloaded,3,C00035519|C00142596|C00186064,2447,,"3 matched committee(s), 2447 transactions"
+PNR,no_pac,0,,0,,no committee in the FEC committee master names this company as sponsor
+PNW,downloaded,1,C00015933,1425,,"1 matched committee(s), 1425 transactions"
+PODD,no_pac,0,,0,,no committee in the FEC committee master names this company as sponsor
+PPG,downloaded,1,C00034298,317,,"1 matched committee(s), 317 transactions"
+PPL,unresolved,0,,0,,FEC committee master has: lg e ku political action committee; ppl people for good government
+PRU,downloaded,2,C00127779|C00493304,2588,,"2 matched committee(s), 2588 transactions"
+PSA,no_pac,0,,0,,no committee in the FEC committee master names this company as sponsor
+PSKY,no_pac,0,,0,,no committee in the FEC committee master names this company as sponsor
+PSX,downloaded,1,C00513549,1550,,"1 matched committee(s), 1550 transactions"
+PTC,unresolved,0,,0,,FEC committee master has: ptc therapeutics; ptc therapeutics political action committee ptc pac
+PWR,downloaded,1,C00720920,157,,"1 matched committee(s), 157 transactions"
+PYPL,downloaded,1,C00581686,199,,"1 matched committee(s), 199 transactions"
+Q,no_pac,0,,0,,no committee in the FEC committee master names this company as sponsor
+QCOM,downloaded,1,C00339085,484,,"1 matched committee(s), 484 transactions"
+RCL,no_pac,0,,0,,no committee in the FEC committee master names this company as sponsor
+RDDT,no_pac,0,,0,,no committee in the FEC committee master names this company as sponsor
+REG,no_pac,0,,0,,no committee in the FEC committee master names this company as sponsor
+REGN,downloaded,1,C00562264,380,,"1 matched committee(s), 380 transactions"
+RF,downloaded,1,C00432252,2842,,"1 matched committee(s), 2842 transactions"
+RJF,no_pac,0,,0,,no committee in the FEC committee master names this company as sponsor
+RL,no_pac,0,,0,,no committee in the FEC committee master names this company as sponsor
+RMD,no_pac,0,,0,,no committee in the FEC committee master names this company as sponsor
+ROK,no_pac,0,,0,,no committee in the FEC committee master names this company as sponsor
+ROL,downloaded,1,C00131219,25,,"1 matched committee(s), 25 transactions"
+ROP,no_pac,0,,0,,no committee in the FEC committee master names this company as sponsor
+ROST,no_pac,0,,0,,no committee in the FEC committee master names this company as sponsor
+RSG,downloaded,1,C00428391,109,,"1 matched committee(s), 109 transactions"
+RTX,downloaded,2,C00035683|C00097568,9116,,"2 matched committee(s), 9116 transactions"
+RVTY,unresolved,0,,0,,FEC committee master has: revvity; revvity pac revvity pac
+SBAC,no_pac,0,,0,,no committee in the FEC committee master names this company as sponsor
+SBUX,no_pac,0,,0,,no committee in the FEC committee master names this company as sponsor
+SCHW,no_pac,0,,0,,no committee in the FEC committee master names this company as sponsor
+SHW,no_pac,0,,0,,no committee in the FEC committee master names this company as sponsor
+SJM,unresolved,0,,0,,FEC committee master has: j m smucker; j m smucker pac smucker pac
+SLB,no_pac,0,,0,,no committee in the FEC committee master names this company as sponsor
+SMCI,no_pac,0,,0,,no committee in the FEC committee master names this company as sponsor
+SNA,no_pac,0,,0,,no committee in the FEC committee master names this company as sponsor
+SNDK,no_pac,0,,0,,no committee in the FEC committee master names this company as sponsor
+SNPS,unresolved,0,,0,,FEC committee master has: synopsys; synopsys political action committee synopsys pac
+SO,downloaded,3,C00144774|C00145037|C00250407,2775,,"3 matched committee(s), 2775 transactions"
+SOLV,downloaded,1,C00906925,23,,"1 matched committee(s), 23 transactions"
+SPG,no_pac,0,,0,,no committee in the FEC committee master names this company as sponsor
+SPGI,downloaded,1,C00494682,603,,"1 matched committee(s), 603 transactions"
+SRE,downloaded,1,C00008748,1384,,"1 matched committee(s), 1384 transactions"
+STE,downloaded,1,C00368720,226,,"1 matched committee(s), 226 transactions"
+STLD,no_pac,0,,0,,no committee in the FEC committee master names this company as sponsor
+STT,downloaded,1,C00072751,842,,"1 matched committee(s), 842 transactions"
+STX,no_pac,0,,0,,no committee in the FEC committee master names this company as sponsor
+STZ,downloaded,1,C00304832,493,,"1 matched committee(s), 493 transactions"
+SW,downloaded,1,C00117424,489,,"1 matched committee(s), 489 transactions"
+SWK,downloaded,1,C00060087,343,,"1 matched committee(s), 343 transactions"
+SWKS,no_pac,0,,0,,no committee in the FEC committee master names this company as sponsor
+SYF,downloaded,1,C00589119,947,,"1 matched committee(s), 947 transactions"
+SYK,no_pac,0,,0,,no committee in the FEC committee master names this company as sponsor
+SYY,downloaded,1,C00589663,372,,"1 matched committee(s), 372 transactions"
+T,downloaded,3,C00109017|C00339291|C00377044,9713,,"3 matched committee(s), 9713 transactions"
+TAP,downloaded,1,C00457697,447,,"1 matched committee(s), 447 transactions"
+TDG,downloaded,1,C00714329,217,,"1 matched committee(s), 217 transactions"
+TDY,downloaded,1,C00357285,3,,"1 matched committee(s), 3 transactions"
+TECH,no_pac,0,,0,,no committee in the FEC committee master names this company as sponsor
+TEL,downloaded,1,C00433482,448,,"1 matched committee(s), 448 transactions"
+TER,no_pac,0,,0,,no committee in the FEC committee master names this company as sponsor
+TFC,downloaded,3,C00009639|C00075291|C00386524,1764,,"3 matched committee(s), 1764 transactions"
+TGT,downloaded,1,C00098061,1632,,"1 matched committee(s), 1632 transactions"
+TJX,no_pac,0,,0,,no committee in the FEC committee master names this company as sponsor
+TKO,downloaded,1,C00459693,93,,"1 matched committee(s), 93 transactions"
+TMO,downloaded,1,C00292318,664,,"1 matched committee(s), 664 transactions"
+TMUS,downloaded,2,C00089342|C00361758,4785,,"2 matched committee(s), 4785 transactions"
+TPL,no_pac,0,,0,,no committee in the FEC committee master names this company as sponsor
+TPR,unresolved,0,,0,,FEC committee master has: ciarrocchi; coach guys leadership pac; coach lowes gremlins
+TRGP,downloaded,1,C00510016,154,,"1 matched committee(s), 154 transactions"
+TRMB,no_pac,0,,0,,no committee in the FEC committee master names this company as sponsor
+TROW,no_pac,0,,0,,no committee in the FEC committee master names this company as sponsor
+TRV,downloaded,1,C00376376,944,,"1 matched committee(s), 944 transactions"
+TSCO,downloaded,1,C00763664,362,,"1 matched committee(s), 362 transactions"
+TSLA,no_pac,0,,0,,no committee in the FEC committee master names this company as sponsor
+TSN,downloaded,1,C00169821,1121,,"1 matched committee(s), 1121 transactions"
+TT,downloaded,1,C00492314,96,,"1 matched committee(s), 96 transactions"
+TTD,no_pac,0,,0,,no committee in the FEC committee master names this company as sponsor
+TTWO,no_pac,0,,0,,no committee in the FEC committee master names this company as sponsor
+TXN,downloaded,1,C00007070,589,,"1 matched committee(s), 589 transactions"
+TXT,downloaded,1,C00123612,1956,,"1 matched committee(s), 1956 transactions"
+TYL,no_pac,0,,0,,no committee in the FEC committee master names this company as sponsor
+UAL,downloaded,2,C00078261|C00101766,1201,,"2 matched committee(s), 1201 transactions"
+UBER,downloaded,1,C00907683,33,,"1 matched committee(s), 33 transactions"
+UDR,no_pac,0,,0,,no committee in the FEC committee master names this company as sponsor
+UHS,downloaded,1,C00185520,276,,"1 matched committee(s), 276 transactions"
+ULTA,no_pac,0,,0,,no committee in the FEC committee master names this company as sponsor
+UNH,downloaded,1,C00274431,3285,,"1 matched committee(s), 3285 transactions"
+UNP,downloaded,1,C00010470,4036,,"1 matched committee(s), 4036 transactions"
+UPS,downloaded,1,C00064766,7853,,"1 matched committee(s), 7853 transactions"
+URI,no_pac,0,,0,,no committee in the FEC committee master names this company as sponsor
+USB,no_pac,0,,0,,no committee in the FEC committee master names this company as sponsor
+V,downloaded,1,C00365122,2317,,"1 matched committee(s), 2317 transactions"
+VEEV,no_pac,0,,0,,no committee in the FEC committee master names this company as sponsor
+VICI,no_pac,0,,0,,no committee in the FEC committee master names this company as sponsor
+VLO,downloaded,1,C00109546,1471,,"1 matched committee(s), 1471 transactions"
+VLTO,no_pac,0,,0,,no committee in the FEC committee master names this company as sponsor
+VMC,downloaded,1,C00116020,558,,"1 matched committee(s), 558 transactions"
+VMRK,no_pac,0,,0,,no committee in the FEC committee master names this company as sponsor
+VRSK,no_pac,0,,0,,no committee in the FEC committee master names this company as sponsor
+VRSN,no_pac,0,,0,,no committee in the FEC committee master names this company as sponsor
+VRT,no_pac,0,,0,,no committee in the FEC committee master names this company as sponsor
+VRTX,downloaded,1,C00468660,838,,"1 matched committee(s), 838 transactions"
+VST,downloaded,3,C00226548|C00255950|C00478685,907,,"3 matched committee(s), 907 transactions"
+VTR,no_pac,0,,0,,no committee in the FEC committee master names this company as sponsor
+VTRS,downloaded,1,C00332395,566,,"1 matched committee(s), 566 transactions"
+VZ,downloaded,1,C00186288,6075,,"1 matched committee(s), 6075 transactions"
+WAB,unresolved,0,,0,,FEC committee master has: westinghouse air brake technologies; westinghouse air brake technologies political action committee wabtec pac
+WAT,unresolved,0,,0,,FEC committee master has: none; people helping people; waters
+WBD,unresolved,0,,0,,FEC committee master has: discovery communications; discovery communications pac; discovery communications pac wbd pac
+WDAY,no_pac,0,,0,,no committee in the FEC committee master names this company as sponsor
+WDC,no_pac,0,,0,,no committee in the FEC committee master names this company as sponsor
+WEC,downloaded,2,C00099945|C00442707,239,,"2 matched committee(s), 239 transactions"
+WELL,unresolved,0,,0,,FEC committee master has: welltower; welltower political action committee welltower pac
+WFC,downloaded,4,C00012518|C00034595|C00300178|C00429852,2704,,"4 matched committee(s), 2704 transactions"
+WM,downloaded,1,C00119008,459,,"1 matched committee(s), 459 transactions"
+WMB,downloaded,2,C00040394|C00933200,1622,,"2 matched committee(s), 1622 transactions"
+WMT,downloaded,1,C00093054,6326,,"1 matched committee(s), 6326 transactions"
+WRB,no_pac,0,,0,,no committee in the FEC committee master names this company as sponsor
+WSM,no_pac,0,,0,,no committee in the FEC committee master names this company as sponsor
+WST,no_pac,0,,0,,no committee in the FEC committee master names this company as sponsor
+WTW,no_pac,0,,0,,no committee in the FEC committee master names this company as sponsor
+WY,downloaded,2,C00007948|C00255224,1387,,"2 matched committee(s), 1387 transactions"
+WYNN,downloaded,1,C00475475,82,,"1 matched committee(s), 82 transactions"
+XEL,downloaded,1,C00107771,1305,,"1 matched committee(s), 1305 transactions"
+XOM,downloaded,1,C00121368,2922,,"1 matched committee(s), 2922 transactions"
+XYL,no_pac,0,,0,,no committee in the FEC committee master names this company as sponsor
+XYZ,unresolved,0,,0,,FEC committee master has: block adam; block by block pac; block david m
+YUM,downloaded,1,C00329474,314,,"1 matched committee(s), 314 transactions"
+ZBH,downloaded,1,C00399386,363,,"1 matched committee(s), 363 transactions"
+ZBRA,no_pac,0,,0,,no committee in the FEC committee master names this company as sponsor
+ZTS,downloaded,1,C00541177,197,,"1 matched committee(s), 197 transactions"

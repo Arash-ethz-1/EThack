@@ -39,3 +39,22 @@ social/raw/frames/
 # SEC XBRL companyfacts cache: ~1.8 GB for 503 companies, only used to derive the small
 # economic/indicators/*.csv, which IS committed. Rebuild: python run.py build economic <id>
 economic/raw/companyfacts_*.json
+# FEC bulk transaction files: ~12 zips, hundreds of MB, only used to derive the small
+# social/raw/fec_pac_disbursements.csv, which IS committed. Rebuild:
+# python social/scripts/_fec_bulk.py
+social/raw/fec_bulk/
+
+# SEC 10-K primary documents: 501 filings, ~1-2 GB of HTML, only used to derive the small
+# social/indicators/human_capital_disclosure.csv, which IS committed. Rebuild (~25 min):
+# python run.py build social human_capital_disclosure
+social/raw/tenk/
+
+# FEC transaction detail: 46 MB of itemized PAC transactions, over the 20 MB the repo
+# commits. Everything the indicator uses is rolled up into the small
+# social/raw/fec_pac_disbursements.csv, which IS committed. Rebuild (~2 min from the
+# cached zips): python social/scripts/_fec_bulk.py --parse-only
+social/raw/fec_pac_transactions.csv
+
+# FEC API JSON cache: 38 MB, superseded by the bulk route (social/scripts/_fec_bulk.py).
+# Kept on disk for provenance; the committed roll-up is social/raw/fec_pac_disbursements.csv
+social/raw/fec/

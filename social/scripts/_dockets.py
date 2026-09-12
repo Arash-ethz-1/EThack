@@ -36,6 +36,16 @@ OUT_DIR = raw_dir(CATEGORY) / "dockets"
 
 WINDOW_FROM, WINDOW_TO = "2016-01-01", "2026-01-01"
 
+MAX_429_RETRIES = 5
+BACKOFF_S = 60  # 60s, 2min, 4min, 8min, 16min - survives a short quota window
+# CourtListener authenticated search API allows 5 requests/minute. Pacing just under
+# that ceiling avoids 429s entirely, which is faster than retrying after them.
+PACE_S = 15.0
+
+
+class RateLimited(RuntimeError):
+    """Quota exhausted. Already-fetched companies are kept; re-running resumes."""
+
 # Federal Nature-of-Suit codes that mean "an employee sued this company over how it
 # treated them". Verified against live values, which appear both with and without the
 # leading code (e.g. "442 Civil Rights: Jobs" and "Civil Rights: Jobs").
@@ -191,9 +201,19 @@ def fetch(sess: requests.Session, ticker: str, names: list[str]) -> dict:
     }
     dockets, url, pages = [], API, 0
     while url and pages < 25:  # 25 pages x 20 = 500 dockets is plenty per company
-        r = sess.get(url, params=params if pages == 0 else None, timeout=60)
+        r = None
+        for attempt in range(MAX_429_RETRIES):
+            r = sess.get(url, params=params if pages == 0 else None, timeout=60)
+            if r.status_code != 429:
+                break
+            # Anonymous quota runs out after ~22 companies. A free token
+            # (courtlistener.com/help/api/rest/) removes this entirely.
+            wait = BACKOFF_S * (2**attempt)
+            print(f"    429 rate limited - waiting {wait}s (attempt {attempt + 1}"
+                  f"/{MAX_429_RETRIES})", flush=True)
+            time.sleep(wait)
         if r.status_code == 429:
-            raise RuntimeError("429 rate limited - set COURTLISTENER_TOKEN in .env")
+            raise RateLimited(f"still 429 after {MAX_429_RETRIES} retries")
         r.raise_for_status()
         d = r.json()
         for x in d.get("results", []):
@@ -208,7 +228,7 @@ def fetch(sess: requests.Session, ticker: str, names: list[str]) -> dict:
                 }
             )
         url, pages = d.get("next"), pages + 1
-        time.sleep(1.5)
+        time.sleep(PACE_S)
     return {"ticker": ticker, "names": names, "query": params["q"],
             "total_reported": d.get("count"), "dockets": dockets}
 
@@ -238,7 +258,15 @@ def main() -> int:
         names = names_for(t, row["name"], aliases)
         if not names:
             continue
-        data = fetch(sess, t, names)
+        try:
+            data = fetch(sess, t, names)
+        except RateLimited as exc:
+            print(f"\nSTOPPED at {t}: {exc}")
+            print(f"  {done} companies fetched this run, "
+                  f"{len(list(OUT_DIR.glob('*.json')))}/{len(companies)} cached in total.")
+            print("  Re-run to resume - already-cached companies are skipped.")
+            print("  Set COURTLISTENER_TOKEN in .env to remove the limit entirely.")
+            return 1
         # Store EVERYTHING. Party and Nature-of-Suit filtering happen in the indicator
         # script, so the matcher can be tuned without re-downloading (quota is scarce).
         path.write_text(json.dumps(data), encoding="utf-8")
