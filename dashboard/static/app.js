@@ -429,6 +429,136 @@ function viewIndicators() {
   return head("Indicators", "The building blocks of every score: what they measure, which direction is better, and how many companies they cover.") + sections + heat;
 }
 
+/* --- 3D impact cube: the three category scores as one picture. -----------------
+   Each company is a point at (economic, social, environmental). The corner where
+   all three are high is where a score-tilted portfolio puts its money, so this is
+   the allocation rule made visible. Plain canvas, no libraries. */
+
+const CUBE = { yaw: -0.6, pitch: -0.35, drag: null, raf: null, spin: true };
+const CUBE_AXES = [
+  { key: "economic_score", label: "Economic" },
+  { key: "social_score", label: "Social" },
+  { key: "environmental_score", label: "Environmental" },
+];
+
+function cubeRows() {
+  if (!state.result) return [];
+  return state.result.rows.filter((r) => CUBE_AXES.every((a) => isNum(r[a.key])));
+}
+
+function viewCube() {
+  const rows = cubeRows();
+  const missing = CUBE_AXES.filter((a) => !state.result.rows.some((r) => isNum(r[a.key])));
+  const note = missing.length
+    ? `<p class="sub">No data yet on ${missing.map((m) => esc(m.label.toLowerCase())).join(" and ")} -
+       those axes stay empty until those indicators are ready.</p>`
+    : `<p class="sub">${rows.length} companies with all three scores. Drag to rotate.</p>`;
+  return `<div class="card card-pad cube-card">
+      <div class="section-head"><h3>Impact cube</h3><span class="muted small">high / high / high = overweight</span></div>
+      ${note}
+      <canvas id="cube" height="320"></canvas>
+      <div class="cube-legend">
+        ${CUBE_AXES.map((a) => `<span><i></i>${esc(a.label)}</span>`).join("")}
+      </div>
+    </div>`;
+}
+
+function cubeProject(v, w, h) {
+  // v is in -1..1 on each axis. Rotate around Y (yaw) then X (pitch), then project.
+  const cy = Math.cos(CUBE.yaw), sy = Math.sin(CUBE.yaw);
+  const cp = Math.cos(CUBE.pitch), sp = Math.sin(CUBE.pitch);
+  const x1 = v[0] * cy + v[2] * sy;
+  const z1 = -v[0] * sy + v[2] * cy;
+  const y1 = v[1] * cp - z1 * sp;
+  const z2 = v[1] * sp + z1 * cp;
+  const d = 4.2;
+  const k = d / (d + z2);
+  const scale = Math.min(w, h) * 0.34;
+  return [w / 2 + x1 * scale * k, h / 2 - y1 * scale * k, z2];
+}
+
+function drawCube() {
+  const c = $("#cube");
+  if (!c) return;
+  const dpr = window.devicePixelRatio || 1;
+  const w = c.clientWidth, h = 320;
+  if (c.width !== w * dpr) { c.width = w * dpr; c.height = h * dpr; }
+  const g = c.getContext("2d");
+  g.setTransform(dpr, 0, 0, dpr, 0, 0);
+  g.clearRect(0, 0, w, h);
+
+  const css = getComputedStyle(document.body);
+  const line = css.getPropertyValue("--line").trim() || "rgba(128,128,128,.35)";
+  const ink = css.getPropertyValue("--muted").trim() || "#888";
+
+  // wireframe
+  const C = [[-1,-1,-1],[1,-1,-1],[1,1,-1],[-1,1,-1],[-1,-1,1],[1,-1,1],[1,1,1],[-1,1,1]];
+  const E = [[0,1],[1,2],[2,3],[3,0],[4,5],[5,6],[6,7],[7,4],[0,4],[1,5],[2,6],[3,7]];
+  g.strokeStyle = line; g.lineWidth = 1;
+  E.forEach(([a, b]) => {
+    const p = cubeProject(C[a], w, h), q = cubeProject(C[b], w, h);
+    g.beginPath(); g.moveTo(p[0], p[1]); g.lineTo(q[0], q[1]); g.stroke();
+  });
+
+  // the "overweight" corner - all three high
+  const hi = cubeProject([1, 1, 1], w, h);
+  g.fillStyle = "rgba(70,190,120,.18)";
+  g.beginPath(); g.arc(hi[0], hi[1], 26, 0, 7); g.fill();
+
+  // axis labels at the far end of each axis
+  g.fillStyle = ink; g.font = "11px system-ui, sans-serif";
+  [[[1,-1,-1],"Economic"],[[-1,1,-1],"Social"],[[-1,-1,1],"Environmental"]].forEach(([v, t]) => {
+    const p = cubeProject(v, w, h);
+    g.fillText(t, p[0] + 4, p[1] - 4);
+  });
+
+  // companies, painted back to front so nearer dots sit on top
+  const pts = cubeRows().map((r) => {
+    const v = CUBE_AXES.map((a) => r[a.key] / 50 - 1);
+    const p = cubeProject(v, w, h);
+    return { p, total: isNum(r.total_score) ? r.total_score : 50 };
+  }).sort((a, b) => b.p[2] - a.p[2]);
+
+  pts.forEach((d) => {
+    g.fillStyle = `hsl(${Math.round(8 + 1.42 * d.total)} 62% 52% / .8)`;
+    g.beginPath(); g.arc(d.p[0], d.p[1], 2.6, 0, 7); g.fill();
+  });
+}
+
+function initCube() {
+  const c = $("#cube");
+  if (!c) return;
+  drawCube();
+  const move = (e) => {
+    if (!CUBE.drag) return;
+    const t = e.touches ? e.touches[0] : e;
+    CUBE.yaw += (t.clientX - CUBE.drag.x) * 0.01;
+    CUBE.pitch += (t.clientY - CUBE.drag.y) * 0.01;
+    CUBE.pitch = Math.max(-1.3, Math.min(1.3, CUBE.pitch));
+    CUBE.drag = { x: t.clientX, y: t.clientY };
+    drawCube();
+  };
+  const down = (e) => {
+    CUBE.spin = false;
+    const t = e.touches ? e.touches[0] : e;
+    CUBE.drag = { x: t.clientX, y: t.clientY };
+  };
+  const up = () => { CUBE.drag = null; };
+  c.addEventListener("mousedown", down);
+  c.addEventListener("touchstart", down, { passive: true });
+  window.addEventListener("mousemove", move);
+  window.addEventListener("touchmove", move, { passive: true });
+  window.addEventListener("mouseup", up);
+  window.addEventListener("touchend", up);
+  window.addEventListener("resize", drawCube);
+  if (CUBE.raf) cancelAnimationFrame(CUBE.raf);
+  const tick = () => {
+    if (CUBE.spin && !CUBE.drag && $("#cube")) { CUBE.yaw += 0.0035; drawCube(); }
+    CUBE.raf = requestAnimationFrame(tick);
+  };
+  tick();
+}
+
 function viewPortfolio() {
   const settings = state.meta.portfolio.settings;
   const p = state.profile.portfolio || {};
@@ -444,6 +574,7 @@ function viewPortfolio() {
       <div class="card step"><div class="n">2</div><h4>Allocation rule</h4><p>Tilt toward high scores or exclude the bottom X%, with a cap per company and optional sector neutrality.</p></div>
       <div class="card step"><div class="n">3</div><h4>Weights out</h4><p><code>${state.meta.portfolio.output_columns.join(", ")}</code> - weights sum to 100% of the fund.</p></div>
     </div>
+    ${viewCube()}
     <div class="card card-pad" style="margin-top:16px">
       <h3>Settings a profile can already store</h3>
       <p class="sub">Under <code>[portfolio]</code> in <code>profiles/${esc(state.profileId)}.toml</code></p>
@@ -686,6 +817,7 @@ function bindView() {
   $("#sector-filter")?.addEventListener("change", (e) => { state.sector = e.target.value; state.limit = 25; renderView(); });
   $("#more")?.addEventListener("click", () => { state.limit += 50; renderView(); });
   $$("tr[data-ticker]").forEach((tr) => tr.addEventListener("click", () => openCompany(tr.dataset.ticker)));
+  initCube();
 }
 
 async function reloadMeta() {

@@ -108,96 +108,181 @@ def download_all(rows: list[dict]) -> None:
 _SCRIPT = re.compile(r"(?is)<(script|style)[^>]*>.*?</\1>")
 _TAG = re.compile(r"(?s)<[^>]+>")
 _BLOCK = re.compile(r"(?i)</?(p|div|tr|br|h[1-6]|table|li)\b[^>]*>")
+# inline tags split words in EDGAR HTML ("approximatel<span>y</span>"), so they must go
+# without leaving a space behind, unlike block tags.
+_INLINE = re.compile(r"(?i)</?(span|font|b|i|u|em|strong|sup|sub|small|big|a|ix:[\w-]+)\b[^>]*>")
 
 
 def to_text(raw: bytes) -> str:
     """HTML -> plain text. Block tags become newlines so headings stay on their own line."""
     text = raw.decode("utf-8", errors="replace")
     text = _SCRIPT.sub(" ", text)
+    text = _INLINE.sub("", text)
     text = _BLOCK.sub("\n", text)
     text = _TAG.sub(" ", text)
     text = htmllib.unescape(text)
     text = text.replace("\xa0", " ").replace("’", "'").replace("‘", "'")
     text = text.replace("“", '"').replace("”", '"')
-    text = text.replace("–", "-").replace("—", "-").replace("‐", "-")
+    for dash in "–—‐‑‒―":
+        text = text.replace(dash, "-")
     text = re.sub(r"[ \t\r\f\v]+", " ", text)
     text = re.sub(r" ?\n ?", "\n", text)
     text = re.sub(r"\n{2,}", "\n", text)
     return text
 
 
-# Headings that open the human-capital discussion, best (most specific) first. They are
-# matched on a line of their own, which is what keeps a passing mention in a sentence
-# ("our human capital is...") from being taken for a heading.
-HEADING_PATTERNS = [
-    r"human capital(?: resources| management| (?:and|&) culture)?",
-    r"(?:our |about our )?(?:people|employees|workforce|team members|associates)"
-    r"(?: (?:and|&) culture| (?:and|&) human capital| matter)?",
-    r"(?:employee|workforce|talent)s? (?:and|&) (?:culture|human capital|diversity|"
-    r"talent development)",
-    r"culture (?:and|&) (?:people|talent|human capital)",
-    r"talent (?:management|(?:and|&) culture|(?:and|&) development)",
-    r"investing in (?:our )?(?:people|employees)",
+# Headings that open the human-capital discussion, best (most specific) first. A heading
+# is a short line of its own built only of words - the digit-free wrapper is what keeps
+# table-of-contents lines ("Human Capital ... 15") and sentences out.
+HEADING_KEYS = [
+    r"human capital\w*",
+    r"(?:our|about our|focus on our|investing in our|supporting our)\s+"
+    r"(?:people|employees|workforce|associates|team members|colleagues|talent|workers)",
+    r"(?:people|employees|workforce|talent|culture|associates|team members)"
+    r"\s*(?:,|and|&)\s*(?:culture|people|talent|community|communities|diversity|inclusion|"
+    r"development|engagement|human capital|benefits|workplace)",
+    r"(?:employees|people|workforce|associates|team members|colleagues|our team)",
+    r"talent\s+(?:management|development|acquisition|strategy)",
+    r"(?:workforce|employee|team member)\s+(?:engagement|development|experience)",
 ]
+_WRAP = r"[A-Za-z&,'/ -]{0,30}"
 HEADING_RE = [
-    re.compile(r"(?im)^[\s\d.ivx()-]{0,8}(" + p + r")\b[\s:.-]*$")
-    for p in HEADING_PATTERNS
+    re.compile(r"(?im)^[\s\d.ivx()•-]{0,8}(" + _WRAP + r"\b" + k + r"\b" + _WRAP + r")[\s:.-]*$")
+    for k in HEADING_KEYS
 ]
 
-# Where the section stops: the next Item, or the next unrelated major heading.
+# Where the section stops: the next Item, Part, or the next unrelated major heading, each
+# on a line of its own. "Item 1A." usually carries its title on the same line.
 END_RE = re.compile(
-    r"(?im)^[\s]{0,4}(?:"
-    r"item\s+\d+[a-c]?\s*[.:-]?"  # Item 1A. Risk Factors, Item 2. Properties, ...
-    r"|(?:part\s+[iv]+\b)"
+    r"(?im)^[ ]{0,4}(?:"
+    r"item\s+\d+[a-c]?\b[^\n]{0,60}"  # Item 1A. Risk Factors, Item 2. Properties, ...
+    r"|part\s+[iv]+\b[^\n]{0,40}"
     r"|(?:available information|information about our executive officers|executive officers"
-    r"(?: of the registrant)?|risk factors|properties|legal proceedings|unresolved staff"
-    r" comments|government regulation|regulatory matters|intellectual property|seasonality"
-    r"|competition|research and development|environmental matters|corporate information"
-    r"|website access|forward-looking statements|climate change|sustainability)"
-    r")\b[\s:.-]*$"
+    r"(?: of the registrant| and other senior management)?|risk factors|our properties|"
+    r"properties|legal proceedings|unresolved staff comments|government regulation|"
+    r"governmental regulation|regulation(?:s)?(?: and supervision)?|supervision and"
+    r" regulation|regulatory (?:matters|environment|oversight)|intellectual property|"
+    r"seasonality|competition|research and development|environmental matters|"
+    r"corporate (?:information|governance)|website access|available information|"
+    r"forward[- ]looking statements|climate change|backlog|raw materials|suppliers|"
+    r"sales and marketing|our strategy|business strategy|segment information|"
+    r"where you can find (?:more|additional) information|investor information|"
+    r"general development of business|reportable segments|products and services|"
+    r"manufacturing|distribution|customers|insurance|patents|trademarks)"
+    r")[ :.\-]*$"
 )
 
-# The section must not start inside the table of contents / exhibit index.
 MAX_SECTION_CHARS = 30000
 MIN_SECTION_CHARS = 400
+SCORE_WINDOW = 2500  # a candidate is judged on its opening, not on how far it over-runs
 
 
 def find_section(text: str) -> tuple[str, str] | None:
     """Return (heading, section text) for the human-capital discussion, or None.
 
-    Candidate headings are scored by how much human-capital vocabulary follows them, so a
+    Candidates are scored by how much workforce vocabulary their opening contains, so a
     table-of-contents line ("Human Capital .... 7") loses against the real section.
+    Sub-headings inside the discussion ("Our Workforce", "Attracting and retaining
+    employees") are candidates as well, so candidate spans that touch each other are
+    merged: the section runs from the first of them to the end of the last.
     """
-    candidates: list[tuple[int, int, str]] = []
+    found = []
     for rank, pattern in enumerate(HEADING_RE):
         for m in pattern.finditer(text):
-            candidates.append((m.start(), rank, m.group(1).strip()))
-    if not candidates:
+            heading = m.group(1).strip()
+            if _RISK_HEADING.search(heading):
+                continue  # "Risks related to human capital" is Item 1A, not the discussion
+            span = _section_at(text, m.start())
+            if span is None:
+                continue
+            start, end = span
+            score = _topic_score(text[start : start + SCORE_WINDOW]) - RANK_PENALTY * rank
+            if score > 0:
+                found.append({"start": start, "end": end, "heading": heading, "score": score})
+    if not found:
         return None
 
-    best = None
-    for start, rank, heading in candidates:
-        body_start = text.index("\n", start) + 1 if "\n" in text[start:] else len(text)
-        end = body_start + MAX_SECTION_CHARS
-        stop = END_RE.search(text, body_start, end)
-        if stop:
-            end = stop.start()
-        body = text[body_start:end].strip()
-        if len(body) < MIN_SECTION_CHARS:
-            continue
-        score = _topic_score(body) - rank  # earlier pattern = more specific heading
-        if best is None or score > best[0]:
-            best = (score, heading, body)
-    if best is None or best[0] <= 0:
+    found.sort(key=lambda c: c["start"])
+    clusters: list[list[dict]] = [[found[0]]]
+    for cand in found[1:]:
+        if cand["start"] <= max(c["end"] for c in clusters[-1]) + MERGE_GAP:
+            clusters[-1].append(cand)
+        else:
+            clusters.append([cand])
+    cluster = max(clusters, key=lambda cl: max(c["score"] for c in cl))
+    start = cluster[0]["start"]
+    end = min(max(c["end"] for c in cluster), start + MAX_SECTION_CHARS)
+    return cluster[0]["heading"], text[start:end].strip()
+
+
+def _section_at(text: str, heading_start: int) -> tuple[int, int] | None:
+    """Span of the text under one heading, cut at the next Item / off-topic heading."""
+    nl = text.find("\n", heading_start)
+    body_start = nl + 1 if nl != -1 else len(text)
+    end = body_start + MAX_SECTION_CHARS
+    stop = END_RE.search(text, body_start, end)
+    if stop:
+        end = stop.start()
+    body = _trim_tail(text[body_start:end].strip())
+    if len(body) < MIN_SECTION_CHARS:
         return None
-    return best[1], best[2]
+    return body_start, body_start + len(body)
+
+
+MERGE_GAP = 1500  # a table of footnotes or a page break between two parts of one section
+RANK_PENALTY = 2  # a vaguer heading ("Employees") must be much more on-topic to win
+
+
+_RISK_HEADING = re.compile(r"(?i)\brisks?\b")
+
+
+_HEADINGY = re.compile(r"^[A-Z0-9][^a-z\n]{2,69}$|^(?:[A-Z][\w'&/,.-]*[ ]?){1,9}$")
+OFFTOPIC_WINDOW = 1500
+OFFTOPIC_MAX_SCORE = 2
+MIN_OFFTOPIC_CHARS = 600  # too little text left to judge - keep it rather than lose it
+MAX_DIGIT_SHARE = 0.03  # a number-dense block is a workforce table, not the next section
+
+
+def _trim_tail(body: str) -> str:
+    """Cut the section at the first heading-like line that opens an off-topic passage.
+
+    Many 10-Ks put no "Item" line between the human-capital discussion and what follows
+    ("Government Regulation", "Our Strategy", ...), so heading names alone are not enough:
+    the heading must itself be free of workforce words (otherwise "Global workforce" above
+    a headcount table would cut the section in half) and the text after it must have
+    stopped talking about the workforce.
+    """
+    pos = 0
+    for line in body.split("\n"):
+        stripped = line.strip()
+        if (
+            pos > 0
+            and 2 < len(stripped) <= 70
+            and not stripped.endswith((".", ",", ";", ":"))
+            and _HEADINGY.match(stripped)
+            and _topic_score(stripped) == 0
+            and _is_offtopic(body[pos : pos + OFFTOPIC_WINDOW])
+        ):
+            return body[:pos].strip()
+        pos += len(line) + 1
+    return body
+
+
+def _is_offtopic(window: str) -> bool:
+    """True if what follows a heading has stopped being about the workforce."""
+    if len(window) < MIN_OFFTOPIC_CHARS:
+        return False
+    if sum(c.isdigit() for c in window) / len(window) > MAX_DIGIT_SHARE:
+        return False  # a headcount / diversity / turnover table, still the same section
+    return _topic_score(window) <= OFFTOPIC_MAX_SCORE
 
 
 _TOPIC_WORDS = re.compile(
     r"(?i)\b(employee|employees|workforce|workers|associates|team members|colleagues|"
-    r"talent|hiring|recruit\w*|retention|turnover|training|benefits|compensation|"
-    r"diversity|inclusion|safety|engagement|wellbeing|well-being|labor|union|"
-    r"collective bargaining|development|culture)\b"
+    r"talent|hiring|hire\w*|recruit\w*|retention|turnover|training|benefits|compensation|"
+    r"diversity|inclusion|safety|engagement|wellbeing|well-being|wellness|labor|union|"
+    r"collective bargaining|development|culture|our people|workplace|wages|career|careers|"
+    r"mentoring|leadership|employment|staff|personnel)\b"
 )
 
 
@@ -210,6 +295,14 @@ def _topic_score(body: str) -> int:
 
 NUM = r"(?:\d[\d,]*(?:\.\d+)?)"
 PCT = r"(?:\d{1,3}(?:\.\d+)?\s?(?:%|percent))"
+WORKER = (
+    r"(?:employees|team members|teammates|associates|colleagues|co[- ]?workers|workers|"
+    r"crew members|cast members|persons|people|individuals|staff members|staff|personnel|"
+    r"(?:employee )?equivalents?|FTEs?|professionals)\b"
+)
+# tables put the label and the number on different lines, so a few line breaks are allowed
+GAPN = r"(?:[^.\n]{0,90}\n?){0,3}"
+RATE = r"(?:\d{1,3}\.\d+)"  # a safety rate is always a decimal (0.41, 2.34)
 
 # Each type: a list of regexes. A hit must contain a number - that is the whole point of
 # the indicator. The matched text (trimmed to a readable window) goes into `note`.
@@ -218,23 +311,40 @@ DISCLOSURE_TYPES: dict[str, list[str]] = {
     # a workforce noun, so "300,000 employees took a course" is not read as headcount.
     "headcount": [
         rf"\b(?:had|have|has|employ|employs|employed|employing|totaled|totaling|numbered|"
-        rf"with|of)\s+(?:approximately|about|roughly|over|more than|nearly|some|in excess of|"
-        rf"a total of|almost)?\s*{NUM}\s*(?:million|thousand)?\s*(?:[A-Za-z][A-Za-z-]*\s+)"
-        rf"{{0,5}}{WORKER}",
+        rf"with|our)\s+(?:approximately|about|roughly|over|more than|nearly|some|"
+        rf"in excess of|a total of|almost)?\s*{NUM}\s*(?:million|thousand)?\s*"
+        rf"(?:[\w][\w,.-]*\s+){{0,5}}{WORKER}",
         rf"(?:workforce|headcount|head count|employee (?:base|population|count)|"
-        rf"number of (?:our |full[- ]time |global )*employees|global team)"
-        rf"[^.\n]{{0,40}}?(?:was|of|is|totaled|comprised|consisted of|stood at|:)\s*"
-        rf"(?:approximately|about|over|more than|nearly)?\s*{NUM}",
+        rf"number of (?:our |full[- ]time |part[- ]time |global )*(?:employees|associates|"
+        rf"team members|teammates|colleagues|workers)|global team|total (?:employees|"
+        rf"associates|team members|teammates|headcount))"
+        rf"{GAPN}(?:was|of|is|are|totaled|comprised|consisted of|consists of|stood at|"
+        rf"includes?|included|increased to|decreased to|to|:)\s*"
+        rf"(?:approximately|about|over|more than|nearly|roughly)?\s*{NUM}",
         rf"as of [^.\n]{{0,45}}(?:approximately|about|roughly|over|more than|nearly)?\s*"
-        rf"{NUM}\s*(?:[A-Za-z][A-Za-z-]*\s+){{0,4}}{WORKER}",
+        rf"{NUM}\s*(?:[\w][\w,.-]*\s+){{0,4}}{WORKER}",
+        rf"{WORKER}[^.\n]{{0,160}}(?:totaled|totalled|numbered|stood at)\s*"
+        rf"(?:approximately|about|roughly|over|more than|nearly)?\s*{NUM}",
+        # company-specific words for staff ("AutoZoners", "crew members") - the verb is
+        # what makes this a headcount, so no noun is required after the number
+        rf"\b(?:employed|employs|employ)\s+(?:approximately|about|roughly|over|"
+        rf"more than|nearly|some|a total of|almost|in excess of)?\s*{NUM}\b",
+        rf"{NUM}\s*(?:[\w][\w,.-]*\s+){{0,3}}{WORKER}[^.\n]{{0,40}}"
+        rf"(?:are|were|is|was)\s+employed\b",
+        # a headcount table: "Full-Time Associates 33,755 1,426 35,181"
+        rf"^(?:full|part)[- ]time[^\n]{{0,30}}\s[\d,]{{4,}}",
     ],
     # Gender / ethnic representation as a percentage of the workforce.
     "representation_pct": [
-        rf"{PCT}[^.\n]{{0,90}}\b(?:women|woman|female|males?|men|gender|racially|ethnic\w*|"
-        rf"minorit\w*|people of color|underrepresented|black|hispanic|latin\w*|asian|"
-        rf"indigenous|veterans?)\b",
+        # a table: a short line naming a gender/ethnicity column, a percentage just below
+        rf"^[^.\n]{{0,60}}\b(?:women|female|gender|ethnicity|race|minorit\w*|"
+        rf"people of color|underrepresented)\b[^.\n]{{0,60}}$"
+        rf"(?:\n[^\n]{{0,140}}){{0,4}}\n[^\n]{{0,140}}{PCT}",
+        rf"{PCT}{GAPN}\b(?:women|woman|female|gender|racially|ethnic\w*|"
+        rf"minorit\w*|people of color|underrepresented|black|hispanic|latin[oax]\w*|asian|"
+        rf"indigenous)\b",
         rf"\b(?:women|female|gender|racially|ethnic\w*|minorit\w*|people of color|"
-        rf"underrepresented|black|hispanic|latin\w*|asian|indigenous)\b[^.\n]{{0,90}}{PCT}",
+        rf"underrepresented|black|hispanic|latin[oax]\w*|asian|indigenous)\b{GAPN}{PCT}",
     ],
     # Voluntary turnover / attrition / retention rate.
     "turnover_retention": [
@@ -242,11 +352,15 @@ DISCLOSURE_TYPES: dict[str, list[str]] = {
         rf"(?:turnover|attrition|retention)\s*(?:rate|ratio|level)?[^.\n]{{0,60}}{PCT}",
         rf"{PCT}[^.\n]{{0,60}}\b(?:voluntary |involuntary |overall |annual |employee )?"
         rf"(?:turnover|attrition|retention)\b",
+        rf"(?:voluntary|involuntary)\s+(?:termination|separation|departure)s?"
+        rf"[^.\n]{{0,40}}{PCT}",
     ],
     # Training hours or training spend.
     "training": [
         rf"{NUM}\s*(?:million|thousand)?\s*(?:hours|hrs)\b[^.\n]{{0,80}}"
         rf"\b(?:training|learning|develop\w*|instruction|courses?|education)\b",
+        rf"{NUM}\s*(?:million|thousand)?\s*(?:[\w][\w,.-]*\s+){{0,5}}"
+        rf"(?:training|learning|development|instruction\w*|educational?)\s*(?:hours|hrs)\b",
         rf"\b(?:training|learning|develop\w*|upskilling|reskilling|education|tuition|"
         rf"courses?)\b[^.\n]{{0,80}}{NUM}\s*(?:million|thousand)?\s*(?:hours|hrs)\b",
         rf"(?:invested|spent|contributed|provided|reimbursed|committed)\s*"
@@ -262,8 +376,8 @@ DISCLOSURE_TYPES: dict[str, list[str]] = {
         rf"(?:total\s+)?(?:recordable|lost[- ]time|lost workday|days away|incident|injur\w*|"
         rf"illness|accident|fatality|DART|TRIR|TCIR|OSHA)\s*"
         rf"(?:and illness\s*|injury\s*|incident\s*|case\s*|severity\s*){{0,2}}"
-        rf"(?:rate|frequency|ratio|index)[^.\n]{{0,60}}{NUM}",
-        rf"{NUM}[^.\n]{{0,60}}(?:recordable|lost[- ]time|lost workday|injur\w*|incident|"
+        rf"(?:rate|frequency|ratio|index)[^.\n]{{0,60}}{RATE}",
+        rf"{RATE}[^.\n]{{0,60}}(?:recordable|lost[- ]time|lost workday|injur\w*|incident|"
         rf"DART|TRIR)\s*(?:injury\s*|incident\s*|case\s*){{0,2}}(?:rate|frequency|index)",
     ],
     # A pay-equity / pay-gap figure.
@@ -278,30 +392,31 @@ DISCLOSURE_TYPES: dict[str, list[str]] = {
     ],
     # An engagement / survey score.
     "engagement_score": [
-        rf"(?:engagement|satisfaction|favorabilit\w*|eNPS|net promoter|inclusion index|"
-        rf"pulse)\s*(?:survey\s*|index\s*|score\s*|rate\s*|result\w*\s*|ratin\w*\s*)"
+        rf"(?:engagement|engaged|satisfaction|favorabilit\w*|eNPS|net promoter|"
+        rf"(?:employee experience|inclusion|engagement|culture) index|pulse)\s*(?:survey\s*|index\s*|score\s*|rate\s*|result\w*\s*|ratin\w*\s*)"
         rf"{{0,2}}[^.\n]{{0,70}}(?:{PCT}|score of\s*{NUM}|{NUM}\s*out of\s*{NUM})",
         rf"(?:{PCT}|score of\s*{NUM})[^.\n]{{0,70}}(?:engagement|favorab\w*|"
         rf"(?:employee |job )?satisfaction)",
         rf"{PCT}\s*of\s*(?:our\s*|surveyed\s*)?{WORKER}[^.\n]{{0,60}}"
         rf"(?:responded|agreed|said|reported|feel|felt|indicated|participated in (?:the |our )?"
         rf"(?:survey|engagement))",
-        rf"{PCT}[^.\n]{{0,50}}(?:response rate|participation rate)[^.\n]{{0,50}}survey",
+        rf"{PCT}[^.\n]{{0,50}}(?:response rate|participation|completion rate)"
+        rf"[^.\n]{{0,60}}survey",
         rf"survey[^.\n]{{0,60}}(?:response|participation) rate[^.\n]{{0,30}}{PCT}",
     ],
     # Union / collective-bargaining coverage: a percentage, or a count of covered staff.
     "union_coverage": [
-        rf"{PCT}[^.\n]{{0,90}}(?:union|collective bargaining|collective labor|"
-        rf"labor agreement|works council|organized labor)",
-        rf"(?:union|collective bargaining|collective labor|labor agreement|works council|"
-        rf"organized labor)[^.\n]{{0,90}}{PCT}",
+        rf"{PCT}[^.\n]{{0,90}}(?:union|collective(?:ly)? bargain\w*|collective labor|"
+        rf"labor agreement|works council|organized labor|CBAs?\b)",
+        rf"(?:union|collective(?:ly)? bargain\w*|collective labor|labor agreement|"
+        rf"works council|organized labor|CBAs?\b)[^.\n]{{0,90}}{PCT}",
         rf"{NUM}\s*(?:[A-Za-z][A-Za-z-]*\s+){{0,4}}{WORKER}[^.\n]{{0,60}}"
         rf"(?:were |are |was |is )?(?:covered by|represented by|subject to|members of|"
         rf"belong to)[^.\n]{{0,50}}(?:collective bargaining|labor union|unions?|"
         rf"works council)",
     ],
 }
-COMPILED = {k: [re.compile(p, re.I) for p in v] for k, v in DISCLOSURE_TYPES.items()}
+COMPILED = {k: [re.compile(p, re.I | re.M) for p in v] for k, v in DISCLOSURE_TYPES.items()}
 
 # Guards: a number that is a year, a dollar amount of revenue, a footnote marker etc.
 _YEAR_ONLY = re.compile(r"^(?:19|20)\d\d$")
@@ -322,16 +437,27 @@ def detect(section: str) -> dict[str, str]:
     return hits
 
 
+# Phrases that make a match about something other than the workforce.
+_WRONG_SUBJECT = re.compile(
+    r"(?i)\b(?:customer|client|subscriber|revenue|net|gross|dollar|member|user|patient|"
+    r"guest|policy|sales) (?:retention|turnover|satisfaction)\b"
+)
+
+
 def _plausible(name: str, matched: str) -> bool:
-    """Reject matches whose only number is a year (e.g. 'employees in 2024')."""
+    """Reject matches whose number is only a year, or that are about customers, not staff."""
     numbers = re.findall(r"\d[\d,]*(?:\.\d+)?", matched)
     numbers = [n for n in numbers if not _YEAR_ONLY.match(n.replace(",", ""))]
     if not numbers:
         return False
+    if _WRONG_SUBJECT.search(matched):
+        return False
+    if name == "training" and re.search(r"(?i)volunteer", matched):
+        return False
     if name == "headcount":
         # a headcount below 50 is almost always something else (board members, sites)
         biggest = max(float(n.replace(",", "")) for n in numbers)
-        if biggest < 50 and "thousand" not in matched.lower():
+        if biggest < 50 and not re.search(r"(?i)\b(?:million|thousand)\b", matched):
             return False
     return True
 
