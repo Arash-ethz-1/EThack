@@ -57,7 +57,6 @@ If `save` prints **STOP**, do not try git commands - read the message, it tells 
 |---|---|
 | `AGENTS.md` | rules for AI agents (and a good summary for humans) |
 | `docs/PLAN.md` | phases, goals, decisions |
-| `docs/tasks/<name>.md` | your assignment, candidate indicators, your log |
 | `docs/DATA_FORMAT.md` | the one format everybody's data uses |
 | `docs/SCORING.md` | how sub-indicators + a profile become 0-100 scores |
 | `python run.py dashboard` | choose indicators, see rankings, explain a company's score; Workspace tab = all commands as buttons |

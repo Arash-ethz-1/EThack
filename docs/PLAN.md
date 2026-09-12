@@ -5,11 +5,11 @@ and use it to weight a portfolio allocation.
 
 ## Phase 1 - Data extraction (now)
 
-| Category | Owner | Folder | Task file |
-|---|---|---|---|
-| Economic impact | Lauren | `economic/` | candidates in `docs/tasks/arash.md` section 2 |
-| Social impact | Florian, Lauren | `social/` | `docs/tasks/florian.md`, `docs/tasks/lauren.md` |
-| Environmental impact | Jean | `environmental/` | `docs/tasks/jean.md` |
+| Category | Owner | Folder |
+|---|---|---|
+| Economic impact | Lauren | `economic/` |
+| Social impact | Florian, Lauren | `social/` |
+| Environmental impact | Jean | `environmental/` |
 
 **Done when**, for every category:
 - [ ] `universe/sp500.csv` exists (Arash - blocks the ticker check for everyone)
@@ -51,3 +51,4 @@ method is a placeholder; `profiles/net_zero.toml` answers the bonus question). T
 | 2026-09-12 | Everyone works on `main` with small commits via `python run.py save`; folder ownership prevents conflicts. |
 | 2026-09-12 | Lauren takes over `economic/`. Arash builds the rest of the pipeline: profiles, scoring, dashboard, portfolio placeholder. |
 | 2026-09-12 | Users choose indicators + weights in a profile; total score = weighted mean of category scores. Dashboard: own web UI (`dashboard/static/`) on a stdlib Python server - no new dependency; the Workspace tab runs every `run.py` command. |
+| 2026-09-12 | Task files (`docs/tasks/`) removed - everyone knows their work; progress = catalog `status` + commit messages. |

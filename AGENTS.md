@@ -33,11 +33,9 @@ four people from overwriting each other. Anyone may read anything.
 | `social/` | **Florian** and **Lauren** | social impact indicators - **one indicator = one person** (`owner` column in `social/catalog.csv`) |
 | `environmental/` | **Jean** | environmental impact indicators |
 | `universe/`, `common/`, `tests/`, `run.py`, `profiles/`, `dashboard/`, `portfolio/`, `AGENTS.md`, `docs/*.md` | **Arash** | shared infrastructure, scoring pipeline, dashboard |
-| `docs/tasks/<name>.md` | **that person** | their plan and log |
 
 Need a change outside your area (a new column in the format, a scoring change, a
-bug in `common/`)? **Do not make it.** Write it in the person's task file under
-"Needs from others" and tell them to message the owner.
+bug in `common/`)? **Do not make it.** Tell your person to message the owner.
 
 If you do not know who you are helping: run `git config user.name` and ask the
 person to confirm before you edit anything.
@@ -46,7 +44,7 @@ person to confirm before you edit anything.
 
 ```bash
 python run.py start                              # 1. FIRST THING: pull team's work, show status
-# read docs/tasks/<name>.md, then work in your area only
+# work in your area only
 python run.py save "[social] ceo pay ratio: SEC download cached"   # 2. OFTEN
 ```
 
@@ -58,8 +56,7 @@ python run.py save "[social] ceo pay ratio: SEC download cached"   # 2. OFTEN
   check -> push. **Never** replace it with raw `git commit` / `git push`.
 - Message format: `[area] what changed, past tense, concrete`. Good:
   `[environmental] ghg intensity: 412/503 companies, 2023`. Bad: `update`, `wip`, `fix`.
-- Before you stop, append to the **Log** section of `docs/tasks/<name>.md` (see
-  section 6), then `save`.
+- Always `save` before you stop.
 
 ### When `save` or `start` says STOP
 
@@ -78,7 +75,7 @@ python run.py save "[social] ceo pay ratio: SEC download cached"   # 2. OFTEN
   deleting branches, rewriting history, or `git stash drop`.
   These destroy teammates' work and cannot be undone.
 - Commit `.env`, API keys, passwords.
-- Edit, reorder or "tidy up" anyone else's files, including their task file or log.
+- Edit, reorder or "tidy up" anyone else's files.
 - Create branches. This team works on `main` with small commits - the area ownership
   is what prevents conflicts.
 
@@ -141,21 +138,15 @@ The dashboard's **Workspace** tab runs exactly these commands (`dashboard/server
 
 Run everything from the repo root. On Windows use `python`, not `python3`.
 
-## 6. Logging progress
+## 6. Recording progress
 
-At the bottom of `docs/tasks/<name>.md` there is a `## Log` section. Append (never
-edit old entries):
+There are no task files - everyone knows what they are working on. Progress lives in
+two places:
 
-```markdown
-### 2026-09-12 21:30 - ceo_pay_ratio
-- Done: downloaded DEF 14A pay ratios, 388/503 companies for 2024, status in_progress
-- Next: spot-check 10 values by hand, then mark ready
-- Problems: 40 filings report ratio only as text - skipped for now
-- Needs from others: none
-```
-
-"Done" must be verifiable: a file, a count you saw printed. Log dead ends too -
-"Source X only covers 120 companies, dropped" saves a teammate hours.
+- **`<category>/catalog.csv` `status`** (`idea` / `in_progress` / `ready`): where each
+  indicator stands.
+- **Commit messages**: what changed, with counts you saw printed. Record dead ends
+  there too - "Source X only covers 120 companies, dropped" saves a teammate hours.
 
 ## 7. Style
 

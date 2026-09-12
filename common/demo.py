@@ -19,7 +19,7 @@ SECTORS = [
 ]
 HEAVY_EMITTERS = {"Energy", "Utilities", "Materials"}
 
-# The candidate indicators from docs/tasks/*.md - names only, values below are random.
+# Example candidate indicators - names only, values below are random.
 DEMO_CATALOG = [
     # category, id, name, unit, higher_is_better, (log-mean, log-sd) of the random values
     ("economic", "effective_tax_rate", "Effective tax rate", "%", "true", (3.0, 0.35)),
