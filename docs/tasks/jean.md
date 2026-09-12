@@ -110,3 +110,17 @@ Endpoints tested in the old repo (see git history, commit `1c89ef2`, CLAUDE.md s
   and how much) written by me, not sourced numbers, and disclosed as such in
   `resource_supply_risk.py`'s docstring.
 
+### 2026-09-12 - both indicators rescaled to [0,1]
+
+- Done: `value` in both `resource_supply_risk` and `critical_material_disclosure`
+  is now in [0,1] (was 0-100ish and an unbounded sum). Both use a fixed theoretical
+  ceiling as the divisor, not the observed min/max, so the scale does not shift
+  every quarter as data updates:
+  - `resource_supply_risk`: /100 (exposure in [0,1] x basket risk in [0,100]).
+  - `critical_material_disclosure`: / (23 tracked materials x 100), i.e. the score
+    if a company named every material we track at maximum possible risk.
+  Catalog `unit` updated to `risk index 0-1` for both. Ranking of companies is
+  unchanged, only the scale - AMD/ADI/AVGO etc. still top `resource_supply_risk` at
+  0.5025, NEM still tops `critical_material_disclosure` at 0.3473.
+- `python run.py check`: 21 tests pass, format check OK.
+

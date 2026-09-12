@@ -1,8 +1,10 @@
 """critical_material_disclosure - critical-material dependence a company states itself.
 
 What it measures: the combined supply risk of the raw materials a company names in
-its own 10-K that year. A company that tells investors it depends on rare earths,
-cobalt and gallium scores high; one that names only copper scores low.
+its own 10-K that year, scaled to [0,1] where 1 is the theoretical ceiling - naming
+every one of the 23 tracked critical materials, each at maximum possible risk. A
+company that tells investors it depends on rare earths, cobalt and gallium scores
+high; one that names only copper scores low.
 
 Why this is different from `resource_supply_risk`: that indicator assigns every
 company in a sub-industry the same score, because it works from an industry material
@@ -39,7 +41,7 @@ from common.io import today_utc, write_indicator
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 
-from _edgar_materials import filing_url, mentions  # noqa: E402
+from _edgar_materials import TERM_TO_MATERIAL, filing_url, mentions  # noqa: E402
 from _resource_risk import material_risk  # noqa: E402
 from _universe import load_universe_with_sub_industry  # noqa: E402
 
@@ -80,7 +82,13 @@ def build() -> pd.DataFrame:
 
     agg["ticker"] = agg["cik"].map(cik_to_ticker)
     agg = agg[agg["ticker"].notna()]
-    agg["value"] = agg["value"].round(2)
+    # Raw value is a sum of per-material risk (0-100 each) over however many of the
+    # tracked materials a company names, so it has no natural ceiling per company.
+    # Divide by the maximum any company could reach - every tracked material named,
+    # each at the worst possible risk - for a stable [0,1] index that does not shift
+    # as new companies or years change the observed range.
+    max_possible = len(set(TERM_TO_MATERIAL.values())) * 100
+    agg["value"] = (agg["value"] / max_possible).round(4)
     agg["source"] = SOURCE
     agg["source_url"] = [
         filing_url(c, a) if a else "https://efts.sec.gov/LATEST/search-index"

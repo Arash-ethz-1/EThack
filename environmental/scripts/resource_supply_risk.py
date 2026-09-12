@@ -12,7 +12,10 @@ environmental pressure, which emissions indicators miss entirely. It is also the
 axis a fund can act on, because a resource a company cannot get is a resource that
 stops its revenue.
 
-    value = industry material intensity  x  weighted supply risk of its material basket
+    value = industry material intensity[0,1]  x  weighted supply risk of its basket[0,100]  /  100
+
+giving value in [0,1] (0 = no material dependence, 1 = the theoretical maximum:
+100% of revenue-relevant materials, all of them the single riskiest possible).
 
 Sources:
   USGS Mineral Commodity Summaries 2026 - world production by country
@@ -107,7 +110,10 @@ def build() -> pd.DataFrame:
 
     companies = universe.merge(exposure, on="sub_industry", how="inner")
     rows = companies.merge(basket_risk, on="archetype", how="inner")
-    rows["value"] = (rows["exposure"] * rows["basket_risk"]).round(2)
+    # exposure in [0,1] x basket_risk in [0,100] -> [0,100]; /100 gives a clean [0,1]
+    # index without rescaling to whatever the current min/max happens to be, so the
+    # unit stays stable as new data arrives each quarter.
+    rows["value"] = (rows["exposure"] * rows["basket_risk"] / 100).round(4)
 
     top_material = (
         basket.sort_values("contribution", ascending=False)
