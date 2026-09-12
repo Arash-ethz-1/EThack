@@ -75,3 +75,38 @@ Endpoints tested in the old repo (see git history, commit `1c89ef2`, CLAUDE.md s
   list from a cached S&P 500 constituents file in `environmental/raw/`; the script
   switches over automatically once the real file lands.
 
+### 2026-09-12 - resource_supply_risk: extended to 2025
+
+- Done: `resource_supply_risk` now covers 2019-2025 (was 2018-2024), 3521 rows,
+  503/503 companies. USGS Mineral Commodity Summaries 2026 already has 2025 world
+  production; World Bank governance data only goes to 2024. Rather than drop 2025,
+  `_resource_risk.governance_risk()` carries each producing country's most recent
+  available WGI estimate forward one year (governance moves slowly year to year, so
+  this is a standard nowcast, not an invented number) and flags every row it applies
+  to. Every 2025 row's `note` says so explicitly: "governance uses the most recent
+  available World Bank estimate (2024)" - so nobody downstream mistakes a
+  carried-forward number for a fresh 2024->2025 measurement.
+- `python run.py check`: 13 tests pass, format check OK.
+- Next: same as above - `critical_material_exposure` from EDGAR full-text search,
+  fetch running in background (166/168 term-years cached as of this entry).
+
+### 2026-09-12 - critical_material_disclosure: first build
+
+- Done: built `critical_material_disclosure`, status `in_progress`. 1450 rows,
+  296/503 companies ever, 2019-2025. Reads each company's own 10-K via SEC EDGAR
+  full-text search for 23 critical-material terms, sums the USGS+WGI supply risk
+  (`resource_supply_risk`'s scale) of whatever materials it names. Every row cites
+  the actual filing (`environmental/scripts/_edgar_materials.py:filing_url`).
+  Top of 2025: NEM 833.5 (17 materials), ALB 798.3 (16), FCX 504.8 (10) - miners and
+  battery-material refiners disclosing the most, which is the right direction.
+- Coverage in the latest single year is 226/503 = 45%, below the 70% bar for
+  `ready` (AGENTS.md section 4), so it stays `in_progress` honestly rather than
+  scored. This is company-level evidence to sit alongside `resource_supply_risk`
+  (the industry-average version), not a replacement for it.
+- `python run.py check`: 13 tests pass, format check OK.
+- Needs from others: none blocking. Would like a second pair of eyes on
+  `environmental/scripts/material_bills.csv` and `subindustry_exposure.csv` before
+  the fund pitch - they are judgement calls (which materials matter per industry,
+  and how much) written by me, not sourced numbers, and disclosed as such in
+  `resource_supply_risk.py`'s docstring.
+

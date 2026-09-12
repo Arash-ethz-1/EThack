@@ -27,13 +27,20 @@ Not an indicator - the leading underscore keeps `python run.py build` from runni
 
 from __future__ import annotations
 
-import json
+import time
 
 import pandas as pd
 
+from common.config import raw_dir
 from common.io import cached_download, cached_json
 
 CATEGORY = "environmental"
+
+# The brief is to refresh the risk metrics quarterly. USGS republishes the Mineral
+# Commodity Summaries every January and the World Bank the governance indicators
+# every September, so a cached file older than a quarter is re-downloaded on the next
+# build and anything younger is served from disk.
+REFRESH_DAYS = 90
 
 USGS_ITEM = "696a75d5d4be0228872d3bf8"
 USGS_COMMODITIES_URL = (
@@ -89,6 +96,17 @@ NOT_A_COUNTRY = {"World total", "Other countries", "Total", "Other"}
 MIN_PRODUCERS = 3
 
 
+def is_stale(filename: str) -> bool:
+    """True when a cached source is older than the quarterly refresh window."""
+    path = raw_dir(CATEGORY) / filename
+    if not path.exists():
+        return False
+    stale = time.time() - path.stat().st_mtime > REFRESH_DAYS * 86400
+    if stale:
+        print(f"  {filename} is over {REFRESH_DAYS} days old - re-downloading")
+    return stale
+
+
 def _normalise_text(s: pd.Series) -> pd.Series:
     """USGS ships cp1252 punctuation; fold it so country names compare cleanly."""
     return (
@@ -100,7 +118,8 @@ def _normalise_text(s: pd.Series) -> pd.Series:
 
 
 def load_usgs_commodities(refresh: bool = False) -> pd.DataFrame:
-    path = cached_download(USGS_COMMODITIES_URL, CATEGORY, "usgs_mcs2026_commodities.csv", refresh=refresh)
+    name = "usgs_mcs2026_commodities.csv"
+    path = cached_download(USGS_COMMODITIES_URL, CATEGORY, name, refresh=refresh or is_stale(name))
     df = pd.read_csv(path, dtype=str, keep_default_na=False, low_memory=False, encoding="cp1252")
     df.columns = [c.strip().lstrip("﻿") for c in df.columns]
     for col in ("Commodity", "Country", "Section", "Statistics"):
@@ -115,7 +134,7 @@ def world_bank_iso3(refresh: bool = False) -> dict[str, str]:
         CATEGORY,
         "worldbank_countries.json",
         params={"format": "json", "per_page": 400},
-        refresh=refresh,
+        refresh=refresh or is_stale("worldbank_countries.json"),
     )
     names = {c["name"].strip(): c["id"] for c in payload[1]}
     names.update(COUNTRY_FIXES)
@@ -156,16 +175,25 @@ def production_shares(refresh: bool = False) -> pd.DataFrame:
     return prod.rename(columns={"Commodity": "material", "Country": "country", "Year": "production_year"})
 
 
-def governance_risk(refresh: bool = False) -> pd.DataFrame:
-    """Governance risk 0-100 per country per year (100 = worst governed)."""
+def governance_risk(refresh: bool = False, carry_forward_to: int | None = None) -> pd.DataFrame:
+    """Governance risk 0-100 per country per year (100 = worst governed).
+
+    The World Bank publishes WGI with roughly a year's lag - at any given time the
+    latest year is not yet out. When `carry_forward_to` names a later year, each
+    country's most recent available estimate is carried forward to fill the gap
+    (governance moves slowly, so last-known-value is the standard nowcast here) and
+    those rows are flagged `is_carried_forward=True` so nothing downstream mistakes a
+    carried-forward number for a new measurement.
+    """
     frames = []
     for label, code in WGI_CODES.items():
+        name = f"worldbank_{label}.json"
         payload = cached_json(
             WGI_URL.format(code=code),
             CATEGORY,
-            f"worldbank_{label}.json",
+            name,
             params={"format": "json", "date": "2010:2030", "per_page": 20000, "source": 3},
-            refresh=refresh,
+            refresh=refresh or is_stale(name),
         )
         rows = [
             {"iso3": r["countryiso3code"], "year": int(r["date"]), label: r["value"]}
@@ -179,14 +207,37 @@ def governance_risk(refresh: bool = False) -> pd.DataFrame:
     wgi["governance_risk"] = (
         100 * (WGI_MAX - wgi["wgi"]) / (WGI_MAX - WGI_MIN)
     ).clip(0, 100)
-    return wgi.reset_index()[["iso3", "year", "governance_risk"]]
+    result = wgi.reset_index()[["iso3", "year", "governance_risk"]]
+    result["is_carried_forward"] = False
+    result["measured_year"] = result["year"]
+
+    if carry_forward_to is not None and carry_forward_to > result["year"].max():
+        latest = result.sort_values("year").groupby("iso3").last().reset_index()
+        filled = []
+        for year in range(int(result["year"].max()) + 1, carry_forward_to + 1):
+            carried = latest.copy()
+            carried["year"] = year
+            carried["is_carried_forward"] = True
+            filled.append(carried)
+        result = pd.concat([result, *filled], ignore_index=True)
+    return result
 
 
-def material_risk(years: list[int] | None = None, refresh: bool = False) -> pd.DataFrame:
-    """Supply risk 0-100 per material per year, plus the two halves it is made of."""
+def material_risk(
+    years: list[int] | None = None, refresh: bool = False, carry_governance_forward: bool = True
+) -> pd.DataFrame:
+    """Supply risk 0-100 per material per year, plus the two halves it is made of.
+
+    USGS production data (2025) currently runs a year ahead of World Bank governance
+    data (2024). When `carry_governance_forward` is true, the newest production year
+    is scored using each producing country's most recent available governance
+    estimate rather than being dropped; the output flags exactly which rows that
+    applies to via `governance_is_carried_forward` / `governance_year`.
+    """
     shares = production_shares(refresh=refresh)
     iso3 = world_bank_iso3(refresh=refresh)
-    gov = governance_risk(refresh=refresh)
+    carry_to = int(shares["production_year"].max()) if carry_governance_forward else None
+    gov = governance_risk(refresh=refresh, carry_forward_to=carry_to)
 
     shares["iso3"] = shares["country"].map(iso3)
     unmapped = sorted(set(shares.loc[shares["iso3"].isna(), "country"]))
@@ -204,12 +255,15 @@ def material_risk(years: list[int] | None = None, refresh: bool = False) -> pd.D
     if years is not None:
         rated = rated[rated["year"].isin(years)]
     rated["weight"] = rated["share"] / rated.groupby(["material", "year"])["share"].transform("sum")
-    gov_by_material = (
-        rated.assign(w=rated["weight"] * rated["governance_risk"])
-        .groupby(["material", "year"], as_index=False)["w"]
-        .sum()
-        .rename(columns={"w": "governance_component"})
+    rated["w_risk"] = rated["weight"] * rated["governance_risk"]
+    rated["w_carried"] = rated["weight"] * rated["is_carried_forward"]
+    rated["w_measured_year"] = rated["weight"] * rated["measured_year"]
+    gov_by_material = rated.groupby(["material", "year"], as_index=False).agg(
+        governance_component=("w_risk", "sum"),
+        governance_carried_share=("w_carried", "sum"),
+        governance_measured_year=("w_measured_year", lambda s: round(s.sum())),
     )
+    gov_by_material["governance_is_carried_forward"] = gov_by_material["governance_carried_share"] > 0
 
     out = gov_by_material.join(hhi, on="material").join(production_year, on="material")
     out["concentration_component"] = 100 * out["hhi"]

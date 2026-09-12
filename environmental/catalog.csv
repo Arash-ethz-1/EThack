@@ -1,2 +1,3 @@
 indicator_id,name,description,unit,higher_is_better,weight,owner,source,status
 resource_supply_risk,Critical material supply risk exposure,"Supply risk of the raw materials a company's industry runs on - higher means it depends more on materials mined in few, badly governed countries",risk index 0-100,false,1,Jean,USGS Mineral Commodity Summaries 2026 + World Bank WGI,ready
+critical_material_disclosure,Critical material dependence stated in the 10-K,"Combined supply risk of the critical materials a company names in its own annual report - higher means it discloses dependence on more, riskier minerals",sum of material supply risk,false,1,Jean,SEC EDGAR 10-K full-text search,in_progress

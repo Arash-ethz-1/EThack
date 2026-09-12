@@ -26,6 +26,10 @@ Owner:  Jean
 Run:    python run.py build environmental resource_supply_risk
 Refresh cadence: quarterly. USGS republishes in January and the World Bank in
 September, so a quarterly re-run picks up every upstream release within a quarter.
+USGS production data can be up to a year ahead of World Bank governance data; when
+it is, the newest year is scored using each producing country's most recent
+available governance estimate (governance moves slowly, so this is a standard
+nowcast, not an invented number) and every affected row's `note` says so.
 
 Output: environmental/indicators/resource_supply_risk.csv (docs/DATA_FORMAT.md)
 """
@@ -83,6 +87,16 @@ def build() -> pd.DataFrame:
     risk = risk[risk["year"].isin(years)]
     print(f"  materials: {risk['material'].nunique()}  years: {years[0]}-{years[-1]}")
 
+    # USGS production can run ahead of World Bank governance data; material_risk()
+    # then carries the most recent governance estimate forward rather than dropping
+    # the year. Record which years that applies to, so the note discloses it per row
+    # instead of presenting a carried-forward number as a fresh measurement.
+    carried_years = sorted(risk.loc[risk["governance_is_carried_forward"], "year"].unique())
+    year_note = {}
+    for y in carried_years:
+        measured = int(risk.loc[risk["year"] == y, "governance_measured_year"].iloc[0])
+        year_note[y] = f" | governance uses the most recent available World Bank estimate ({measured})"
+
     # Supply risk of each archetype's basket, per year.
     basket = bills.merge(risk[["material", "year", "supply_risk"]], on="material", how="left")
     if basket["supply_risk"].isna().any():
@@ -114,6 +128,7 @@ def build() -> pd.DataFrame:
         + rows["basket_risk"].round(1).astype(str)
         + " | largest single exposure: "
         + rows["top_material"]
+        + rows["year"].map(year_note).fillna("")
     )
     return rows[["ticker", "year", "value", "source", "source_url", "retrieved", "note"]]
 

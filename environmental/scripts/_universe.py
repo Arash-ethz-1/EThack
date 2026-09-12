@@ -16,6 +16,7 @@ import pandas as pd
 from common.io import cached_download, load_universe
 
 CATEGORY = "environmental"
+CONSTITUENTS_FILE = "sp500_constituents.csv"
 
 # Same list Wikipedia's "List of S&P 500 companies" table is built from, as a plain
 # CSV so we need no HTML parser. Columns: Symbol, Security, GICS Sector,
@@ -26,8 +27,16 @@ CONSTITUENTS_URL = (
 
 
 def load_constituents(refresh: bool = False) -> pd.DataFrame:
-    """S&P 500 constituents with GICS sector and sub-industry."""
-    path = cached_download(CONSTITUENTS_URL, CATEGORY, "sp500_constituents.csv", refresh=refresh)
+    """S&P 500 constituents with GICS sector and sub-industry.
+
+    Index membership changes several times a year, so this follows the same
+    quarterly refresh rule as the risk sources.
+    """
+    from _resource_risk import is_stale
+
+    path = cached_download(
+        CONSTITUENTS_URL, CATEGORY, CONSTITUENTS_FILE, refresh=refresh or is_stale(CONSTITUENTS_FILE)
+    )
     df = pd.read_csv(path, dtype=str, keep_default_na=False)
     df = df.rename(
         columns={
