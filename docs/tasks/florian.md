@@ -173,3 +173,28 @@ consumer-side: CFPB complaints are excellent and dated, but **financial sector o
   scoring ranks companies against each other within a period.
 - Needs from others: Arash - decision on the optional `quarter` column (see above).
   Lauren - confirm the workforce/society split.
+
+### 2026-09-12 20:19 - pipeline works end to end on a 10-company pilot
+- Done: `social/raw/aliases.csv` (503 companies, 802 names, 99 renames inside 2016-2026
+  across 88 firms). Without it a 2019 search for "Meta Platforms" finds nothing.
+- Done: `_dockets.py` downloader + party matching. Three real defects found and fixed:
+  SEC legal names do not match court parties (party:("3M CO") = 0 dockets,
+  party:("3M") = 54); short acronyms match unrelated firms ("AES Drilling Fluids");
+  over-strict matching then rejected genuine benefit plans ("Abbott Laboratories Group
+  Health Care Plan"). Pilot went from 107 to 211 labor dockets after the fixes.
+- Done: `social/raw/financials.csv` denominator - annual revenue covers 452-496 of 503
+  companies per year (90-99%). `dei:EntityNumberOfEmployees` covers only 6 companies
+  (1%), so indicators must normalise **per revenue**, not per employee.
+- Done: `labor_litigation_intensity.py` runs end to end on the pilot: 100 annual rows +
+  370 quarterly panel rows over 37 quarters. Values move over time as intended.
+- Problems: CourtListener throttles anonymous users after ~10 companies - the full 503
+  needs a free token. `universe/sp500.csv` still does not exist, so
+  `common.io.write_indicator` cannot run for ANY category - this blocks the whole team.
+  Subsidiaries under different names are missed (Aflac's legal entity is "American Family
+  Life Assurance Company of Columbus", Alphabet is sued as Google) - this undercounts.
+  `sp500/data/constituents.csv` contains ticker FDXF, which is not FedEx's ticker (FDX).
+- Needs from others: Arash - (1) `universe/sp500.csv`, blocking everyone; (2) the
+  optional `quarter` column; (3) `common.io.cached_download` logs the full URL into the
+  committed `raw/_downloads.csv`, so any API key passed as a query parameter lands in
+  git - it should redact `api_key=`/`token=` values. I hit this with the FEC key and
+  redacted it before it was committed.

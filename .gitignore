@@ -30,3 +30,8 @@ Thumbs.db
 # SEC submissions JSON cache: ~83 MB for 503 companies, only used to derive the small
 # social/raw/aliases.csv, which IS committed. Rebuild: python social/scripts/_aliases.py
 social/raw/submissions/
+
+# SEC XBRL frames cache: 43 MB across 264 files, only used to derive the 3.9 MB
+# social/raw/financials.csv, which IS committed. Rebuild (~7 min):
+# python social/scripts/_financials.py
+social/raw/frames/
