@@ -8,6 +8,7 @@
     python run.py new-indicator social pay_ratio create catalog row + script
     python run.py build social [indicator_id]    run the scripts -> indicators/*.csv
     python run.py score [profile]                scores 0-100 for a profile -> scores/<profile>/
+    python run.py portfolio [profile]            portfolio weights from those scores -> scores/<profile>/portfolio.csv
     python run.py dashboard                      open the dashboard in the browser
 """
 
@@ -300,6 +301,24 @@ def cmd_score(profile: str | None) -> int:
     return 0
 
 
+def cmd_portfolio(profile: str | None) -> int:
+    from common.config import DEFAULT_PROFILE
+    from common.validate import print_report, validate_all
+    from portfolio.allocate import build_portfolio
+
+    report = validate_all()
+    if report.errors:
+        print_report(report)
+        say("fix format errors before building a portfolio")
+        return 1
+    try:
+        build_portfolio(profile or DEFAULT_PROFILE)
+    except (FileNotFoundError, ValueError) as e:
+        say(f"STOP: {e}")
+        return 1
+    return 0
+
+
 def cmd_dashboard() -> int:
     from dashboard.server import serve
 
@@ -351,6 +370,8 @@ def main(argv: list[str]) -> int:
         return cmd_new_indicator(*args)
     if cmd == "score":
         return cmd_score(args[0] if args else None)
+    if cmd == "portfolio":
+        return cmd_portfolio(args[0] if args else None)
     if cmd == "dashboard":
         return cmd_dashboard()
     say(__doc__)

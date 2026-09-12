@@ -13,7 +13,7 @@ profiles/<name>.toml ──3 profile: which indicators, which weights ───�
                                                                         │
                         4 score: category scores 0-100 ──> total score 0-100
                                                                         │
-                        5 portfolio (phase 3, placeholder: portfolio/allocate.py)
+                        5 portfolio: python run.py portfolio (portfolio/README.md)
 ```
 
 1. **Load** `ready` indicators only. Each company uses its most recent year.
@@ -59,4 +59,4 @@ environmental x3, emissions intensity x3). Save your own from the dashboard.
   Likely needed for environmental; decide once real data exists.
 - **Indicator weights** - catalog weights stay `1`; preferences belong in profiles.
 - **Year alignment** - should all companies use the same year instead of their latest?
-- **Phase 3: how a profile's scores become portfolio weights** (`portfolio/allocate.py`).
+- **Phase 3** is built as a sector-neutral capped tilt (`portfolio/README.md`); open: market-cap benchmark.

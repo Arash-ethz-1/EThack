@@ -18,7 +18,7 @@ for an ETH-affiliated fund.
 |---|---|---|
 | **1. Data extraction** | each category has **>= 3 strong sub-indicators** in the shared format | **now** |
 | 2. Scoring | the user picks indicators + weights (**profile**) -> 0-100 score per category + total (`python run.py score`, `python run.py dashboard`) | pipeline + dashboard built, needs data |
-| 3. Portfolio | use a profile's scores to **weight a portfolio allocation** | placeholder in `portfolio/allocate.py` |
+| 3. Portfolio | use a profile's scores to **weight a portfolio allocation** (`python run.py portfolio`) | tilt method built, see `portfolio/README.md` |
 
 Full plan: `docs/PLAN.md`.
 
@@ -130,6 +130,7 @@ python run.py new-indicator social ceo_pay_ratio # catalog row + script from tem
 python run.py build social [indicator_id]        # run scripts -> indicators/*.csv
 python run.py check                              # format check + tests
 python run.py score [profile]                    # scores/<profile>/scores.csv (0-100), default: balanced
+python run.py portfolio [profile]                # scores/<profile>/portfolio.csv (weights)
 python run.py dashboard                          # open the dashboard in the browser
 ```
 
