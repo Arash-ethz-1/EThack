@@ -159,7 +159,8 @@ HEADCOUNT = re.compile(
 # Number is a subset of the workforce, not the total.
 SUBSET_BEFORE = re.compile(
     r"represent|union|collective|bargain|tenure|years of service|hours|train|volunteer|hired|hires|"
-    r"contract|temporar|seasonal|intern|retire|former|women|veteran|customers|patients|of whom|including",
+    r"contract|temporar|seasonal|intern|retire|former|women|veteran|customers|patients|of whom|including|"
+    r"segment|division",
     re.I,
 )
 SUBSET_AFTER = re.compile(
