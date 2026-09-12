@@ -84,8 +84,41 @@ them a number *and* how much of it to trust.
 
 ## Done when
 
-- [ ] 8-12 indicators, each with rationale, durability, unit, and a test
-- [ ] `company_scores.parquet` valid against the contract
-- [ ] CIs and tiers, with overlapping intervals sharing a tier
-- [ ] sensitivity table across the three weighting modes
-- [ ] `score(dead_sources=...)` works, so the blackout page is live
+- [x] 8-12 indicators, each with rationale, durability, unit, and a test — 11 live:
+      `metered_carbon_intensity`, `satellite_carbon_intensity`, `emissions_trajectory`,
+      `carbon_at_risk_50/100/200`, `saydo_gap`, `satellite_divergence`,
+      `target_credibility`, `assurance_presence`, `facility_concentration`.
+- [x] `company_scores.parquet` valid against the contract (`make score` on mocks,
+      120/120 companies rankable, tiers A-E roughly balanced)
+- [x] CIs and tiers, with overlapping intervals sharing a tier — bounded to the
+      four A/B..D/E boundary pairs, not transitively cascaded (a naive neighbour
+      chain collapses the whole table into tier A - caught this on mocks, see
+      `score._assign_tiers`)
+- [x] sensitivity table across the three weighting modes — `score.sensitivity_table()`;
+      top-20 overlap is 19-20/20 across declared/equal/confidence on mocks
+- [x] `score(dead_sources=...)` works, so the blackout page is live — verified
+      against every scenario in `blackout.scenarios()`. Caught and fixed a real bug
+      here: `satellite_divergence` alone still named `company_reports` as a source,
+      so "Voluntary reporting collapses too" left zero indicators computable. Added
+      `satellite_carbon_intensity` (sources: satellite + sec_xbrl only) so the
+      "keeps working when everything else is dark" claim in `docs/THESIS.md` is
+      actually true, not just asserted. Regression-tested in `test_indicators.py`.
+
+## Handoff notes for Florian / Harprit
+
+- `data/processed/company_scores.parquet` is written by `python -m ethack.score`
+  (run with `PYTHONPATH=src` until the packaging gap below is fixed). Columns match
+  `contracts.COMPANY_SCORES` exactly.
+- `tier == "U"` means "coverage below `MIN_COVERAGE_TO_RANK`, we refuse to rank it" -
+  `score` is `NaN` for those rows on purpose. Please don't `.dropna()` it away
+  silently; the count of U's is itself a number worth reporting.
+- `n_indicators_used` and `visibility` are your per-company confidence signals for
+  sizing/weighting in the portfolio and eval layers.
+- Known infra gap, not mine to fix: there's no `pyproject.toml` / editable install,
+  so `python -m ethack.score` (and every other `make <layer>` target) fails with
+  `ModuleNotFoundError` on a clean clone unless `src/` is on `PYTHONPATH`. Flagged to
+  Arash (`Makefile`/`requirements.txt` owner) rather than editing his files.
+- Also flagged, not mine to fix: `blackout.scenarios()` has "GHGRP + ECHO gone" and
+  "All US federal environmental data gone" defined as the literal same
+  `dead_sources` set - looks like a copy-paste, probably meant to add `satellite` or
+  another source to the second one.

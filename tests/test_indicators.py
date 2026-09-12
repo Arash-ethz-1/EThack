@@ -3,7 +3,10 @@ from __future__ import annotations
 import pandas as pd
 
 from ethack.indicators.registry import (
-    all_indicators, all_specs, durability_profile, surviving,
+    all_indicators,
+    all_specs,
+    durability_profile,
+    surviving,
 )
 
 
@@ -50,3 +53,15 @@ def test_we_are_honest_about_our_own_exposure():
         "at least one indicator must survive any political decision - "
         "that is the entire continuity argument"
     )
+
+
+def test_something_survives_every_blackout_scenario_we_actually_demo():
+    # A durability rating is worthless if it is not checked against the specific
+    # scenarios the blackout page offers. This caught a real bug: satellite
+    # divergence names company_reports as a source too, so "voluntary reporting
+    # collapses" used to leave the framework with zero computable indicators.
+    from ethack.blackout import scenarios
+
+    for name, dead in scenarios().items():
+        alive = surviving(dead)
+        assert alive, f"scenario {name!r} leaves nothing computable - thesis fails"
