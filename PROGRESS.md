@@ -60,7 +60,30 @@ _no entries yet_
 
 ## Lauren - indicators and scoring
 
-_no entries yet_
+### 2026-09-12 15:17 UTC - lauren/indicators-scoring
+- **Shipped:** 7 new indicators (11 total: carbon_at_risk_50/100/200,
+  metered_carbon_intensity, satellite_carbon_intensity, emissions_trajectory,
+  saydo_gap, satellite_divergence, target_credibility, assurance_presence,
+  facility_concentration); score.py with sector-relative percentiles, bootstrap
+  CIs, A-E tiers, visibility column, 3 weighting modes, dead_sources support.
+  `python run.py test` 18/18 green. `python run.py score` on mocks: 120/120
+  companies rankable, tiers A 26 / B 24 / C 24 / D 24 / E 22, top-20 overlap
+  19-20/20 across weighting modes. `data/processed/company_scores.parquet`
+  valid against `contracts.COMPANY_SCORES`.
+- **Next:** real data once Jean/Arash's L1/L2 land - `build_panel()` already
+  reads by directory so swapping mock for processed is a one-line change.
+- **Blocked:** none
+- **Needs from others:** none blocking. FYI Florian/Harprit -
+  `tier == "U"` means refused-to-rank (coverage too low), not a missing value -
+  don't drop those rows silently.
+
+Caught two real bugs building this, logged in `docs/tasks/lauren.md`: (1) naive
+CI-overlap tier merging is transitive and collapses the whole table into one
+tier - bounded it to the four percentile-cut boundaries; (2) `satellite_divergence`
+still depended on `company_reports`, so blackout.py's own "voluntary reporting
+collapses" scenario left zero indicators computable - added
+`satellite_carbon_intensity` (satellite + sec_xbrl only) to fix it for real,
+regression-tested in `test_indicators.py`.
 
 ---
 
