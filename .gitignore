@@ -1,0 +1,23 @@
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.env
+.DS_Store
+.ipynb_checkpoints/
+.pytest_cache/
+.ruff_cache/
+
+# data: raw snapshots ARE committed (they are our archive, see docs/THESIS.md).
+# derived artefacts are not.
+data/processed/*
+!data/processed/.gitkeep
+data/mock/*
+!data/mock/.gitkeep
+figures/*.png
+!figures/.gitkeep
+
+# never commit these
+*.parquet.tmp
+secrets.toml
+.streamlit/secrets.toml
