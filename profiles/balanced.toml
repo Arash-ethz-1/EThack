@@ -1,0 +1,13 @@
+# A profile = what one user of the tool cares about. Docs: docs/SCORING.md
+name = "Balanced"
+description = "All ready indicators with their catalog weights, the three categories count equally."
+min_weight_share = 0.5
+sector_relative = false
+
+[categories]
+economic = 1
+social = 1
+environmental = 1
+
+# [indicators]            optional: override a catalog weight, 0 switches an indicator off
+# ceo_pay_ratio = 2

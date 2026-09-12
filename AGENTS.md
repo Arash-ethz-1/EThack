@@ -17,8 +17,8 @@ for an ETH-affiliated fund.
 | Phase | Goal | Status |
 |---|---|---|
 | **1. Data extraction** | each category has **>= 3 strong sub-indicators** in the shared format | **now** |
-| 2. Scoring | one **impact score 0-100 per category** per company (`python run.py score`) | code exists, needs data |
-| 3. Portfolio | use the three scores to **weight a portfolio allocation** | next |
+| 2. Scoring | the user picks indicators + weights (**profile**) -> 0-100 score per category + total (`python run.py score`, `python run.py dashboard`) | pipeline + dashboard built, needs data |
+| 3. Portfolio | use a profile's scores to **weight a portfolio allocation** | placeholder in `portfolio/allocate.py` |
 
 Full plan: `docs/PLAN.md`.
 
@@ -29,10 +29,10 @@ four people from overwriting each other. Anyone may read anything.
 
 | Area | Owner | Topic |
 |---|---|---|
-| `economic/` | **Arash** | economic impact indicators |
+| `economic/` | **Lauren** | economic impact indicators (taken over from Arash) |
 | `social/` | **Florian** and **Lauren** | social impact indicators - **one indicator = one person** (`owner` column in `social/catalog.csv`) |
 | `environmental/` | **Jean** | environmental impact indicators |
-| `universe/`, `common/`, `tests/`, `run.py`, `portfolio/`, `AGENTS.md`, `docs/*.md` | **Arash** | shared infrastructure |
+| `universe/`, `common/`, `tests/`, `run.py`, `profiles/`, `dashboard/`, `portfolio/`, `AGENTS.md`, `docs/*.md` | **Arash** | shared infrastructure, scoring pipeline, dashboard |
 | `docs/tasks/<name>.md` | **that person** | their plan and log |
 
 Need a change outside your area (a new column in the format, a scoring change, a
@@ -105,7 +105,10 @@ The full format is `docs/DATA_FORMAT.md`. The essentials:
 7. **Never write a number in a log, commit or doc that you did not see printed** by
    code you ran.
 8. **Scores are computed by `common/score.py` only** - deterministic code, no model
-   calls. Do not score, rank or weight companies anywhere else.
+   calls. Do not score, rank or weight companies anywhere else (the dashboard only
+   displays them).
+   `common/demo.py` makes **random** demo data for trying the dashboard - never copy it
+   into an indicator file and never present it as a result.
 9. No new Python dependencies without asking Arash (`requirements.txt` stays small).
 
 ### What makes an indicator "strong" (required before status `ready`)
@@ -129,7 +132,8 @@ python run.py save "[area] message"              # commit + pull + check + push
 python run.py new-indicator social ceo_pay_ratio # catalog row + script from template
 python run.py build social [indicator_id]        # run scripts -> indicators/*.csv
 python run.py check                              # format check + tests
-python run.py score                              # scores/category_scores.csv (0-100)
+python run.py score [profile]                    # scores/<profile>/scores.csv (0-100), default: balanced
+python run.py dashboard                          # open the dashboard in the browser
 ```
 
 Run everything from the repo root. On Windows use `python`, not `python3`.

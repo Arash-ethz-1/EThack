@@ -1,7 +1,9 @@
-# Arash - economic impact + repo infrastructure
+# Arash - pipeline, dashboard + repo infrastructure
 
-**Area:** `economic/`, plus shared infra (`universe/`, `common/`, `run.py`, `portfolio/`, docs).
-**Goal phase 1:** >= 3 `ready` economic indicators in `economic/catalog.csv`.
+**Area:** shared infra (`universe/`, `common/`, `run.py`, `profiles/`, `dashboard/`, `portfolio/`, docs).
+**Change 2026-09-12:** Lauren took over `economic/`. The candidate list in section 2 is
+kept here as her starting point. Arash builds the pipeline after the indicators:
+profiles -> scores -> dashboard -> portfolio.
 
 ## 1. Blocker for everyone: `universe/sp500.csv` - do this first
 
@@ -15,7 +17,7 @@ Right after: `universe/financials.csv` with `ticker, year, revenue_usd, employee
 the shared denominators everyone needs for size-neutral indicators (Jean needs revenue
 for every intensity). It is not an indicator and is not scored.
 
-## 2. Candidate indicators (verify coverage before building)
+## 2. Economic candidate indicators - now Lauren (verify coverage before building)
 
 Most can come from SEC XBRL company facts:
 `https://data.sec.gov/api/xbrl/companyfacts/CIK##########.json` (needs `SEC_CONTACT_EMAIL` in `.env`).
@@ -31,10 +33,12 @@ Most can come from SEC XBRL company facts:
 XBRL tag names differ between companies (`Revenues`,
 `RevenueFromContractWithCustomerExcludingAssessedTax`, ...). Try a list of tags in order.
 
-## 3. Later
+## 3. Pipeline
 
-- Phase 2: sanity-check real scores, decide sector-relative ranking (`docs/SCORING.md`).
-- Phase 3: `portfolio/` allocation.
+- [x] profiles (`profiles/*.toml`), category + total score, explain (`common/score.py`)
+- [x] dashboard (`python run.py dashboard`): ranking, company breakdown, sectors, indicators, portfolio placeholder
+- [ ] sanity-check real scores once indicators are `ready`, decide sector-relative default
+- [ ] phase 3: `portfolio/allocate.py` (needs market cap in `universe/` for a cap-weighted tilt)
 
 ## Needs from others
 
@@ -43,3 +47,9 @@ XBRL tag names differ between companies (`Revenues`,
 ## Log
 
 <!-- append below, never edit old entries. Format: AGENTS.md section 6 -->
+
+### 2026-09-12 21:55 - scoring pipeline + dashboard
+- Done: profiles (balanced, net_zero), total score, sector-relative option, explain(); Streamlit dashboard with 5 tabs; portfolio placeholder; `python run.py score [profile]` and `python run.py dashboard`; 21 tests pass
+- Next: universe/sp500.csv, then check the dashboard with the first real indicators
+- Problems: no real indicators yet - dashboard tested on random demo data (DEMO001...)
+- Needs from others: Lauren to confirm she owns `economic/` and update her task file

@@ -7,12 +7,14 @@
     python run.py check                          format check + tests
     python run.py new-indicator social pay_ratio create catalog row + script
     python run.py build social [indicator_id]    run the scripts -> indicators/*.csv
-    python run.py score                          category scores 0-100 -> scores/
+    python run.py score [profile]                scores 0-100 for a profile -> scores/<profile>/
+    python run.py dashboard                      open the dashboard in the browser
 """
 
 from __future__ import annotations
 
 import csv
+import importlib.util
 import runpy
 import shutil
 import subprocess
@@ -31,11 +33,13 @@ from common.config import (
 BRANCH = "main"
 
 OWNERS = {
-    "economic": "Arash",
+    "economic": "Lauren",
     "social": "Florian + Lauren (one indicator = one person, see social/catalog.csv)",
     "environmental": "Jean",
     "universe": "Arash",
     "portfolio": "Arash",
+    "profiles": "Arash",
+    "dashboard": "Arash",
     "common": "Arash",
     "tests": "Arash",
 }
@@ -200,7 +204,7 @@ def checks_pass_for(changed: list[str]) -> bool:
         report.errors, report.warnings = mine, []
         print_report(report)
         ok = False
-    if areas & {"common", "tests", "run.py"}:
+    if areas & {"common", "tests", "run.py", "portfolio", "dashboard", "profiles"}:
         ok = run_tests() and ok
     return ok
 
@@ -279,7 +283,8 @@ def cmd_new_indicator(category: str, indicator_id: str) -> int:
     return 0
 
 
-def cmd_score() -> int:
+def cmd_score(profile: str | None) -> int:
+    from common.config import DEFAULT_PROFILE
     from common.score import build_scores
     from common.validate import print_report, validate_all
 
@@ -288,8 +293,19 @@ def cmd_score() -> int:
         print_report(report)
         say("fix format errors before scoring")
         return 1
-    build_scores()
+    try:
+        build_scores(profile or DEFAULT_PROFILE)
+    except (FileNotFoundError, ValueError) as e:
+        say(f"STOP: {e}")
+        return 1
     return 0
+
+
+def cmd_dashboard() -> int:
+    if importlib.util.find_spec("streamlit") is None:
+        say("streamlit is not installed - run: python run.py setup")
+        return 1
+    return subprocess.run([sys.executable, "-m", "streamlit", "run", str(ROOT / "dashboard" / "app.py")], cwd=ROOT).returncode
 
 
 def cmd_setup() -> int:
@@ -335,7 +351,9 @@ def main(argv: list[str]) -> int:
     if cmd == "new-indicator" and len(args) == 2:
         return cmd_new_indicator(*args)
     if cmd == "score":
-        return cmd_score()
+        return cmd_score(args[0] if args else None)
+    if cmd == "dashboard":
+        return cmd_dashboard()
     say(__doc__)
     return 1
 

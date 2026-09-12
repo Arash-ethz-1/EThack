@@ -10,6 +10,8 @@ UNIVERSE_CSV = ROOT / "universe" / "sp500.csv"
 UNIVERSE_COLUMNS = ["ticker", "name", "sector", "cik"]
 
 SCORES_DIR = ROOT / "scores"
+PROFILES_DIR = ROOT / "profiles"
+DEFAULT_PROFILE = "balanced"
 
 # One row = one company, one year, one number. See docs/DATA_FORMAT.md.
 INDICATOR_COLUMNS = ["ticker", "year", "value", "source", "source_url", "retrieved"]

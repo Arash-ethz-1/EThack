@@ -6,14 +6,17 @@ ETH-affiliated fund, and use it to weight a portfolio.
 ```
 economic/  social/  environmental/      >= 3 sub-indicators each, one shared data format
         \      |      /
-      python run.py score               impact score 0-100 per category per company
                |
-          portfolio/                    allocation weights (phase 3)
+      profiles/<name>.toml              the user picks indicators + weights
+               |
+      python run.py score / dashboard   0-100 score per category + total, per company
+               |
+          portfolio/                    allocation weights (phase 3, placeholder)
 ```
 
 | Category | Who |
 |---|---|
-| Economic | Arash |
+| Economic | Lauren |
 | Social | Florian, Lauren |
 | Environmental | Jean |
 
@@ -52,4 +55,5 @@ If `save` prints **STOP**, do not try git commands - read the message, it tells 
 | `docs/PLAN.md` | phases, goals, decisions |
 | `docs/tasks/<name>.md` | your assignment, candidate indicators, your log |
 | `docs/DATA_FORMAT.md` | the one format everybody's data uses |
-| `docs/SCORING.md` | how sub-indicators become a 0-100 score |
+| `docs/SCORING.md` | how sub-indicators + a profile become 0-100 scores |
+| `python run.py dashboard` | choose indicators, see rankings, explain a company's score |

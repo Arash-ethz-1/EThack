@@ -1,0 +1,17 @@
+# Bonus question: the world commits to net zero as fast as possible.
+name = "Net Zero"
+description = "Environmental impact counts three times as much, emissions intensity is the key indicator."
+min_weight_share = 0.5
+sector_relative = false
+
+[categories]
+economic = 1
+social = 1
+environmental = 3
+
+[indicators]
+ghg_intensity = 3
+
+[portfolio]
+method = "tilt"
+max_weight = 0.05
