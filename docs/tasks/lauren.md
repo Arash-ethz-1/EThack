@@ -88,8 +88,8 @@ them a number *and* how much of it to trust.
       `metered_carbon_intensity`, `satellite_carbon_intensity`, `emissions_trajectory`,
       `carbon_at_risk_50/100/200`, `saydo_gap`, `satellite_divergence`,
       `target_credibility`, `assurance_presence`, `facility_concentration`.
-- [x] `company_scores.parquet` valid against the contract (`make score` on mocks,
-      120/120 companies rankable, tiers A-E roughly balanced)
+- [x] `company_scores.parquet` valid against the contract (`python run.py score` on
+      mocks, 120/120 companies rankable, tiers A-E roughly balanced)
 - [x] CIs and tiers, with overlapping intervals sharing a tier — bounded to the
       four A/B..D/E boundary pairs, not transitively cascaded (a naive neighbour
       chain collapses the whole table into tier A - caught this on mocks, see
@@ -106,18 +106,15 @@ them a number *and* how much of it to trust.
 
 ## Handoff notes for Florian / Harprit
 
-- `data/processed/company_scores.parquet` is written by `python -m ethack.score`
-  (run with `PYTHONPATH=src` until the packaging gap below is fixed). Columns match
-  `contracts.COMPANY_SCORES` exactly.
+- `data/processed/company_scores.parquet` is written by `python run.py score`
+  (that's `python -m ethack.score` with `src/` on `PYTHONPATH`, which `run.py`
+  sets for you - no separate setup needed). Columns match `contracts.COMPANY_SCORES`
+  exactly.
 - `tier == "U"` means "coverage below `MIN_COVERAGE_TO_RANK`, we refuse to rank it" -
   `score` is `NaN` for those rows on purpose. Please don't `.dropna()` it away
   silently; the count of U's is itself a number worth reporting.
 - `n_indicators_used` and `visibility` are your per-company confidence signals for
   sizing/weighting in the portfolio and eval layers.
-- Known infra gap, not mine to fix: there's no `pyproject.toml` / editable install,
-  so `python -m ethack.score` (and every other `make <layer>` target) fails with
-  `ModuleNotFoundError` on a clean clone unless `src/` is on `PYTHONPATH`. Flagged to
-  Arash (`Makefile`/`requirements.txt` owner) rather than editing his files.
 - Also flagged, not mine to fix: `blackout.scenarios()` has "GHGRP + ECHO gone" and
   "All US federal environmental data gone" defined as the literal same
   `dead_sources` set - looks like a copy-paste, probably meant to add `satellite` or
