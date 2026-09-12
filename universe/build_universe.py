@@ -6,6 +6,7 @@ Source: datasets/s-and-p-500-companies (the Wikipedia constituents table as CSV)
 Run:    python universe/build_universe.py
 
 Output: universe/sp500.csv with columns ticker, name, sector, cik (docs/DATA_FORMAT.md)
+        + sub_industry (GICS Sub-Industry, used by portfolio exclusions)
 """
 
 from __future__ import annotations
@@ -35,10 +36,11 @@ def normalise_ticker(s: pd.Series) -> pd.Series:
 def build(refresh: bool = False) -> pd.DataFrame:
     path = cached_download(CONSTITUENTS_URL, AREA, "sp500_constituents.csv", refresh=refresh)
     df = pd.read_csv(path, dtype=str, keep_default_na=False)
-    df = df.rename(columns={"Symbol": "ticker", "Security": "name", "GICS Sector": "sector", "CIK": "cik"})
+    df = df.rename(columns={"Symbol": "ticker", "Security": "name", "GICS Sector": "sector", "CIK": "cik",
+                            "GICS Sub-Industry": "sub_industry"})
     df["ticker"] = normalise_ticker(df["ticker"])
     df["cik"] = df["cik"].str.strip().str.zfill(10)
-    df = df[UNIVERSE_COLUMNS]
+    df = df[UNIVERSE_COLUMNS + ["sub_industry"]]
 
     # Cross-check: does SEC map the same ticker to the same CIK?
     sec = pd.DataFrame(cached_json(SEC_TICKERS_URL, AREA, "sec_company_tickers.json", refresh=refresh).values())
@@ -51,7 +53,7 @@ def build(refresh: bool = False) -> pd.DataFrame:
     problems = []
     if df["ticker"].duplicated().any():
         problems.append(f"duplicate tickers: {df.loc[df['ticker'].duplicated(), 'ticker'].tolist()}")
-    if (df[UNIVERSE_COLUMNS] == "").any().any():
+    if (df == "").any().any():
         problems.append(f"empty cells:\n{df[(df == '').any(axis=1)]}")
     if not df["cik"].str.fullmatch(r"\d{10}").all():
         problems.append("CIK not 10 digits")
