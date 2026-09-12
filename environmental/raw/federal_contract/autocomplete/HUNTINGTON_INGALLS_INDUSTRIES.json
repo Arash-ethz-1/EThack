@@ -1,0 +1,1 @@
+{"count":1,"results":[{"recipient_name":"HUNTINGTON INGALLS INDUSTRIES, INC","recipient_level":null,"uei":null,"duns":null}],"messages":["The response value of 'recipient_level' is deprecated to avoid to confusion when returning only a single Recipient in the response. The request value of 'recipient_levels' will continue to limit the response."]}
