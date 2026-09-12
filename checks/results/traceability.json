@@ -1,0 +1,142 @@
+{
+  "status": "flagged",
+  "verdict": "28,111 of 28,111 values carry a link to their public source.",
+  "numbers": {
+    "per_indicator": [
+      {
+        "indicator_id": "tax_rate_gap",
+        "category": "economic",
+        "companies": 485,
+        "rows": 6264,
+        "with_source": 6264
+      },
+      {
+        "indicator_id": "revenue_volatility",
+        "category": "economic",
+        "companies": 454,
+        "rows": 454,
+        "with_source": 454
+      },
+      {
+        "indicator_id": "employment_growth",
+        "category": "economic",
+        "companies": 343,
+        "rows": 345,
+        "with_source": 345
+      },
+      {
+        "indicator_id": "labor_litigation_intensity",
+        "category": "social",
+        "companies": 10,
+        "rows": 100,
+        "with_source": 100
+      },
+      {
+        "indicator_id": "political_alignment",
+        "category": "social",
+        "companies": 465,
+        "rows": 4475,
+        "with_source": 4475
+      },
+      {
+        "indicator_id": "shareholder_payout_ratio",
+        "category": "social",
+        "companies": 501,
+        "rows": 4643,
+        "with_source": 4643
+      },
+      {
+        "indicator_id": "ceo_pay_ratio",
+        "category": "social",
+        "companies": 479,
+        "rows": 479,
+        "with_source": 479
+      },
+      {
+        "indicator_id": "employer_retirement_contribution",
+        "category": "social",
+        "companies": 464,
+        "rows": 1373,
+        "with_source": 1373
+      },
+      {
+        "indicator_id": "workplace_injury_rate",
+        "category": "social",
+        "companies": 328,
+        "rows": 902,
+        "with_source": 902
+      },
+      {
+        "indicator_id": "resource_supply_risk",
+        "category": "environmental",
+        "companies": 503,
+        "rows": 3521,
+        "with_source": 3521
+      },
+      {
+        "indicator_id": "critical_material_disclosure",
+        "category": "environmental",
+        "companies": 296,
+        "rows": 1450,
+        "with_source": 1450
+      },
+      {
+        "indicator_id": "federal_contract_exposure",
+        "category": "environmental",
+        "companies": 473,
+        "rows": 3556,
+        "with_source": 3556
+      },
+      {
+        "indicator_id": "ghg_intensity",
+        "category": "environmental",
+        "companies": 100,
+        "rows": 549,
+        "with_source": 549
+      }
+    ]
+  },
+  "rows": [
+    {
+      "ticker": "",
+      "year": null,
+      "indicator_id": "labor_litigation_intensity",
+      "value": null,
+      "detail": "all 10 companies share one source_url - a generic endpoint, not a per-company document",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "",
+      "year": null,
+      "indicator_id": "political_alignment",
+      "value": null,
+      "detail": "all 465 companies share one source_url - a generic endpoint, not a per-company document",
+      "url": "https://www.fec.gov/data/browse-data/?tab=bulk-data"
+    },
+    {
+      "ticker": "",
+      "year": null,
+      "indicator_id": "resource_supply_risk",
+      "value": null,
+      "detail": "all 503 companies share one source_url - a generic endpoint, not a per-company document",
+      "url": "https://www.sciencebase.gov/catalog/item/696a75d5d4be0228872d3bf8"
+    },
+    {
+      "ticker": "",
+      "year": null,
+      "indicator_id": "federal_contract_exposure",
+      "value": null,
+      "detail": "all 473 companies share one source_url - a generic endpoint, not a per-company document",
+      "url": "https://api.usaspending.gov/api/v2/search/spending_over_time/"
+    },
+    {
+      "ticker": "",
+      "year": null,
+      "indicator_id": "ghg_intensity",
+      "value": null,
+      "detail": "all 100 companies share one source_url - a generic endpoint, not a per-company document",
+      "url": "https://data.epa.gov/efservice/RLPS_GHG_EMITTER_GAS"
+    }
+  ],
+  "ran_at": "2026-09-12T23:47:59Z"
+}

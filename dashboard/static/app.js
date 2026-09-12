@@ -1,894 +1,429 @@
-/* EThack dashboard. Shows numbers from the Python API (dashboard/server.py) - computes no scores itself. */
-"use strict";
+/* S&P 500 Impact - dashboard/static/app.js
+   Only displays. Every score comes from POST /api/score (common/score.py); every
+   check result comes from GET /api/checks (checks/results/*.json, written by
+   `python run.py verify`). Nothing here ranks, scores or calls a model. */
 
-const CATS = ["economic", "social", "environmental"];
-const CAT_LABEL = { economic: "Economic", social: "Social", environmental: "Environmental" };
-const VIEWS = ["ranking", "sectors", "indicators", "portfolio", "workspace"];
+const CATS = [["economic", "Economic", "--econ"], ["social", "Social", "--soc"], ["environmental", "Environmental", "--env"]];
+const $ = s => document.querySelector(s);
+const $$ = s => [...document.querySelectorAll(s)];
+const esc = s => String(s ?? "").replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+const f1 = v => v == null ? '<span class="muted">–</span>' : v.toFixed(1);
+const isNum = v => typeof v === "number" && Number.isFinite(v);
+const fmtVal = (v, unit) => v == null ? "–" : unit === "pct_points" ? (v * 100).toFixed(1) + " pp" : Math.abs(v) >= 1000 ? Math.round(v).toLocaleString("en-US") : String(+v.toFixed(3));
 
 const state = {
-  source: "real",
-  meta: null,
-  base: null,          // profile as loaded from disk
-  profile: null,       // profile as edited in the panel
-  profileId: null,
-  edited: false,
-  lastWeight: {},      // indicator -> weight to restore when switched back on
-  result: null,
-  view: "ranking",
-  search: "",
-  sector: "",
-  limit: 25,
-  workspace: null,
-  job: null,
+  meta: null, profileId: null, categoryWeights: { economic: 1, social: 1, environmental: 1 },
+  score: null, checks: null, q: "", sector: "", limit: 50, ex: "A",
 };
 
-// ------------------------------------------------------------------ helpers
-const $ = (sel, el = document) => el.querySelector(sel);
-const $$ = (sel, el = document) => [...el.querySelectorAll(sel)];
-const esc = (v) => String(v ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
-const isNum = (v) => typeof v === "number" && Number.isFinite(v);
-const fmt = (v, d = 1) => (isNum(v) ? v.toFixed(d) : "–");
-const fmtRaw = (v) => (isNum(v) ? new Intl.NumberFormat("en-US", { maximumSignificantDigits: 4 }).format(v) : "–");
-const fmtW = (w) => (Number.isInteger(w) ? String(w) : w.toFixed(1));
-const swatch = (c) => `<span class="swatch" style="background:var(--${c})"></span>`;
+async function getJSON(path) {
+  const r = await fetch(path);
+  return r.json();
+}
+async function postJSON(path, body) {
+  const r = await fetch(path, { method: "POST", headers: { "Content-Type": "application/json", "X-EThack": "1" }, body: JSON.stringify(body) });
+  return r.json();
+}
+function META(id) { return (state.meta.indicators.find(m => m.id === id)) || { name: id, cat: "" }; }
+function colOf(id) { const m = META(id); return `var(${(CATS.find(c => c[0] === m.category) || CATS[0])[2]})`; }
 
-async function api(path, body) {
-  const opts = body === undefined ? {} : {
-    method: "POST",
-    headers: { "Content-Type": "application/json", "X-EThack": "1" },
-    body: JSON.stringify(body),
-  };
-  const res = await fetch(path, opts);
-  const data = await res.json().catch(() => ({ error: res.statusText }));
-  if (!res.ok) throw new Error(data.error || res.statusText);
-  return data;
+/* ---------- tabs ---------- */
+function bindTabs() {
+  $$("nav.tabs button").forEach(b => b.addEventListener("click", () => {
+    $$("nav.tabs button").forEach(x => x.setAttribute("aria-selected", String(x === b)));
+    $("#view-ranking").hidden = b.dataset.view !== "ranking";
+    $("#view-portfolio").hidden = b.dataset.view !== "portfolio";
+    $("#view-evidence").hidden = b.dataset.view !== "evidence";
+    if (b.dataset.view === "portfolio") renderPortfolio();
+    if (b.dataset.view === "evidence") { renderIndex(); renderExhibit(); }
+  }));
 }
 
-function toast(msg, ms = 2600) {
-  const el = $("#toast");
-  el.textContent = msg;
-  el.hidden = false;
-  clearTimeout(toast.t);
-  toast.t = setTimeout(() => (el.hidden = true), ms);
+/* ---------- ranking ---------- */
+function renderWeights() {
+  $("#weights").innerHTML = CATS.map(([id, n, c]) => `<div class="w"><span><span class="sw" style="background:var(${c})"></span>${n}</span>
+      <div class="seg" role="group" aria-label="${n} weight">${["Off", "1×", "2×"].map((l, k) =>
+    `<button type="button" data-id="${id}" data-k="${k}" aria-pressed="${state.categoryWeights[id] === k}">${l}</button>`).join("")}</div></div>`).join("")
+    + `<small>Adjusting a weight re-scores on the server via common/score.py - nothing is computed in the browser, and nothing is saved.</small>`;
+  $$("#weights button").forEach(b => b.addEventListener("click", async () => {
+    const w = { ...state.categoryWeights }; w[b.dataset.id] = +b.dataset.k;
+    if (Object.values(w).every(x => !x)) return;
+    state.categoryWeights = w; renderWeights();
+    await loadScore();
+  }));
 }
+$("#wbtn")?.addEventListener("click", () => { const o = $("#weights").hidden; $("#weights").hidden = !o; $("#wbtn").setAttribute("aria-expanded", String(o)); });
 
-function progress(on) {
-  $("#progress").classList.toggle("on", on);
-}
-
-function debounce(fn, ms) {
-  let t;
-  return (...a) => { clearTimeout(t); t = setTimeout(() => fn(...a), ms); };
-}
-
-function meter(value, { color = "var(--ink)", cls = "" } = {}) {
-  if (!isNum(value)) return `<div class="meter ${cls}"><div class="bar"></div><span class="n na">–</span></div>`;
-  return `<div class="meter ${cls}"><div class="bar"><i style="width:${Math.max(1.5, value)}%;background:${color}"></i></div><span class="n">${fmt(value)}</span></div>`;
-}
-
-// ------------------------------------------------------------------ theme
-function applyTheme(theme) {
-  if (theme) document.documentElement.dataset.theme = theme;
-  else delete document.documentElement.dataset.theme;
-}
-function currentTheme() {
-  return document.documentElement.dataset.theme ||
-    (matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
-}
-try { applyTheme(localStorage.getItem("ethack-theme")); } catch { /* storage blocked */ }
-
-// ------------------------------------------------------------------ profile
-function normalizeProfile(raw, previous) {
-  const p = structuredClone(raw);
-  p.indicator_weights = { ...(raw.indicator_weights || {}) };
-  for (const ind of state.meta.indicators) {
-    const kept = previous?.indicator_weights?.[ind.id];
-    const w = kept ?? p.indicator_weights[ind.id] ?? ind.catalog_weight;
-    p.indicator_weights[ind.id] = w;
-    state.lastWeight[ind.id] = w > 0 ? w : (state.lastWeight[ind.id] || ind.catalog_weight || 1);
-  }
-  return p;
-}
-
-async function loadProfile(id) {
-  const raw = await api(`/api/profile?name=${encodeURIComponent(id)}`);
-  state.profileId = id;
-  state.base = raw;
-  state.profile = normalizeProfile(raw);
-  state.edited = false;
-  renderPanel();
-  scoreNow();
-}
-
-function changed() {
-  state.edited = true;
-  renderProfileDesc();
-  renderSplit();
-  scoreSoon();
-}
-
-// ------------------------------------------------------------------ scoring
-let scoreSeq = 0;
-async function scoreNow() {
-  const seq = ++scoreSeq;
-  progress(true);
-  try {
-    const result = await api("/api/score", { source: state.source, profile: state.profile });
-    if (seq !== scoreSeq) return;
-    state.result = result;
-    if (state.view !== "workspace") renderView();
-  } catch (e) {
-    toast(e.message);
-  } finally {
-    if (seq === scoreSeq) progress(false);
-  }
-}
-const scoreSoon = debounce(scoreNow, 140);
-
-// ------------------------------------------------------------------ panel
-function renderPanel() {
-  const sel = $("#profile-select");
-  sel.innerHTML = state.meta.profiles.map((id) => `<option value="${esc(id)}">${esc(id.replace(/_/g, " "))}</option>`).join("");
-  sel.value = state.profileId;
-  $("#save-name").value = state.profile.name || "";
-
-  $("#category-controls").innerHTML = CATS.map((c) => `
-    <div class="slider-row">
-      <div class="slider-head">
-        <span class="cat-label">${swatch(c)}${CAT_LABEL[c]}</span>
-        <span class="value" id="cw-val-${c}"></span>
-      </div>
-      <input type="range" min="0" max="5" step="0.5" data-cat="${c}" style="--fill:var(--${c})">
-    </div>`).join("");
-  $$("#category-controls input").forEach((input) => {
-    input.value = state.profile.category_weights[input.dataset.cat] ?? 1;
-    syncRange(input);
-    input.addEventListener("input", () => {
-      state.profile.category_weights[input.dataset.cat] = Number(input.value);
-      syncRange(input);
-      changed();
-    });
+function fingerprint(ticker) {
+  const fp = (state.score.fingerprints || {})[ticker] || {};
+  let prev = null, out = "";
+  state.meta.indicators.forEach(m => {
+    if (prev && m.category !== prev) out += `<i class="sp"></i>`;
+    prev = m.category;
+    const pts = fp[m.id];
+    out += pts != null
+      ? `<i title="${esc(m.name)}: ${pts}"><b style="height:${Math.max(2, pts * .26)}px;background:${colOf(m.id)}"></b></i>`
+      : `<i class="gap" title="${esc(m.name)}: no data"></i>`;
   });
+  return `<span class="print">${out}</span>`;
+}
 
-  const groups = CATS.map((c) => {
-    const inds = state.meta.indicators.filter((i) => i.category === c);
-    const rows = inds.map((ind) => {
-      const w = state.profile.indicator_weights[ind.id];
-      const arrow = ind.higher_is_better ? "higher is better" : "lower is better";
-      return `
-        <div class="ind-row ${w > 0 ? "" : "off"}" data-id="${esc(ind.id)}" title="${esc(ind.description)}\n${esc(ind.unit)} · ${arrow}">
-          <input type="checkbox" class="switch" ${w > 0 ? "checked" : ""} aria-label="Use ${esc(ind.name)}">
-          <span class="name">${esc(ind.name)}</span>
-          <span class="stepper">
-            <button data-step="-0.5" aria-label="Less weight">−</button>
-            <span>${fmtW(w > 0 ? w : state.lastWeight[ind.id])}×</span>
-            <button data-step="0.5" aria-label="More weight">+</button>
-          </span>
-        </div>`;
-    }).join("");
-    return `<div class="ind-group">
-      <div class="ind-group-title">${swatch(c)}${CAT_LABEL[c]}</div>
-      ${rows || `<div class="empty-note">No ready indicators yet</div>`}
-    </div>`;
-  }).join("");
-  $("#indicator-controls").innerHTML = groups;
+function renderRows() {
+  if (!state.score) return;
+  let rows = state.score.rows;
+  const q = state.q.toLowerCase();
+  if (q) rows = rows.filter(r => r.ticker.toLowerCase().includes(q) || r.name.toLowerCase().includes(q));
+  if (state.sector) rows = rows.filter(r => r.sector === state.sector);
+  $("#rows").innerHTML = rows.slice(0, state.limit).map(r => `<tr tabindex="0" data-t="${r.ticker}">
+      <td class="pos num">${r.position ?? "–"}</td>
+      <td class="co"><b>${esc(r.name || r.ticker)}</b><span class="mono">${r.ticker}</span></td>
+      <td class="muted">${esc(r.sector || "")}</td>
+      <td>${fingerprint(r.ticker)}</td>
+      <td class="r num">${f1(r.economic_score)}</td><td class="r num">${f1(r.social_score)}</td><td class="r num">${f1(r.environmental_score)}</td>
+      <td class="r tot">${f1(r.total_score)}</td></tr>`).join("");
+  $("#more").hidden = rows.length <= state.limit;
+  $("#more").textContent = `Show all ${rows.length}`;
+  $$("#rows tr").forEach(tr => { tr.onclick = () => openCompany(tr.dataset.t); tr.onkeydown = e => e.key === "Enter" && openCompany(tr.dataset.t); });
+}
 
-  $$("#indicator-controls .ind-row").forEach((row) => {
-    const id = row.dataset.id;
-    $("input", row).addEventListener("change", (e) => {
-      state.profile.indicator_weights[id] = e.target.checked ? state.lastWeight[id] : 0;
-      row.classList.toggle("off", !e.target.checked);
-      renderIndicatorCount();
-      changed();
-    });
-    $$("button", row).forEach((btn) => btn.addEventListener("click", () => {
-      const w = Math.min(5, Math.max(0.5, state.lastWeight[id] + Number(btn.dataset.step)));
-      state.lastWeight[id] = w;
-      state.profile.indicator_weights[id] = w;
-      $(".stepper span", row).textContent = `${fmtW(w)}×`;
-      changed();
-    }));
+async function loadScore() {
+  state.score = await postJSON("/api/score", { profile: state.profileId, category_weights: state.categoryWeights });
+  renderRows();
+}
+
+/* ---------- company drawer: chain of evidence ---------- */
+function flow(ticker, cats, inds) {
+  const srcOf = x => x.source || "no data for this company";
+  const srcs = [...new Set(inds.map(srcOf))];
+  const W = 700, rowH = 46, H = Math.max(inds.length, srcs.length, 3) * rowH + 30;
+  const X = [0, 230, 470, 620], NW = [180, 180, 110, 80];
+  const yOf = (i, n) => 24 + (H - 24) / n * (i + .5);
+  const curve = (x1, y1, x2, y2) => `M${x1},${y1} C${(x1 + x2) / 2},${y1} ${(x1 + x2) / 2},${y2} ${x2},${y2}`;
+  let links = "", nodes = "";
+  ["Source", "Indicator · points", "Category", "Total"].forEach((t, i) => nodes += `<text class="sub" x="${X[i]}" y="10">${t.toUpperCase()}</text>`);
+  srcs.forEach((s, i) => { const y = yOf(i, srcs.length); nodes += `<rect class="node" x="0" y="${y - 16}" width="${NW[0]}" height="32"/><text x="10" y="${y + 4}">${esc(String(s).length > 26 ? s.slice(0, 25) + "…" : s)}</text>`; });
+  inds.forEach((x, i) => {
+    const y = yOf(i, inds.length), sy = yOf(srcs.indexOf(srcOf(x)), srcs.length);
+    const ci = cats.findIndex(k => k[0] === x.category), cy = yOf(ci, cats.length), col = colOf(x.indicator_id);
+    links += `<g class="hov"><path class="link" style="stroke:${col};stroke-opacity:.45" stroke-width="2" d="${curve(NW[0], sy, X[1], y)}"/>
+      <path class="link" style="stroke:${col};stroke-opacity:.45" stroke-width="${1 + (x.points || 0) / 12}" d="${curve(X[1] + NW[1], y, X[2], cy)}"/></g>`;
+    nodes += `<rect class="node" x="${X[1]}" y="${y - 16}" width="${NW[1]}" height="32" style="stroke:${col}"/><text x="${X[1] + 10}" y="${y + 4}">${esc(META(x.indicator_id).name)}</text>
+      <text class="sub" x="${X[1] + NW[1] - 8}" y="${y + 4}" text-anchor="end">${x.points != null ? Math.round(x.points) : "–"}</text>`;
   });
-
-  $("#sector-relative").checked = !!state.profile.sector_relative;
-  const ms = $("#min-share");
-  ms.value = state.profile.min_weight_share;
-  syncRange(ms);
-
-  renderProfileDesc();
-  renderSplit();
-  renderIndicatorCount();
+  const ty = yOf(0, 1);
+  cats.forEach(([id, n, col], i) => {
+    const y = yOf(i, cats.length), val = state.currentCompany[`${id}_score`];
+    links += `<path class="link" style="stroke:var(${col});stroke-opacity:.45" stroke-width="${1 + (val || 0) / 10}" d="${curve(X[2] + NW[2], y, X[3], ty)}"/>`;
+    nodes += `<rect class="node" x="${X[2]}" y="${y - 16}" width="${NW[2]}" height="32" style="stroke:var(${col})"/><text x="${X[2] + 10}" y="${y + 4}">${n.slice(0, 5)}.</text>
+      <text class="sub" x="${X[2] + NW[2] - 8}" y="${y + 4}" text-anchor="end">${val == null ? "–" : val.toFixed(0)}</text>`;
+  });
+  return `<svg class="flow" viewBox="0 0 ${W} ${H}" role="img" aria-label="Chain from source documents to total score">${links}${nodes}</svg>`;
 }
 
-function renderSummary() {
-  const on = state.meta.indicators.filter((i) => state.profile.indicator_weights[i.id] > 0).length;
-  $("#panel-summary").textContent = `${state.profile.name}${state.edited ? " (edited)" : ""} · ${on} indicators`;
+async function openCompany(ticker) {
+  const detail = await postJSON("/api/explain", { profile: state.profileId, category_weights: state.categoryWeights, ticker });
+  const c = detail.company;
+  state.currentCompany = c;
+  const cats = CATS.filter(([id]) => detail.indicators.some(x => x.category === id));
+  const rows = detail.indicators.map(x => `<div class="row"><div><b>${esc(META(x.indicator_id).name)}</b><div class="cat"><span class="sw" style="background:${colOf(x.indicator_id)}"></span>${x.category} · FY ${x.year}</div></div>
+      <div class="num">${fmtVal(x.value, x.unit)}<div class="cat">${esc(x.unit || "")}</div></div><div class="pts">${x.points != null ? Math.round(x.points) : "–"}</div>
+      <div class="src">${x.source_url ? `<a href="${esc(x.source_url)}" target="_blank" rel="noopener">${esc(x.source || "source")} ↗</a>` : '<span class="muted">no link on record</span>'}</div>
+      <div class="note">${esc(x.note || "")}</div></div>`).join("");
+  $("#drawer").innerHTML = `<header><div><span class="label mono">${c.ticker} · ${esc(c.sector || "")}</span><h2>${esc(c.name || c.ticker)}</h2></div><button type="button" class="btn" id="close">Close</button></header>
+    <div class="score-line"><div><span class="label">Total</span><span class="v">${f1(c.total_score)}</span></div>${CATS.map(([id, n, col]) => `<div><span class="label"><span class="sw" style="background:var(${col})"></span>${n}</span><span class="v">${f1(c[`${id}_score`])}</span></div>`).join("")}</div>
+    <div class="chain-h"><h3>Chain of evidence</h3><span class="muted" style="font-size:12px">Line width = points</span></div>
+    ${flow(ticker, cats, detail.indicators)}
+    <div class="ledger">${rows || '<p class="muted">No ready indicator has a value for this company.</p>'}</div>`;
+  $("#drawer").hidden = $("#scrim").hidden = false; $("#close").onclick = closeCompany; $("#close").focus();
 }
+function closeCompany() { $("#drawer").hidden = $("#scrim").hidden = true; }
+$("#scrim").onclick = closeCompany;
+document.addEventListener("keydown", e => e.key === "Escape" && closeCompany());
 
-function syncRange(input) {
-  const pct = ((input.value - input.min) / (input.max - input.min)) * 100;
-  input.style.setProperty("--pct", `${pct}%`);
-  if (input.dataset.cat) $(`#cw-val-${input.dataset.cat}`).textContent = `${fmtW(Number(input.value))}×`;
-  if (input.id === "min-share") $("#min-share-value").textContent = `${Math.round(input.value * 100)}%`;
-}
-
-function activeCategoryWeights() {
-  const out = {};
-  for (const c of CATS) {
-    const hasInd = state.meta.indicators.some((i) => i.category === c && state.profile.indicator_weights[i.id] > 0);
-    out[c] = hasInd ? (state.profile.category_weights[c] || 0) : 0;
-  }
-  return out;
-}
-
-function renderSplit() {
-  const w = activeCategoryWeights();
-  const total = CATS.reduce((s, c) => s + w[c], 0);
-  $("#split").innerHTML = total
-    ? CATS.filter((c) => w[c] > 0).map((c) => `<span style="flex-grow:${w[c]};background:var(--${c})" title="${CAT_LABEL[c]} ${Math.round((w[c] / total) * 100)}%"></span>`).join("")
-    : "";
-  $("#split").title = CATS.map((c) => `${CAT_LABEL[c]} ${total ? Math.round((w[c] / total) * 100) : 0}%`).join(" · ");
-}
-
-function renderIndicatorCount() {
-  const on = state.meta.indicators.filter((i) => state.profile.indicator_weights[i.id] > 0).length;
-  $("#indicator-count").textContent = `${on} of ${state.meta.indicators.length} on`;
-}
-
-function renderProfileDesc() {
-  renderSummary();
-  const desc = state.base?.description || "";
-  $("#profile-desc").innerHTML = state.edited
-    ? `${esc(desc)}${desc ? "<br>" : ""}<span style="color:var(--ink-2)">Edited - save to keep these choices.</span>`
-    : esc(desc);
-}
-
-// ------------------------------------------------------------------ views
-function setView(view) {
-  state.view = VIEWS.includes(view) ? view : "ranking";
-  $$("#nav button").forEach((b) => b.classList.toggle("active", b.dataset.view === state.view));
-  $("#shell").classList.toggle("full", state.view === "workspace" || state.view === "portfolio");
-  if (location.hash.slice(1) !== state.view) history.replaceState(null, "", `#${state.view}`);
-  renderView();
-  window.scrollTo({ top: 0 });
-}
-
-function renderView() {
-  const main = $("#main");
-  if (state.view === "workspace") return renderWorkspace();
-  if (!state.result) { main.innerHTML = ""; return; }
-  if (state.view === "ranking") main.innerHTML = viewRanking();
-  if (state.view === "sectors") main.innerHTML = viewSectors();
-  if (state.view === "indicators") main.innerHTML = viewIndicators();
-  if (state.view === "portfolio") main.innerHTML = viewPortfolio();
-  bindView();
-}
-
-function head(title, text, right = "") {
-  return `<div class="view-head"><div><h1>${title}</h1><p>${text}</p></div>${right}</div>`;
-}
-
-function noIndicators() {
-  const live = state.source === "real";
-  return `<div class="card empty">
-    <h3>${live ? "No indicator is switched on" : "Switch on an indicator"}</h3>
-    <p>${live && !state.meta.indicators.length
-      ? "The team has no <code>ready</code> indicators yet. Try the demo data in the top right."
-      : "Pick at least one indicator in the panel on the left."}</p>
-  </div>`;
-}
-
-function viewRanking() {
-  const r = state.result;
-  const n = state.meta.companies;
-  const chosen = Object.keys(r.weights);
-  let body;
-  if (!chosen.length) {
-    body = noIndicators();
-  } else {
-    const q = state.search.trim().toLowerCase();
-    const rows = r.rows.filter((row) =>
-      (!state.sector || row.sector === state.sector) &&
-      (!q || row.ticker.toLowerCase().includes(q) || (row.name || "").toLowerCase().includes(q)));
-    const shown = rows.slice(0, state.limit);
-    const active = CATS.filter((c) => r.category_weights[c]);
-    const tr = shown.map((row) => `
-      <tr class="click" data-ticker="${esc(row.ticker)}">
-        <td class="pos">${row.position ?? ""}</td>
-        <td><div class="co"><b>${esc(row.ticker)}</b><span>${esc(row.name)}</span></div></td>
-        <td class="sector-cell hide-sm">${esc(row.sector)}</td>
-        <td>${meter(row.total_score, { cls: "total" })}</td>
-        ${active.map((c) => `<td class="hide-sm">${meter(row[`${c}_score`], { color: `var(--${c})`, cls: "mini" })}</td>`).join("")}
-      </tr>`).join("");
-    body = `
-      <div class="toolbar">
-        <div class="search">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
-          <input type="search" id="search" placeholder="Search company or ticker" value="${esc(state.search)}">
-        </div>
-        ${state.meta.sectors.length ? `<div class="select-wrap"><select id="sector-filter">
-          <option value="">All sectors</option>
-          ${state.meta.sectors.map((s) => `<option ${s === state.sector ? "selected" : ""}>${esc(s)}</option>`).join("")}
-        </select></div>` : ""}
-        <span class="count">${rows.length} companies</span>
-      </div>
-      <div class="card table-wrap">
-        <table class="data">
-          <thead><tr>
-            <th>#</th><th>Company</th><th class="hide-sm">Sector</th><th>Total score</th>
-            ${active.map((c) => `<th class="hide-sm"><span class="cat-label">${swatch(c)}${CAT_LABEL[c]}</span></th>`).join("")}
-          </tr></thead>
-          <tbody>${tr || `<tr><td colspan="8" class="muted" style="text-align:center;padding:40px">No company matches</td></tr>`}</tbody>
-        </table>
-        ${rows.length > state.limit ? `<div class="more"><button class="btn ghost sm" id="more">Show ${Math.min(50, rows.length - state.limit)} more</button></div>` : ""}
-      </div>`;
-  }
-
-  const leader = r.rows.find((row) => isNum(row.total_score));
-  const perCat = CATS.map((c) => chosen.filter((id) => state.meta.indicators.find((i) => i.id === id)?.category === c).length);
-  const stats = `
-    <div class="stats">
-      <div class="stat"><span class="k">Companies scored</span><span class="v">${r.scored}<small> / ${n}</small></span><span class="s">enough data under the coverage rule</span></div>
-      <div class="stat"><span class="k">Median total score</span><span class="v">${fmt(r.median)}</span><span class="s">50 = middle of the pack</span></div>
-      <div class="stat"><span class="k">Leader</span><span class="v">${leader ? esc(leader.ticker) : "–"}</span><span class="s">${leader ? `${fmt(leader.total_score)} · ${esc(leader.name || leader.sector || "")}` : "no scores yet"}</span></div>
-      <div class="stat"><span class="k">Indicators in use</span><span class="v">${chosen.length}</span><span class="s">${CATS.map((c, i) => `<span class="cat-label" style="gap:5px;font-weight:400" title="${CAT_LABEL[c]}">${swatch(c)}${perCat[i]}</span>`).join("&nbsp;&nbsp;&nbsp;")}</span></div>
-    </div>`;
-
-  return head("Ranking", `Companies ordered by total impact score for <b>${esc(state.profile.name)}</b>. Click a company to see what drives its score.`) + stats + body;
-}
-
-function viewSectors() {
-  const r = state.result;
-  if (!Object.keys(r.weights).length) return head("Sectors", "") + noIndicators();
-  if (!r.sectors.length) {
-    return head("Sectors", "Median scores per GICS sector.") +
-      `<div class="card empty"><h3>No sector data yet</h3><p>Sectors appear once <code>universe/sp500.csv</code> exists.</p></div>`;
-  }
-  const active = CATS.filter((c) => r.category_weights[c]);
-  const rows = r.sectors.map((s) => `
-    <div class="sector-row">
-      <div class="name">${esc(s.sector)}<small>${s.scored} of ${s.companies} scored</small></div>
-      ${meter(s.total, { cls: "total" })}
-      ${CATS.map((c) => `<span class="cat-val">${active.includes(c) ? `${swatch(c)}${fmt(s[c])}` : ""}</span>`).join("")}
-    </div>`).join("");
-  const hint = state.profile.sector_relative
-    ? "Companies are ranked within their sector, so sector medians sit close to 50 by design."
-    : "Big gaps between sectors? Switch on <b>Compare within sector</b> to judge companies against their peers.";
-  return head("Sectors", `Median score per GICS sector. ${hint}`) + `
-    <div class="card sector-list">
-      <div class="sector-row head"><span>Sector</span><span>Median total</span>${CATS.map((c) => `<span class="cat-val">${active.includes(c) ? CAT_LABEL[c] : ""}</span>`).join("")}</div>
-      ${rows}
-    </div>`;
-}
-
-function heatColor(rho) {
-  const lerp = (a, b, t) => a.map((v, i) => Math.round(v + (b[i] - v) * t));
-  const mid = [240, 239, 236], pos = [42, 120, 214], neg = [227, 73, 72];
-  const [r, g, b] = lerp(mid, rho >= 0 ? pos : neg, Math.min(1, Math.abs(rho)));
-  return { bg: `rgb(${r},${g},${b})`, fg: Math.abs(rho) > 0.55 ? "#fff" : "#0b0b0b" };
-}
-
-function viewIndicators() {
-  const r = state.result;
-  const inds = state.meta.indicators;
-  if (!inds.length) {
-    return head("Indicators", "The building blocks of every score.") +
-      `<div class="card empty"><h3>No ready indicators yet</h3><p>Build them in <b>Workspace</b>, or try the demo data.</p></div>`;
-  }
-  const sections = CATS.map((c) => {
-    const list = inds.filter((i) => i.category === c);
-    if (!list.length) return "";
-    return `<div class="ind-section">
-      <h2>${swatch(c)}${CAT_LABEL[c]}</h2>
-      <div class="card">${list.map((ind) => {
-        const w = r.weights[ind.id];
-        const cov = Math.round(ind.coverage * 100);
-        return `<div class="ind-card">
-          <div>
-            <div class="title">${esc(ind.name)}
-              <span class="chip">${ind.higher_is_better ? "↑ higher is better" : "↓ lower is better"}</span>
-              ${w ? `<span class="chip on">${fmtW(w)}× weight</span>` : `<span class="chip">off</span>`}
-            </div>
-            <div class="desc">${esc(ind.description)}</div>
-            <div class="meta">${esc(ind.unit)} · ${esc(ind.source)} · ${esc(ind.owner)}</div>
-          </div>
-          <div class="cov" title="Target: 70% of companies">
-            <div class="top"><span>Coverage</span><b>${cov}%</b></div>
-            <div class="bar"><i style="width:${cov}%;background:${cov >= 70 ? `var(--${c})` : "var(--ink-3)"}"></i></div>
-            <span class="muted small">${ind.companies} companies</span>
-          </div>
-          <div class="muted small">${ind.year_min ? `${ind.year_min === ind.year_max ? ind.year_max : `${ind.year_min}–${ind.year_max}`}` : ""}<br>latest year</div>
-        </div>`;
-      }).join("")}</div>
-    </div>`;
-  }).join("");
-
-  const { ids, matrix } = r.correlation;
-  let heat = "";
-  if (ids.length >= 2) {
-    const name = (id) => inds.find((i) => i.id === id)?.name || id;
-    const cells = ids.map((a, i) => `<div class="lab" title="${esc(name(a))}">${esc(name(a))}</div>` +
-      matrix[i].map((rho, j) => {
-        if (rho === null) return `<div class="cell" style="background:var(--surface-2)">–</div>`;
-        const { bg, fg } = heatColor(rho);
-        return `<div class="cell" style="background:${bg};color:${fg}" title="${esc(name(a))} × ${esc(name(ids[j]))}: ${rho.toFixed(2)}">${i === j ? "" : rho.toFixed(2)}</div>`;
-      }).join("")).join("");
-    heat = `<div class="ind-section">
-      <div class="card card-pad">
-        <h3>Do two indicators measure the same thing?</h3>
-        <p class="sub">Rank correlation between the indicators in use. Close to +1 means near-duplicates - consider keeping only one.</p>
-        <div class="table-wrap">
-          <div class="heat" style="grid-template-columns: minmax(120px, 220px) repeat(${ids.length}, minmax(44px, 72px))">
-            ${cells}
-            <div></div>${ids.map((id) => `<div class="collab" title="${esc(name(id))}">${esc(name(id))}</div>`).join("")}
-          </div>
-        </div>
-      </div>
-    </div>`;
-  }
-  return head("Indicators", "The building blocks of every score: what they measure, which direction is better, and how many companies they cover.") + sections + heat;
-}
-
-/* --- 3D impact cube: the three category scores as one picture. -----------------
-   Each company is a point at (economic, social, environmental). The corner where
-   all three are high is where a score-tilted portfolio puts its money, so this is
-   the allocation rule made visible. Plain canvas, no libraries. */
-
+/* ---------- portfolio: phase-3 preview + 3D impact cube ---------- */
 const CUBE = { yaw: -0.6, pitch: -0.35, drag: null, raf: null, spin: true };
-const CUBE_AXES = [
-  { key: "economic_score", label: "Economic" },
-  { key: "social_score", label: "Social" },
-  { key: "environmental_score", label: "Environmental" },
-];
+const CUBE_AXES = [["economic_score", "--econ"], ["social_score", "--soc"], ["environmental_score", "--env"]];
 
 function cubeRows() {
-  if (!state.result) return [];
-  return state.result.rows.filter((r) => CUBE_AXES.every((a) => isNum(r[a.key])));
+  if (!state.score) return [];
+  return state.score.rows.filter(r => CUBE_AXES.every(([k]) => isNum(r[k])));
 }
-
-function viewCube() {
-  const rows = cubeRows();
-  const missing = CUBE_AXES.filter((a) => !state.result.rows.some((r) => isNum(r[a.key])));
-  const note = missing.length
-    ? `<p class="sub">No data yet on ${missing.map((m) => esc(m.label.toLowerCase())).join(" and ")} -
-       those axes stay empty until those indicators are ready.</p>`
-    : `<p class="sub">${rows.length} companies with all three scores. Drag to rotate.</p>`;
-  return `<div class="card card-pad cube-card">
-      <div class="section-head"><h3>Impact cube</h3><span class="muted small">high / high / high = overweight</span></div>
-      ${note}
-      <canvas id="cube" height="320"></canvas>
-      <div class="cube-legend">
-        ${CUBE_AXES.map((a) => `<span><i></i>${esc(a.label)}</span>`).join("")}
-      </div>
-    </div>`;
-}
-
 function cubeProject(v, w, h) {
-  // v is in -1..1 on each axis. Rotate around Y (yaw) then X (pitch), then project.
-  const cy = Math.cos(CUBE.yaw), sy = Math.sin(CUBE.yaw);
-  const cp = Math.cos(CUBE.pitch), sp = Math.sin(CUBE.pitch);
-  const x1 = v[0] * cy + v[2] * sy;
-  const z1 = -v[0] * sy + v[2] * cy;
-  const y1 = v[1] * cp - z1 * sp;
-  const z2 = v[1] * sp + z1 * cp;
-  const d = 4.2;
-  const k = d / (d + z2);
-  const scale = Math.min(w, h) * 0.34;
+  const cy = Math.cos(CUBE.yaw), sy = Math.sin(CUBE.yaw), cp = Math.cos(CUBE.pitch), sp = Math.sin(CUBE.pitch);
+  const x1 = v[0] * cy + v[2] * sy, z1 = -v[0] * sy + v[2] * cy;
+  const y1 = v[1] * cp - z1 * sp, z2 = v[1] * sp + z1 * cp;
+  const d = 4.2, k = d / (d + z2), scale = Math.min(w, h) * 0.34;
   return [w / 2 + x1 * scale * k, h / 2 - y1 * scale * k, z2];
 }
-
 function drawCube() {
   const c = $("#cube");
   if (!c) return;
-  const dpr = window.devicePixelRatio || 1;
-  const w = c.clientWidth, h = 320;
+  const dpr = window.devicePixelRatio || 1, w = c.clientWidth, h = 320;
   if (c.width !== w * dpr) { c.width = w * dpr; c.height = h * dpr; }
   const g = c.getContext("2d");
-  g.setTransform(dpr, 0, 0, dpr, 0, 0);
-  g.clearRect(0, 0, w, h);
-
+  g.setTransform(dpr, 0, 0, dpr, 0, 0); g.clearRect(0, 0, w, h);
   const css = getComputedStyle(document.body);
-  const line = css.getPropertyValue("--line").trim() || "rgba(128,128,128,.35)";
-  const ink = css.getPropertyValue("--muted").trim() || "#888";
-
-  // wireframe
-  const C = [[-1,-1,-1],[1,-1,-1],[1,1,-1],[-1,1,-1],[-1,-1,1],[1,-1,1],[1,1,1],[-1,1,1]];
-  const E = [[0,1],[1,2],[2,3],[3,0],[4,5],[5,6],[6,7],[7,4],[0,4],[1,5],[2,6],[3,7]];
+  const line = css.getPropertyValue("--rule").trim() || "#ccc", ink = css.getPropertyValue("--muted").trim() || "#888";
+  const accent = css.getPropertyValue("--accent").trim() || "#d52b1e";
+  const C = [[-1, -1, -1], [1, -1, -1], [1, 1, -1], [-1, 1, -1], [-1, -1, 1], [1, -1, 1], [1, 1, 1], [-1, 1, 1]];
+  const E = [[0, 1], [1, 2], [2, 3], [3, 0], [4, 5], [5, 6], [6, 7], [7, 4], [0, 4], [1, 5], [2, 6], [3, 7]];
   g.strokeStyle = line; g.lineWidth = 1;
-  E.forEach(([a, b]) => {
-    const p = cubeProject(C[a], w, h), q = cubeProject(C[b], w, h);
-    g.beginPath(); g.moveTo(p[0], p[1]); g.lineTo(q[0], q[1]); g.stroke();
-  });
-
-  // the "overweight" corner - all three high
+  E.forEach(([a, b]) => { const p = cubeProject(C[a], w, h), q = cubeProject(C[b], w, h); g.beginPath(); g.moveTo(p[0], p[1]); g.lineTo(q[0], q[1]); g.stroke(); });
   const hi = cubeProject([1, 1, 1], w, h);
-  g.fillStyle = "rgba(70,190,120,.18)";
-  g.beginPath(); g.arc(hi[0], hi[1], 26, 0, 7); g.fill();
-
-  // axis labels at the far end of each axis
-  g.fillStyle = ink; g.font = "11px system-ui, sans-serif";
-  [[[1,-1,-1],"Economic"],[[-1,1,-1],"Social"],[[-1,-1,1],"Environmental"]].forEach(([v, t]) => {
-    const p = cubeProject(v, w, h);
-    g.fillText(t, p[0] + 4, p[1] - 4);
-  });
-
-  // companies, painted back to front so nearer dots sit on top
-  const pts = cubeRows().map((r) => {
-    const v = CUBE_AXES.map((a) => r[a.key] / 50 - 1);
-    const p = cubeProject(v, w, h);
-    return { p, total: isNum(r.total_score) ? r.total_score : 50 };
+  g.fillStyle = accent + "2e"; g.beginPath(); g.arc(hi[0], hi[1], 26, 0, 7); g.fill();
+  g.fillStyle = ink; g.font = "11px Archivo, sans-serif";
+  [[[1, -1, -1], "Economic"], [[-1, 1, -1], "Social"], [[-1, -1, 1], "Environmental"]].forEach(([v, t]) => { const p = cubeProject(v, w, h); g.fillText(t, p[0] + 4, p[1] - 4); });
+  const pts = cubeRows().map(r => {
+    const v = CUBE_AXES.map(([k]) => r[k] / 50 - 1);
+    return { p: cubeProject(v, w, h), total: isNum(r.total_score) ? r.total_score : 50 };
   }).sort((a, b) => b.p[2] - a.p[2]);
-
-  pts.forEach((d) => {
-    g.fillStyle = `hsl(${Math.round(8 + 1.42 * d.total)} 62% 52% / .8)`;
-    g.beginPath(); g.arc(d.p[0], d.p[1], 2.6, 0, 7); g.fill();
-  });
+  pts.forEach(d => { g.fillStyle = `hsl(${Math.round(8 + 1.42 * d.total)} 62% 45% / .82)`; g.beginPath(); g.arc(d.p[0], d.p[1], 2.6, 0, 7); g.fill(); });
 }
-
 function initCube() {
   const c = $("#cube");
   if (!c) return;
   drawCube();
-  const move = (e) => {
+  const move = e => {
     if (!CUBE.drag) return;
     const t = e.touches ? e.touches[0] : e;
-    CUBE.yaw += (t.clientX - CUBE.drag.x) * 0.01;
-    CUBE.pitch += (t.clientY - CUBE.drag.y) * 0.01;
-    CUBE.pitch = Math.max(-1.3, Math.min(1.3, CUBE.pitch));
-    CUBE.drag = { x: t.clientX, y: t.clientY };
-    drawCube();
+    CUBE.yaw += (t.clientX - CUBE.drag.x) * 0.01; CUBE.pitch = Math.max(-1.3, Math.min(1.3, CUBE.pitch + (t.clientY - CUBE.drag.y) * 0.01));
+    CUBE.drag = { x: t.clientX, y: t.clientY }; drawCube();
   };
-  const down = (e) => {
-    CUBE.spin = false;
-    const t = e.touches ? e.touches[0] : e;
-    CUBE.drag = { x: t.clientX, y: t.clientY };
-  };
+  const down = e => { CUBE.spin = false; const t = e.touches ? e.touches[0] : e; CUBE.drag = { x: t.clientX, y: t.clientY }; };
   const up = () => { CUBE.drag = null; };
-  c.addEventListener("mousedown", down);
-  c.addEventListener("touchstart", down, { passive: true });
-  window.addEventListener("mousemove", move);
-  window.addEventListener("touchmove", move, { passive: true });
-  window.addEventListener("mouseup", up);
-  window.addEventListener("touchend", up);
-  window.addEventListener("resize", drawCube);
+  c.addEventListener("mousedown", down); c.addEventListener("touchstart", down, { passive: true });
+  window.addEventListener("mousemove", move); window.addEventListener("touchmove", move, { passive: true });
+  window.addEventListener("mouseup", up); window.addEventListener("touchend", up); window.addEventListener("resize", drawCube);
   if (CUBE.raf) cancelAnimationFrame(CUBE.raf);
-  const tick = () => {
-    if (CUBE.spin && !CUBE.drag && $("#cube")) { CUBE.yaw += 0.0035; drawCube(); }
-    CUBE.raf = requestAnimationFrame(tick);
-  };
+  const tick = () => { if (CUBE.spin && !CUBE.drag && $("#cube")) { CUBE.yaw += 0.0035; drawCube(); } CUBE.raf = requestAnimationFrame(tick); };
   tick();
 }
-
-function viewPortfolio() {
-  const settings = state.meta.portfolio.settings;
-  const p = state.profile.portfolio || {};
-  return head("Portfolio", "How a $1B fund would be allocated using the scores of the selected profile.") + `
-    <div class="card placeholder">
-      <span class="chip warn badge">Phase 3 · placeholder</span>
-      <h2>Portfolio allocation is coming next</h2>
-      <p>The scores are ready to feed in. How they become weights is a team decision - the interface is already fixed in <code>portfolio/allocate.py</code>.</p>
-      <div style="margin-top:22px"><button class="btn" disabled>Build portfolio</button></div>
-    </div>
+function renderPortfolio() {
+  const rows = cubeRows();
+  const missing = CUBE_AXES.filter(([k]) => !state.score.rows.some(r => isNum(r[k])));
+  const label = k => (CATS.find(c => k.startsWith(c[0])) || [, k])[1];
+  const note = missing.length
+    ? `<p class="sub muted">No data yet on ${missing.map(a => label(a[0])).join(" / ")} - that axis stays empty until those indicators are ready.</p>`
+    : `<p class="sub muted">${rows.length} companies with all three category scores. Drag to rotate.</p>`;
+  $("#view-portfolio").innerHTML = `
+    <div class="lede"><div><h2>Turning a score into a portfolio.</h2>
+      <p>Phase 3 (not built yet): a profile's scores weight an allocation across the S&amp;P 500. This previews the idea -
+      every company plotted by its three category scores. The corner where all three are high is where a score-tilted
+      portfolio overweights.</p></div></div>
     <div class="steps">
-      <div class="card step"><div class="n">1</div><h4>Scores in</h4><p>Total and category scores of <b>${esc(state.profile.name)}</b>, for every company with enough data.</p></div>
-      <div class="card step"><div class="n">2</div><h4>Allocation rule</h4><p>Tilt toward high scores or exclude the bottom X%, with a cap per company and optional sector neutrality.</p></div>
-      <div class="card step"><div class="n">3</div><h4>Weights out</h4><p><code>${state.meta.portfolio.output_columns.join(", ")}</code> - weights sum to 100% of the fund.</p></div>
+      <div class="card"><div class="n">1</div><h4>Scores in</h4><p>Total and category scores per company, from the profile selected in Ranking.</p></div>
+      <div class="card"><div class="n">2</div><h4>Allocation rule</h4><p>Tilt toward high scores, or exclude the bottom X%, with a cap per company and optional sector neutrality.</p></div>
+      <div class="card"><div class="n">3</div><h4>Weights out</h4><p>Portfolio weights that sum to 100% of the fund. Not implemented - see <code>portfolio/allocate.py</code>.</p></div>
     </div>
-    ${viewCube()}
-    <div class="card card-pad" style="margin-top:16px">
-      <h3>Settings a profile can already store</h3>
-      <p class="sub">Under <code>[portfolio]</code> in <code>profiles/${esc(state.profileId)}.toml</code></p>
-      <div class="kv">
-        ${Object.entries(settings).map(([k, v]) => `<code>${esc(k)}</code><span class="muted">${esc(v)}</span><b>${esc(p[k] ?? "")}</b>`).join("")}
-      </div>
+    <div class="cube-card">
+      <div class="chain-h"><h3>Impact cube</h3><span class="muted" style="font-size:12px">high / high / high = overweight</span></div>
+      ${note}
+      <canvas id="cube" height="320"></canvas>
+      <div class="cube-legend">${CATS.map(([, n, c]) => `<span><i style="background:var(${c})"></i>${n}</span>`).join("")}</div>
     </div>`;
-}
-
-// ------------------------------------------------------------------ workspace
-async function loadWorkspace(fetchRemote = false) {
-  try {
-    state.workspace = await api(`/api/workspace${fetchRemote ? "?fetch=1" : ""}`);
-    const g = state.workspace.git;
-    $("#ws-dot").hidden = !(g.changes.length || g.behind || state.workspace.check.errors.length);
-    if (state.workspace.job && !state.job) followJob(state.workspace.job);
-  } catch (e) {
-    toast(e.message);
-  }
-}
-
-async function renderWorkspace() {
-  const main = $("#main");
-  if (!state.workspace) {
-    main.innerHTML = head("Workspace", "Loading…");
-    await loadWorkspace(true);
-  }
-  const ws = state.workspace;
-  if (!ws || state.view !== "workspace") return;
-  const g = ws.git;
-  const busy = !!state.job?.running;
-  const dis = busy ? "disabled" : "";
-  const [lastMsg, lastWho, lastWhen] = (g.last_commit || "").split("|");
-
-  const statusChip = (s) => ({ ready: "good", in_progress: "warn" }[s] || "");
-  const checks = [
-    ...ws.check.errors.map((x) => `<div class="check-item"><span class="icon err">!</span><div>${esc(x.message)}<span class="area">${esc(x.area)}</span></div></div>`),
-    ...ws.check.warnings.map((x) => `<div class="check-item"><span class="icon warn">!</span><div>${esc(x.message)}<span class="area">${esc(x.area)}</span></div></div>`),
-  ];
-  if (!ws.check.errors.length) checks.unshift(`<div class="check-item"><span class="icon ok">✓</span><div>Format check passed<span class="area">every catalog and indicator file</span></div></div>`);
-
-  main.innerHTML = head("Workspace", "Everything the command line does - sync with the team, build and check data, export scores.",
-    `<button class="btn ghost" id="ws-refresh" ${dis}>Refresh</button>`) + `
-    <div class="ws-grid">
-      <div class="card card-pad">
-        <h3>Team sync</h3>
-        <p class="sub">On <code>${esc(g.branch)}</code> as ${esc(g.user || "unknown")}${lastMsg ? ` · last: ${esc(lastMsg)} (${esc(lastWho)}, ${esc(lastWhen)})` : ""}</p>
-        <div class="sync-status">
-          <div><b>${g.changes.length}</b><span>unsaved changes</span></div>
-          <div><b>${g.ahead}</b><span>not pushed</span></div>
-          <div><b>${g.behind}</b><span>new from team</span></div>
-        </div>
-        ${g.changes.length ? `<div class="files">${g.changes.map((f) => `<div><code title="${esc(f.path)}">${esc(f.path)}</code><span class="muted">${esc(f.owner)}</span></div>`).join("")}</div>` : ""}
-        <div class="row-actions" style="margin-bottom:14px">
-          <button class="btn ghost" data-run="start" ${dis}>Get latest from team</button>
-        </div>
-        <div class="save-row">
-          <input type="text" id="save-message" placeholder="[area] what you changed, e.g. [social] ceo pay ratio: 412 companies">
-          <button class="btn" data-run="save" ${dis}>Save & push</button>
-        </div>
-        <p class="muted small" style="margin:8px 0 0">Commit → pull → format check → push. Stops safely on conflicts.</p>
-      </div>
-
-      <div class="card card-pad">
-        <h3>Data health</h3>
-        <p class="sub">The format rules from docs/DATA_FORMAT.md</p>
-        <div class="checks">${checks.join("")}</div>
-        <button class="btn ghost" data-run="check" ${dis}>Run check + tests</button>
-      </div>
-
-      <div class="card wide">
-        <div class="card-pad" style="padding-bottom:16px">
-          <div style="display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;align-items:end">
-            <div><h3>Indicators</h3><p class="sub" style="margin:0">Every catalog row, including ideas. Only <b>ready</b> ones are scored.</p></div>
-            <div class="form-row">
-              <div class="select-wrap"><select id="new-cat">${CATS.map((c) => `<option value="${c}">${CAT_LABEL[c]}</option>`).join("")}</select></div>
-              <input type="text" id="new-id" placeholder="new_indicator_id">
-              <button class="btn ghost" data-run="new-indicator" ${dis}>Add indicator</button>
-            </div>
-          </div>
-        </div>
-        <div class="table-wrap">
-          <table class="data compact">
-            <thead><tr><th>Indicator</th><th class="hide-sm">Owner</th><th>Status</th><th class="right">Companies</th><th class="right hide-sm">Latest year</th><th class="right">Build</th></tr></thead>
-            <tbody>
-              ${ws.catalog.map((row) => `<tr>
-                <td><div class="co"><b><span class="cat-label">${swatch(row.category)}${esc(row.name || row.indicator_id)}</span></b><span><code>${esc(row.category)}/${esc(row.indicator_id)}</code></span></div></td>
-                <td class="hide-sm">${esc(row.owner)}</td>
-                <td><span class="chip ${statusChip(row.status)} status-pill">${esc(row.status.replace("_", " "))}</span></td>
-                <td class="right num">${row.has_file ? row.companies : "–"}</td>
-                <td class="right num hide-sm">${row.year_max ?? "–"}</td>
-                <td class="right"><button class="btn ghost sm" data-run="build" data-cat="${esc(row.category)}" data-id="${esc(row.indicator_id)}" ${row.has_script && !busy ? "" : "disabled"} title="${row.has_script ? "Run the script" : "No script yet"}">Build</button></td>
-              </tr>`).join("") || `<tr><td colspan="6" class="muted" style="text-align:center;padding:32px">No indicators in any catalog yet</td></tr>`}
-            </tbody>
-          </table>
-        </div>
-        <div class="card-pad row-actions" style="border-top:1px solid var(--border);padding-block:14px">
-          ${CATS.map((c) => `<button class="btn ghost sm" data-run="build" data-cat="${c}" ${dis}>${swatch(c)}Build all ${CAT_LABEL[c].toLowerCase()}</button>`).join("")}
-        </div>
-      </div>
-
-      <div class="card card-pad wide">
-        <div style="display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;align-items:center">
-          <div><h3>Export scores</h3><p class="sub" style="margin:0">Writes <code>scores/&lt;profile&gt;/scores.csv</code> and <code>indicator_ranks.csv</code> from the live data.</p></div>
-          <div class="save-row">
-            <div class="select-wrap" style="min-width:200px"><select id="export-profile">${ws.profiles.map((p) => `<option ${p === state.profileId ? "selected" : ""}>${esc(p)}</option>`).join("")}</select></div>
-            <button class="btn" data-run="score" ${dis}>Export</button>
-          </div>
-        </div>
-      </div>
-    </div>`;
-
-  $("#ws-refresh").addEventListener("click", async () => { await loadWorkspace(true); renderWorkspace(); });
-  $$("[data-run]", main).forEach((btn) => btn.addEventListener("click", () => {
-    const command = btn.dataset.run;
-    const payload = { command };
-    if (command === "save") payload.message = $("#save-message").value;
-    if (command === "build") Object.assign(payload, { category: btn.dataset.cat, indicator_id: btn.dataset.id || "" });
-    if (command === "new-indicator") Object.assign(payload, { category: $("#new-cat").value, indicator_id: $("#new-id").value.trim() });
-    if (command === "score") payload.profile = $("#export-profile").value;
-    runJob(payload);
-  }));
-}
-
-async function runJob(payload) {
-  try {
-    followJob(await api("/api/run", payload));
-  } catch (e) {
-    toast(e.message, 4000);
-  }
-}
-
-function followJob(job) {
-  state.job = job;
-  showConsole(job);
-  if (state.view === "workspace") renderWorkspace();
-  const poll = async () => {
-    try {
-      const j = await api(`/api/job?id=${job.id}`);
-      state.job = j;
-      showConsole(j);
-      if (j.running) return setTimeout(poll, 600);
-      toast(j.code === 0 ? `Done: ${j.title}` : `Failed: ${j.title} - see output`, 3500);
-      await afterJob();
-    } catch (e) {
-      toast(e.message);
-    }
-  };
-  setTimeout(poll, 400);
-}
-
-async function afterJob() {
-  await loadWorkspace(false);
-  await reloadMeta();
-  if (state.view === "workspace") renderWorkspace();
-}
-
-function showConsole(job) {
-  $("#console").hidden = false;
-  $("#console-title").textContent = job.title;
-  $("#console-cmd").textContent = job.command;
-  $("#console-dot").className = `status-dot ${job.running ? "running" : job.code === 0 ? "ok" : "fail"}`;
-  const out = $("#console-out");
-  const atBottom = out.scrollHeight - out.scrollTop - out.clientHeight < 40;
-  out.textContent = job.output.join("\n") || (job.running ? "running…" : "(no output)");
-  if (atBottom) out.scrollTop = out.scrollHeight;
-}
-
-// ------------------------------------------------------------------ company drawer
-async function openCompany(ticker) {
-  const drawer = $("#drawer");
-  drawer.innerHTML = `<div class="muted">Loading ${esc(ticker)}…</div>`;
-  drawer.classList.add("open");
-  drawer.setAttribute("aria-hidden", "false");
-  $("#scrim").hidden = false;
-  try {
-    const { company: co, indicators } = await api("/api/explain", { source: state.source, profile: state.profile, ticker });
-    const r = state.result;
-    const drivers = indicators.filter((d) => isNum(d.rank)).sort((a, b) => b.points - a.points);
-    const missing = indicators.filter((d) => !isNum(d.rank));
-    drawer.innerHTML = `
-      <div class="drawer-top">
-        <div>
-          <div class="ticker">${esc(co.ticker)}</div>
-          <h2>${esc(co.name || co.ticker)}</h2>
-          <div class="muted">${esc(co.sector || "")}</div>
-        </div>
-        <button class="icon-btn" id="drawer-close" aria-label="Close">✕</button>
-      </div>
-      <div class="hero-score"><b>${fmt(co.total_score)}</b><span>${isNum(co.total_score) ? `total score · #${co.position} of ${r.scored}` : "not enough data for a total score"}</span></div>
-      <div class="cat-bars">
-        ${CATS.map((c) => {
-          const v = co[`${c}_score`];
-          const on = r.category_weights[c];
-          return `<div class="cat-bar">
-            <span class="cat-label">${swatch(c)}${CAT_LABEL[c]}</span>
-            <div class="bar">${isNum(v) ? `<i style="width:${Math.max(1.5, v)}%;background:var(--${c})"></i>` : ""}</div>
-            <span class="n ${isNum(v) ? "" : "na"}">${on ? fmt(v) : "off"}</span>
-          </div>`;
-        }).join("")}
-      </div>
-      <p class="section-title">What drives the score</p>
-      <p class="muted small" style="margin:0 0 8px">Percentile = share of compared companies this one beats. Points add up to the total score.</p>
-      ${drivers.map((d) => `
-        <div class="driver">
-          <span class="t">${swatch(d.category)}${esc(d.name || d.indicator_id)}</span>
-          <span class="pts">+${fmt(d.points)}</span>
-          <span class="raw">${fmtRaw(d.value)} ${esc(d.unit)}${isNum(d.year) ? ` · ${d.year}` : ""} · ${d.higher_is_better ? "higher" : "lower"} is better</span>
-          <span class="raw">better than ${Math.round(d.rank * 100)}%</span>
-          <div class="bar"><i style="width:${Math.max(1.5, d.rank * 100)}%;background:var(--${d.category})"></i></div>
-        </div>`).join("")}
-      ${missing.length ? `<p class="muted small" style="margin-top:18px">No data for: ${missing.map((d) => esc(d.name || d.indicator_id)).join(", ")}</p>` : ""}
-    `;
-    $("#drawer-close").addEventListener("click", closeCompany);
-  } catch (e) {
-    drawer.innerHTML = `<p>${esc(e.message)}</p>`;
-  }
-}
-
-function closeCompany() {
-  $("#drawer").classList.remove("open");
-  $("#drawer").setAttribute("aria-hidden", "true");
-  $("#scrim").hidden = true;
-}
-
-// ------------------------------------------------------------------ wiring
-function bindView() {
-  const search = $("#search");
-  if (search) {
-    search.addEventListener("input", debounce(() => {
-      state.search = search.value;
-      state.limit = 25;
-      const pos = search.selectionStart;
-      renderView();
-      const again = $("#search");
-      again.focus();
-      again.setSelectionRange(pos, pos);
-    }, 120));
-  }
-  $("#sector-filter")?.addEventListener("change", (e) => { state.sector = e.target.value; state.limit = 25; renderView(); });
-  $("#more")?.addEventListener("click", () => { state.limit += 50; renderView(); });
-  $$("tr[data-ticker]").forEach((tr) => tr.addEventListener("click", () => openCompany(tr.dataset.ticker)));
   initCube();
 }
 
-async function reloadMeta() {
-  state.meta = await api(`/api/meta?source=${state.source}`);
-  $("#demo-banner").hidden = state.source !== "demo";
-  $$("#source button").forEach((b) => b.classList.toggle("active", b.dataset.source === state.source));
-  state.profile = normalizeProfile({ ...state.base, ...state.profile, indicator_weights: state.base.indicator_weights }, state.profile);
-  renderPanel();
-  scoreNow();
+/* ---------- evidence ---------- */
+const sc = (d0, d1, r0, r1) => v => r0 + (v - d0) / (d1 - d0) * (r1 - r0);
+const svg = (w, h, g, label) => `<svg class="chart" viewBox="0 0 ${w} ${h}" role="img" aria-label="${label}">${g}</svg>`;
+const pending = (what, cmd) => `<div class="pend"><p style="margin:0 0 6px">${esc(what)}</p><code style="font-size:12px">${esc(cmd)}</code></div>`;
+function check(id) { return (state.checks.checks || []).find(c => c.id === id); }
+function statusLabel(s) { return s === "not_run" ? "not run" : s; }
+
+function chartSourced(perInd) {
+  const W = 720, L = 190, R = 90, rowH = 34, H = perInd.length * rowH + 30, x = sc(0, state.meta.companies, L, W - R);
+  let g = "";
+  const n5 = state.meta.companies;
+  [0, n5 * .25, n5 * .5, n5 * .75, n5].forEach(v => g += `<line class="grid" x1="${x(v)}" x2="${x(v)}" y1="4" y2="${H - 22}"/><text x="${x(v)}" y="${H - 6}" text-anchor="middle">${Math.round(v)}</text>`);
+  perInd.forEach((p, i) => {
+    const y = 8 + i * rowH, name = META(p.indicator_id).name;
+    g += `<text class="strong" x="${L - 12}" y="${y + 15}" text-anchor="end">${esc(name)}</text><rect x="${L}" y="${y + 4}" width="${x(p.companies) - L}" height="16" style="fill:${colOf(p.indicator_id)}"/><text x="${x(p.companies) + 8}" y="${y + 16}">${p.companies} / ${n5}</text>`;
+  });
+  return svg(W, H, g, "Companies with a sourced value per indicator");
 }
 
-function bindStatic() {
-  $$("#nav button").forEach((b) => b.addEventListener("click", () => setView(b.dataset.view)));
-  $$("#source button").forEach((b) => b.addEventListener("click", async () => {
-    if (b.dataset.source === state.source) return;
-    state.source = b.dataset.source;
-    state.search = ""; state.sector = ""; state.limit = 25;
-    await reloadMeta();
-  }));
-  $("#theme").addEventListener("click", () => {
-    const next = currentTheme() === "dark" ? "light" : "dark";
-    applyTheme(next);
-    try { localStorage.setItem("ethack-theme", next); } catch { /* storage blocked */ }
+function chartOutlierCounts(rows) {
+  const counts = {};
+  rows.forEach(r => { counts[r.indicator_id] = (counts[r.indicator_id] || 0) + 1; });
+  const ids = Object.keys(counts).sort((a, b) => counts[b] - counts[a]);
+  const W = 720, L = 190, R = 60, rowH = 30, H = ids.length * rowH + 20, max = Math.max(...ids.map(i => counts[i]), 1);
+  const x = sc(0, max, L, W - R);
+  let g = "";
+  ids.forEach((id, i) => {
+    const y = 8 + i * rowH, name = id.includes(" & ") ? id : META(id).name;
+    g += `<text class="strong" x="${L - 12}" y="${y + 15}" text-anchor="end">${esc(name)}</text><rect x="${L}" y="${y + 4}" width="${Math.max(1, x(counts[id]) - L)}" height="16" style="fill:var(--flag)"/><text x="${x(counts[id]) + 8}" y="${y + 16}">${counts[id]}</text>`;
   });
-  $("#profile-select").addEventListener("change", (e) => loadProfile(e.target.value));
-  $("#sector-relative").addEventListener("change", (e) => { state.profile.sector_relative = e.target.checked; changed(); });
-  $("#min-share").addEventListener("input", (e) => { state.profile.min_weight_share = Number(e.target.value); syncRange(e.target); changed(); });
-  $("#save-btn").addEventListener("click", async () => {
-    const name = $("#save-name").value.trim();
-    if (!name) return toast("Give the profile a name first");
-    try {
-      const res = await api("/api/profiles", { profile: { ...state.profile, name } });
-      state.meta.profiles = res.profiles;
-      state.profileId = res.id;
-      state.base = { ...state.profile, name };
-      state.profile.name = name;
-      state.edited = false;
-      renderPanel();
-      $("#save-msg").textContent = `Saved to ${res.path}`;
-      toast(`Profile saved: ${name}`);
-    } catch (e) {
-      toast(e.message);
+  return svg(W, H, g, "Flagged rows per indicator");
+}
+
+function chartStability(series) {
+  const ids = Object.keys(series).filter(k => series[k].length >= 1);
+  if (!ids.length) return "";
+  const years = ids.flatMap(id => series[id].map(p => p.year));
+  const y0 = Math.min(...years), y1 = Math.max(...years);
+  const W = 720, H = 280, L = 36, R = 150, T = 16, B = 30;
+  const x = sc(y0 - 0.5, y1 + 0.5, L, W - R), y = sc(0, 1, H - B, T);
+  let g = "";
+  [0, .25, .5, .75, 1].forEach(v => g += `<line class="grid" x1="${L}" x2="${W - R}" y1="${y(v)}" y2="${y(v)}"/><text x="${L - 6}" y="${y(v) + 3}" text-anchor="end">${v}</text>`);
+  for (let yr = y0; yr <= y1; yr++) g += `<text x="${x(yr)}" y="${H - 8}" text-anchor="middle">${yr}</text>`;
+  const labs = [];
+  ids.forEach(id => {
+    const p = series[id], col = colOf(id), l = p[p.length - 1];
+    g += `<polyline class="line" style="stroke:${col}" points="${p.map(q => `${x(q.year)},${y(q.rho)}`).join(" ")}"/><circle cx="${x(l.year)}" cy="${y(l.rho)}" r="3.5" style="fill:${col}"/>`;
+    labs.push({ y: y(l.rho), t: META(id).name, col });
+  });
+  labs.sort((a, b) => a.y - b.y).forEach((l, i, a) => { if (i && l.y - a[i - 1].y < 13) l.y = a[i - 1].y + 13; g += `<text class="strong" x="${W - R + 10}" y="${l.y + 4}" style="fill:${l.col}">${esc(l.t)}</text>`; });
+  return svg(W, H, g, "Year to year rank stability per indicator");
+}
+
+function corrMatrix(pairs) {
+  const ids = [...new Set(Object.keys(pairs).flatMap(k => k.split("|")))].sort();
+  const m = ids.map((a, i) => ids.map((b, j) => { if (j >= i) return null; const p = pairs[`${b}|${a}`] || pairs[`${a}|${b}`]; return p ? p.rho : null; }));
+  return { ids, m };
+}
+function corrTable(pairs) {
+  const { ids, m } = corrMatrix(pairs);
+  return `<div class="table-wrap"><table class="corr"><thead><tr><th></th>${ids.map(id => `<th>${esc(META(id).name)}</th>`).join("")}</tr></thead><tbody>
+    ${ids.map((id, i) => `<tr><th>${esc(META(id).name)}</th>${m[i].map((v, j) => {
+    if (j >= i) return `<td>${i === j ? '<span class="muted">·</span>' : ""}</td>`;
+    const a = Math.abs(v ?? 0);
+    return `<td style="background:color-mix(in srgb, ${a >= .8 ? "var(--flag)" : "var(--ink)"} ${Math.round(a * 60)}%, var(--bg));color:${a > .45 ? "var(--bg)" : "var(--ink)"}">${v == null ? "–" : v.toFixed(2)}</td>`;
+  }).join("")}</tr>`).join("")}</tbody></table></div>`;
+}
+function chartSectorStrip(bySector) {
+  const names = Object.keys(bySector).sort((a, b) => median(bySector[b]) - median(bySector[a]));
+  const all = Object.values(bySector).flat();
+  const lo = Math.min(...all, 0), hi = Math.max(...all, 1);
+  const W = 720, rowH = 26, L = 180, R = 20, T = 6, H = T + names.length * rowH + 28, x = sc(lo, hi, L, W - R);
+  let g = "";
+  for (let k = 0; k <= 4; k++) { const v = lo + (hi - lo) * k / 4; g += `<line class="grid" x1="${x(v)}" x2="${x(v)}" y1="${T}" y2="${H - 24}"/><text x="${x(v)}" y="${H - 8}" text-anchor="middle">${v.toFixed(2)}</text>`; }
+  names.forEach((n, i) => {
+    const cy = T + i * rowH + rowH / 2;
+    g += `<text class="strong" x="${L - 12}" y="${cy + 4}" text-anchor="end">${esc(n)}</text>`;
+    bySector[n].forEach((v, k) => g += `<circle class="dot" style="fill:var(--env)" cx="${x(v)}" cy="${cy + (k * 7) % 11 - 5}" r="3"/>`);
+    g += `<line class="med" x1="${x(median(bySector[n]))}" x2="${x(median(bySector[n]))}" y1="${cy - 9}" y2="${cy + 9}"/>`;
+  });
+  return svg(W, H, g, "Sector distribution of the most tie-heavy indicator");
+}
+function median(a) { const s = [...a].sort((x, y) => x - y); return s[Math.floor(s.length / 2)]; }
+
+function chartScatter(xs, ys, label) {
+  const W = 320, H = 320, L = 40, R = 12, T = 12, B = 34;
+  const all = [...xs, ...ys], lo = Math.min(...all, -0.1), hi = Math.max(...all, 0.5);
+  const x = sc(lo, hi, L, W - R), y = sc(lo, hi, H - B, T);
+  let g = `<line class="axis" x1="${x(lo)}" y1="${y(hi)}" x2="${x(hi)}" y2="${y(lo)}" style="stroke:var(--rule)"/>`;
+  xs.forEach((v, i) => g += `<circle class="dot" style="fill:var(--ink)" cx="${x(v)}" cy="${y(ys[i])}" r="3"/>`);
+  g += `<text x="${L}" y="${H - 6}">${label}</text>`;
+  return svg(W, H, g, label);
+}
+
+const EX = [
+  { id: "A", checks: ["traceability"], title: "Every value points to a document" },
+  { id: "B", checks: ["agent_quote_verify"], title: "The numbers are in the filings" },
+  { id: "C", checks: ["cross_source_tax"], title: "Recomputed independently, same result" },
+  { id: "D", checks: ["plausibility"], title: "Outliers are real, not errors" },
+  { id: "E", checks: ["stability"], title: "Company traits persist over time" },
+  { id: "F", checks: ["redundancy", "sector_pattern"], title: "No two indicators measure the same thing" },
+];
+
+function exhibitStatus(ex) {
+  const cs = ex.checks.map(check).filter(Boolean);
+  if (cs.every(c => c.status === "not_run")) return "not_run";
+  if (cs.some(c => c.status === "flagged")) return "flagged";
+  return "passed";
+}
+
+function renderIndex() {
+  $("#index").innerHTML = EX.map(e => {
+    const s = exhibitStatus(e);
+    return `<li><button type="button" data-ex="${e.id}" aria-current="${state.ex === e.id}"><span class="ex">${e.id}</span><span class="t">${esc(e.title)}</span><span class="st ${s}">${statusLabel(s)}</span></button></li>`;
+  }).join("");
+  $$("#index button").forEach(b => b.onclick = () => { state.ex = b.dataset.ex; renderIndex(); renderExhibit(); });
+}
+
+function renderExhibit() {
+  const e = EX.find(x => x.id === state.ex);
+  const cs = e.checks.map(check).filter(Boolean);
+  const s = exhibitStatus(e);
+  let verdict = cs.map(c => c.verdict).filter(v => v && v !== "Not run yet.").join(" ") || "Not run yet.";
+  let body = "";
+
+  if (e.id === "A") {
+    const c = check("traceability");
+    body = c.status === "not_run" ? pending("Counts every value's source link.", "python run.py verify traceability")
+      : `<figure class="fig">${chartSourced(c.numbers.per_indicator || [])}<figcaption>Companies with a sourced value, per indicator. Colour = category.</figcaption></figure>
+         ${c.rows.length ? `<div class="outs">${c.rows.map(r => `<div><span class="mono">${esc(r.indicator_id)}</span><span></span><span>${esc(r.detail)}</span></div>`).join("")}</div>` : ""}`;
+  } else if (e.id === "B") {
+    const c = check("agent_quote_verify");
+    if (!c || c.status === "not_run") {
+      body = `<figure class="fig">${pending("An agent re-reads each filing and checks the value against the document, independently of how we extracted it.", "python run.py verify agent_quote_verify")}
+        <figcaption>Needs ANTHROPIC_API_KEY in .env - not committed. Without it this exhibit stays “not run”.</figcaption></figure>`;
+    } else {
+      const examples = c.rows.slice(0, 3);
+      body = `<figure class="fig">${examples.map(r => `<div class="quote"><div><span class="mono">${esc(r.ticker)} · FY ${r.year}</span><span class="n">${fmtVal(r.value, "")}</span><span class="muted">in our data</span></div>
+        <q>${esc((r.quote || "").slice(0, 220))}</q><div><a href="${esc(r.url)}" target="_blank" rel="noopener">source ↗</a><br><span class="st ${r.detail === "confirmed" ? "pass" : "flag"}">${esc(r.detail)}</span></div></div>`).join("")}
+        <figcaption>${c.numbers.sampled} values sampled (fixed seed), ${c.numbers.confirmed} confirmed.</figcaption></figure>`;
     }
-  });
-  $("#scrim").addEventListener("click", closeCompany);
-  $("#panel-toggle").addEventListener("click", () => {
-    const open = $("#panel").classList.toggle("open");
-    $("#panel-toggle").setAttribute("aria-expanded", String(open));
-  });
-  $("#console-close").addEventListener("click", () => ($("#console").hidden = true));
-  document.addEventListener("keydown", (e) => { if (e.key === "Escape") closeCompany(); });
-  window.addEventListener("hashchange", () => setView(location.hash.slice(1)));
+  } else if (e.id === "C") {
+    const c = check("cross_source_tax");
+    body = !c || c.status === "not_run" ? pending("Compares our effective tax rate to the rate the company reports in XBRL.", "python run.py verify cross_source_tax")
+      : `<div class="fig" style="display:grid;gap:16px;grid-template-columns:repeat(auto-fit,minmax(260px,1fr))">
+          ${chartScatter(c.numbers.ours || [], c.numbers.theirs || [], "our rate vs. XBRL rate")}
+          ${pending("A second agent extracts headcount from the 10-K without seeing ours.", "not built yet - see docs/DASHBOARD.md build order step 4")}
+        </div>`;
+  } else if (e.id === "D") {
+    const c = check("plausibility");
+    body = !c || c.status === "not_run" ? pending("Flags future years, unusual year-over-year changes and 3x-IQR outliers.", "python run.py verify plausibility")
+      : `<figure class="fig">${chartOutlierCounts(c.rows)}<figcaption>Flagged rows per indicator. Each fence is relative to that indicator's own distribution, not a universal threshold - some are real, expected patterns (e.g. election-cycle swings in political spending), not errors; that classification is what agent_outlier_explain (not built yet) would add.</figcaption></figure>
+         <div class="outs">${c.rows.slice(0, 60).map(r => `<div><span class="mono">${esc(r.ticker)}</span><span class="num">${fmtVal(r.value, "")}</span><span>${esc(r.detail)}</span></div>`).join("")}</div>`;
+  } else if (e.id === "E") {
+    const c = check("stability");
+    body = !c || c.status === "not_run" ? pending("Year-to-year rank correlation per indicator.", "python run.py verify stability")
+      : `<figure class="fig">${chartStability(c.numbers.series || {})}<figcaption>Rank correlation of each indicator's value with its own previous year (1 = identical order).</figcaption></figure>`;
+  } else if (e.id === "F") {
+    const red = check("redundancy"), sec = check("sector_pattern");
+    const redBody = !red || red.status === "not_run" ? pending("Correlation between every pair of indicators.", "python run.py verify redundancy")
+      : `<figure class="fig">${corrTable(red.numbers.pairs || {})}<figcaption>Rank correlation of latest values. 0.8+ would be flagged as a likely duplicate.</figcaption></figure>`;
+    const secBody = !sec || sec.status === "not_run" ? pending("Sector distribution of the most tie-heavy indicator.", "python run.py verify sector_pattern")
+      : `<figure class="fig" style="margin-top:32px">${chartSectorStrip(sec.numbers.by_sector || {})}<figcaption>${esc(sec.verdict)}</figcaption></figure>`;
+    body = redBody + secBody;
+  }
+
+  const method = cs.map(c => `<code>python run.py verify ${c.id}</code>`).join(" · ") || "not built yet";
+  const kinds = [...new Set(cs.map(c => c.kind))].join(" + ") || "planned";
+  $("#exhibit").innerHTML = `<div class="kicker"><span class="label">Exhibit ${e.id}</span><span class="tag">${kinds}</span><span class="st ${s}">${statusLabel(s)}</span></div>
+    <h3>${esc(e.title)}</h3><p class="verdict"><mark>${esc(verdict)}</mark></p>${body}
+    <details class="method"><summary>How this is checked</summary><p>${method}</p></details>`;
 }
 
+/* ---------- boot ---------- */
 async function init() {
-  bindStatic();
-  try {
-    state.meta = await api("/api/meta?source=real");
-    const asked = new URLSearchParams(location.search).get("source");  // ?source=demo for presentations
-    state.source = asked === "demo" || asked === "real" ? asked : state.meta.has_real ? "real" : "demo";
-    if (state.source === "demo") state.meta = await api("/api/meta?source=demo");
-    $("#demo-banner").hidden = state.source !== "demo";
-    $$("#source button").forEach((b) => b.classList.toggle("active", b.dataset.source === state.source));
-    setView(location.hash.slice(1) || "ranking");
-    await loadProfile(state.meta.profiles.includes(state.meta.default_profile) ? state.meta.default_profile : state.meta.profiles[0]);
-    loadWorkspace(false);
-    const company = new URLSearchParams(location.search).get("company");  // ?company=AAPL deep link
-    if (company) openCompany(company.toUpperCase());
-  } catch (e) {
-    $("#main").innerHTML = `<div class="card empty"><h3>Could not reach the dashboard server</h3><p>${esc(e.message)}<br>Start it with <code>python run.py dashboard</code>.</p></div>`;
-  }
+  bindTabs();
+  state.meta = await getJSON("/api/meta");
+  state.checks = await getJSON("/api/checks");
+  const def = state.meta.profiles.find(p => p.id === state.meta.default_profile) || state.meta.profiles[0];
+  state.profileId = def.id;
+  state.categoryWeights = { ...def.category_weights };
+
+  $("#profile").innerHTML = state.meta.profiles.map(p => `<option value="${p.id}">${esc(p.name)}</option>`).join("");
+  $("#profile").value = state.profileId;
+  $("#profile").addEventListener("change", async e => {
+    state.profileId = e.target.value;
+    const p = state.meta.profiles.find(x => x.id === state.profileId);
+    state.categoryWeights = { ...p.category_weights };
+    renderWeights();
+    await loadScore();
+  });
+  $("#sector").innerHTML = `<option value="">All sectors</option>` + state.meta.sectors.map(s => `<option>${esc(s)}</option>`).join("");
+  $("#sector").onchange = e => { state.sector = e.target.value; renderRows(); };
+  $("#q").oninput = e => { state.q = e.target.value; renderRows(); };
+  $("#more").onclick = () => { state.limit += 100000; renderRows(); };
+
+  renderWeights();
+  await loadScore();
+  $("#summary").textContent = `${state.score.scored} of ${state.meta.companies} companies scored · ${state.meta.indicators.length} indicators in three categories · every value links to a public document. Data retrieved ${state.meta.retrieved || "–"}.`;
+  $("#legend").innerHTML = `<span>Fingerprint: one bar per indicator, height = points (0–100), hatched = no data.</span>` + CATS.map(([, n, c]) => `<span><span class="sw" style="background:var(${c})"></span>${n}</span>`).join("");
 }
 
 init();

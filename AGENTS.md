@@ -32,7 +32,7 @@ four people from overwriting each other. Anyone may read anything.
 | `economic/` | **Lauren** | economic impact indicators (taken over from Arash) |
 | `social/` | **Florian**, **Lauren** and **Arash** | social impact indicators - **one indicator = one person** (`owner` column in `social/catalog.csv`) |
 | `environmental/` | **Jean** | environmental impact indicators |
-| `universe/`, `common/`, `tests/`, `run.py`, `profiles/`, `dashboard/`, `portfolio/`, `AGENTS.md`, `docs/*.md` | **Arash** | shared infrastructure, scoring pipeline, dashboard |
+| `universe/`, `common/`, `tests/`, `run.py`, `profiles/`, `dashboard/`, `checks/`, `portfolio/`, `AGENTS.md`, `docs/*.md` | **Arash** | shared infrastructure, scoring pipeline, dashboard, data-trust checks |
 
 Need a change outside your area (a new column in the format, a scoring change, a
 bug in `common/`)? **Do not make it.** Tell your person to message the owner.
@@ -131,11 +131,15 @@ python run.py build social [indicator_id]        # run scripts -> indicators/*.c
 python run.py check                              # format check + tests
 python run.py score [profile]                    # scores/<profile>/scores.csv (0-100), default: balanced
 python run.py portfolio [profile]                # scores/<profile>/portfolio.csv (weights)
+python run.py verify [check_id]                  # data-trust checks -> checks/results/*.json (docs/DASHBOARD.md)
 python run.py dashboard                          # open the dashboard in the browser
 ```
 
-The dashboard's **Workspace** tab runs exactly these commands (`dashboard/server.py`,
-`job_args`) - suggest it to people who prefer buttons over the terminal.
+`verify` with no argument runs the code checks only. Agent checks (currently
+`agent_quote_verify`) cost API credits and need `ANTHROPIC_API_KEY` in `.env`, so
+they only run when named explicitly - without a key, `python run.py verify
+agent_quote_verify` prints `SKIPPED` and the dashboard's Evidence tab shows that
+exhibit as "not run" rather than a fake number.
 
 Run everything from the repo root. On Windows use `python`, not `python3`.
 

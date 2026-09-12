@@ -1,0 +1,274 @@
+{
+  "status": "passed",
+  "verdict": "The strongest overlap between any two indicators is 0.58. Nothing is counted twice.",
+  "numbers": {
+    "pairs": {
+      "ceo_pay_ratio|critical_material_disclosure": {
+        "rho": 0.197,
+        "n": 284
+      },
+      "ceo_pay_ratio|employer_retirement_contribution": {
+        "rho": -0.18,
+        "n": 446
+      },
+      "ceo_pay_ratio|employment_growth": {
+        "rho": -0.108,
+        "n": 329
+      },
+      "ceo_pay_ratio|federal_contract_exposure": {
+        "rho": 0.095,
+        "n": 453
+      },
+      "ceo_pay_ratio|ghg_intensity": {
+        "rho": -0.578,
+        "n": 97
+      },
+      "ceo_pay_ratio|political_alignment": {
+        "rho": -0.026,
+        "n": 446
+      },
+      "ceo_pay_ratio|resource_supply_risk": {
+        "rho": -0.033,
+        "n": 479
+      },
+      "ceo_pay_ratio|revenue_volatility": {
+        "rho": -0.013,
+        "n": 437
+      },
+      "ceo_pay_ratio|shareholder_payout_ratio": {
+        "rho": 0.152,
+        "n": 478
+      },
+      "ceo_pay_ratio|tax_rate_gap": {
+        "rho": -0.131,
+        "n": 465
+      },
+      "ceo_pay_ratio|workplace_injury_rate": {
+        "rho": 0.133,
+        "n": 319
+      },
+      "critical_material_disclosure|employer_retirement_contribution": {
+        "rho": 0.02,
+        "n": 278
+      },
+      "critical_material_disclosure|employment_growth": {
+        "rho": -0.04,
+        "n": 205
+      },
+      "critical_material_disclosure|federal_contract_exposure": {
+        "rho": 0.102,
+        "n": 281
+      },
+      "critical_material_disclosure|ghg_intensity": {
+        "rho": -0.315,
+        "n": 67
+      },
+      "critical_material_disclosure|political_alignment": {
+        "rho": -0.095,
+        "n": 277
+      },
+      "critical_material_disclosure|resource_supply_risk": {
+        "rho": 0.305,
+        "n": 296
+      },
+      "critical_material_disclosure|revenue_volatility": {
+        "rho": 0.065,
+        "n": 270
+      },
+      "critical_material_disclosure|shareholder_payout_ratio": {
+        "rho": 0.022,
+        "n": 295
+      },
+      "critical_material_disclosure|tax_rate_gap": {
+        "rho": 0.068,
+        "n": 287
+      },
+      "critical_material_disclosure|workplace_injury_rate": {
+        "rho": -0.115,
+        "n": 210
+      },
+      "employer_retirement_contribution|employment_growth": {
+        "rho": -0.041,
+        "n": 320
+      },
+      "employer_retirement_contribution|federal_contract_exposure": {
+        "rho": 0.062,
+        "n": 442
+      },
+      "employer_retirement_contribution|ghg_intensity": {
+        "rho": 0.027,
+        "n": 94
+      },
+      "employer_retirement_contribution|political_alignment": {
+        "rho": 0.188,
+        "n": 432
+      },
+      "employer_retirement_contribution|resource_supply_risk": {
+        "rho": 0.102,
+        "n": 464
+      },
+      "employer_retirement_contribution|revenue_volatility": {
+        "rho": 0.138,
+        "n": 423
+      },
+      "employer_retirement_contribution|shareholder_payout_ratio": {
+        "rho": 0.019,
+        "n": 463
+      },
+      "employer_retirement_contribution|tax_rate_gap": {
+        "rho": 0.076,
+        "n": 450
+      },
+      "employer_retirement_contribution|workplace_injury_rate": {
+        "rho": -0.386,
+        "n": 309
+      },
+      "employment_growth|federal_contract_exposure": {
+        "rho": -0.101,
+        "n": 324
+      },
+      "employment_growth|ghg_intensity": {
+        "rho": 0.301,
+        "n": 66
+      },
+      "employment_growth|political_alignment": {
+        "rho": -0.07,
+        "n": 315
+      },
+      "employment_growth|resource_supply_risk": {
+        "rho": -0.06,
+        "n": 343
+      },
+      "employment_growth|revenue_volatility": {
+        "rho": -0.424,
+        "n": 323
+      },
+      "employment_growth|shareholder_payout_ratio": {
+        "rho": -0.3,
+        "n": 342
+      },
+      "employment_growth|tax_rate_gap": {
+        "rho": 0.057,
+        "n": 330
+      },
+      "employment_growth|workplace_injury_rate": {
+        "rho": -0.02,
+        "n": 237
+      },
+      "federal_contract_exposure|ghg_intensity": {
+        "rho": 0.08,
+        "n": 100
+      },
+      "federal_contract_exposure|political_alignment": {
+        "rho": 0.239,
+        "n": 442
+      },
+      "federal_contract_exposure|resource_supply_risk": {
+        "rho": 0.177,
+        "n": 473
+      },
+      "federal_contract_exposure|revenue_volatility": {
+        "rho": 0.033,
+        "n": 435
+      },
+      "federal_contract_exposure|shareholder_payout_ratio": {
+        "rho": -0.02,
+        "n": 472
+      },
+      "federal_contract_exposure|tax_rate_gap": {
+        "rho": 0.053,
+        "n": 458
+      },
+      "federal_contract_exposure|workplace_injury_rate": {
+        "rho": -0.142,
+        "n": 313
+      },
+      "ghg_intensity|political_alignment": {
+        "rho": 0.15,
+        "n": 97
+      },
+      "ghg_intensity|resource_supply_risk": {
+        "rho": 0.038,
+        "n": 100
+      },
+      "ghg_intensity|revenue_volatility": {
+        "rho": 0.042,
+        "n": 94
+      },
+      "ghg_intensity|shareholder_payout_ratio": {
+        "rho": -0.372,
+        "n": 100
+      },
+      "ghg_intensity|tax_rate_gap": {
+        "rho": 0.087,
+        "n": 98
+      },
+      "ghg_intensity|workplace_injury_rate": {
+        "rho": -0.142,
+        "n": 89
+      },
+      "political_alignment|resource_supply_risk": {
+        "rho": 0.004,
+        "n": 465
+      },
+      "political_alignment|revenue_volatility": {
+        "rho": 0.127,
+        "n": 422
+      },
+      "political_alignment|shareholder_payout_ratio": {
+        "rho": -0.112,
+        "n": 464
+      },
+      "political_alignment|tax_rate_gap": {
+        "rho": 0.017,
+        "n": 449
+      },
+      "political_alignment|workplace_injury_rate": {
+        "rho": -0.023,
+        "n": 304
+      },
+      "resource_supply_risk|revenue_volatility": {
+        "rho": 0.275,
+        "n": 454
+      },
+      "resource_supply_risk|shareholder_payout_ratio": {
+        "rho": -0.081,
+        "n": 501
+      },
+      "resource_supply_risk|tax_rate_gap": {
+        "rho": 0.113,
+        "n": 485
+      },
+      "resource_supply_risk|workplace_injury_rate": {
+        "rho": -0.285,
+        "n": 328
+      },
+      "revenue_volatility|shareholder_payout_ratio": {
+        "rho": 0.08,
+        "n": 453
+      },
+      "revenue_volatility|tax_rate_gap": {
+        "rho": 0.045,
+        "n": 440
+      },
+      "revenue_volatility|workplace_injury_rate": {
+        "rho": -0.196,
+        "n": 301
+      },
+      "shareholder_payout_ratio|tax_rate_gap": {
+        "rho": -0.028,
+        "n": 485
+      },
+      "shareholder_payout_ratio|workplace_injury_rate": {
+        "rho": -0.042,
+        "n": 326
+      },
+      "tax_rate_gap|workplace_injury_rate": {
+        "rho": -0.201,
+        "n": 319
+      }
+    }
+  },
+  "rows": [],
+  "ran_at": "2026-09-12T23:48:25Z"
+}

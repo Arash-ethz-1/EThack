@@ -9,6 +9,7 @@
     python run.py build social [indicator_id]    run the scripts -> indicators/*.csv
     python run.py score [profile]                scores 0-100 for a profile -> scores/<profile>/
     python run.py portfolio [profile]            portfolio weights from those scores -> scores/<profile>/portfolio.csv
+    python run.py verify [check_id]              run data-trust checks -> checks/results/*.json
     python run.py dashboard                      open the dashboard in the browser
 """
 
@@ -24,9 +25,11 @@ import traceback
 from common.config import (
     CATALOG_COLUMNS,
     CATEGORIES,
+    CHECKS_RESULTS_DIR,
     MAX_FILE_MB,
     ROOT,
     catalog_path,
+    check_result_path,
     scripts_dir,
 )
 
@@ -40,9 +43,16 @@ OWNERS = {
     "portfolio": "Arash",
     "profiles": "Arash",
     "dashboard": "Arash",
+    "checks": "Arash",
     "common": "Arash",
     "tests": "Arash",
 }
+
+# code checks run by default with no argument; agent checks (cost API credits, need
+# ANTHROPIC_API_KEY) only run when named explicitly - see docs/DASHBOARD.md section 4.
+CODE_CHECK_IDS = ["traceability", "plausibility", "stability", "redundancy", "sector_pattern", "cross_source_tax"]
+AGENT_CHECK_IDS = ["agent_quote_verify"]
+CHECK_IDS = CODE_CHECK_IDS + AGENT_CHECK_IDS
 
 
 # ---------------------------------------------------------------- helpers
@@ -204,7 +214,7 @@ def checks_pass_for(changed: list[str]) -> bool:
         report.errors, report.warnings = mine, []
         print_report(report)
         ok = False
-    if areas & {"common", "tests", "run.py", "portfolio", "dashboard", "profiles"}:
+    if areas & {"common", "tests", "run.py", "portfolio", "dashboard", "checks", "profiles"}:
         ok = run_tests() and ok
     return ok
 
@@ -319,6 +329,38 @@ def cmd_portfolio(profile: str | None) -> int:
     return 0
 
 
+def cmd_verify(check_id: str | None) -> int:
+    import datetime as dt
+    import importlib
+    import json
+
+    if check_id and check_id not in CHECK_IDS:
+        say(f"unknown check '{check_id}'. Known: {CHECK_IDS}")
+        return 1
+    ids = [check_id] if check_id else CODE_CHECK_IDS
+
+    CHECKS_RESULTS_DIR.mkdir(parents=True, exist_ok=True)
+    failed = False
+    for cid in ids:
+        mod = importlib.import_module(f"checks.{cid}")
+        say(f"--- {cid} ({mod.KIND})")
+        try:
+            result = mod.run()
+        except RuntimeError as e:  # e.g. missing ANTHROPIC_API_KEY - not a code bug
+            say(f"  SKIPPED: {e}")
+            continue
+        except Exception:
+            traceback.print_exc()
+            failed = True
+            continue
+        result["ran_at"] = dt.datetime.now(dt.timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
+        if mod.KIND == "agent":
+            result["model"] = getattr(mod, "MODEL", "")
+        check_result_path(cid).write_text(json.dumps(result, indent=2), encoding="utf-8")
+        say(f"  {result['status']}: {result['verdict']}")
+    return 1 if failed else 0
+
+
 def cmd_dashboard() -> int:
     from dashboard.server import serve
 
@@ -372,6 +414,8 @@ def main(argv: list[str]) -> int:
         return cmd_score(args[0] if args else None)
     if cmd == "portfolio":
         return cmd_portfolio(args[0] if args else None)
+    if cmd == "verify":
+        return cmd_verify(args[0] if args else None)
     if cmd == "dashboard":
         return cmd_dashboard()
     say(__doc__)

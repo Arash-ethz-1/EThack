@@ -13,6 +13,9 @@ SCORES_DIR = ROOT / "scores"
 PROFILES_DIR = ROOT / "profiles"
 DEFAULT_PROFILE = "balanced"
 
+CHECKS_DIR = ROOT / "checks"
+CHECKS_RESULTS_DIR = CHECKS_DIR / "results"
+
 # One row = one company, one year, one number. See docs/DATA_FORMAT.md.
 INDICATOR_COLUMNS = ["ticker", "year", "value", "source", "source_url", "retrieved"]
 OPTIONAL_INDICATOR_COLUMNS = ["note"]
@@ -56,3 +59,7 @@ def raw_dir(category: str) -> Path:
 
 def scripts_dir(category: str) -> Path:
     return ROOT / category / "scripts"
+
+
+def check_result_path(check_id: str) -> Path:
+    return CHECKS_RESULTS_DIR / f"{check_id}.json"
