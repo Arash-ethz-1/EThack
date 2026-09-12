@@ -2,22 +2,24 @@
 contribution to job creation (the most direct link between a company and the real
 economy).
 
-Source: universe/financials.csv `employees` column (built by Arash/Jean from 10-K
-"Human Capital" disclosures, employees_source_url/employees_note per row).
+Self-contained: extracts headcount straight from each company's own 10-K filings
+(see economic/scripts/_headcount.py for the extraction method and its known
+limitations) - does not depend on universe/financials.csv, so it isn't blocked by
+whatever state that shared file is in.
 
-Known issue, worked around here: some employees_note quotes describe a segment,
-division or subsidiary headcount rather than the whole company (e.g. Zoetis's 2021
-and 2025 rows say "our sales organization consisted of approximately 3,900
-employees" - a fraction of its real ~14,500 total). Found by scanning employees_note
-for segment/division/subsidiary language and reading the flagged quotes by hand.
-EXCLUDE_TICKERS below are the ones confirmed or strongly suspected wrong this way -
-skipped entirely rather than risk shipping a wrong number. This is not a full
-guarantee the remaining rows are clean (the scan only catches quotes that mention a
-sub-unit by name), just the ones caught so far. Flag anything else you spot to
-Arash/Jean - it's their file (universe/financials.csv), not ours to edit.
+For each company: read the latest 10-K's headcount (and, when the filing states
+several years in one sentence, up to 3 years for free). If the year 3 fiscal years
+back is still missing, fetch that specific older 10-K too. At most 2 filings
+downloaded per company.
+
+EXCLUDE_TICKERS: companies where the extraction is known to give a wrong number and
+there's no single "total" sentence to fall back on - documented per ticker instead of
+silently guessing. NextEra Energy states two subsidiaries' headcounts (FPL, NEER)
+separately and never states a consolidated total in prose, so summing them would be
+a guess, not an extraction.
 
 Owner:  lauren
-Source: universe/financials.csv employees column
+Source: SEC 10-K filings, "Human Capital" disclosures (Item 101(c))
 Run:    python run.py build economic employment_growth
 
 Output: economic/indicators/employment_growth.csv in the shared format (docs/DATA_FORMAT.md)
@@ -25,46 +27,73 @@ Output: economic/indicators/employment_growth.csv in the shared format (docs/DAT
 
 import pandas as pd
 
-from common.config import ROOT
-from common.io import today_utc, write_indicator
+from common.io import load_universe, today_utc, write_indicator
+from economic.scripts._headcount import ARCHIVE_URL, CIK_OVERRIDES, extract_headcount, fetch_filing_list
 
 CATEGORY = "economic"
 INDICATOR_ID = "employment_growth"
-SOURCE = "universe/financials.csv (10-K Human Capital disclosures)"
+SOURCE = "SEC 10-K Human Capital disclosures"
 CAGR_YEARS = 3
 
-# Confirmed or strongly suspected to be a segment/division/subsidiary headcount, not
-# the whole company - see the module docstring. Quote is the exact employees_note text.
 EXCLUDE_TICKERS = {
-    "AMCR": 'quote says "the Rigid Packaging Segment employed approximately 6,000" - Amcor total is ~41,000',
-    "APO": 'quote says "Our Asset Management segment had a team of 2,540 employees"',
-    "BRO": 'quote says "our Retail segment employed 6,301 employees"',
-    "CRH": 'quote says "The Division employs approximately 46,400 people"',
-    "JBHT": 'quote says "The DCS segment employed 14,709 people, including 12,632 drivers"',
-    "MRSH": 'quote reads as segment-scoped: "[segment] generated ~61% of revenue and employs approximately 48,800 colleagues"',
-    "ZTS": 'quote says "our sales organization consisted of approximately 3,900 employees" (2025) - real 10-K total is 14,500',
-    "SMCI": 'quote says "we had over 3,500 employees in our research and development organization" (2026) - same 10-K states '
-    'the real total elsewhere: "we employed over 7,000 employees, consisting of approximately 3,500 [R&D] ... 600 '
-    'engaged in general and administrative, and approximately 2,100 engaged in manufacturing" - found via spot-check, '
-    "not the keyword scan (no segment/division/subsidiary word in the bad quote)",
+    "NEE": "10-K states FPL and NEER subsidiary headcounts separately (9,400 / 7,900 in "
+    "the 2025 filing), never a consolidated NextEra Energy total in prose - no reliable "
+    "single number to extract.",
 }
 
 
+def _doc_url(cik: str, ticker: str, accession: str, primary_doc: str) -> str:
+    cik = CIK_OVERRIDES.get(ticker, cik)
+    return ARCHIVE_URL.format(cik_int=int(cik), accn_nodash=accession.replace("-", ""), doc=primary_doc)
+
+
+def _headcount_for_company(cik: str, ticker: str, filings: pd.DataFrame) -> dict:
+    """year -> (value, quote, source_url), from as few filings as the CAGR needs."""
+    found = {}
+
+    def add_from_filing(row):
+        cands = extract_headcount(cik, ticker, row["accessionNumber"], row["primaryDocument"], row["reportDate"])
+        url = _doc_url(cik, ticker, row["accessionNumber"], row["primaryDocument"])
+        for c in cands:
+            found.setdefault(c.year, (c.value, c.quote, url))
+
+    if filings.empty:
+        return found
+    add_from_filing(filings.iloc[0])
+    if not found:
+        return found
+
+    latest_year = max(found)
+    prior_target = latest_year - CAGR_YEARS
+    if prior_target not in found:
+        report_years = filings["reportDate"].str[:4].astype(int)
+        older = filings[report_years == prior_target]
+        if not older.empty:
+            add_from_filing(older.iloc[0])
+
+    return found
+
+
 def build() -> pd.DataFrame:
-    financials = pd.read_csv(ROOT / "universe" / "financials.csv")
-    financials = financials.dropna(subset=["employees"])
-    financials = financials[~financials["ticker"].isin(EXCLUDE_TICKERS)]
+    universe = load_universe()  # ticker, name, sector, cik
 
     rows = []
-    for ticker, grp in financials.groupby("ticker"):
-        by_year = grp.set_index("year")
-        for year in sorted(by_year.index):
+    for _, co in universe.iterrows():
+        ticker, cik = co["ticker"], co["cik"]
+        if ticker in EXCLUDE_TICKERS:
+            continue
+        filings = fetch_filing_list(cik, ticker)
+        found = _headcount_for_company(cik, ticker, filings)
+        if not found:
+            continue
+
+        for year in sorted(found):
             prior_year = year - CAGR_YEARS
-            if prior_year not in by_year.index:
+            if prior_year not in found:
                 continue
-            emp_now = by_year.loc[year, "employees"]
-            emp_prior = by_year.loc[prior_year, "employees"]
-            if emp_prior <= 0 or emp_now <= 0:
+            emp_now, quote_now, url_now = found[year]
+            emp_prior, quote_prior, _ = found[prior_year]
+            if emp_now <= 0 or emp_prior <= 0:
                 continue
             cagr = (emp_now / emp_prior) ** (1 / CAGR_YEARS) - 1
             rows.append(
@@ -73,10 +102,10 @@ def build() -> pd.DataFrame:
                     "year": int(year),
                     "value": round(cagr, 4),
                     "source": SOURCE,
-                    "source_url": by_year.loc[year, "employees_source_url"],
+                    "source_url": url_now,
                     "retrieved": today_utc(),
-                    "note": f"employees {int(emp_prior):,} ({int(prior_year)}) -> {int(emp_now):,} ({int(year)}), "
-                    f"3y CAGR; {by_year.loc[year, 'employees_note']}",
+                    "note": f"employees {emp_prior:,} ({prior_year}) -> {emp_now:,} ({year}), 3y CAGR. "
+                    f'{year} quote: "{quote_now}" | {prior_year} quote: "{quote_prior}"',
                 }
             )
 

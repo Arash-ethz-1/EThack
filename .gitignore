@@ -58,3 +58,10 @@ social/raw/fec_pac_transactions.csv
 # FEC API JSON cache: 38 MB, superseded by the bulk route (social/scripts/_fec_bulk.py).
 # Kept on disk for provenance; the committed roll-up is social/raw/fec_pac_disbursements.csv
 social/raw/fec/
+
+# raw 10-K filings + filing-list JSON downloaded for employment_growth's headcount
+# extraction: several GB for 503 companies, only used to derive the small
+# economic/indicators/employment_growth.csv, which IS committed. Rebuild:
+# python run.py build economic employment_growth
+economic/raw/10k_*.htm
+economic/raw/submissions_*.json
