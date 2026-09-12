@@ -61,3 +61,20 @@ commit `1c89ef2` - useful as reference for sector-relative scoring later.
   `build()` for `tax_rate_gap` and `revenue_volatility` first (don't need `employees`)
 - Problems: none yet - all 3 still status `idea`, no real data pulled
 - Needs from others: see list above
+
+### 2026-09-12 20:05 - tax_rate_gap + revenue_volatility build() written and validated
+- Done: wrote real `build()` for `tax_rate_gap` and `revenue_volatility` (not stubs) plus a
+  shared `economic/scripts/_xbrl.py` helper for SEC XBRL company-facts fetch/parse.
+  Validated against real Apple data (CIK 0000320193, no universe.csv needed for the test):
+  `tax_rate_gap` returned 17 years (2009-2025), `revenue_volatility` returned real revenue
+  2018-2025 ($265.6B -> $416.2B), trailing-6y CV = 1.50. Bumped both to status `in_progress`
+  in `economic/catalog.csv`. `python run.py check`: 21 passed, format OK.
+- Bug caught + fixed: first version of `_xbrl.py` locked onto the first XBRL tag with any
+  data per company and dropped years reported under a later tag - Apple's revenue tag
+  changed with ASC 606 (2018), so revenue came back as 1 row instead of 8. Fixed to merge
+  across tags per year, priority order.
+- Next: once `universe/sp500.csv` lands, run both over the full S&P 500, check coverage
+  >= 70%, spot-check 10 companies by hand, then `ready`. Still blocked on `employment_growth`
+  (needs `universe/financials.csv` employees column).
+- Problems: none blocking - both scripts are complete and tested, just waiting on the universe file
+- Needs from others: see list above
