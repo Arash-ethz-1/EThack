@@ -35,3 +35,7 @@ social/raw/submissions/
 # social/raw/financials.csv, which IS committed. Rebuild (~7 min):
 # python social/scripts/_financials.py
 social/raw/frames/
+
+# SEC XBRL companyfacts cache: ~1.8 GB for 503 companies, only used to derive the small
+# economic/indicators/*.csv, which IS committed. Rebuild: python run.py build economic <id>
+economic/raw/companyfacts_*.json

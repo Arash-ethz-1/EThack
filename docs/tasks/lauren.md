@@ -13,6 +13,37 @@ cover all of `social/` solo. The candidate list below is preserved for whoever p
 Your earlier scoring work (`score.py`, indicator set) is preserved in git history at
 commit `1c89ef2` - useful as reference for sector-relative scoring later.
 
+## Footnote: why these 3 economic indicators
+
+Picked to be three genuinely independent axes of "contribution to the economy," not
+three ways of measuring the same thing:
+
+| Indicator | Axis | Why it counts as impact |
+|---|---|---|
+| `tax_rate_gap` | fiscal contribution | direct, quantifiable contribution to public finances - a company paying further below the 21% federal statutory rate is contributing less, not just being efficient |
+| `revenue_volatility` | economic stability | unstable revenue transmits instability downstream to workers, suppliers and tax receipts - a real externality, not just a risk metric for the company itself |
+| `employment_growth` | labor market contribution | job creation, the most direct link between a company and the real economy; also nearly free to build once `universe/financials.csv` exists (Arash already collects `employees`) |
+
+Ideas considered and dropped, and why:
+
+- **Systemic importance / financial-system connectedness / disruption-if-gone**
+  (first framing floated) - conceptually interesting but failed on data: "financial
+  interconnectedness" is only published for the ~30 global systemically important banks
+  (it's literally one of the five FSB/Basel G-SIB scoring pillars), not the other ~470
+  S&P 500 companies - nowhere near the 70% coverage bar. Direction was also ambiguous:
+  high systemic importance reads as a risk (too-big-to-fail, contagion channel) as much
+  as a positive impact, which fails the "obvious direction" rule.
+- **COGS / revenue** - close to a duplicate of gross margin / `operating_margin`
+  (already flagged as "is this impact, or just profitability?" on Arash's original
+  list). Sector-driven (a grocer and a software company differ ~60pp for reasons that
+  have nothing to do with sustainability), so it would mostly re-derive sector
+  membership rather than measure anything about a company's individual impact.
+- **R&D intensity / capex intensity** (Arash's original candidates) - not wrong, but
+  not independent enough from investment-style metrics judges will see from other
+  teams, and R&D specifically risked <70% coverage (banks, retailers, utilities report
+  none). Kept as a fallback if `employment_growth` doesn't clear coverage once
+  `financials.csv` lands.
+
 ## Getting started (no git knowledge needed)
 
 1. Open the `EThack` folder in Claude Code.
@@ -31,9 +62,8 @@ commit `1c89ef2` - useful as reference for sector-relative scoring later.
 
 ## Needs from others
 
-- Arash: `universe/sp500.csv` and `universe/financials.csv` (blocker for everyone,
-  including all 3 economic indicators below - `employment_growth` needs the `employees`
-  column specifically)
+- Arash: `universe/financials.csv` (`sp500.csv` landed 2026-09-12, commit `e760228`) -
+  blocks `employment_growth` specifically, needs the `employees` column
 - Florian: find a co-owner (or take solo) for the `social/` society indicators above
 
 ## Log
@@ -77,4 +107,33 @@ commit `1c89ef2` - useful as reference for sector-relative scoring later.
   >= 70%, spot-check 10 companies by hand, then `ready`. Still blocked on `employment_growth`
   (needs `universe/financials.csv` employees column).
 - Problems: none blocking - both scripts are complete and tested, just waiting on the universe file
+- Needs from others: see list above
+
+### 2026-09-12 20:29 - full S&P 500 build, footnote on indicator choice, raw cache untracked
+- Done: ran both indicators over the real `universe/sp500.csv` (503 companies, landed this
+  session via Arash, commit `e760228`):
+  - `tax_rate_gap`: wrote 6264 rows, 485/503 tickers (96.4%). Per-year coverage 2023:
+    432/503 (85.9%), 2024: 445/503 (88.5%) - well over the 70% bar.
+  - `revenue_volatility`: wrote 454 rows, 454/503 tickers (90.3%). 439/454 (96.7%) have
+    their latest window ending 2022+.
+  - Note: `python run.py check`'s coverage warning only looks at the single latest year
+    in each file (2027, 1 company - Seagate's fiscal calendar runs ahead of the
+    calendar year) and is misleading for a multi-year panel; the real per-year numbers
+    above are what matter. Flagging for Arash - this affects any indicator with more
+    than one year per company, not just mine.
+  - Added a "why these 3" footnote to this file explaining the independent-axes
+    reasoning and why the systemic-importance framing, COGS/revenue, and R&D/capex
+    intensity were considered and dropped.
+  - `economic/raw/` held 500 real SEC companyfacts JSON files, 1.8 GB total (largest
+    9.2 MB, under the 20 MB single-file limit but too big in aggregate to push to the
+    shared repo). Added `economic/raw/companyfacts_*.json` to `.gitignore` (same
+    pattern as Florian's `social/raw/submissions/` precedent) - kept locally, kept the
+    tiny `_downloads.csv` provenance log, kept the actual output CSVs. Rebuildable any
+    time via `python run.py build economic <id>`.
+- Next: spot-check 10 companies by hand against real 10-K filings, then mark both
+  `ready`. `employment_growth` still blocked on the `employees` column in
+  `universe/financials.csv` (revenue landed this session too, per Jean/Arash's
+  `2d0dc5d`, but employees is noted "pending" in that commit).
+- Problems: `run.py check`'s coverage check looks at the wrong year for multi-year
+  panels (see above) - not blocking, just noting for whoever owns that check.
 - Needs from others: see list above
