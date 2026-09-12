@@ -43,6 +43,19 @@ COL_NOS, COL_COURT = 25, 42
 # Cheap pre-filter: skip rows that cannot be a labor case before paying for matching.
 CHEAP = re.compile(r"Labor|Civil Rights|Disabilit|Fair Standards|E\.R\.I\.S\.A", re.I)
 SPLIT_V = re.compile(r"\s+v(?:s?\.?|ersus)\s+", re.I)
+WORD = re.compile(r"[a-z]+")
+
+# Corporate evidence. core() strips these, so "The Williams Companies, Inc." collapses to
+# "williams" - which then matches every Williams, Cooper and Rollins in America. Measured:
+# WMB collected 1,978 dockets, almost all plaintiffs' surnames ("Williams v. Radius Health",
+# "United States v. Williams"). A one-word company name therefore only counts when the party
+# text still shows it is a company.
+CORP = {
+    "inc", "incorporated", "corp", "corporation", "co", "cos", "company", "companies",
+    "llc", "lp", "llp", "ltd", "limited", "plc", "nv", "sa", "ag", "holdings", "holding",
+    "group", "trust", "plan", "plans", "pension", "benefit", "benefits", "systems",
+    "technologies", "international", "industries", "enterprises", "partners", "bank",
+}
 
 
 def company_cores() -> dict[str, list[str]]:
@@ -85,14 +98,18 @@ def match_party(text: str, idx: dict) -> set[str]:
         c = core(side)
         if not c:
             continue
+        corporate = bool(CORP & set(WORD.findall(side.lower())))
         words = c.split()
         for i in range(len(words)):
             for ticker, name in idx.get(words[i], ()):
                 rest = " ".join(words[i:])
-                if rest == name:
-                    hits.add(ticker)
-                elif rest.startswith(name + " ") and not is_ambiguous(name):
-                    hits.add(ticker)
+                matched = rest == name or (rest.startswith(name + " ") and not is_ambiguous(name))
+                if not matched:
+                    continue
+                # One-word names collide with surnames; demand corporate evidence.
+                if " " not in name and not corporate:
+                    continue
+                hits.add(ticker)
     return hits
 
 

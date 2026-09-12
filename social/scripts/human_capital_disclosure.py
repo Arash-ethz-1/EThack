@@ -7,17 +7,17 @@ they put numbers in it. This script locates that section in each company's most 
 10-K and counts how many of eight quantified disclosure types it actually contains
 (headcount, gender/ethnic representation %, turnover/retention rate, training hours or
 spend, a safety rate, a pay-equity figure, an engagement/survey score, a union coverage
-%). Higher = more specific, measured, accountable disclosure; low = boilerplate. The
-count is size-neutral by construction and the exact matched quotes go into `note`.
+figure). Higher = more specific, measured, accountable disclosure; low = boilerplate.
+The count is size-neutral by construction and the matched quotes go into `note`.
 
 Source: SEC EDGAR 10-K primary documents (filing metadata from the cached submissions API)
 Run:    python run.py build social human_capital_disclosure
         python social/scripts/human_capital_disclosure.py --download   # cache only
 
 Output: social/indicators/human_capital_disclosure.csv
-        social/raw/tenk/<TICKER>_<accession>.htm   (cache, git-ignored, ~1-2 GB)
-        social/raw/human_capital_disclosure_sections.csv  (the extracted section per
-                                                           company, for hand-checking)
+        social/raw/tenk/<accession>_<document>.htm      (cache, git-ignored, ~2.1 GB)
+        social/raw/human_capital_sections.csv           (the extracted section per
+                                                         company, for hand-checking)
 """
 
 from __future__ import annotations
@@ -40,10 +40,15 @@ INDICATOR_ID = "human_capital_disclosure"
 SOURCE = "SEC EDGAR 10-K, Item 1 Human Capital Resources"
 
 SUBMISSIONS_DIR = raw_dir(CATEGORY) / "submissions"
-TENK_DIR = raw_dir(CATEGORY) / "tenk"
-SECTIONS_OUT = raw_dir(CATEGORY) / "human_capital_disclosure_sections.csv"
+SECTIONS_OUT = raw_dir(CATEGORY) / "human_capital_sections.csv"
 
 ARCHIVE = "https://www.sec.gov/Archives/edgar/data/{cik}/{acc}/{doc}"
+SUBMISSIONS_API = "https://data.sec.gov/submissions/CIK{cik}.json"
+
+# universe/sp500.csv (owner: Arash, not editable here) carries the CIK of a 2026 holding
+# company that has never filed a 10-K. Hand-verified predecessor that did:
+#   XOM -> Exxon Mobil Corporation, CIK 0000034088 (10-K for FY2025 filed 2026-02-25)
+PREDECESSOR_CIK = {"XOM": "0000034088"}
 
 
 # --------------------------------------------------------------------------- metadata
@@ -52,8 +57,13 @@ ARCHIVE = "https://www.sec.gov/Archives/edgar/data/{cik}/{acc}/{doc}"
 def latest_tenk(cik: str) -> dict | None:
     """Most recent 10-K of one company from the cached submissions JSON (no network)."""
     path = SUBMISSIONS_DIR / f"CIK{cik}.json"
-    if not path.exists():
-        return None
+    if not path.exists():  # only for a predecessor CIK, which the cache does not hold
+        try:
+            path = cached_download(SUBMISSIONS_API.format(cik=cik), CATEGORY, path.name and
+                                   f"submissions/CIK{cik}.json")
+        except Exception as exc:
+            print(f"  could not fetch submissions for CIK{cik}: {exc}")
+            return None
     recent = json.loads(path.read_text(encoding="utf-8"))["filings"]["recent"]
     best = None
     for i, form in enumerate(recent["form"]):
@@ -77,21 +87,21 @@ def latest_tenk(cik: str) -> dict | None:
 
 def filing_index() -> list[dict]:
     """One row per ticker: the most recent 10-K we can reach. Skips CIKs without one."""
-    universe = load_universe()
     rows, skipped = [], []
-    for r in universe.itertuples():
-        meta = latest_tenk(str(r.cik).strip())
+    for r in load_universe().itertuples():
+        cik = PREDECESSOR_CIK.get(r.ticker, str(r.cik).strip())
+        meta = latest_tenk(cik)
         if meta is None:
             skipped.append(r.ticker)
             continue
-        rows.append({"ticker": r.ticker, "cik": str(r.cik).strip(), **meta})
+        rows.append({"ticker": r.ticker, "cik": cik, **meta})
     if skipped:
         print(f"no 10-K in the cached submissions for {len(skipped)}: {', '.join(skipped)}")
     return rows
 
 
 def download_all(rows: list[dict]) -> None:
-    """Cache every primary document under social/raw/tenk/ (~1-2 GB, one pass)."""
+    """Cache every primary document under social/raw/tenk/ (~2.1 GB, one pass)."""
     todo = [r for r in rows if not (raw_dir(CATEGORY) / r["filename"]).exists()]
     print(f"{len(rows)} filings, {len(todo)} to download")
     for i, r in enumerate(todo, 1):
@@ -106,11 +116,11 @@ def download_all(rows: list[dict]) -> None:
 # ---------------------------------------------------------------------------- parsing
 
 _SCRIPT = re.compile(r"(?is)<(script|style)[^>]*>.*?</\1>")
-_TAG = re.compile(r"(?s)<[^>]+>")
-_BLOCK = re.compile(r"(?i)</?(p|div|tr|br|h[1-6]|table|li)\b[^>]*>")
-# inline tags split words in EDGAR HTML ("approximatel<span>y</span>"), so they must go
-# without leaving a space behind, unlike block tags.
+# inline tags split words in EDGAR HTML ("approximatel<span>y</span> 30,000"), so they
+# must go without leaving a space behind, unlike block tags, which become line breaks.
 _INLINE = re.compile(r"(?i)</?(span|font|b|i|u|em|strong|sup|sub|small|big|a|ix:[\w-]+)\b[^>]*>")
+_BLOCK = re.compile(r"(?i)</?(p|div|tr|br|h[1-6]|table|li)\b[^>]*>")
+_TAG = re.compile(r"(?s)<[^>]+>")
 
 
 def to_text(raw: bytes) -> str:
@@ -151,22 +161,40 @@ HEADING_RE = [
     for k in HEADING_KEYS
 ]
 
+# Run-in headings: some filers start the discussion on the same line ("HUMAN CAPITAL. The
+# strength of our workforce ..."), so the heading is not a line of its own. Only the two
+# most specific keys may match this way, and only at the very start of the line, so that
+# a risk factor ("Many of our employees have been working remotely ...") cannot open one.
+RUNIN_RE = [
+    re.compile(r"(?im)^[\s\d.()•-]{0,8}(" + k + r"[A-Za-z&,'/ -]{0,25}?)\s*[.:;-]?\s+(?=[A-Z])")
+    for k in HEADING_KEYS[:2]
+]
+# A bare noun ("Employees - The company sources talent from ...") only counts as a run-in
+# heading when a dash or colon separates it from the text, never mid-sentence.
+RUNIN_RE += [
+    re.compile(r"(?im)^[\s\d.()•-]{0,8}(" + k + r")\s*[-:]\s+(?=[A-Z])")
+    for k in HEADING_KEYS[2:4]
+]
+
 # Where the section stops: the next Item, Part, or the next unrelated major heading, each
 # on a line of its own. "Item 1A." usually carries its title on the same line.
 END_RE = re.compile(
     r"(?im)^[ ]{0,4}(?:"
     r"item\s+\d+[a-c]?\b[^\n]{0,60}"  # Item 1A. Risk Factors, Item 2. Properties, ...
     r"|part\s+[iv]+\b[^\n]{0,40}"
-    r"|(?:available information|information about our executive officers|executive officers"
-    r"(?: of the registrant| and other senior management)?|risk factors|our properties|"
+    r"|(?:available information|information about[^\n]{0,60}executive officers[^\n]{0,20}"
+    r"|executive officers[^\n]{0,40}|risk factors|our properties|"
     r"properties|legal proceedings|unresolved staff comments|government regulation|"
     r"governmental regulation|regulation(?:s)?(?: and supervision)?|supervision and"
     r" regulation|regulatory (?:matters|environment|oversight)|intellectual property|"
-    r"seasonality|competition|research and development|environmental matters|"
-    r"corporate (?:information|governance)|website access|available information|"
+    r"seasonality|competition|research and development|human rights|"
+    r"[^\n]{0,30}(?:environmental|sustainability|climate|corporate responsibility|"
+    r"community (?:engagement|impact|investment|relations)|government supervision|"
+    r"supervision and regulation)[^\n]{0,40}|"
+    r"corporate (?:information|governance)|website access|"
     r"forward[- ]looking statements|climate change|backlog|raw materials|suppliers|"
     r"sales and marketing|our strategy|business strategy|segment information|"
-    r"where you can find (?:more|additional) information|investor information|"
+    r"where (?:you can find|to find)[^\n]{0,40}information|investor information|"
     r"general development of business|reportable segments|products and services|"
     r"manufacturing|distribution|customers|insurance|patents|trademarks)"
     r")[ :.\-]*$"
@@ -175,6 +203,12 @@ END_RE = re.compile(
 MAX_SECTION_CHARS = 30000
 MIN_SECTION_CHARS = 400
 SCORE_WINDOW = 2500  # a candidate is judged on its opening, not on how far it over-runs
+MERGE_GAP = 1500  # table footnotes or a page break between two parts of one section
+RANK_PENALTY = 2  # a vaguer heading ("Employees") must be much more on-topic to win
+FALLBACK_MIN_SCORE = 8  # for the unheaded-paragraph fallback, used only if nothing else
+FALLBACK_MIN_CHARS = 300
+
+_RISK_HEADING = re.compile(r"(?i)\brisks?\b")
 
 
 def find_section(text: str) -> tuple[str, str] | None:
@@ -186,19 +220,23 @@ def find_section(text: str) -> tuple[str, str] | None:
     employees") are candidates as well, so candidate spans that touch each other are
     merged: the section runs from the first of them to the end of the last.
     """
+    starts = [(rank, m, None) for rank, p in enumerate(HEADING_RE) for m in p.finditer(text)]
+    starts += [(rank, m, m.end()) for rank, p in enumerate(RUNIN_RE) for m in p.finditer(text)]
+
     found = []
-    for rank, pattern in enumerate(HEADING_RE):
-        for m in pattern.finditer(text):
-            heading = m.group(1).strip()
-            if _RISK_HEADING.search(heading):
-                continue  # "Risks related to human capital" is Item 1A, not the discussion
-            span = _section_at(text, m.start())
-            if span is None:
-                continue
-            start, end = span
-            score = _topic_score(text[start : start + SCORE_WINDOW]) - RANK_PENALTY * rank
-            if score > 0:
-                found.append({"start": start, "end": end, "heading": heading, "score": score})
+    for rank, m, body_start in starts:
+        heading = m.group(1).strip()
+        if _RISK_HEADING.search(heading):
+            continue  # "Risks related to human capital" is Item 1A, not the discussion
+        span = _section_at(text, m.start(), body_start)
+        if span is None:
+            continue
+        start, end = span
+        score = _topic_score(text[start : start + SCORE_WINDOW]) - RANK_PENALTY * rank
+        if score > 0:
+            found.append({"start": start, "end": end, "heading": heading, "score": score})
+    if not found:
+        found = _headcount_anchored(text)
     if not found:
         return None
 
@@ -215,10 +253,45 @@ def find_section(text: str) -> tuple[str, str] | None:
     return cluster[0]["heading"], text[start:end].strip()
 
 
-def _section_at(text: str, heading_start: int) -> tuple[int, int] | None:
+def _headcount_anchored(text: str) -> list[dict]:
+    """Fallback for filers who give the discussion no heading we can guess.
+
+    Runs only when no known heading matched at all. A candidate is a maximal run of
+    consecutive paragraphs that all talk about the workforce and that states a total
+    headcount somewhere inside - that run is the workforce disclosure, heading or not.
+    """
+    runs: list[tuple[int, int]] = []
+    start = None
+    pos = 0
+    for line in text.split("\n"):
+        on_topic = _topic_score(line) > 0 or len(line.strip()) <= 80  # headings, page numbers
+        if on_topic:
+            start = pos if start is None else start
+        elif start is not None:
+            runs.append((start, pos))
+            start = None
+        pos += len(line) + 1
+    if start is not None:
+        runs.append((start, pos))
+
+    out = []
+    for a, b in runs:
+        body = text[a:b].strip()
+        if len(body) < FALLBACK_MIN_CHARS:
+            continue
+        score = _topic_score(body[:SCORE_WINDOW])
+        if score >= FALLBACK_MIN_SCORE and any(p.search(body) for p in COMPILED["headcount"]):
+            out.append({"start": a, "end": b, "heading": "(no heading)", "score": score})
+    return out
+
+
+def _section_at(
+    text: str, heading_start: int, body_start: int | None = None
+) -> tuple[int, int] | None:
     """Span of the text under one heading, cut at the next Item / off-topic heading."""
-    nl = text.find("\n", heading_start)
-    body_start = nl + 1 if nl != -1 else len(text)
+    if body_start is None:
+        nl = text.find("\n", heading_start)
+        body_start = nl + 1 if nl != -1 else len(text)
     end = body_start + MAX_SECTION_CHARS
     stop = END_RE.search(text, body_start, end)
     if stop:
@@ -227,13 +300,6 @@ def _section_at(text: str, heading_start: int) -> tuple[int, int] | None:
     if len(body) < MIN_SECTION_CHARS:
         return None
     return body_start, body_start + len(body)
-
-
-MERGE_GAP = 1500  # a table of footnotes or a page break between two parts of one section
-RANK_PENALTY = 2  # a vaguer heading ("Employees") must be much more on-topic to win
-
-
-_RISK_HEADING = re.compile(r"(?i)\brisks?\b")
 
 
 _HEADINGY = re.compile(r"^[A-Z0-9][^a-z\n]{2,69}$|^(?:[A-Z][\w'&/,.-]*[ ]?){1,9}$")
@@ -295,6 +361,7 @@ def _topic_score(body: str) -> int:
 
 NUM = r"(?:\d[\d,]*(?:\.\d+)?)"
 PCT = r"(?:\d{1,3}(?:\.\d+)?\s?(?:%|percent))"
+RATE = r"(?:\d{1,3}\.\d+)"  # a safety rate is always a decimal (0.41, 2.34)
 WORKER = (
     r"(?:employees|team members|teammates|associates|colleagues|co[- ]?workers|workers|"
     r"crew members|cast members|persons|people|individuals|staff members|staff|personnel|"
@@ -302,20 +369,19 @@ WORKER = (
 )
 # tables put the label and the number on different lines, so a few line breaks are allowed
 GAPN = r"(?:[^.\n]{0,90}\n?){0,3}"
-RATE = r"(?:\d{1,3}\.\d+)"  # a safety rate is always a decimal (0.41, 2.34)
 
 # Each type: a list of regexes. A hit must contain a number - that is the whole point of
 # the indicator. The matched text (trimmed to a readable window) goes into `note`.
 DISCLOSURE_TYPES: dict[str, list[str]] = {
     # Total headcount. Anchored on a reporting verb ("we employed 118,000 persons") or on
-    # a workforce noun, so "300,000 employees took a course" is not read as headcount.
+    # a workforce noun, so "300,000 employees took a course" is not read as a headcount.
     "headcount": [
         rf"\b(?:had|have|has|employ|employs|employed|employing|totaled|totaling|numbered|"
         rf"with|our)\s+(?:approximately|about|roughly|over|more than|nearly|some|"
         rf"in excess of|a total of|almost)?\s*{NUM}\s*(?:million|thousand)?\s*"
         rf"(?:[\w][\w,.-]*\s+){{0,5}}{WORKER}",
         rf"(?:workforce|headcount|head count|employee (?:base|population|count)|"
-        rf"number of (?:our |full[- ]time |part[- ]time |global )*(?:employees|associates|"
+        rf"number of (?:[\w-]+\s+){{0,3}}(?:employees|associates|"
         rf"team members|teammates|colleagues|workers)|global team|total (?:employees|"
         rf"associates|team members|teammates|headcount))"
         rf"{GAPN}(?:was|of|is|are|totaled|comprised|consisted of|consists of|stood at|"
@@ -376,7 +442,8 @@ DISCLOSURE_TYPES: dict[str, list[str]] = {
         rf"(?:total\s+)?(?:recordable|lost[- ]time|lost workday|days away|incident|injur\w*|"
         rf"illness|accident|fatality|DART|TRIR|TCIR|OSHA)\s*"
         rf"(?:and illness\s*|injury\s*|incident\s*|case\s*|severity\s*){{0,2}}"
-        rf"(?:rate|frequency|ratio|index)[^.\n]{{0,60}}{RATE}",
+        rf"(?:rate|frequency|ratio|index)[^.\n]{{0,90}}{RATE}",
+        rf"\b(?:TRIR|TCIR|DART|LTIR|RIR|OSHA)\b[^.\n]{{0,50}}{RATE}",
         rf"{RATE}[^.\n]{{0,60}}(?:recordable|lost[- ]time|lost workday|injur\w*|incident|"
         rf"DART|TRIR)\s*(?:injury\s*|incident\s*|case\s*){{0,2}}(?:rate|frequency|index)",
     ],
@@ -393,7 +460,8 @@ DISCLOSURE_TYPES: dict[str, list[str]] = {
     # An engagement / survey score.
     "engagement_score": [
         rf"(?:engagement|engaged|satisfaction|favorabilit\w*|eNPS|net promoter|"
-        rf"(?:employee experience|inclusion|engagement|culture) index|pulse)\s*(?:survey\s*|index\s*|score\s*|rate\s*|result\w*\s*|ratin\w*\s*)"
+        rf"(?:employee experience|inclusion|engagement|culture) index|pulse)"
+        rf"\s*(?:survey\s*|index\s*|score\s*|rate\s*|result\w*\s*|ratin\w*\s*)"
         rf"{{0,2}}[^.\n]{{0,70}}(?:{PCT}|score of\s*{NUM}|{NUM}\s*out of\s*{NUM})",
         rf"(?:{PCT}|score of\s*{NUM})[^.\n]{{0,70}}(?:engagement|favorab\w*|"
         rf"(?:employee |job )?satisfaction)",
@@ -418,8 +486,17 @@ DISCLOSURE_TYPES: dict[str, list[str]] = {
 }
 COMPILED = {k: [re.compile(p, re.I | re.M) for p in v] for k, v in DISCLOSURE_TYPES.items()}
 
-# Guards: a number that is a year, a dollar amount of revenue, a footnote marker etc.
 _YEAR_ONLY = re.compile(r"^(?:19|20)\d\d$")
+# Phrases that make a match about something other than the workforce.
+# "x% of our stores / rooms / revenue", never a share of the workforce
+_NOT_WORKFORCE_SHARE = re.compile(
+    r"(?i)(?:%|percent)\s+of\s+(?:our\s+|the\s+|its\s+)?(?:total\s+)?"
+    r"(?:room|revenue|sales|store|propert|site|hotel|restaurant|square|fleet|capacity)"
+)
+_WRONG_SUBJECT = re.compile(
+    r"(?i)\b(?:customer|client|subscriber|revenue|net|gross|dollar|member|user|patient|"
+    r"guest|policy|sales) (?:retention|turnover|satisfaction)\b"
+)
 
 
 def detect(section: str) -> dict[str, str]:
@@ -429,7 +506,7 @@ def detect(section: str) -> dict[str, str]:
         for pattern in patterns:
             for m in pattern.finditer(section):
                 quote = _quote(section, m.start(), m.end())
-                if _plausible(name, m.group(0)):
+                if _plausible(name, m.group(0)) and _context_ok(name, quote):
                     hits[name] = quote
                     break
             if name in hits:
@@ -437,11 +514,17 @@ def detect(section: str) -> dict[str, str]:
     return hits
 
 
-# Phrases that make a match about something other than the workforce.
-_WRONG_SUBJECT = re.compile(
-    r"(?i)\b(?:customer|client|subscriber|revenue|net|gross|dollar|member|user|patient|"
-    r"guest|policy|sales) (?:retention|turnover|satisfaction)\b"
-)
+# Read on the quote, not just on the match: the give-away word ("Dependent Scholarships",
+# "volunteer hours") often sits just outside the matched span.
+_CONTEXT_REJECT = {
+    "training": re.compile(r"(?i)volunteer|dependent|children|spouse|customer|client"),
+}
+
+
+def _context_ok(name: str, quote: str) -> bool:
+    """False if the surrounding sentence shows the figure is not about staff training."""
+    pattern = _CONTEXT_REJECT.get(name)
+    return not (pattern and pattern.search(quote))
 
 
 def _plausible(name: str, matched: str) -> bool:
@@ -452,9 +535,13 @@ def _plausible(name: str, matched: str) -> bool:
         return False
     if _WRONG_SUBJECT.search(matched):
         return False
-    if name == "training" and re.search(r"(?i)volunteer", matched):
-        return False
+    if name == "union_coverage" and _NOT_WORKFORCE_SHARE.search(matched):
+        return False  # "27% of our total room count" is not a share of the workforce
     if name == "headcount":
+        # "59 percent of our global employees" is a share, not a count
+        numbers = [n for n in numbers if not re.search(rf"{re.escape(n)}\s*(?:%|percent)", matched)]
+        if not numbers:
+            return False
         # a headcount below 50 is almost always something else (board members, sites)
         biggest = max(float(n.replace(",", "")) for n in numbers)
         if biggest < 50 and not re.search(r"(?i)\b(?:million|thousand)\b", matched):
@@ -493,7 +580,7 @@ def build() -> pd.DataFrame:
         note = f'heading "{heading}"; ' + (
             " | ".join(f'{k}: "{v}"' for k, v in sorted(hits.items()))
             if hits
-            else "no quantified disclosure type matched"
+            else "section found, no quantified disclosure type in it"
         )
         rows.append(
             {
@@ -503,7 +590,7 @@ def build() -> pd.DataFrame:
                 "source": SOURCE,
                 "source_url": meta["url"],
                 "retrieved": today_utc(),
-                "note": note[:1500],
+                "note": note[:1800],
             }
         )
         sections.append(
@@ -524,6 +611,8 @@ def build() -> pd.DataFrame:
         print(f"no human-capital section found for {len(no_section)}: {', '.join(no_section)}")
     pd.DataFrame(sections).to_csv(SECTIONS_OUT, index=False, lineterminator="\n")
     print(f"wrote {SECTIONS_OUT.name}: {len(sections)} extracted sections (for hand-checks)")
+    counts = pd.Series([r["value"] for r in rows]).value_counts().sort_index()
+    print("types found per company: " + ", ".join(f"{k}:{v}" for k, v in counts.items()))
     return pd.DataFrame(rows)
 
 

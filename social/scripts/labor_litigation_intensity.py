@@ -38,7 +38,11 @@ INDICATOR_ID = "labor_litigation_intensity"
 SOURCE = "CourtListener RECAP federal dockets"
 SOURCE_URL = "https://www.courtlistener.com/api/rest/v4/search/"
 
-DOCKETS_DIR = raw_dir(CATEGORY) / "dockets"
+# Bulk dump (all 503 companies) is the source; the API pull in raw/dockets/ stays as the
+# validation set. Measured on the 30 overlapping companies: case-name matching recovers
+# 90% of the dockets party matching found (631 vs 698), for 444/503 companies instead of 33.
+DOCKETS_DIR = raw_dir(CATEGORY) / "dockets_bulk"
+DOCKETS_API_DIR = raw_dir(CATEGORY) / "dockets"
 # universe/financials.csv is the team's shared denominator (owner: Arash) and wins where
 # it has data. It currently starts at 2019, so social/raw/financials.csv - same SEC XBRL
 # frames method - fills 2016-2018 to keep the full 10-year window.
@@ -95,7 +99,9 @@ def count_dockets() -> tuple[dict, dict]:
                 continue
             if not is_labor(d.get("suitNature")):
                 continue
-            if not party_matches(d.get("party"), names):
+            # Bulk rows were already matched to this company during extraction and carry
+            # no party list; API rows still need the party check.
+            if data.get("source") != "bulk" and not party_matches(d.get("party"), names):
                 continue
             year = int(filed[:4])
             per_year[(ticker, year)] += 1
