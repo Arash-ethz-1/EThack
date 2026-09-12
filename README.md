@@ -17,7 +17,7 @@ economic/  social/  environmental/      >= 3 sub-indicators each, one shared dat
 | Category | Who |
 |---|---|
 | Economic | Lauren |
-| Social | Florian, Lauren |
+| Social | Florian, Lauren, Arash |
 | Environmental | Jean |
 
 ## First time on your laptop

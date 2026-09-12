@@ -30,7 +30,7 @@ four people from overwriting each other. Anyone may read anything.
 | Area | Owner | Topic |
 |---|---|---|
 | `economic/` | **Lauren** | economic impact indicators (taken over from Arash) |
-| `social/` | **Florian** and **Lauren** | social impact indicators - **one indicator = one person** (`owner` column in `social/catalog.csv`) |
+| `social/` | **Florian**, **Lauren** and **Arash** | social impact indicators - **one indicator = one person** (`owner` column in `social/catalog.csv`) |
 | `environmental/` | **Jean** | environmental impact indicators |
 | `universe/`, `common/`, `tests/`, `run.py`, `profiles/`, `dashboard/`, `portfolio/`, `AGENTS.md`, `docs/*.md` | **Arash** | shared infrastructure, scoring pipeline, dashboard |
 

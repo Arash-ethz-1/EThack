@@ -49,16 +49,18 @@ def cached_download(
     params: dict | None = None,
     refresh: bool = False,
     pause_s: float = 0.2,
+    headers: dict[str, str] | None = None,
 ) -> Path:
     """Download once into <category>/raw/<filename>; later calls read the file.
 
     Every real download is logged in <category>/raw/_downloads.csv (provenance).
+    `headers` override the defaults (e.g. osha.gov rejects non-browser User-Agents).
     """
     path = raw_dir(category) / filename
     if path.exists() and not refresh:
         return path
     path.parent.mkdir(parents=True, exist_ok=True)
-    resp = requests.get(url, params=params, headers=http_headers(), timeout=60)
+    resp = requests.get(url, params=params, headers={**http_headers(), **(headers or {})}, timeout=300)
     resp.raise_for_status()
     path.write_bytes(resp.content)
     time.sleep(pause_s)

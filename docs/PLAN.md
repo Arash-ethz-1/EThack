@@ -8,7 +8,7 @@ and use it to weight a portfolio allocation.
 | Category | Owner | Folder |
 |---|---|---|
 | Economic impact | Lauren | `economic/` |
-| Social impact | Florian, Lauren | `social/` |
+| Social impact | Florian, Lauren, Arash | `social/` |
 | Environmental impact | Jean | `environmental/` |
 
 **Done when**, for every category:

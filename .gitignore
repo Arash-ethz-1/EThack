@@ -65,3 +65,16 @@ social/raw/fec/
 # python run.py build economic employment_growth
 economic/raw/10k_*.htm
 economic/raw/submissions_*.json
+
+# SEC raw caches for social helpers (Arash): 10-K Exhibit 21 files and DEF 14A proxy
+# statements (~1 GB). Derived, committed: social/raw/subsidiaries.csv and the
+# quotes in social/indicators/ceo_pay_ratio.csv.
+# Rebuild: python social/scripts/_subsidiaries.py ; python run.py build social ceo_pay_ratio
+social/raw/exhibit21/
+social/raw/proxies/
+
+# DOL Form 5500 and OSHA ITA bulk zips (30-90 MB each). Derived, committed:
+# social/raw/form5500_plans.csv and social/raw/osha_establishments.csv.
+# Rebuild: python run.py build social employer_retirement_contribution / workplace_injury_rate
+social/raw/form5500/
+social/raw/osha/

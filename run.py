@@ -33,7 +33,7 @@ BRANCH = "main"
 
 OWNERS = {
     "economic": "Lauren",
-    "social": "Florian + Lauren (one indicator = one person, see social/catalog.csv)",
+    "social": "Florian + Lauren + Arash (one indicator = one person, see social/catalog.csv)",
     "environmental": "Jean",
     "universe": "Arash",
     "portfolio": "Arash",
