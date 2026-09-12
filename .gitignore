@@ -26,3 +26,7 @@ Thumbs.db
 
 # raw downloads ARE committed (so nobody downloads twice) - unless a file is > 20 MB.
 # Add big raw files here by name, and keep the script that downloads them.
+
+# SEC submissions JSON cache: ~83 MB for 503 companies, only used to derive the small
+# social/raw/aliases.csv, which IS committed. Rebuild: python social/scripts/_aliases.py
+social/raw/submissions/
