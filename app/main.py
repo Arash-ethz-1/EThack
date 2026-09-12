@@ -48,4 +48,4 @@ try:
         "that still exist. It is reported alongside every score, never folded into it."
     )
 except FileNotFoundError:
-    st.info("No data yet. Run `make mocks` to populate the dashboard.")
+    st.info("No data yet. Run `python run.py mocks` to populate the dashboard.")

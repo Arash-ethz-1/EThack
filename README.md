@@ -29,8 +29,8 @@ We do not publish a number. We publish a number *and how much of it you can trus
 ```bash
 python -m venv .venv && . .venv/Scripts/activate   # Windows: .venv\Scripts\activate
 pip install -r requirements.txt
-make mocks        # generate fake data satisfying every contract - unblocks everyone
-make app          # launch the dashboard on mock data
+python run.py mocks        # generate fake data satisfying every contract - unblocks everyone
+python run.py app          # launch the dashboard on mock data
 ```
 
 ## Read these before writing code

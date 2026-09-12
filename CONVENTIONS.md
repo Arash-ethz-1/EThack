@@ -8,8 +8,8 @@ resolving a merge conflict instead of shipping. Read the ownership table first.
 ## 1. File ownership - the rule that saves the night
 
 **You may only edit files you own.** If you need a change elsewhere, message the
-owner. This is not bureaucracy; it is the reason five people can push to `main`
-all night without a single conflict.
+owner. This is not bureaucracy; it is the reason five people can merge into `main`
+all night without a single conflict, and the reason our branches need no review.
 
 | Path | Owner | Notes |
 |---|---|---|
@@ -34,35 +34,88 @@ all night without a single conflict.
 | `docs/tasks/<name>.md` | **that person** | edit your own plan freely |
 | `METRICS.md` | **Harprit** | |
 | `figures/*` | producer of the figure | |
+| `PROGRESS.md` | **everyone, own section only** | append-only; never touch another section |
 
 Anyone may **read** anything. Anyone may **open an issue** about anything.
 
 ## 2. Git
 
-We are trunk-based. There is no time for pull-request review cycles, and the
-ownership table makes them unnecessary.
+`main` is protected by convention: **nobody commits on `main`, ever.** Every piece
+of work is a short-lived branch that gets rebased onto `main` and fast-forwarded in.
+The ownership table means we still do not need review cycles - the branch is there
+so that `main` is never mid-edit, and so a broken change is one `git switch` away
+from being undone instead of a revert on top of four other people's commits.
+
+**The loop. Every single time.**
 
 ```bash
-# every single time, before you push:
+# 1. start from the truth, never from what you had an hour ago
+git switch main
 git pull --rebase origin main
-make test
+
+# 2. branch for the thing you are about to do - one task, one branch
+git switch -c arash/link-ex21
+
+# 3. work. commit every 30-45 min.
+python run.py test
+git add -A && git commit -m "[link] add EX-21 subsidiary registry scraper"
+
+# 4. log it in PROGRESS.md under your own section, then commit that too
+git commit -am "[docs] progress: EX-21 scraper, 487/503 resolved"
+
+# 5. pull again - other people moved while you worked - and replay on top
+git pull --rebase origin main
+python run.py test          # green on top of THEIR work, not just yours
+
+# 6. fast-forward into main and push
+git switch main
+git pull --rebase origin main
+git merge --ff-only arash/link-ex21
 git push origin main
+
+# 7. bin the branch
+git branch -d arash/link-ex21
 ```
+
+`python run.py sync` does steps 1 and `python run.py ship <branch>` does 5-7. Use them.
+
+If `--ff-only` refuses, someone pushed while you were in step 5. That is not an
+error, it is the check working: `git switch -` back, `git pull --rebase origin main`
+again, re-run `python run.py test`, retry.
+
+**Branch names:** `<yourname>/<short-thing>`. `jean/ghgrp-backfill`,
+`lauren/say-do-indicator`, `harprit/enforcement-oos`. Your name first so `git branch -a`
+sorts by person.
 
 **Rules**
 
-1. `main` must always run. If `make all` on mocks is broken, that is a
+1. `main` must always run. If `python run.py all` on mocks is broken, that is a
    drop-everything emergency, and it belongs to whoever broke it.
-2. **Never** `git push --force` to `main`. Not once, not "just quickly".
-3. **Always** `--rebase` on pull. We want a linear history; merge commits from five
-   people overnight make the log unreadable.
-4. Commit small and often - every 30 to 45 minutes. A four-hour uncommitted chunk
-   is an unrecoverable loss when a laptop dies at 04:00.
-5. Branch only for cross-cutting work that touches files you do not own:
-   `git switch -c arash/contracts-add-visibility`, then tell the affected owners.
-6. Never commit secrets, `.env`, or `.streamlit/secrets.toml`.
-7. `data/raw/` **is** committed. The archive is part of our thesis - see
+2. **Never** `git push --force`, to `main` or to a branch someone else has checked
+   out. Not once, not "just quickly".
+3. **Always** `--rebase` on pull, and **always** `--ff-only` on the merge into `main`.
+   We want a linear history; merge commits from five people overnight make the log
+   unreadable and make "what broke the headline number?" unanswerable.
+4. **Always pull before you start and again before you merge.** Twice, not once.
+   The first pull stops you building on stale contracts; the second stops you
+   shipping something that only passes against a `main` from two hours ago.
+5. Commit small and often - every 30 to 45 minutes. A four-hour uncommitted chunk
+   is an unrecoverable loss when a laptop dies at 04:00. Branches are local until
+   pushed, so `git push -u origin <branch>` at least once an hour as a backup.
+6. **Update `PROGRESS.md` in the same branch as the work it describes.** A progress
+   entry that lands without its code is a lie with a timestamp.
+7. One task per branch. If you notice a second thing, finish the first, merge,
+   branch again. Branches that live longer than ~90 minutes are how you get the
+   03:00 conflict this whole file exists to prevent.
+8. Never commit secrets, `.env`, or `.streamlit/secrets.toml`.
+9. `data/raw/` **is** committed. The archive is part of our thesis - see
    `docs/THESIS.md`. Everything derived (`data/processed/`, `data/mock/`) is not.
+
+**When to use a pull request instead:** only for a change to `contracts.py`, the
+ownership table, or `CLAUDE.md` - the three files that affect everyone. Push the
+branch, open the PR, get the one affected owner to say yes in the channel, merge it
+yourself. Do not wait for a review on your own files; that is what the ownership
+table is for.
 
 **Commit message format**
 
@@ -99,7 +152,7 @@ headline number.
 2. **Indicator tests.** Every indicator in `impl/` needs a test that it
    (a) returns a Series indexed by ticker, (b) respects its declared direction,
    (c) returns NaN rather than crashing on missing input.
-3. **Smoke test.** `make all` on mock data produces every expected artefact.
+3. **Smoke test.** `python run.py all` on mock data produces every expected artefact.
 4. **Golden numbers.** Once a headline figure exists, pin it:
    `assert abs(score.loc["XOM"] - 0.31) < 0.01`. If someone's refactor moves it,
    we find out in seconds instead of in front of judges.
@@ -128,10 +181,10 @@ def test_carbon_intensity_handles_missing_revenue(mock_panel):
 
 Rules: every test runs in under 5 seconds and needs no network. Tests that need the
 internet are marked `@pytest.mark.network` and are skipped by default
-(`make test` passes `-m "not network"`).
+(`python run.py test` passes `-m "not network"`).
 
 **Fixtures** live in `tests/conftest.py`. `mock_panel` is already there and is
-built from the same generator as `make mocks`, so if you change a contract the
+built from the same generator as `python run.py mocks`, so if you change a contract the
 tests break immediately - which is the point.
 
 ## 4. Code
@@ -149,7 +202,7 @@ tests break immediately - which is the point.
 
 ## 5. When you are blocked
 
-Do not wait. `make mocks` gives you schema-valid input for every layer. Build
+Do not wait. `python run.py mocks` gives you schema-valid input for every layer. Build
 against the mock, commit, and swap in real data when it lands. If you find
 yourself waiting on another person for more than 20 minutes, you are working on
 the wrong thing - check `docs/tasks/<yourname>.md` for what else is yours.

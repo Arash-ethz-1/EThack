@@ -36,4 +36,4 @@ def score(
 
 
 if __name__ == "__main__":
-    print("run make score")
+    print("run python run.py score")

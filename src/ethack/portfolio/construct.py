@@ -31,4 +31,4 @@ def construct(scores: pd.DataFrame, visibility_sizing: bool = True) -> pd.DataFr
 
 
 if __name__ == "__main__":
-    print("run make portfolio")
+    print("run python run.py portfolio")

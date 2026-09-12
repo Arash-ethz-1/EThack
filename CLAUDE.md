@@ -4,6 +4,12 @@ You are working on **Sightline**, a 20-hour hackathon project for an ETH-affilia
 fund. Read this whole file before your first edit. Then read
 `docs/tasks/<the-person-you-are-helping>.md` and `CONVENTIONS.md`.
 
+**Before your first tool call, run `git pull --rebase origin main` and read
+`PROGRESS.md`.** Five people are committing to this repo in parallel. Your view of
+it is stale the moment you start, and the most expensive thing you can do is build
+something a teammate finished twenty minutes ago. Section 7 is the full loop - it is
+not optional and it is not advice.
+
 ---
 
 ## 1. What we are building and why it is not the obvious thing
@@ -56,7 +62,7 @@ the one file nobody edits alone.
 - Need a new column? Post in the team channel, get the downstream owner's OK, then
   change `contracts.py` **and** `scripts/make_mocks.py` in the same commit.
 - Every layer reads its input contract and writes its output contract. Nothing else.
-- `make mocks` generates schema-valid fake data so any layer can be built and
+- `python run.py mocks` generates schema-valid fake data so any layer can be built and
   tested before its upstream layer exists. **Use it.** Do not wait for real data.
 
 ## 4. The indicator registry - our flexibility requirement
@@ -107,38 +113,105 @@ Corp, Caldwell Power Company and Catamount Energy Corporation. Scrape EX-21 for 
 ## 6. Commands
 
 ```bash
-make mocks     # generate schema-valid fake data into data/mock/
-make fetch     # L1: pull and cache all real sources  (Jean)
-make link      # L2: facility -> ticker resolution     (Arash)
-make score     # L3+L4: indicators and scores          (Lauren)
-make portfolio # L5: the $1B book                      (Florian)
-make eval      # L6: validation and METRICS.md         (Harprit)
-make app       # launch the dashboard
-make test      # pytest
-make all       # the whole pipeline, end to end
+python run.py mocks     # generate schema-valid fake data into data/mock/
+python run.py fetch     # L1: pull and cache all real sources  (Jean)
+python run.py link      # L2: facility -> ticker resolution     (Arash)
+python run.py score     # L3+L4: indicators and scores          (Lauren)
+python run.py portfolio # L5: the $1B book                      (Florian)
+python run.py eval      # L6: validation and METRICS.md         (Harprit)
+python run.py app       # launch the dashboard
+python run.py test      # pytest
+python run.py all       # the whole pipeline, end to end
+
+python run.py sync                    # pull main before you branch
+python run.py ship you/thing   # rebase, test, ff-only merge into main, push
+python run.py progress                # print a PROGRESS.md entry stub
 ```
 
-`make all` must work from a clean clone on mock data at all times. If your change
+`python run.py all` must work from a clean clone on mock data at all times. If your change
 breaks it, you fix it before you sleep.
 
-## 7. Hard rules
+## 7. The working loop - git, branches and PROGRESS.md
+
+**Never commit on `main`.** Every change lives on a short-lived branch that gets
+rebased onto `main` and fast-forwarded in. `CONVENTIONS.md` section 2 has the full
+command list; this is the part you must not skip.
+
+```bash
+git switch main && git pull --rebase origin main   # 1. BEFORE you plan anything
+git switch -c <person>/<thing>                     # 2. one task, one branch
+# ... work, python run.py test, commit every 30-45 min ...
+git pull --rebase origin main && python run.py test         # 3. BEFORE you merge
+git switch main && git pull --rebase origin main
+git merge --ff-only <person>/<thing> && git push origin main
+```
+
+`python run.py sync` is step 1. `python run.py ship <person>/<thing>` is step 3 onward.
+
+**Pull twice, not once.** Once before you start, so you are not building against
+contracts that changed an hour ago. Once before you merge, so `python run.py test` passes
+against everyone else's work and not just your own. An agent that skips the second
+pull is how `main` breaks at 03:00.
+
+If a rebase conflicts in a file you do not own: **stop, do not resolve it.** Say
+which file and which owner, and ask. Resolving someone else's file from a stale
+branch silently reverts their work - exactly the failure the ownership table exists
+to prevent.
+
+### PROGRESS.md is part of the deliverable
+
+`PROGRESS.md` is the log the whole team reads to know what exists. Every person has
+their own section, and **you append to the end of the section of the person you are
+working for, never to anyone else's.** That per-person split is the only reason five
+people can append to one file all night without conflicting.
+
+Log at every commit-sized step and always before you stop:
+
+```markdown
+### 2026-09-12 18:40 UTC - arash/link-ex21
+- **Shipped:** EX-21 scraper, 487/503 tickers resolved, cached to `data/raw/ex21/`
+- **Next:** reranker on `data/manual/link_labels.csv`
+- **Blocked:** none
+- **Needs from others:** Jean - GHGRP parent_company for 2010-2023, to test the join
+```
+
+`python run.py progress` prints that stub with the timestamp and branch filled in.
+
+Rules that apply to you specifically as an agent:
+
+1. **`Shipped` is past tense and verifiable** - a file that exists, a row count you
+   saw printed, a test that passed. Never write a number you did not observe in
+   output. "Implemented the linker" is not an entry; "487/503 resolved" is.
+2. **Log the entry in the same branch as the work it describes.** A progress entry
+   that lands without its code is a lie with a timestamp.
+3. **Log failures and dead ends too.** "Fuzzy matcher tops out at 61%, dropping it"
+   saves the next person three hours and is worth more than a success line.
+4. **Say what you were.** If an agent did the work, the commit body says so, per
+   section 9. A run that produced no commit - a research sweep, a failed extraction,
+   an adversarial review - goes in the `## Agents` section at the bottom instead.
+5. Never edit, reorder, summarise or "tidy" an existing entry, yours or anyone's.
+   The log is append-only. Its value is that it is a record, not a status page.
+
+## 8. Hard rules
 
 1. **Never edit a file you do not own.** See the ownership table in `CONVENTIONS.md`.
    Need a change in someone else's file? Ask them. In 20 hours, a merge conflict at
    03:00 costs more than a message costs.
-2. **Never commit real numbers you have not seen produced.** No placeholder figures
+2. **Never commit on `main`, and pull twice - before you start and before you merge.**
+   Log what you shipped in `PROGRESS.md` in the same branch. See section 7.
+3. **Never commit real numbers you have not seen produced.** No placeholder figures
    that look like results. Mark every mock as mock.
-3. **Cache every network call to disk.** Never hit an API twice for the same data.
+4. **Cache every network call to disk.** Never hit an API twice for the same data.
    `data/raw/` is committed - it is our archive and part of the thesis.
-4. **Record provenance.** Every fetch appends to `data/PROVENANCE.md`: source, URL,
+5. **Record provenance.** Every fetch appends to `data/PROVENANCE.md`: source, URL,
    UTC timestamp, row count, durability rating. This file is a deliverable, not admin.
-5. **No new dependencies** without asking. `requirements.txt` is small on purpose.
-6. **Do not build a chatbot over sustainability reports.** Four other teams will.
+6. **No new dependencies** without asking. `requirements.txt` is small on purpose.
+7. **Do not build a chatbot over sustainability reports.** Four other teams will.
    It demos as a search box and proves nothing.
-7. **If you are unsure whether something is on the critical path, it is not.**
+8. **If you are unsure whether something is on the critical path, it is not.**
    Ship the boring version and move on.
 
-## 8. When to reach for a model or an agent
+## 9. When to reach for a model or an agent
 
 Say so explicitly in your commit message when you do.
 
@@ -153,7 +226,7 @@ Say so explicitly in your commit message when you do.
 Report the error rate of every model you train. A model without a baseline
 comparison is not a result.
 
-## 9. Tone of the output
+## 10. Tone of the output
 
 The client is an institutional fund, not a sustainability team. Write like a risk
 memo: specific, quantified, honest about what is unknown. Every chart labels its

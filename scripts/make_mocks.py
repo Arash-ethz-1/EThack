@@ -1,7 +1,7 @@
 # Generate schema-valid fake data for every contract so that no layer is ever
 # blocked on an upstream layer. OWNER: Arash.
 #
-# Run: make mocks
+# Run: python run.py mocks
 #
 # If you change a contract, change this file in the SAME commit. The tests import
 # from here, so a drift breaks them immediately - which is the point.

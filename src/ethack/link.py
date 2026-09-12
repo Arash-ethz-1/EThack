@@ -32,4 +32,4 @@ def resolve(facilities: pd.DataFrame, registry: pd.DataFrame) -> pd.DataFrame:
 
 
 if __name__ == "__main__":
-    print("run make link")
+    print("run python run.py link")

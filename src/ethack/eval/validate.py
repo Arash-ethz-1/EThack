@@ -41,4 +41,4 @@ def information_half_life(panel: pd.DataFrame) -> pd.DataFrame:
 
 
 if __name__ == "__main__":
-    print("run make eval")
+    print("run python run.py eval")

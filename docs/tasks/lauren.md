@@ -18,7 +18,7 @@ institutional audience.
 
 ## 16:00 - 17:00 | Start on mocks immediately
 
-`make mocks && make test`. Four reference indicators already exist and pass tests -
+`python run.py mocks && python run.py test`. Four reference indicators already exist and pass tests -
 read `impl/carbon_intensity.py`, it is your template. **You are never blocked on
 Jean or Arash.** The mock panel has `metered_scope1_t`, `reported_scope1_t`,
 `satellite_scope1_t`, `revenue_usd`, `ebitda_usd`, `sector`.

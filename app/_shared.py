@@ -35,6 +35,6 @@ def mock_banner() -> None:
     if is_mock():
         st.warning(
             "Showing SYNTHETIC data. Every figure on this page is generated. "
-            "Run `make all` to replace it with real output.",
+            "Run `python run.py all` to replace it with real output.",
             icon=":material/science:",
         )

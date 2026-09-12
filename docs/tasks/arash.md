@@ -23,7 +23,7 @@ The repo scaffold, contracts and mock generator already exist. Your first hour i
 spent making sure four other people can start without asking you anything.
 
 - [ ] Push the repo, add everyone as collaborators
-- [ ] Everyone runs `make mocks && make test` and confirms 9 tests pass
+- [ ] Everyone runs `python run.py mocks && python run.py test` and confirms 9 tests pass
 - [ ] Walk the team through `CONVENTIONS.md` section 1 out loud. Two minutes.
       **Nobody edits a file they do not own** - this is what lets five people push
       to `main` all night with zero conflicts.
@@ -88,7 +88,7 @@ Protect the time for it - it is worth more than a better join.
 
 ## Done when
 
-- [ ] `make all` runs clean from a fresh clone on mock data
+- [ ] `python run.py all` runs clean from a fresh clone on mock data
 - [ ] link precision/recall in `METRICS.md`
 - [ ] blackout page produces four real numbers and never crashes
 - [ ] every teammate's page renders inside the shell

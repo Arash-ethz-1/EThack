@@ -1,7 +1,7 @@
 PY := python
 PYTEST := pytest -q -m "not network"
 
-.PHONY: help mocks fetch link score portfolio eval app test fmt all clean
+.PHONY: help mocks fetch link score portfolio eval app test fmt all clean sync ship progress
 
 help:
 	@echo "mocks     generate schema-valid fake data (start here)"
@@ -13,6 +13,10 @@ help:
 	@echo "app       launch the dashboard"
 	@echo "test      pytest (network tests skipped)"
 	@echo "all       full pipeline"
+	@echo ""
+	@echo "sync             pull main, then: git switch -c <you>/<thing>"
+	@echo "ship BRANCH=x    rebase on main, test, ff-only merge, push, delete"
+	@echo "progress         print a PROGRESS.md entry stub with a UTC timestamp"
 
 mocks:
 	$(PY) scripts/make_mocks.py
@@ -51,3 +55,36 @@ all: mocks link score portfolio eval
 
 clean:
 	rm -rf data/processed/* data/mock/* .pytest_cache
+
+# --- git workflow (see CONVENTIONS.md section 2) ---------------------------
+
+BRANCH ?=
+
+sync:
+	git switch main
+	git pull --rebase origin main
+	@echo ""
+	@echo "main is current. now: git switch -c <yourname>/<thing>"
+
+ship:
+	@test -n "$(BRANCH)" || (echo "usage: make ship BRANCH=yourname/thing"; exit 1)
+	git switch $(BRANCH)
+	git pull --rebase origin main
+	$(PYTEST)
+	git switch main
+	git pull --rebase origin main
+	git merge --ff-only $(BRANCH)
+	git push origin main
+	git branch -d $(BRANCH)
+	@echo ""
+	@echo "merged $(BRANCH) into main. did you log it in PROGRESS.md?"
+
+progress:
+	@echo ""
+	@echo "### $$(date -u +'%Y-%m-%d %H:%M') UTC - $$(git branch --show-current)"
+	@echo "- **Shipped:** "
+	@echo "- **Next:** "
+	@echo "- **Blocked:** none"
+	@echo "- **Needs from others:** "
+	@echo ""
+	@echo "(paste that at the END of your own section in PROGRESS.md)"

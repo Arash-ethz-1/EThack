@@ -19,7 +19,7 @@ over before Q&A starts.
 
 ## 16:00 - 17:00 | Start on mocks, not on real data
 
-`make mocks` gives you `company_scores.parquet` in the real schema. **Write the whole
+`python run.py mocks` gives you `company_scores.parquet` in the real schema. **Write the whole
 test harness against it now.** If evaluation genuinely happens last, it happens at
 09:00 and gets cut - and that is exactly how teams lose their strongest slide.
 

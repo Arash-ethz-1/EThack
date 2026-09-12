@@ -16,7 +16,7 @@ a finance audience thinks we understand markets or just spreadsheets.
 
 ## 16:00 - 17:00 | You are never blocked
 
-`make mocks` gives you `company_scores.parquet` with `score`, `ci_low`, `ci_high`,
+`python run.py mocks` gives you `company_scores.parquet` with `score`, `ci_low`, `ci_high`,
 `tier`, `visibility`, `coverage_ratio` - the real schema, fake values. Build the
 entire allocation against it and swap the file at 01:00. Do not wait for Lauren.
 
