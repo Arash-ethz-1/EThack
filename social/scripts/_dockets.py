@@ -138,11 +138,30 @@ def names_for(ticker: str, display: str, aliases: list[dict]) -> list[str]:
     return keep[:5]
 
 
+# Benefit-plan words: "3M Pension Plan" really is 3M being sued over how it treats staff.
+PLAN = {
+    "plan", "plans", "pension", "retirement", "savings", "benefit", "benefits", "welfare",
+    "disability", "committee", "board", "trust", "administrative", "leave", "center",
+    "program", "programs", "fund", "health", "employee", "employees", "care",
+}
+
+
+def is_ambiguous(name_core: str) -> bool:
+    """Short acronyms match unrelated firms: 'aes' hit 'AES Services, LLC'. Be strict.
+
+    Only very short cores qualify - 'aflac' and 'adobe' are distinctive enough to trust.
+    """
+    return len(name_core) <= 4
+
+
 def party_matches(parties: list[str] | None, cores: list[str]) -> bool:
     """Keep a docket only if some party really is this company.
 
-    Rejects '3M Contracting, LLC' (trailing word is not a corporate/benefit-plan word)
-    while keeping '3M Company' and '3M Pension Plan'.
+    Two strictness tiers, because a distinctive name like 'abbott laboratories' can safely
+    absorb trailing words, while the acronym 'aes' cannot:
+      - ambiguous core -> only corporate suffixes and benefit-plan words may follow
+        ('AES Corporation' yes, 'AES Services, LLC' no)
+      - distinctive core -> the wider RELATED set may follow
     """
     for p in parties or []:
         pc = core(p)
@@ -151,7 +170,13 @@ def party_matches(parties: list[str] | None, cores: list[str]) -> bool:
                 return True
             if pc.startswith(c + " "):
                 rest = pc[len(c) + 1 :].split()
-                if rest and all(w in RELATED for w in rest):
+                if not rest:
+                    continue
+                if not is_ambiguous(c):
+                    # A distinctive name followed by anything is that company:
+                    # "Abbott Laboratories Group Health Care Plan", "Accenture Federal Services".
+                    return True
+                if all(w in SUFFIX | PLAN for w in rest):
                     return True
     return False
 
