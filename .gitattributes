@@ -1,0 +1,12 @@
+# Same line endings on Windows and Mac, so files never show up as "changed" for nothing.
+* text=auto eol=lf
+*.png binary
+*.jpg binary
+*.pdf binary
+*.xlsx binary
+*.parquet binary
+*.zip binary
+
+# Catalogs are appended to by several people. "union" keeps both people's new rows
+# instead of stopping with a merge conflict. `python run.py check` catches duplicates.
+*/catalog.csv merge=union

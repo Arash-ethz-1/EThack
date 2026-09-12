@@ -1,94 +1,45 @@
-# Arash - Architect and Integrator
+# Arash - economic impact + repo infrastructure
 
+**Area:** `economic/`, plus shared infra (`universe/`, `common/`, `run.py`, `portfolio/`, docs).
+**Goal phase 1:** >= 3 `ready` economic indicators in `economic/catalog.csv`.
 
-> **This is a proposal, not an order.** You own this file - if you see a better
-> route, edit it, commit it, and tell the team in one line. The only things that are
-> not yours to change alone are the contracts in `src/ethack/contracts.py` and the
-> file ownership table in `CONVENTIONS.md`.
+## 1. Blocker for everyone: `universe/sp500.csv` - do this first
 
+Columns `ticker, name, sector, cik` (see `docs/DATA_FORMAT.md`). Commit the script
+that builds it (`universe/build_universe.py`) and the raw download.
+Candidate source: the Wikipedia "List of S&P 500 companies" table (has symbol,
+GICS sector, CIK); cross-check CIKs against `https://www.sec.gov/files/company_tickers.json`.
+Tickers with a dash in some sources (`BRK-B`) become `BRK.B`.
 
-You are the only person who touches the seams. Your job is that nobody else is ever
-blocked, and that the parts fit at 06:00 without a night of surprises.
+Right after: `universe/financials.csv` with `ticker, year, revenue_usd, employees` -
+the shared denominators everyone needs for size-neutral indicators (Jean needs revenue
+for every intensity). It is not an indicator and is not scored.
 
-**Your files:** `CLAUDE.md` `CONVENTIONS.md` `Makefile` `contracts.py` `config.py`
-`sources/sec.py` `sources/ex21.py` `link.py` `indicators/base.py`
-`indicators/registry.py` `blackout.py` `app/main.py` `app/pages/1_explorer.py`
-`app/pages/2_blackout.py` `data/manual/link_labels.csv`
+## 2. Candidate indicators (verify coverage before building)
 
----
+Most can come from SEC XBRL company facts:
+`https://data.sec.gov/api/xbrl/companyfacts/CIK##########.json` (needs `SEC_CONTACT_EMAIL` in `.env`).
 
-## 16:00 - 17:00 | Unblock everyone
+| id | idea | direction | watch out |
+|---|---|---|---|
+| `effective_tax_rate` | income tax expense / pre-tax income - contribution to public finances | higher better | negative / tiny pre-tax income gives nonsense - drop those rows |
+| `rd_intensity` | R&D expense / revenue - investment in innovation | higher better | banks, retailers report no R&D -> coverage may be < 70% |
+| `capex_intensity` | capex / revenue - investment in the real economy | higher better | sector-driven, likely needs sector-relative ranking |
+| `revenue_growth_3y` | 3-year revenue CAGR - economic value creation | higher better | M&A jumps |
+| `operating_margin` | operating income / revenue - economic resilience | higher better | is it *impact*? argue it in the description or drop it |
 
-The repo scaffold, contracts and mock generator already exist. Your first hour is
-spent making sure four other people can start without asking you anything.
+XBRL tag names differ between companies (`Revenues`,
+`RevenueFromContractWithCustomerExcludingAssessedTax`, ...). Try a list of tags in order.
 
-- [ ] Push the repo, add everyone as collaborators
-- [ ] Everyone runs `python run.py mocks && python run.py test` and confirms 9 tests pass
-- [ ] Walk the team through `CONVENTIONS.md` section 1 out loud. Two minutes.
-      **Nobody edits a file they do not own** - this is what lets five people push
-      to `main` all night with zero conflicts.
-- [ ] Confirm each person has read `docs/THESIS.md`. If they have not, the code
-      they write will not fit the argument.
+## 3. Later
 
-## 17:00 - 21:00 | SEC + EX-21, then the link layer
+- Phase 2: sanity-check real scores, decide sector-relative ranking (`docs/SCORING.md`).
+- Phase 3: `portfolio/` allocation.
 
-`sources/sec.py`: tickers, CIK map, XBRL revenue/EBITDA. Needs a User-Agent header
-(`config.SEC_USER_AGENT`) or SEC returns 403.
+## Needs from others
 
-`sources/ex21.py` is the one that matters. For each S&P 500 CIK:
-1. `data.sec.gov/submissions/CIK{cik:010d}.json` -> newest 10-K accession
-2. `.../Archives/edgar/data/{cik}/{acc_nodashes}/index.json` -> find `*exx21*.htm`
-3. strip tags, one subsidiary per line, label with the parent ticker
+- none yet
 
-Verified working: Duke (CIK 1326160) yields 186 subsidiaries including
-*Cinergy Corp*, *Caldwell Power Company*, *Catamount Energy Corporation*.
+## Log
 
-Not every filer puts EX-21 in a separate exhibit - some bury it in the 10-K body.
-Expect maybe 70-85% to parse cleanly. **That is fine.** Log the misses and move on.
-
-## 21:00 - 00:00 | link.py - the critical path
-
-> **Model decision: YES, embeddings, plus a small trained reranker.**
-> Levenshtein cannot get "Cinergy Corp" to "Duke Energy" - the registry is doing the
-> real work and embeddings handle suffix noise, abbreviations and d/b/a variants.
-> Call it *retrieval over a ground-truth registry with a learned reranker*, not
-> "we used AI to match companies". Precision is what makes it credible.
-
-1. normalise: strip `(100%)`, legal suffixes, punctuation, casefold
-2. exact match on normalised names - this alone should get you most of the way
-3. embeddings + cosine top-k over the registry for the remainder
-4. rerank on `confidence = f(cosine, token overlap, state match, NAICS plausibility)`,
-   fitted on ~300 labels in `data/manual/link_labels.csv`
-5. **publish precision and recall on held-out labels.** An unmeasured join is a guess.
-
-Hard gate: if you are not done by **00:00**, ship exact-match plus manual overrides
-for the top 200 facilities by tonnage (~80% of emissions) and state coverage openly.
-Partial coverage stated beats full coverage fabricated, and judges can tell.
-
-## 00:00 - 06:00 | Indicator framework, then the blackout engine
-
-`base.py` and `registry.py` are already written and tested - check they fit what
-Lauren actually needs and adjust with her, not around her.
-
-Then `blackout.py`. `impact()` must return four exact numbers: indicators lost,
-companies gone dark, rank churn (Kendall tau vs. full score), mean CI widening.
-**Those four numbers are the slide.** Sleep 03:00-06:00 if the link layer is clean.
-
-## 06:00 - 09:00 | Dashboard integration
-
-Wire `1_explorer` and `2_blackout` to real output. Florian and Harprit deliver their
-own pages against `_shared.load()`; you own the shell and you own the demo.
-
-Rehearse the blackout toggle until it takes 15 seconds and never errors.
-
-## Your wow contribution
-
-**The blackout simulator.** It is the single most memorable thing in the project.
-Protect the time for it - it is worth more than a better join.
-
-## Done when
-
-- [ ] `python run.py all` runs clean from a fresh clone on mock data
-- [ ] link precision/recall in `METRICS.md`
-- [ ] blackout page produces four real numbers and never crashes
-- [ ] every teammate's page renders inside the shell
+<!-- append below, never edit old entries. Format: AGENTS.md section 6 -->

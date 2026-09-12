@@ -1,49 +1,55 @@
-# EThack - Sightline
+# EThack - sustainability impact of the S&P 500
 
-**Sustainability intelligence that survives the disappearance of its own sources.**
+Challenge: quantify and compare the sustainability of S&P 500 companies for an
+ETH-affiliated fund, and use it to weight a portfolio.
 
-Client: an ETH-affiliated fund. Challenge #1: quantify and compare the sustainability
-of S&P 500 companies.
+```
+economic/  social/  environmental/      >= 3 sub-indicators each, one shared data format
+        \      |      /
+      python run.py score               impact score 0-100 per category per company
+               |
+          portfolio/                    allocation weights (phase 3)
+```
 
-## The 30-second version
+| Category | Who |
+|---|---|
+| Economic | Arash |
+| Social | Florian, Lauren |
+| Environmental | Jean |
 
-US federal environmental and climate disclosure has been materially rolled back.
-Datasets that ESG analytics quietly depend on are being defunded, rescinded or
-taken offline. A European fund that builds its climate risk process on
-self-reported US ESG data is building on ground that is actively being removed.
+## First time on your laptop
 
-Sightline does three things nobody else in the room will do:
-
-1. **Archives** the regulator-metered ground truth while it still exists
-   (EPA GHGRP facility-level emissions, ~11.3k facilities, back to 2010).
-2. **Rates every indicator for durability** - can this source still be here in
-   12 months? - and weights the score by how well we can actually *see*.
-3. **Simulates data loss.** The dashboard has a kill switch: turn off a source,
-   watch the rankings move and the confidence intervals explode, and see exactly
-   which holdings go dark.
-
-We do not publish a number. We publish a number *and how much of it you can trust*.
-
-## Quickstart
+You need [Python 3.11+](https://www.python.org/downloads/), [git](https://git-scm.com/downloads)
+and [Claude Code](https://claude.com/claude-code).
 
 ```bash
-python -m venv .venv && . .venv/Scripts/activate   # Windows: .venv\Scripts\activate
-pip install -r requirements.txt
-python run.py mocks        # generate fake data satisfying every contract - unblocks everyone
-python run.py app          # launch the dashboard on mock data
+git clone https://github.com/Arash-ethz-1/EThack.git
+cd EThack
+python run.py setup
 ```
 
-## Read these before writing code
+## Every time you work
 
-- `CLAUDE.md` - project context. Every Claude agent on this repo reads this first.
-- `CONVENTIONS.md` - git, testing, file ownership. **The ownership table prevents merge hell.**
-- `docs/THESIS.md` - the argument we are making. Read it or your code will not fit it.
-- `docs/tasks/<yourname>.md` - your assignment, your files, your definition of done.
+**With Claude Code (recommended):** open the `EThack` folder, type `/start`, say what you
+want to do. Type `/save` whenever something works and before you stop. The agent
+follows `AGENTS.md` and handles git for you.
 
-## Pipeline
+**Without an agent:**
 
+```bash
+python run.py start                          # get everyone's latest work
+# ... work in YOUR folder only ...
+python run.py save "[social] what you did"   # commit + pull + check + push
 ```
-L1 sources/  ->  L2 link.py  ->  L3 indicators/  ->  L4 score.py  ->  L5 portfolio/  ->  L6 eval/
-                                        ^
-                              registry: add a file, get an indicator
-```
+
+If `save` prints **STOP**, do not try git commands - read the message, it tells you what to do.
+
+## Where things are
+
+| | |
+|---|---|
+| `AGENTS.md` | rules for AI agents (and a good summary for humans) |
+| `docs/PLAN.md` | phases, goals, decisions |
+| `docs/tasks/<name>.md` | your assignment, candidate indicators, your log |
+| `docs/DATA_FORMAT.md` | the one format everybody's data uses |
+| `docs/SCORING.md` | how sub-indicators become a 0-100 score |

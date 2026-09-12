@@ -1,91 +1,59 @@
-from __future__ import annotations
-
-import numpy as np
 import pandas as pd
 import pytest
 
-from ethack import contracts
-from ethack.score import _assign_tiers, score
+from common.score import indicator_ranks, latest_values, score_category
 
 
-def test_score_is_contract_valid_for_every_mode(mock_panel):
-    for mode in ["declared", "equal", "confidence"]:
-        out = score(mock_panel, mode=mode)
-        contracts.validate(out, "company_scores")
-        assert set(out["ticker"]) == set(mock_panel.index)
+def indicator(rows):
+    return pd.DataFrame(rows, columns=["ticker", "year", "value"])
 
 
-def test_sector_relative_not_global(mock_panel):
-    # Comparing software to cement on absolute intensity is the category error the
-    # whole design exists to avoid - so a percentile must be computed within sector.
-    out = score(mock_panel, mode="equal")
-    by_sector_size = mock_panel["sector"].value_counts()
-    assert (by_sector_size > 1).any()
-    # a company that tops its own (small) sector should not be forced into the same
-    # percentile band as one that tops a giant sector - i.e. percentiles are not a
-    # single global rank recomputed under a different name.
-    assert out["score"].nunique() > 1
+def catalog(rows):
+    return pd.DataFrame(rows, columns=["indicator_id", "higher_is_better", "weight", "status"])
 
 
-def test_overlapping_confidence_intervals_share_a_tier():
-    score_s = pd.Series({"AAA": 0.90, "BBB": 0.88, "CCC": 0.40})
-    ci_low = pd.Series({"AAA": 0.70, "BBB": 0.60, "CCC": 0.35})
-    ci_high = pd.Series({"AAA": 0.95, "BBB": 0.99, "CCC": 0.45})
-    tiers = _assign_tiers(score_s, ci_low, ci_high)
-    assert tiers["AAA"] == tiers["BBB"], "overlapping CIs must share a tier"
-    assert tiers["CCC"] != tiers["AAA"]
+def test_latest_values_takes_most_recent_year():
+    df = indicator([("A", 2022, 1.0), ("A", 2024, 3.0), ("A", 2023, 2.0), ("B", 2021, 5.0)])
+    assert latest_values(df).to_dict() == {"A": 3.0, "B": 5.0}
 
 
-def test_low_coverage_company_is_flagged_not_ranked(mock_panel):
-    panel = mock_panel.copy()
-    # Strip every indicator input for one ticker so it cannot clear
-    # MIN_COVERAGE_TO_RANK - it must come back unrated, never a fabricated score.
-    t = panel.index[0]
-    for col in [
-        "metered_scope1_t",
-        "reported_scope1_t",
-        "satellite_scope1_t",
-        "metered_growth_rate",
-        "top_facility_share",
-    ]:
-        if col in panel.columns:
-            panel.loc[t, col] = np.nan
-    out = score(panel, mode="equal").set_index("ticker")
-    assert out.loc[t, "tier"] == "U"
-    assert pd.isna(out.loc[t, "score"])
+def test_ranks_span_zero_to_one_and_flip_when_lower_is_better():
+    values = pd.Series({"A": 10.0, "B": 20.0, "C": 30.0})
+    assert indicator_ranks(values, True).to_dict() == {"A": 0.0, "B": 0.5, "C": 1.0}
+    assert indicator_ranks(values, False).to_dict() == {"A": 1.0, "B": 0.5, "C": 0.0}
 
 
-def test_dead_sources_shrinks_indicator_use_and_widens_uncertainty(mock_panel):
-    full = score(mock_panel, mode="equal", dead_sources=frozenset())
-    blacked_out = score(mock_panel, mode="equal", dead_sources=frozenset({"epa_ghgrp"}))
-    assert blacked_out["n_indicators_used"].sum() < full["n_indicators_used"].sum()
-    common = full.set_index("ticker")["ci_high"] - full.set_index("ticker")["ci_low"]
-    after = (
-        blacked_out.set_index("ticker")["ci_high"]
-        - blacked_out.set_index("ticker")["ci_low"]
-    )
-    assert after.mean() >= common.mean(), "losing evidence should never sharpen a CI"
+def test_ties_share_rank():
+    ranks = indicator_ranks(pd.Series({"A": 1.0, "B": 1.0, "C": 2.0}), True)
+    assert ranks["A"] == ranks["B"] == 0.25
 
 
-def test_visibility_is_bounded_and_never_folded_into_score(mock_panel):
-    out = score(mock_panel, mode="declared")
-    assert out["visibility"].between(0, 1).all()
-    # visibility and score are different axes - they must not be perfectly correlated
-    assert out["visibility"].corr(out["score"].fillna(0)) < 0.99
+def test_category_score_is_weighted_mean_times_100():
+    cat = catalog([("x", "true", "1", "ready"), ("y", "false", "3", "ready"), ("z", "true", "1", "idea")])
+    inds = {
+        "x": indicator([("A", 2024, 1.0), ("B", 2024, 2.0)]),  # A=0, B=1
+        "y": indicator([("A", 2024, 1.0), ("B", 2024, 2.0)]),  # lower better: A=1, B=0
+    }
+    scores, long = score_category(cat, inds)
+    assert scores.loc["A", "score"] == pytest.approx(75.0)
+    assert scores.loc["B", "score"] == pytest.approx(25.0)
+    assert set(long["indicator_id"]) == {"x", "y"}  # 'idea' indicators are ignored
 
 
-def test_weighting_modes_mostly_agree_on_the_top_of_the_table(mock_panel):
-    declared = score(mock_panel, mode="declared").set_index("ticker")["score"]
-    equal = score(mock_panel, mode="equal").set_index("ticker")["score"]
-    top_declared = set(declared.dropna().sort_values(ascending=False).head(20).index)
-    top_equal = set(equal.dropna().sort_values(ascending=False).head(20).index)
-    overlap = len(top_declared & top_equal)
-    assert overlap >= 10, "weighting scheme should be a robustness story, not noise"
+def test_company_with_too_little_weight_gets_no_score():
+    cat = catalog([("x", "true", "1", "ready"), ("y", "true", "3", "ready")])
+    inds = {
+        "x": indicator([("A", 2024, 1.0), ("B", 2024, 2.0)]),
+        "y": indicator([("B", 2024, 2.0), ("C", 2024, 1.0)]),
+    }
+    scores, _ = score_category(cat, inds)
+    assert pd.isna(scores.loc["A", "score"])  # only 1/4 of the weight available
+    assert scores.loc["B", "weight_share"] == 1.0
 
 
-def test_score_requires_at_least_one_surviving_indicator(mock_panel):
-    from ethack.indicators.registry import all_specs
-
-    all_sources = {s for spec in all_specs() for s in spec.sources}
-    with pytest.raises(ValueError):
-        score(mock_panel, dead_sources=frozenset(all_sources))
+def test_universe_filter_drops_outside_tickers():
+    cat = catalog([("x", "true", "1", "ready")])
+    inds = {"x": indicator([("A", 2024, 1.0), ("B", 2024, 2.0), ("ZZZ", 2024, 99.0)])}
+    scores, _ = score_category(cat, inds, universe={"A", "B"})
+    assert set(scores.index) == {"A", "B"}
+    assert scores.loc["B", "score"] == 100.0

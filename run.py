@@ -1,183 +1,344 @@
-#!/usr/bin/env python
-# Cross-platform task runner. Works on Windows, macOS and Linux with no `make`.
-# OWNER: Arash.
-#
-#   python run.py            list tasks
-#   python run.py mocks      generate synthetic data  <- start here
-#   python run.py test       run the test suite
-#   python run.py app        launch the dashboard
-#   python run.py all        full pipeline
-#
-# Why not a Makefile: `make` is not installed on Windows by default, and half of
-# this team is on Windows. One runner that works everywhere beats two that do not.
+"""One entry point for everything. Run from the repo root.
+
+    python run.py setup                          once per laptop
+    python run.py start                          before you work: pull + show status
+    python run.py save "[social] what I did"     commit + pull + check + push
+    python run.py status                         what is changed / unpushed
+    python run.py check                          format check + tests
+    python run.py new-indicator social pay_ratio create catalog row + script
+    python run.py build social [indicator_id]    run the scripts -> indicators/*.csv
+    python run.py score                          category scores 0-100 -> scores/
+"""
 
 from __future__ import annotations
 
-import os
+import csv
+import runpy
+import shutil
 import subprocess
 import sys
-from pathlib import Path
+import traceback
 
-ROOT = Path(__file__).resolve().parent
-SRC = ROOT / "src"
+from common.config import (
+    CATALOG_COLUMNS,
+    CATEGORIES,
+    MAX_FILE_MB,
+    ROOT,
+    catalog_path,
+    scripts_dir,
+)
 
-TASKS: dict[str, tuple[str, list[list[str]]]] = {
-    "mocks": ("generate schema-valid synthetic data (start here)",
-              [[sys.executable, "scripts/make_mocks.py"]]),
-    "fetch": ("L1 pull + cache all real sources          [Jean]",
-              [[sys.executable, "-m", "ethack.sources.epa"],
-               [sys.executable, "-m", "ethack.sources.sec"],
-               [sys.executable, "-m", "ethack.sources.ex21"],
-               [sys.executable, "-m", "ethack.sources.echo"],
-               [sys.executable, "-m", "ethack.sources.satellite"]]),
-    "link": ("L2 facility -> ticker resolution          [Arash]",
-             [[sys.executable, "-m", "ethack.link"]]),
-    "score": ("L3+L4 indicators and scores               [Lauren]",
-              [[sys.executable, "-m", "ethack.score"]]),
-    "portfolio": ("L5 build the $1B book                     [Florian]",
-                  [[sys.executable, "-m", "ethack.portfolio.construct"]]),
-    "eval": ("L6 validation + METRICS.md                [Harprit]",
-             [[sys.executable, "-m", "ethack.eval.validate"]]),
-    "app": ("launch the dashboard",
-            [[sys.executable, "-m", "streamlit", "run", "app/main.py"]]),
-    "test": ("pytest (network tests skipped)",
-             [[sys.executable, "-m", "pytest", "-q", "-m", "not network"]]),
-    "fmt": ("format + autofix with ruff",
-            [[sys.executable, "-m", "ruff", "format", "src", "app", "tests", "scripts"],
-             [sys.executable, "-m", "ruff", "check", "--fix",
-              "src", "app", "tests", "scripts"]]),
-    "doctor": ("check your environment is set up correctly",
-               [[sys.executable, "scripts/doctor.py"]]),
-    # --- git workflow (see CONVENTIONS.md). Dispatched specially below. ---
-    "sync": ("pull main before you branch", []),
-    "ship": ("rebase, test, ff-only merge into main, push   (ship <branch>)", []),
-    "progress": ("print a PROGRESS.md entry stub", []),
+BRANCH = "main"
+
+OWNERS = {
+    "economic": "Arash",
+    "social": "Florian + Lauren (one indicator = one person, see social/catalog.csv)",
+    "environmental": "Jean",
+    "universe": "Arash",
+    "portfolio": "Arash",
+    "common": "Arash",
+    "tests": "Arash",
 }
 
-GIT_TASKS = {"sync", "ship", "progress"}
 
-PIPELINE = ["mocks", "link", "score", "portfolio", "eval"]
-
-
-def env() -> dict[str, str]:
-    e = os.environ.copy()
-    existing = e.get("PYTHONPATH", "")
-    e["PYTHONPATH"] = str(SRC) + (os.pathsep + existing if existing else "")
-    return e
+# ---------------------------------------------------------------- helpers
+def git(*args: str) -> subprocess.CompletedProcess:
+    return subprocess.run(["git", *args], cwd=ROOT, capture_output=True, text=True)
 
 
-def run(task: str) -> int:
-    label, cmds = TASKS[task]
-    for cmd in cmds:
-        print(f"\n>>> {' '.join(str(c) for c in cmd)}", flush=True)
-        rc = subprocess.call(cmd, cwd=ROOT, env=env())
-        if rc != 0:
-            print(f"\n!!! task '{task}' failed (exit {rc})", file=sys.stderr)
-            return rc
-    return 0
+def git_lines(*args: str) -> list[str]:
+    return [line for line in git(*args).stdout.splitlines() if line.strip()]
 
 
-def git(*args: str, check: bool = True) -> int:
-    print(f"\n>>> git {' '.join(args)}", flush=True)
-    rc = subprocess.call(["git", *args], cwd=ROOT)
-    if rc != 0 and check:
-        raise SystemExit(f"\n!!! git {' '.join(args)} failed (exit {rc})")
-    return rc
+def owner_of(path: str) -> str:
+    parts = path.split("/")
+    if parts[0] == "docs" and len(parts) == 3 and parts[1] == "tasks":
+        return parts[2].removesuffix(".md").capitalize()
+    return OWNERS.get(parts[0], "Arash (repo setup)")
 
 
-def task_sync() -> int:
-    git("switch", "main")
-    git("pull", "--rebase", "origin", "main")
-    print("\nmain is current. now: git switch -c <yourname>/<thing>")
-    return 0
+def say(msg: str = "") -> None:
+    print(msg, flush=True)
 
 
-def task_ship(branch: str | None) -> int:
-    if not branch:
-        cur = subprocess.run(["git", "branch", "--show-current"], cwd=ROOT,
-                             capture_output=True, text=True).stdout.strip()
-        if cur and cur != "main":
-            branch = cur
-            print(f"(no branch given, using current branch: {branch})")
-        else:
-            print("usage: python run.py ship <yourname>/<thing>", file=sys.stderr)
-            return 2
+def current_branch() -> str:
+    return git("rev-parse", "--abbrev-ref", "HEAD").stdout.strip()
 
-    git("switch", branch)
-    git("pull", "--rebase", "origin", "main")
-    if run("test") != 0:
-        print("\n!!! tests fail on top of main. fix before shipping.", file=sys.stderr)
+
+def require_main() -> bool:
+    branch = current_branch()
+    if branch != BRANCH:
+        say(f"STOP: you are on branch '{branch}', this team works on '{BRANCH}'.")
+        say(f"      Ask Arash before switching - uncommitted work could get mixed up.")
+        return False
+    return True
+
+
+def rebase_in_progress() -> bool:
+    git_dir = ROOT / ".git"
+    return (git_dir / "rebase-merge").exists() or (git_dir / "rebase-apply").exists()
+
+
+# ---------------------------------------------------------------- git flow
+def sync() -> bool:
+    """Pull the team's latest work and replay local commits on top. Never loses work."""
+    if rebase_in_progress():
+        say("STOP: a previous pull was interrupted. Ask Arash - do not run git commands to 'fix' it.")
+        return False
+    say("pulling latest work from GitHub ...")
+    result = git("pull", "--rebase", "--autostash", "origin", BRANCH)
+    if result.returncode == 0:
+        say("  up to date with the team")
+        return True
+
+    conflicts = git_lines("diff", "--name-only", "--diff-filter=U")
+    if rebase_in_progress():
+        git("rebase", "--abort")
+    say("")
+    say("STOP: your changes clash with a teammate's changes. Nothing was lost -")
+    say("      your commits and files are exactly as they were before the pull.")
+    for path in conflicts:
+        say(f"      conflict in {path}  (owner: {owner_of(path)})")
+    if not conflicts:
+        say(result.stderr.strip())
+    say("      Tell the owner / Arash which file. Do NOT force-push or reset.")
+    return False
+
+
+def cmd_start() -> int:
+    if not require_main() or not sync():
         return 1
-    git("switch", "main")
-    git("pull", "--rebase", "origin", "main")
-    if git("merge", "--ff-only", branch, check=False) != 0:
-        print("\n--ff-only refused: someone pushed while you were testing.\n"
-              "That is the check working, not an error. Do:\n"
-              f"  git switch {branch}\n"
-              "  git pull --rebase origin main\n"
-              "  python run.py test\n"
-              f"  python run.py ship {branch}", file=sys.stderr)
+    return cmd_status()
+
+
+def cmd_status() -> int:
+    git("fetch", "-q", "origin", BRANCH)
+    say(f"branch: {current_branch()}")
+    changed = git_lines("status", "--short")
+    say(f"uncommitted changes: {len(changed)}")
+    for line in changed[:30]:
+        say(f"  {line}")
+    ahead = git("rev-list", "--count", f"origin/{BRANCH}..HEAD").stdout.strip() or "?"
+    behind = git("rev-list", "--count", f"HEAD..origin/{BRANCH}").stdout.strip() or "?"
+    say(f"commits not pushed yet: {ahead}")
+    say(f"team commits you have not pulled: {behind}")
+    return 0
+
+
+def cmd_save(message: str) -> int:
+    if not require_main():
         return 1
-    git("push", "origin", "main")
-    git("branch", "-d", branch, check=False)
-    print(f"\nmerged {branch} into main. did you log it in PROGRESS.md?")
+    if rebase_in_progress():
+        say("STOP: a previous pull was interrupted. Ask Arash.")
+        return 1
+
+    git("add", "-A")
+    staged = git_lines("diff", "--cached", "--name-only")
+    blocked = [p for p in staged if p.split("/")[-1] == ".env"]
+    too_big = [
+        p for p in staged
+        if (ROOT / p).is_file() and (ROOT / p).stat().st_size > MAX_FILE_MB * 1024 * 1024
+    ]
+    if blocked or too_big:
+        git("reset", "-q")
+        for p in blocked:
+            say(f"STOP: {p} contains secrets and must never be committed.")
+        for p in too_big:
+            say(f"STOP: {p} is larger than {MAX_FILE_MB} MB. Add it to .gitignore and commit the")
+            say(f"      download script instead, so others can recreate it.")
+        return 1
+
+    if staged:
+        say("committing:")
+        for p in staged:
+            say(f"  {p}   (owner: {owner_of(p)})")
+        if not message.lstrip().startswith("["):
+            areas = {p.split("/")[0] for p in staged}
+            message = f"[{areas.pop() if len(areas) == 1 else 'misc'}] {message}"
+        result = git("commit", "-q", "-m", message)
+        if result.returncode != 0:
+            say(result.stdout + result.stderr)
+            return 1
+
+    if not sync():
+        return 1
+
+    ahead = int(git("rev-list", "--count", f"origin/{BRANCH}..HEAD").stdout.strip() or 0)
+    if ahead == 0:
+        say("nothing new to push - everything is already on GitHub")
+        return 0
+
+    changed = git_lines("diff", "--name-only", f"origin/{BRANCH}..HEAD")
+    if not checks_pass_for(changed):
+        say("NOT PUSHED: fix the errors above, then run save again.")
+        say("            Your commit is safe locally.")
+        return 1
+
+    for attempt in range(2):
+        result = git("push", "origin", BRANCH)
+        if result.returncode == 0:
+            say(f"saved and pushed {ahead} commit(s) to GitHub")
+            return 0
+        if attempt == 0 and not sync():  # someone pushed in the last seconds
+            return 1
+    say("push failed:\n" + result.stderr)
+    return 1
+
+
+def checks_pass_for(changed: list[str]) -> bool:
+    """Only errors in areas you changed block your push - a teammate's broken file never blocks you."""
+    from common.validate import print_report, validate_all
+
+    areas = {p.split("/")[0] for p in changed}
+    report = validate_all()
+    mine = [(a, m) for a, m in report.errors if a.split("/")[0] in areas]
+    others = [(a, m) for a, m in report.errors if a.split("/")[0] not in areas]
+    for area, msg in others:
+        say(f"  (not yours, not blocking) {area}: {msg}")
+    ok = True
+    if mine:
+        report.errors, report.warnings = mine, []
+        print_report(report)
+        ok = False
+    if areas & {"common", "tests", "run.py"}:
+        ok = run_tests() and ok
+    return ok
+
+
+# ---------------------------------------------------------------- data commands
+def run_tests() -> bool:
+    return subprocess.run([sys.executable, "-m", "pytest", "-q"], cwd=ROOT).returncode == 0
+
+
+def cmd_check() -> int:
+    from common.validate import print_report, validate_all
+
+    report = validate_all()
+    print_report(report)
+    tests_ok = run_tests()
+    return 0 if tests_ok and not report.errors else 1
+
+
+def cmd_build(category: str, only: str | None) -> int:
+    if category not in CATEGORIES:
+        say(f"category must be one of {CATEGORIES}")
+        return 1
+    scripts = sorted(p for p in scripts_dir(category).glob("*.py") if not p.name.startswith("_"))
+    if only:
+        scripts = [p for p in scripts if p.stem == only]
+    if not scripts:
+        say(f"no scripts found in {category}/scripts/" + (f" named {only}.py" if only else ""))
+        return 1
+    failed = []
+    for script in scripts:
+        say(f"--- {category}/scripts/{script.name}")
+        try:
+            runpy.run_path(str(script), run_name="__main__")
+        except Exception:
+            traceback.print_exc()
+            failed.append(script.name)
+    if failed:
+        say(f"FAILED: {failed}")
+    return 1 if failed else 0
+
+
+def cmd_new_indicator(category: str, indicator_id: str) -> int:
+    from common.validate import ID_PATTERN
+
+    if category not in CATEGORIES:
+        say(f"category must be one of {CATEGORIES}")
+        return 1
+    if not ID_PATTERN.match(indicator_id):
+        say("indicator_id must be lowercase_snake_case, e.g. ceo_pay_ratio")
+        return 1
+    for c in CATEGORIES:
+        with catalog_path(c).open(encoding="utf-8") as f:
+            if any(row["indicator_id"] == indicator_id for row in csv.DictReader(f)):
+                say(f"'{indicator_id}' already exists in {c}/catalog.csv")
+                return 1
+
+    owner = git("config", "user.name").stdout.strip() or "unknown"
+    path = catalog_path(category)
+    text = path.read_text(encoding="utf-8")
+    with path.open("a", newline="", encoding="utf-8") as f:
+        if text and not text.endswith("\n"):
+            f.write("\n")
+        row = {c: "" for c in CATALOG_COLUMNS}
+        row.update(indicator_id=indicator_id, higher_is_better="true", weight="1", owner=owner, status="idea")
+        csv.DictWriter(f, fieldnames=CATALOG_COLUMNS, lineterminator="\n").writerow(row)
+
+    script = scripts_dir(category) / f"{indicator_id}.py"
+    template = (ROOT / "common" / "templates" / "indicator_script.py").read_text(encoding="utf-8")
+    script.write_text(
+        template.replace("{category}", category).replace("{indicator_id}", indicator_id).replace("{owner}", owner),
+        encoding="utf-8",
+    )
+    say(f"added row to {category}/catalog.csv (status: idea, owner: {owner})")
+    say(f"created {category}/scripts/{indicator_id}.py")
+    say("next: fill in name/description/unit/higher_is_better/source in the catalog, then build()")
     return 0
 
 
-def task_progress() -> int:
-    from datetime import datetime, timezone
+def cmd_score() -> int:
+    from common.score import build_scores
+    from common.validate import print_report, validate_all
 
-    now = datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M")
-    branch = subprocess.run(["git", "branch", "--show-current"], cwd=ROOT,
-                            capture_output=True, text=True).stdout.strip() or "main"
-    print(f"""
-### {now} UTC - {branch}
-- **Shipped:**
-- **Next:**
-- **Blocked:** none
-- **Needs from others:**
-""")
-    print("(paste that at the END of your own section in PROGRESS.md)")
+    report = validate_all()
+    if report.errors:
+        print_report(report)
+        say("fix format errors before scoring")
+        return 1
+    build_scores()
     return 0
 
 
-def usage() -> None:
-    print("usage: python run.py <task>\n")
-    width = max(len(t) for t in TASKS)
-    for name, (label, _) in TASKS.items():
-        if name in GIT_TASKS:
-            continue
-        print(f"  {name:<{width}}  {label}")
-    print()
-    for name in ("sync", "ship", "progress"):
-        print(f"  {name:<{width}}  {TASKS[name][0]}")
-    print(f"  {'all':<{width}}  {' -> '.join(PIPELINE)}")
-    print("\nNew here? Run:  python run.py mocks   then   python run.py test")
+def cmd_setup() -> int:
+    say("installing Python packages ...")
+    pip = subprocess.run([sys.executable, "-m", "pip", "install", "-q", "-r", "requirements.txt"], cwd=ROOT)
+    git("config", "pull.rebase", "true")
+    git("config", "rebase.autoStash", "true")
+    env, example = ROOT / ".env", ROOT / ".env.example"
+    if not env.exists():
+        shutil.copy(example, env)
+        say("created .env from .env.example - put your email in SEC_CONTACT_EMAIL")
+    name = git("config", "user.name").stdout.strip()
+    email = git("config", "user.email").stdout.strip()
+    if not name or not email:
+        say("git does not know who you are yet. Run (with your details):")
+        say('  git config --global user.name "Your Name"')
+        say('  git config --global user.email "you@example.com"')
+        return 1
+    say(f"ready. git identity: {name} <{email}>")
+    return pip.returncode
 
 
-def main() -> int:
-    if len(sys.argv) < 2:
-        usage()
+def main(argv: list[str]) -> int:
+    if not argv or argv[0] in ("-h", "--help", "help"):
+        say(__doc__)
         return 0
-    task = sys.argv[1]
-    if task in GIT_TASKS:
-        if task == "sync":
-            return task_sync()
-        if task == "progress":
-            return task_progress()
-        return task_ship(sys.argv[2] if len(sys.argv) > 2 else None)
-    if task == "all":
-        for t in PIPELINE:
-            if (rc := run(t)) != 0:
-                return rc
-        print("\npipeline complete")
-        return 0
-    if task not in TASKS:
-        print(f"unknown task {task!r}\n", file=sys.stderr)
-        usage()
-        return 2
-    return run(task)
+    cmd, args = argv[0], argv[1:]
+    if cmd == "setup":
+        return cmd_setup()
+    if cmd in ("start", "sync"):
+        return cmd_start()
+    if cmd == "status":
+        return cmd_status()
+    if cmd == "save":
+        if not args:
+            say('usage: python run.py save "[category] what you did"')
+            return 1
+        return cmd_save(" ".join(args))
+    if cmd == "check":
+        return cmd_check()
+    if cmd == "build" and args:
+        return cmd_build(args[0], args[1] if len(args) > 1 else None)
+    if cmd == "new-indicator" and len(args) == 2:
+        return cmd_new_indicator(*args)
+    if cmd == "score":
+        return cmd_score()
+    say(__doc__)
+    return 1
 
 
 if __name__ == "__main__":
-    sys.exit(main())
+    raise SystemExit(main(sys.argv[1:]))
