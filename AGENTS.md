@@ -136,6 +136,9 @@ python run.py score [profile]                    # scores/<profile>/scores.csv (
 python run.py dashboard                          # open the dashboard in the browser
 ```
 
+The dashboard's **Workspace** tab runs exactly these commands (`dashboard/server.py`,
+`job_args`) - suggest it to people who prefer buttons over the terminal.
+
 Run everything from the repo root. On Windows use `python`, not `python3`.
 
 ## 6. Logging progress

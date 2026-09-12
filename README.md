@@ -37,6 +37,10 @@ python run.py setup
 want to do. Type `/save` whenever something works and before you stop. The agent
 follows `AGENTS.md` and handles git for you.
 
+**With the dashboard:** `python run.py dashboard` opens it in the browser. The
+**Workspace** tab does everything below with buttons: get latest, save & push, check,
+build indicators, add an indicator, export scores.
+
 **Without an agent:**
 
 ```bash
@@ -56,4 +60,4 @@ If `save` prints **STOP**, do not try git commands - read the message, it tells 
 | `docs/tasks/<name>.md` | your assignment, candidate indicators, your log |
 | `docs/DATA_FORMAT.md` | the one format everybody's data uses |
 | `docs/SCORING.md` | how sub-indicators + a profile become 0-100 scores |
-| `python run.py dashboard` | choose indicators, see rankings, explain a company's score |
+| `python run.py dashboard` | choose indicators, see rankings, explain a company's score; Workspace tab = all commands as buttons |

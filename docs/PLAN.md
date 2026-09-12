@@ -50,4 +50,4 @@ method is a placeholder; `profiles/net_zero.toml` answers the bonus question). T
 | 2026-09-12 | Scores on a 0-100 scale; percentile-rank method v1 (docs/SCORING.md). |
 | 2026-09-12 | Everyone works on `main` with small commits via `python run.py save`; folder ownership prevents conflicts. |
 | 2026-09-12 | Lauren takes over `economic/`. Arash builds the rest of the pipeline: profiles, scoring, dashboard, portfolio placeholder. |
-| 2026-09-12 | Users choose indicators + weights in a profile; total score = weighted mean of category scores. Dashboard: Streamlit (new dependency). |
+| 2026-09-12 | Users choose indicators + weights in a profile; total score = weighted mean of category scores. Dashboard: own web UI (`dashboard/static/`) on a stdlib Python server - no new dependency; the Workspace tab runs every `run.py` command. |

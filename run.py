@@ -14,7 +14,6 @@
 from __future__ import annotations
 
 import csv
-import importlib.util
 import runpy
 import shutil
 import subprocess
@@ -302,10 +301,10 @@ def cmd_score(profile: str | None) -> int:
 
 
 def cmd_dashboard() -> int:
-    if importlib.util.find_spec("streamlit") is None:
-        say("streamlit is not installed - run: python run.py setup")
-        return 1
-    return subprocess.run([sys.executable, "-m", "streamlit", "run", str(ROOT / "dashboard" / "app.py")], cwd=ROOT).returncode
+    from dashboard.server import serve
+
+    serve(open_browser="--no-browser" not in sys.argv)
+    return 0
 
 
 def cmd_setup() -> int:

@@ -36,7 +36,7 @@ XBRL tag names differ between companies (`Revenues`,
 ## 3. Pipeline
 
 - [x] profiles (`profiles/*.toml`), category + total score, explain (`common/score.py`)
-- [x] dashboard (`python run.py dashboard`): ranking, company breakdown, sectors, indicators, portfolio placeholder
+- [x] dashboard (`python run.py dashboard`): own web UI, ranking, company breakdown, sectors, indicators, portfolio placeholder, Workspace with every run.py command
 - [ ] sanity-check real scores once indicators are `ready`, decide sector-relative default
 - [ ] phase 3: `portfolio/allocate.py` (needs market cap in `universe/` for a cap-weighted tilt)
 
@@ -53,3 +53,9 @@ XBRL tag names differ between companies (`Revenues`,
 - Next: universe/sp500.csv, then check the dashboard with the first real indicators
 - Problems: no real indicators yet - dashboard tested on random demo data (DEMO001...)
 - Needs from others: Lauren to confirm she owns `economic/` and update her task file
+
+### 2026-09-12 22:20 - dashboard rebuilt as own web UI
+- Done: replaced Streamlit with `dashboard/server.py` (stdlib HTTP + JSON API around common/score.py) and `dashboard/static/` (HTML/CSS/JS, light + dark, mobile); Workspace tab runs start/save/check/build/new-indicator/score as jobs with live output; 36 tests pass
+- Next: look at scores with more real indicators; portfolio method
+- Problems: live data has 1 ready indicator (resource_supply_risk) with many ties at 96.0 - industry-level index
+- Needs from others: none
