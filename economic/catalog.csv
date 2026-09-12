@@ -1,1 +1,4 @@
 indicator_id,name,description,unit,higher_is_better,weight,owner,source,status
+tax_rate_gap,Tax Rate Gap,"Gap between the US federal statutory tax rate (21%) and the effective tax rate (income tax expense / pretax income); a larger gap means paying further below statutory, a proxy for reduced contribution to public finances.",pct_points,false,1,lauren,SEC XBRL company facts (data.sec.gov/api/xbrl/companyfacts),idea
+revenue_volatility,Revenue Volatility,"Coefficient of variation of year-over-year revenue growth over the trailing 5 fiscal years; higher volatility means a less predictable economic contribution to workers, suppliers and tax receipts.",ratio,false,1,lauren,SEC XBRL company facts (data.sec.gov/api/xbrl/companyfacts),idea
+employment_growth,Employment Growth,"3-year CAGR of employee headcount, as a proxy for the company's contribution to job creation.",pct,true,1,lauren,universe/financials.csv employees column (pending Arash),idea
