@@ -35,3 +35,43 @@ Endpoints tested in the old repo (see git history, commit `1c89ef2`, CLAUDE.md s
 ## Log
 
 <!-- append below, never edit old entries. Format: AGENTS.md section 6 -->
+
+### 2026-09-12 - resource_supply_risk
+
+- Done: built `resource_supply_risk`, status `ready`. 3521 rows, 503/503 companies,
+  2018-2024. Measures how exposed a company's industry is to raw materials that are
+  hard to get. Two halves, both from live sources, no hand-entered numbers:
+  - **material supply risk** (`scripts/_resource_risk.py`): 50% production
+    concentration (HHI of country shares of world production, USGS Mineral Commodity
+    Summaries 2026) + 50% governance of the producing countries (World Bank WGI:
+    political stability, rule of law, control of corruption), weighted by production
+    share. 76 materials. This is the BGS Risk List idea rebuilt from sources that
+    still publish.
+  - **industry material intensity** (`scripts/material_bills.csv`,
+    `scripts/subindustry_exposure.csv`): each of the 127 GICS sub-industries in the
+    S&P 500 maps to one of 23 material baskets and an intensity 0-1.
+- Sanity check passed: highest 2024 scores are Semiconductors 50.25, Aerospace &
+  Defense 47.84, Automobile Manufacturers 46.29; lowest are insurers and asset
+  managers at 1.84. Highest-risk materials computed are Gallium 76.2, Niobium 72.4,
+  Cobalt 68.6, Graphite 60.2, Tungsten 60.1 - that ranking matches the USGS critical
+  minerals list, which is the check I wanted.
+- Problems, both real and worth knowing before anyone leans on this:
+  1. **The 7-year series is almost flat.** Mean across the index moves 21.27 (2018)
+     to 21.50 (2024). Production shares are fixed at the 2025 USGS snapshot, so the
+     only thing that varies by year is governance, and governance barely moves.
+     The cross-section is informative; the time series currently is not.
+  2. **Every company in a sub-industry gets the same score.** 79 distinct values
+     across 503 companies in 2024. It is a sub-industry index, not a company
+     measurement. Next step below fixes this.
+  3. 6 materials (crushed stone, construction sand and gravel, and the noble gases)
+     have no country breakdown in USGS, so they are dropped rather than scored as
+     perfectly concentrated. Neon matters for chip lithography and is a real gap.
+- Next: `critical_material_exposure` - EDGAR full-text search over each company's own
+  10-K for the materials it names, weighted by that material's supply risk. Verified
+  the API works and is cheap (`"rare earth"` returns 96 10-K hits for 2023, each with
+  the filer's CIK). That gives per-company, per-year evidence with a citable filing,
+  which is what fixes problems 1 and 2.
+- Needs from others: Arash - `universe/sp500.csv`. Until it exists I take the ticker
+  list from a cached S&P 500 constituents file in `environmental/raw/`; the script
+  switches over automatically once the real file lands.
+

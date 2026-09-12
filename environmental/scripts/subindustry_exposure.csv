@@ -1,0 +1,128 @@
+sub_industry,archetype,exposure
+Semiconductors,semiconductors,0.95
+Semiconductor Materials & Equipment,semiconductors,0.85
+"Technology Hardware, Storage & Peripherals",electronics_hardware,0.90
+Electronic Components,electronics_hardware,0.85
+Electronic Manufacturing Services,electronics_hardware,0.85
+Electronic Equipment & Instruments,electronics_hardware,0.80
+Communications Equipment,electronics_hardware,0.80
+Consumer Electronics,electronics_hardware,0.80
+Technology Distributors,electronics_hardware,0.45
+Computer & Electronics Retail,electronics_hardware,0.30
+Internet Services & Infrastructure,data_centers_it,0.35
+Data Processing & Outsourced Services,data_centers_it,0.30
+Application Software,services_light,0.10
+Systems Software,services_light,0.10
+IT Consulting & Other Services,services_light,0.15
+Aerospace & Defense,aerospace_defense,0.90
+Construction Machinery & Heavy Transportation Equipment,industrial_machinery,0.88
+Industrial Machinery & Supplies & Components,industrial_machinery,0.85
+Agricultural & Farm Machinery,industrial_machinery,0.85
+Heavy Electrical Equipment,grid_electrification,0.88
+Electrical Components & Equipment,grid_electrification,0.85
+Building Products,homebuilding,0.80
+Construction & Engineering,construction_materials,0.75
+Industrial Conglomerates,industrial_machinery,0.70
+Trading Companies & Distributors,industrial_machinery,0.50
+Rail Transportation,transport_fleet,0.60
+Passenger Airlines,transport_fleet,0.55
+Cargo Ground Transportation,transport_fleet,0.50
+Air Freight & Logistics,transport_fleet,0.45
+Passenger Ground Transportation,transport_fleet,0.35
+Environmental & Facilities Services,industrial_machinery,0.40
+Diversified Support Services,services_light,0.25
+Research & Consulting Services,services_light,0.10
+Human Resource & Employment Services,services_light,0.08
+Steel,steel_metals,0.95
+Copper,copper_mining,1.0
+Gold,gold_mining,1.0
+Fertilizers & Agricultural Chemicals,fertilizers,0.95
+Construction Materials,construction_materials,0.95
+Commodity Chemicals,specialty_chemicals,0.85
+"Metal, Glass & Plastic Containers",packaging,0.85
+Specialty Chemicals,specialty_chemicals,0.80
+Paper & Plastic Packaging Products & Materials,packaging,0.70
+Industrial Gases,specialty_chemicals,0.60
+Automobile Manufacturers,automobiles,0.95
+Automotive Parts & Equipment,automobiles,0.85
+Homebuilding,homebuilding,0.90
+Leisure Products,consumer_products,0.55
+Home Improvement Retail,homebuilding,0.35
+Homefurnishing Retail,consumer_products,0.30
+Footwear,consumer_products,0.30
+Distributors,consumer_products,0.30
+"Apparel, Accessories & Luxury Goods",consumer_products,0.35
+Automotive Retail,consumer_products,0.25
+Broadline Retail,consumer_products,0.25
+Other Specialty Retail,consumer_products,0.20
+Apparel Retail,consumer_products,0.20
+Restaurants,food_agriculture,0.20
+"Hotels, Resorts & Cruise Lines",transport_fleet,0.25
+Casinos & Gaming,services_light,0.15
+Specialized Consumer Services,services_light,0.12
+Interactive Home Entertainment,services_light,0.12
+Agricultural Products & Services,food_agriculture,0.80
+Packaged Foods & Meats,food_agriculture,0.60
+Household Products,consumer_products,0.55
+Personal Care Products,consumer_products,0.50
+Soft Drinks & Non-alcoholic Beverages,packaging,0.50
+Brewers,packaging,0.50
+Distillers & Vintners,packaging,0.45
+Tobacco,food_agriculture,0.35
+Food Retail,food_agriculture,0.25
+Food Distributors,food_agriculture,0.25
+Consumer Staples Merchandise Retail,consumer_products,0.25
+Oil & Gas Equipment & Services,oil_gas,0.85
+Integrated Oil & Gas,oil_gas,0.85
+Oil & Gas Exploration & Production,oil_gas,0.80
+Oil & Gas Refining & Marketing,oil_gas,0.75
+Oil & Gas Storage & Transportation,oil_gas,0.70
+Electric Utilities,grid_electrification,0.85
+Multi-Utilities,grid_electrification,0.80
+Independent Power Producers & Energy Traders,grid_electrification,0.80
+Gas Utilities,oil_gas,0.60
+Water Utilities,construction_materials,0.50
+Health Care Equipment,medical_devices,0.75
+Health Care Supplies,medical_devices,0.60
+Life Sciences Tools & Services,medical_devices,0.55
+Pharmaceuticals,pharma_biotech,0.40
+Biotechnology,pharma_biotech,0.35
+Health Care Facilities,medical_devices,0.25
+Health Care Distributors,services_light,0.20
+Health Care Services,services_light,0.15
+Health Care Technology,services_light,0.12
+Managed Health Care,services_light,0.05
+Integrated Telecommunication Services,electronics_hardware,0.45
+Wireless Telecommunication Services,electronics_hardware,0.45
+Cable & Satellite,electronics_hardware,0.30
+Interactive Media & Services,data_centers_it,0.25
+Movies & Entertainment,services_light,0.15
+Broadcasting,services_light,0.15
+Publishing,services_light,0.12
+Advertising,services_light,0.08
+Multi-Sector Holdings,services_light,0.20
+Transaction & Payment Processing Services,services_light,0.08
+Financial Exchanges & Data,services_light,0.05
+Diversified Banks,services_light,0.05
+Regional Banks,services_light,0.05
+Consumer Finance,services_light,0.05
+Asset Management & Custody Banks,services_light,0.04
+Investment Banking & Brokerage,services_light,0.04
+Property & Casualty Insurance,services_light,0.04
+Life & Health Insurance,services_light,0.04
+Multi-line Insurance,services_light,0.04
+Reinsurance,services_light,0.04
+Insurance Brokers,services_light,0.04
+Data Center REITs,data_centers_it,0.45
+Telecom Tower REITs,construction_materials,0.40
+Industrial REITs,construction_materials,0.30
+Multi-Family Residential REITs,construction_materials,0.30
+Retail REITs,construction_materials,0.28
+Office REITs,construction_materials,0.28
+Health Care REITs,construction_materials,0.28
+Hotel & Resort REITs,construction_materials,0.28
+Single-Family Residential REITs,construction_materials,0.28
+Other Specialized REITs,construction_materials,0.28
+Self-Storage REITs,construction_materials,0.25
+Timber REITs,construction_materials,0.15
+Real Estate Services,services_light,0.10

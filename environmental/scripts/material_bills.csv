@@ -1,0 +1,152 @@
+archetype,material,weight,end_use
+semiconductors,Silicon,0.22,wafer substrate and the polysilicon feedstock for it
+semiconductors,Gallium,0.14,gallium arsenide and gallium nitride compound semiconductors
+semiconductors,Copper,0.12,on-chip interconnect and package leadframes
+semiconductors,Rare Earths,0.10,CMP polishing compounds and high-k dielectrics
+semiconductors,Tantalum,0.10,capacitors and diffusion barrier layers
+semiconductors,Helium,0.08,carrier gas and cryogenic cooling in fabs
+semiconductors,Tungsten,0.08,contact plugs and interconnect vias
+semiconductors,Palladium,0.08,plating on leadframes and connectors
+semiconductors,Indium,0.04,indium tin oxide transparent conductors
+semiconductors,Gold,0.04,wire bonding and corrosion-free contacts
+electronics_hardware,Copper,0.20,wiring harnesses printed circuit boards and heat spreaders
+electronics_hardware,Rare Earths,0.12,neodymium magnets in speakers drives and haptics
+electronics_hardware,Gold,0.12,connector plating and board contacts
+electronics_hardware,Cobalt,0.12,lithium-ion cathodes in device batteries
+electronics_hardware,Aluminum,0.10,enclosures and heat sinks
+electronics_hardware,Lithium,0.10,rechargeable battery cells
+electronics_hardware,Tantalum,0.08,surface-mount capacitors
+electronics_hardware,Tin,0.08,solder on every board
+electronics_hardware,Silver,0.08,conductive pastes and contacts
+aerospace_defense,Titanium Sponge Metal,0.18,airframe and engine structures where strength per weight decides
+aerospace_defense,Rare Earths,0.14,samarium and neodymium magnets in actuators guidance and motors
+aerospace_defense,Aluminum,0.12,airframe skin and structure
+aerospace_defense,Cobalt,0.10,superalloys in hot turbine sections
+aerospace_defense,Tungsten,0.10,kinetic penetrators counterweights and hard tooling
+aerospace_defense,Niobium (Columbium),0.08,superalloy strengthening in jet engines
+aerospace_defense,Beryllium,0.08,optics inertial guidance and lightweight structures
+aerospace_defense,Chromium,0.08,corrosion and heat resistant alloy coatings
+aerospace_defense,Nickel,0.06,base metal of turbine superalloys
+aerospace_defense,Rhenium,0.06,single-crystal turbine blade superalloys
+automobiles,Iron And Steel,0.16,body-in-white chassis and powertrain
+automobiles,Aluminum,0.14,lightweight body panels blocks and wheels
+automobiles,Copper,0.14,wiring harness and traction motor windings
+automobiles,Lithium,0.12,traction battery cathodes and electrolyte
+automobiles,Cobalt,0.10,traction battery cathodes
+automobiles,Nickel,0.10,high-energy-density battery cathodes
+automobiles,Rare Earths,0.08,permanent-magnet traction motors
+automobiles,Graphite (Natural),0.08,battery anodes
+automobiles,Platinum,0.04,catalytic converters in combustion vehicles
+automobiles,Palladium,0.04,catalytic converters in combustion vehicles
+industrial_machinery,Iron And Steel,0.28,frames castings and drivetrains
+industrial_machinery,Copper,0.16,motors windings and hydraulics
+industrial_machinery,Aluminum,0.14,housings and lightweight assemblies
+industrial_machinery,Chromium,0.12,stainless and wear-resistant surfaces
+industrial_machinery,Nickel,0.10,corrosion-resistant alloys
+industrial_machinery,Molybdenum,0.10,high-strength tool and structural steels
+industrial_machinery,Manganese,0.10,deoxidiser and hardener in nearly all steel
+grid_electrification,Copper,0.28,transmission distribution and transformer windings
+grid_electrification,Aluminum,0.20,overhead conductor and busbar
+grid_electrification,Silicon,0.12,photovoltaic cells and power electronics
+grid_electrification,Rare Earths,0.12,direct-drive wind turbine generators
+grid_electrification,Lithium,0.08,grid-scale battery storage
+grid_electrification,Silver,0.08,photovoltaic cell contacts
+grid_electrification,Nickel,0.06,battery storage and alloy components
+grid_electrification,Zinc,0.06,galvanising for pylons and hardware
+oil_gas,Iron And Steel,0.30,drill pipe casing pipelines and pressure vessels
+oil_gas,Barite,0.16,weighting agent in drilling mud
+oil_gas,Chromium,0.12,corrosion-resistant tubulars for sour service
+oil_gas,Molybdenum,0.12,high-strength pipeline and downhole steels
+oil_gas,Nickel,0.10,corrosion-resistant alloys in refining
+oil_gas,Copper,0.10,electrical systems on rigs and in refineries
+oil_gas,Cement,0.10,well casing cement
+construction_materials,Cement,0.30,the product itself and the binder in concrete
+construction_materials,Lime,0.18,cement kiln feed and soil stabilisation
+construction_materials,Gypsum,0.16,wallboard and cement retarder
+construction_materials,Iron And Steel,0.14,reinforcing bar and structural steel
+construction_materials,Clays,0.12,brick tile and cement raw meal
+construction_materials,Sand And Gravel (Industrial),0.10,aggregate and glass sand
+homebuilding,Cement,0.22,foundations and slabs
+homebuilding,Gypsum,0.18,interior wallboard
+homebuilding,Iron And Steel,0.16,framing reinforcement and fixings
+homebuilding,Copper,0.16,plumbing and electrical rough-in
+homebuilding,Aluminum,0.12,windows cladding and gutters
+homebuilding,Lime,0.10,mortar and plaster
+homebuilding,Clays,0.06,brick and roof tile
+specialty_chemicals,Sulfur,0.18,sulfuric acid the highest-volume industrial chemical
+specialty_chemicals,Soda Ash,0.14,glass detergents and pH control
+specialty_chemicals,Titanium Mineral Concentrates,0.14,titanium dioxide white pigment
+specialty_chemicals,Fluorspar,0.12,hydrofluoric acid and fluorochemicals
+specialty_chemicals,Platinum,0.10,process catalysts
+specialty_chemicals,Palladium,0.10,hydrogenation catalysts
+specialty_chemicals,Lithium,0.08,lithium compounds greases and polymer catalysts
+specialty_chemicals,Barite,0.08,filler and barium chemicals feedstock
+specialty_chemicals,Boron,0.06,borosilicate glass and detergents
+fertilizers,Phosphate Rock,0.32,phosphate fertiliser feedstock
+fertilizers,Potash,0.28,potassium fertiliser
+fertilizers,Nitrogen (Fixed)-Ammonia,0.24,nitrogen fertiliser
+fertilizers,Sulfur,0.16,sulfuric acid to acidulate phosphate rock
+steel_metals,Iron Ore,0.26,the primary iron unit
+steel_metals,Iron And Steel,0.20,scrap and semi-finished feedstock
+steel_metals,Chromium,0.14,stainless steel
+steel_metals,Manganese,0.12,deoxidiser and hardener in nearly all steel
+steel_metals,Nickel,0.10,austenitic stainless steel
+steel_metals,Molybdenum,0.08,high-strength low-alloy steel
+steel_metals,Zinc,0.06,galvanised coatings
+steel_metals,Vanadium,0.04,microalloying for strength
+copper_mining,Copper,1.0,the mined product itself
+gold_mining,Gold,1.0,the mined product itself
+medical_devices,Titanium Sponge Metal,0.20,implants and surgical instruments
+medical_devices,Platinum,0.14,electrodes in pacemakers and neurostimulators
+medical_devices,Cobalt,0.14,cobalt-chrome joint replacements
+medical_devices,Chromium,0.12,cobalt-chrome and stainless instrument alloys
+medical_devices,Nickel,0.12,nitinol stents and guidewires
+medical_devices,Silver,0.10,antimicrobial coatings and electrodes
+medical_devices,Tantalum,0.10,radiopaque markers and porous implants
+medical_devices,Zirconium,0.08,ceramic implant components
+pharma_biotech,Platinum,0.20,platinum-based chemotherapy agents and catalysts
+pharma_biotech,Palladium,0.18,coupling catalysts in active ingredient synthesis
+pharma_biotech,Helium,0.16,NMR spectrometer cryogens
+pharma_biotech,Iodine,0.16,contrast media and antiseptics
+pharma_biotech,Lithium,0.10,lithium carbonate therapeutics and reagents
+pharma_biotech,Silver,0.10,antimicrobial and diagnostic reagents
+pharma_biotech,Boron,0.10,borosilicate vials and reagents
+packaging,Aluminum,0.28,beverage cans and foil
+packaging,Iron And Steel,0.20,tinplate cans and drums
+packaging,Soda Ash,0.16,glass container manufacture
+packaging,Tin,0.12,tinplate coating
+packaging,Zinc,0.10,closures and coatings
+packaging,Clays,0.08,paperboard coating
+packaging,Sand And Gravel (Industrial),0.06,glass sand
+consumer_products,Titanium Mineral Concentrates,0.20,titanium dioxide pigment in paint plastic and cosmetics
+consumer_products,Soda Ash,0.18,detergents and glass
+consumer_products,Aluminum,0.16,packaging and appliance bodies
+consumer_products,Sulfur,0.12,surfactant and chemical feedstock
+consumer_products,Copper,0.12,small motors and wiring in appliances
+consumer_products,Zinc,0.12,zinc oxide in personal care and die castings
+consumer_products,Talc And Pyrophyllite,0.10,filler in cosmetics paper and plastics
+food_agriculture,Phosphate Rock,0.26,fertiliser for the crops upstream
+food_agriculture,Potash,0.22,fertiliser for the crops upstream
+food_agriculture,Nitrogen (Fixed)-Ammonia,0.20,fertiliser for the crops upstream
+food_agriculture,Salt,0.18,preservation and processing
+food_agriculture,Sulfur,0.14,fertiliser acidulation and processing chemicals
+transport_fleet,Iron And Steel,0.26,rolling stock trailers hulls and airframe structure
+transport_fleet,Aluminum,0.22,airframes trailers and containers
+transport_fleet,Copper,0.16,electrical systems and traction motors
+transport_fleet,Manganese,0.12,rail and structural steel
+transport_fleet,Nickel,0.08,corrosion-resistant alloys
+transport_fleet,Platinum,0.08,emissions catalysts in fleets
+transport_fleet,Titanium Sponge Metal,0.08,aircraft engines and structures
+data_centers_it,Copper,0.26,power distribution busbars and cabling
+data_centers_it,Aluminum,0.16,racks chassis and heat sinks
+data_centers_it,Silicon,0.16,server processors and accelerators
+data_centers_it,Cobalt,0.12,backup battery systems
+data_centers_it,Rare Earths,0.12,hard disk drive and cooling fan magnets
+data_centers_it,Gold,0.10,connector and board plating
+data_centers_it,Helium,0.08,sealed high-capacity hard disk drives
+services_light,Copper,0.30,wiring in leased buildings and IT equipment
+services_light,Aluminum,0.20,building fabric and equipment housings
+services_light,Silicon,0.18,the IT hardware the business runs on
+services_light,Gold,0.12,electronics contacts
+services_light,Rare Earths,0.12,magnets in IT and building equipment
+services_light,Cobalt,0.08,batteries in IT equipment

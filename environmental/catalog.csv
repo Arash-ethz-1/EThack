@@ -1,1 +1,2 @@
 indicator_id,name,description,unit,higher_is_better,weight,owner,source,status
+resource_supply_risk,Critical material supply risk exposure,"Supply risk of the raw materials a company's industry runs on - higher means it depends more on materials mined in few, badly governed countries",risk index 0-100,false,1,Jean,USGS Mineral Commodity Summaries 2026 + World Bank WGI,ready

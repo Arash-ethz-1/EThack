@@ -1,0 +1,7 @@
+file,url,retrieved_utc,bytes
+usgs_mcs2026_commodities.csv,https://www.sciencebase.gov/catalog/file/get/696a75d5d4be0228872d3bf8?f=__disk__eb%2F4d%2Fd1%2Feb4dd129d4f08cfba010a8b11cbbd2d88bbefdcb,2026-09-12T19:31:19Z,3189010
+worldbank_countries.json,https://api.worldbank.org/v2/country?format=json&per_page=400,2026-09-12T19:31:19Z,113590
+worldbank_political_stability.json,https://api.worldbank.org/v2/country/all/indicator/GOV_WGI_PV.EST?format=json&date=2010%3A2030&per_page=20000&source=3,2026-09-12T19:31:21Z,812108
+worldbank_rule_of_law.json,https://api.worldbank.org/v2/country/all/indicator/GOV_WGI_RL.EST?format=json&date=2010%3A2030&per_page=20000&source=3,2026-09-12T19:31:22Z,786765
+worldbank_control_of_corruption.json,https://api.worldbank.org/v2/country/all/indicator/GOV_WGI_CC.EST?format=json&date=2010%3A2030&per_page=20000&source=3,2026-09-12T19:31:24Z,818979
+sp500_constituents.csv,https://raw.githubusercontent.com/datasets/s-and-p-500-companies/main/data/constituents.csv,2026-09-12T19:35:06Z,53646
