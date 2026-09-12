@@ -1,6 +1,6 @@
 {
   "status": "flagged",
-  "verdict": "28,111 of 28,111 values carry a link to their public source.",
+  "verdict": "32,803 of 32,803 values carry a link to their public source.",
   "numbers": {
     "per_indicator": [
       {
@@ -25,11 +25,18 @@
         "with_source": 345
       },
       {
+        "indicator_id": "federal_contract_exposure",
+        "category": "economic",
+        "companies": 473,
+        "rows": 3556,
+        "with_source": 3556
+      },
+      {
         "indicator_id": "labor_litigation_intensity",
         "category": "social",
-        "companies": 10,
-        "rows": 100,
-        "with_source": 100
+        "companies": 439,
+        "rows": 4292,
+        "with_source": 4292
       },
       {
         "indicator_id": "political_alignment",
@@ -67,6 +74,13 @@
         "with_source": 902
       },
       {
+        "indicator_id": "human_capital_disclosure",
+        "category": "social",
+        "companies": 500,
+        "rows": 500,
+        "with_source": 500
+      },
+      {
         "indicator_id": "resource_supply_risk",
         "category": "environmental",
         "companies": 503,
@@ -81,13 +95,6 @@
         "with_source": 1450
       },
       {
-        "indicator_id": "federal_contract_exposure",
-        "category": "environmental",
-        "companies": 473,
-        "rows": 3556,
-        "with_source": 3556
-      },
-      {
         "indicator_id": "ghg_intensity",
         "category": "environmental",
         "companies": 100,
@@ -100,9 +107,17 @@
     {
       "ticker": "",
       "year": null,
+      "indicator_id": "federal_contract_exposure",
+      "value": null,
+      "detail": "all 473 companies share one source_url - a generic endpoint, not a per-company document",
+      "url": "https://api.usaspending.gov/api/v2/search/spending_over_time/"
+    },
+    {
+      "ticker": "",
+      "year": null,
       "indicator_id": "labor_litigation_intensity",
       "value": null,
-      "detail": "all 10 companies share one source_url - a generic endpoint, not a per-company document",
+      "detail": "all 439 companies share one source_url - a generic endpoint, not a per-company document",
       "url": "https://www.courtlistener.com/api/rest/v4/search/"
     },
     {
@@ -124,19 +139,11 @@
     {
       "ticker": "",
       "year": null,
-      "indicator_id": "federal_contract_exposure",
-      "value": null,
-      "detail": "all 473 companies share one source_url - a generic endpoint, not a per-company document",
-      "url": "https://api.usaspending.gov/api/v2/search/spending_over_time/"
-    },
-    {
-      "ticker": "",
-      "year": null,
       "indicator_id": "ghg_intensity",
       "value": null,
       "detail": "all 100 companies share one source_url - a generic endpoint, not a per-company document",
       "url": "https://data.epa.gov/efservice/RLPS_GHG_EMITTER_GAS"
     }
   ],
-  "ran_at": "2026-09-12T23:47:59Z"
+  "ran_at": "2026-09-12T23:56:08Z"
 }
