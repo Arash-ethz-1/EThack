@@ -27,7 +27,7 @@ import pandas as pd
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
 
-from common.config import raw_dir  # noqa: E402
+from common.config import ROOT, raw_dir  # noqa: E402
 from common.io import today_utc, write_indicator  # noqa: E402
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
@@ -39,22 +39,22 @@ SOURCE = "CourtListener RECAP federal dockets"
 SOURCE_URL = "https://www.courtlistener.com/api/rest/v4/search/"
 
 DOCKETS_DIR = raw_dir(CATEGORY) / "dockets"
-FINANCIALS = raw_dir(CATEGORY) / "financials.csv"
+# universe/financials.csv is the team's shared denominator (owner: Arash) and wins where
+# it has data. It currently starts at 2019, so social/raw/financials.csv - same SEC XBRL
+# frames method - fills 2016-2018 to keep the full 10-year window.
+FINANCIALS_SHARED = ROOT / "universe" / "financials.csv"
+FINANCIALS_LOCAL = raw_dir(CATEGORY) / "financials.csv"
 PANEL_OUT = raw_dir(CATEGORY) / "labor_litigation_panel.csv"
 
 YEAR_FROM, YEAR_TO = int(WINDOW_FROM[:4]), int(WINDOW_TO[:4]) - 1
 ROLLING_QUARTERS = 4  # trailing window: one-quarter counts are mostly zero
 
 
-def load_revenue() -> dict[tuple[str, int], float]:
-    """(ticker, year) -> annual revenue in USD, from the shared denominator file."""
-    if not FINANCIALS.exists():
-        raise SystemExit(
-            f"{FINANCIALS} does not exist yet - run social/scripts/_financials.py first.\n"
-            "The indicator must be size-neutral (AGENTS.md section 4), so it needs revenue."
-        )
-    out = {}
-    with FINANCIALS.open(encoding="utf-8") as f:
+def _read_revenue(path: Path) -> dict[tuple[str, int], float]:
+    out: dict[tuple[str, int], float] = {}
+    if not path.exists():
+        return out
+    with path.open(encoding="utf-8") as f:
         for r in csv.DictReader(f):
             if r.get("quarter"):  # annual rows only
                 continue
@@ -65,6 +65,21 @@ def load_revenue() -> dict[tuple[str, int], float]:
             if rev > 0:
                 out[(r["ticker"].strip().upper(), int(r["year"]))] = rev
     return out
+
+
+def load_revenue() -> dict[tuple[str, int], float]:
+    """(ticker, year) -> annual revenue USD. Shared file wins; local fills earlier years."""
+    revenue = _read_revenue(FINANCIALS_LOCAL)
+    shared = _read_revenue(FINANCIALS_SHARED)
+    revenue.update(shared)  # Arash's numbers win on any overlap
+    if not revenue:
+        raise SystemExit(
+            "no revenue denominator found - need universe/financials.csv (Arash) or run "
+            "social/scripts/_financials.py.\nAGENTS.md section 4 requires size-neutral values."
+        )
+    print(f"revenue: {len(shared)} rows from universe/financials.csv, "
+          f"{len(revenue) - len(shared)} additional from social/raw/financials.csv")
+    return revenue
 
 
 def count_dockets() -> tuple[dict, dict]:

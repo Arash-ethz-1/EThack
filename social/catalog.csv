@@ -1,1 +1,2 @@
 indicator_id,name,description,unit,higher_is_better,weight,owner,source,status
+labor_litigation_intensity,Employment lawsuits per $bn revenue,"Federal discrimination, wage and labor lawsuits filed against the company per $bn revenue - direct evidence of how it treats employees. Caveat: it only captures disputes that reach federal court, so firms with mandatory arbitration clauses score better.",suits per $bn revenue,false,1,Florian,CourtListener RECAP federal dockets,in_progress
