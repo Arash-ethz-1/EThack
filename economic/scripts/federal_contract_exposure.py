@@ -6,9 +6,9 @@ loans) as a share of that year's revenue. Higher means more of the company's
 revenue is structurally exposed to a federal budget, appropriations or policy
 shift on its prime contracts.
 
-This is NOT an environmental indicator - it is a political / contractor
-concentration risk measure. It lives in `environmental/` because that is where the
-team gave it a home; the catalog and every row say what it actually is.
+Category: economic (moved from environmental on 2026-09-13 - it measures how
+dependent a company's revenue is on one customer, the US federal budget, not an
+environmental impact).
 
 Method, in full:
   1. Quarterly revenue from SEC XBRL (`data.sec.gov` companyconcept), bucketed by
@@ -40,12 +40,12 @@ Sources:
   https://api.usaspending.gov/api/v2/search/spending_over_time/
 
 Owner:  Jean
-Run:    python run.py build environmental federal_contract_exposure
+Run:    python run.py build economic federal_contract_exposure
 Refresh cadence: quarterly - new 10-Qs and contract obligations post continuously.
 
-Output: environmental/indicators/federal_contract_exposure.csv (docs/DATA_FORMAT.md)
+Output: economic/indicators/federal_contract_exposure.csv (docs/DATA_FORMAT.md)
 Also writes the full quarterly panel (all companies, all quarters, both raw series)
-to environmental/raw/federal_contract_quarterly_panel.csv for anyone who wants
+to economic/raw/federal_contract_quarterly_panel.csv for anyone who wants
 quarter-level detail - the official indicator can only carry one row per company
 per year (docs/DATA_FORMAT.md).
 """
@@ -58,7 +58,7 @@ from pathlib import Path
 import pandas as pd
 
 from common.config import raw_dir
-from common.io import today_utc, write_indicator
+from common.io import load_universe, today_utc, write_indicator
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 
@@ -68,9 +68,8 @@ from _federal_contract_fetch import (  # noqa: E402
     get_sec_legal_names,
     verify_recipient_name,
 )
-from _universe import load_constituents  # noqa: E402
 
-CATEGORY = "environmental"
+CATEGORY = "economic"
 INDICATOR_ID = "federal_contract_exposure"
 SOURCE = "SEC XBRL quarterly revenue + USASpending.gov federal contract obligations"
 
@@ -103,7 +102,7 @@ SHORT_NAME_LEN = 3
 
 
 def fetch_all_panels(refresh: bool = False) -> tuple[pd.DataFrame, pd.DataFrame]:
-    constituents = load_constituents(refresh=refresh)
+    constituents = load_universe()  # ticker, name, sector, cik
     legal_names = get_sec_legal_names(CACHE_DIR)
     end_date = today_utc()
 
@@ -198,7 +197,7 @@ def annualise(panel: pd.DataFrame, checks_df: pd.DataFrame) -> pd.DataFrame:
 
 def verify_all_names(refresh: bool = False) -> pd.DataFrame:
     """Name-verification pass only, reusable without re-fetching quarterly data."""
-    constituents = load_constituents(refresh=refresh)
+    constituents = load_universe()  # ticker, name, sector, cik
     legal_names = get_sec_legal_names(CACHE_DIR)
     checks = []
     for _, row in constituents.iterrows():
