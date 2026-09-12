@@ -1,0 +1,469 @@
+<title>EThack Impact Prototype</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Libre+Caslon+Text:ital,wght@0,400;0,700;1,400&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+<style>
+:root {
+  --bg: #ffffff; --surface: #f5f6f8; --ink: #0f1728; --muted: #5d6677; --rule: #e3e6eb; --rule-strong: #0f1728;
+  --mark: #ffe25c; --mark-ink: #0f1728;
+  --econ: #2f55a4; --soc: #a4532b; --env: #2c7a57;
+  --pass: #2c7a57; --pending: #8a93a3; --flag: #b7791f;
+  --shadow: 0 1px 0 rgba(15, 23, 40, .04), 0 12px 40px rgba(15, 23, 40, .10);
+  --f-display: "Libre Caslon Text", "Iowan Old Style", Georgia, serif;
+  --f-body: "IBM Plex Sans", "Segoe UI", system-ui, sans-serif;
+  --f-data: "IBM Plex Mono", ui-monospace, Consolas, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0c111b; --surface: #131a26; --ink: #e8ebf1; --muted: #98a2b3; --rule: #232c3a; --rule-strong: #e8ebf1;
+    --mark: #e8c93a; --mark-ink: #0c111b; --econ: #86a8ee; --soc: #e39a72; --env: #6cc39a;
+    --pass: #6cc39a; --pending: #7c8698; --flag: #e3b04b; --shadow: 0 12px 40px rgba(0, 0, 0, .5);
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0c111b; --surface: #131a26; --ink: #e8ebf1; --muted: #98a2b3; --rule: #232c3a; --rule-strong: #e8ebf1;
+  --mark: #e8c93a; --mark-ink: #0c111b; --econ: #86a8ee; --soc: #e39a72; --env: #6cc39a;
+  --pass: #6cc39a; --pending: #7c8698; --flag: #e3b04b; --shadow: 0 12px 40px rgba(0, 0, 0, .5);
+}
+* { box-sizing: border-box; }
+body { background: var(--bg); color: var(--ink); font: 14px/1.55 var(--f-body); }
+.wrap { max-width: 1200px; margin: 0 auto; padding-inline: 32px; }
+@media (max-width: 640px) { .wrap { padding-inline: 16px; } }
+.num, .mono { font-family: var(--f-data); font-variant-numeric: tabular-nums; }
+a { color: inherit; text-decoration-color: var(--muted); text-underline-offset: 3px; }
+a:hover { text-decoration-color: var(--ink); }
+button, input, select { font: inherit; color: inherit; }
+:focus-visible { outline: 2px solid var(--econ); outline-offset: 2px; }
+.label { font-size: 11px; font-weight: 500; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); }
+.muted { color: var(--muted); }
+mark { background: linear-gradient(transparent 12%, var(--mark) 12%, var(--mark) 88%, transparent 88%); color: var(--mark-ink); padding: 0 2px; }
+[hidden] { display: none !important; }
+
+/* ---------- masthead ---------- */
+.mast { border-bottom: 1px solid var(--rule-strong); }
+.mast .wrap { display: grid; grid-template-columns: auto 1fr auto; align-items: end; gap: 16px 40px; padding-block: 28px 0; }
+@media (max-width: 800px) { .mast .wrap { grid-template-columns: 1fr; } }
+.title { padding-bottom: 18px; }
+.title .label { display: block; margin-bottom: 6px; }
+.title h1 { margin: 0; font: 400 30px/1 var(--f-display); letter-spacing: -.01em; }
+.title h1 i { font-style: italic; }
+nav.tabs { display: flex; gap: 32px; }
+nav.tabs button { background: none; border: 0; cursor: pointer; padding: 0 0 16px; font-weight: 500; color: var(--muted); border-bottom: 3px solid transparent; }
+nav.tabs button[aria-selected="true"] { color: var(--ink); border-bottom-color: var(--ink); }
+.prof { padding-bottom: 14px; display: flex; gap: 10px; align-items: center; }
+select, input[type="search"] { background: var(--bg); border: 1px solid var(--rule); border-radius: 2px; padding: 7px 10px; }
+.proto-note { font-size: 12px; color: var(--muted); padding-block: 8px; border-bottom: 1px solid var(--rule); }
+.proto-note .wrap { display: flex; gap: 8px; align-items: baseline; flex-wrap: wrap; }
+main { padding-block: 32px 80px; }
+
+/* ---------- ranking ---------- */
+.lede { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 16px 40px; align-items: end; margin-bottom: 20px; }
+@media (max-width: 800px) { .lede { grid-template-columns: 1fr; } }
+.lede h2 { margin: 0; font: 400 40px/1.08 var(--f-display); letter-spacing: -.015em; text-wrap: balance; max-width: 22ch; }
+.lede p { margin: 10px 0 0; color: var(--muted); max-width: 62ch; }
+.tools { display: flex; flex-wrap: wrap; gap: 8px; }
+.btn { background: var(--bg); border: 1px solid var(--rule); border-radius: 2px; padding: 7px 12px; cursor: pointer; }
+.btn:hover { border-color: var(--ink); }
+.btn[aria-expanded="true"] { background: var(--ink); color: var(--bg); border-color: var(--ink); }
+.weights { display: flex; flex-wrap: wrap; gap: 12px 36px; align-items: center; padding: 14px 0; border-top: 1px solid var(--rule); margin-bottom: 4px; }
+.weights .w { display: flex; gap: 10px; align-items: center; }
+.weights small { flex-basis: 100%; color: var(--muted); }
+.seg { display: inline-flex; border: 1px solid var(--rule); border-radius: 2px; }
+.seg button { border: 0; background: none; padding: 4px 10px; cursor: pointer; color: var(--muted); }
+.seg button + button { border-left: 1px solid var(--rule); }
+.seg button[aria-pressed="true"] { background: var(--ink); color: var(--bg); }
+.sw { display: inline-block; width: 9px; height: 9px; margin-right: 7px; vertical-align: 0; }
+
+.table-wrap { overflow-x: auto; }
+table.rank { width: 100%; border-collapse: collapse; min-width: 760px; border-top: 1px solid var(--rule-strong); }
+.rank th { text-align: left; padding: 10px 10px; font-size: 11px; font-weight: 500; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); border-bottom: 1px solid var(--rule); white-space: nowrap; }
+.rank td { padding: 0 10px; height: 52px; border-bottom: 1px solid var(--rule); }
+.rank .r { text-align: right; }
+.rank tbody tr { cursor: pointer; }
+.rank tbody tr:hover td { background: var(--surface); }
+.rank .pos { width: 48px; color: var(--muted); }
+.rank .co b { font-weight: 500; }
+.rank .co .mono { font-size: 11px; color: var(--muted); margin-left: 8px; }
+.rank .tot { font: 400 22px/1 var(--f-display); }
+.print { display: flex; gap: 3px; align-items: flex-end; height: 26px; }
+.print i { width: 7px; background: var(--rule); position: relative; display: block; height: 26px; }
+.print i b { position: absolute; left: 0; right: 0; bottom: 0; display: block; }
+.print i.gap { background: repeating-linear-gradient(45deg, var(--rule) 0 2px, transparent 2px 4px); }
+.print i.sp { width: 6px; background: none; }
+.legend { display: flex; flex-wrap: wrap; gap: 6px 18px; font-size: 12px; color: var(--muted); margin: 12px 0 0; }
+.more { margin-top: 16px; }
+
+/* ---------- company drawer ---------- */
+.scrim { position: fixed; inset: 0; background: rgba(12, 17, 27, .4); }
+.drawer { position: fixed; inset: 0 0 0 auto; width: min(760px, 100%); background: var(--bg); overflow-y: auto; box-shadow: var(--shadow); padding: 28px 32px 48px; }
+@media (max-width: 640px) { .drawer { padding: 20px 16px 40px; } }
+.drawer header { display: flex; justify-content: space-between; gap: 16px; align-items: start; }
+.drawer h2 { margin: 4px 0 2px; font: 400 32px/1.1 var(--f-display); text-wrap: balance; }
+.score-line { display: flex; flex-wrap: wrap; gap: 0; margin: 22px 0 26px; border-top: 1px solid var(--rule-strong); border-bottom: 1px solid var(--rule); }
+.score-line div { flex: 1 1 120px; padding: 12px 16px 12px 0; }
+.score-line div + div { padding-left: 16px; border-left: 1px solid var(--rule); }
+.score-line .v { display: block; font: 400 34px/1.1 var(--f-display); margin-top: 2px; }
+.score-line div:first-child .v { font-size: 44px; }
+.chain-h { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; margin-bottom: 8px; }
+.chain-h h3 { margin: 0; font: 400 20px/1.2 var(--f-display); }
+.flow { width: 100%; height: auto; display: block; }
+.flow text { fill: var(--ink); font: 11px var(--f-body); }
+.flow .sub { fill: var(--muted); font: 10px var(--f-data); }
+.flow .node { fill: var(--bg); stroke: var(--rule); }
+.flow .link { fill: none; stroke-opacity: .45; }
+.flow g.hov:hover .link { stroke-opacity: .95; }
+.ledger { margin-top: 28px; border-top: 1px solid var(--rule-strong); }
+.ledger .row { display: grid; grid-template-columns: minmax(0, 1.4fr) 110px 56px; gap: 6px 16px; padding: 14px 0; border-bottom: 1px solid var(--rule); }
+@media (max-width: 560px) { .ledger .row { grid-template-columns: 1fr auto; } }
+.ledger .row b { font-weight: 500; }
+.ledger .row .cat { font-size: 11px; color: var(--muted); }
+.ledger .row .pts { font: 400 22px/1 var(--f-display); text-align: right; }
+.ledger .src { grid-column: 1 / -1; font-size: 12px; display: flex; flex-wrap: wrap; gap: 4px 14px; color: var(--muted); }
+.ledger .note { grid-column: 1 / -1; font: 11.5px/1.5 var(--f-data); color: var(--muted); overflow-wrap: anywhere; }
+.st { display: inline-flex; align-items: center; gap: 6px; font-size: 11px; letter-spacing: .04em; white-space: nowrap; }
+.st::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: currentColor; }
+.st.pass { color: var(--pass); } .st.pending { color: var(--pending); } .st.flag { color: var(--flag); }
+.st.pending::before { background: none; border: 1.5px solid currentColor; width: 7px; height: 7px; }
+
+/* ---------- evidence ---------- */
+.ev { display: grid; grid-template-columns: 280px minmax(0, 1fr); gap: 32px 56px; }
+@media (max-width: 900px) { .ev { grid-template-columns: 1fr; } }
+.index { align-self: start; position: sticky; top: 16px; }
+@media (max-width: 900px) { .index { position: static; } }
+.index h2 { margin: 0 0 6px; font: 400 26px/1.15 var(--f-display); }
+.index > p { margin: 0 0 18px; color: var(--muted); font-size: 13px; }
+.index ol { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--rule-strong); }
+.index li button { width: 100%; text-align: left; display: grid; grid-template-columns: 34px minmax(0, 1fr); gap: 2px 8px; padding: 12px 8px 12px 0; background: none; border: 0; border-bottom: 1px solid var(--rule); cursor: pointer; }
+.index li button:hover { background: var(--surface); }
+.index li button[aria-current="true"] { background: var(--surface); box-shadow: inset 3px 0 0 var(--ink); padding-left: 10px; grid-template-columns: 34px minmax(0, 1fr); }
+.index .ex { font: 400 20px/1 var(--f-display); grid-row: span 2; padding-top: 2px; }
+.index .t { font-weight: 500; }
+.index .st { grid-column: 2; }
+
+.exhibit { min-width: 0; }
+.exhibit .kicker { display: flex; flex-wrap: wrap; gap: 8px 16px; align-items: center; margin-bottom: 14px; }
+.exhibit .kicker .tag { font-size: 11px; border: 1px solid var(--rule); padding: 2px 8px; border-radius: 2px; color: var(--muted); }
+.exhibit h3 { margin: 0; font: 400 15px/1.3 var(--f-body); color: var(--muted); }
+.verdict { margin: 6px 0 24px; font: 400 38px/1.12 var(--f-display); letter-spacing: -.015em; text-wrap: balance; max-width: 24ch; }
+@media (max-width: 640px) { .verdict { font-size: 28px; } }
+.fig { border-top: 1px solid var(--rule-strong); padding-top: 16px; }
+.fig figcaption { font-size: 12px; color: var(--muted); margin-top: 10px; max-width: 70ch; }
+.chart { width: 100%; height: auto; display: block; }
+.chart text { fill: var(--muted); font: 10.5px var(--f-data); }
+.chart .strong { fill: var(--ink); font-family: var(--f-body); font-size: 11.5px; }
+.chart .grid { stroke: var(--rule); }
+.chart .axis { stroke: var(--ink); }
+.chart .bar { fill: var(--ink); }
+.chart .fence { stroke: var(--flag); stroke-dasharray: 3 3; stroke-width: 1.2; }
+.chart .fence-t { fill: var(--flag); }
+.chart .dot { fill-opacity: .5; }
+.chart .med { stroke: var(--ink); stroke-width: 2.5; }
+.chart .line { fill: none; stroke-width: 2.2; }
+.chart .mark-band { fill: var(--mark); fill-opacity: .55; }
+.method { margin-top: 24px; border-top: 1px solid var(--rule); }
+.method summary { cursor: pointer; padding: 12px 0; font-weight: 500; }
+.method p { margin: 0 0 12px; color: var(--muted); max-width: 70ch; }
+.method code { font: 12px var(--f-data); color: var(--ink); background: var(--surface); padding: 1px 5px; }
+.quote { display: grid; grid-template-columns: 120px minmax(0, 1fr) 70px; gap: 16px; padding: 16px 0; border-bottom: 1px solid var(--rule); align-items: start; }
+@media (max-width: 560px) { .quote { grid-template-columns: 1fr; } }
+.quote q { font: 400 16px/1.5 var(--f-display); quotes: "\201C" "\201D"; }
+.quote .n { font: 400 24px/1 var(--f-display); display: block; margin-top: 4px; }
+.pend { display: grid; place-items: center; text-align: center; min-height: 260px; border: 1px dashed var(--rule); padding: 24px; color: var(--muted); }
+.pend svg { max-width: 220px; margin-bottom: 12px; }
+.pend .axis { stroke: var(--rule); }
+.pend .ghost { stroke: var(--pending); stroke-dasharray: 4 4; }
+.outs { margin-top: 16px; border-top: 1px solid var(--rule); max-height: 240px; overflow-y: auto; font-size: 12px; }
+.outs div { display: grid; grid-template-columns: 60px 76px minmax(0, 1fr); gap: 10px; padding: 7px 0; border-bottom: 1px solid var(--rule); }
+.outs span:last-child { color: var(--muted); overflow-wrap: anywhere; font-family: var(--f-data); font-size: 11px; }
+.corr { border-collapse: collapse; font-size: 11px; }
+.corr th { font-weight: 400; color: var(--muted); text-align: right; padding-right: 10px; white-space: nowrap; }
+.corr thead th { text-align: center; padding: 0 0 8px; writing-mode: vertical-rl; transform: rotate(180deg); height: 120px; vertical-align: bottom; }
+.corr td { width: 52px; height: 40px; text-align: center; font-family: var(--f-data); border: 2px solid var(--bg); }
+@media (prefers-reduced-motion: no-preference) {
+  .drawer { animation: in .2s ease-out; } @keyframes in { from { transform: translateX(28px); opacity: .5; } }
+  .exhibit { animation: fade .25s ease-out; } @keyframes fade { from { opacity: .4; transform: translateY(4px); } }
+}
+</style>
+
+<div class="proto-note"><div class="wrap"><b>Prototype</b><span>Real repo data (12 Sep 2026). Scores via common/score.py, including indicators still in progress. Agent checks have not run yet.</span></div></div>
+
+<header class="mast">
+  <div class="wrap">
+    <div class="title"><span class="label">EThack · S&amp;P 500</span><h1>Chain of <i>Evidence</i></h1></div>
+    <nav class="tabs" role="tablist">
+      <button type="button" role="tab" id="tab-ranking" aria-selected="true" data-view="ranking">Ranking</button>
+      <button type="button" role="tab" id="tab-evidence" aria-selected="false" data-view="evidence">Evidence</button>
+    </nav>
+    <label class="prof"><span class="label">Profile</span><select id="profile"><option>Balanced</option></select></label>
+  </div>
+</header>
+
+<main class="wrap">
+  <section id="view-ranking">
+    <div class="lede">
+      <div>
+        <h2>Sustainability impact of the S&amp;P 500, traced to the source.</h2>
+        <p id="summary"></p>
+      </div>
+      <div class="tools">
+        <input type="search" id="q" placeholder="Company or ticker" aria-label="Search company">
+        <select id="sector" aria-label="Sector"></select>
+        <button type="button" class="btn" id="wbtn" aria-expanded="false" aria-controls="weights">Adjust weights</button>
+      </div>
+    </div>
+    <div class="weights" id="weights" hidden></div>
+    <div class="table-wrap">
+      <table class="rank">
+        <thead><tr><th>#</th><th>Company</th><th>Sector</th><th>Indicator fingerprint</th><th class="r">Econ.</th><th class="r">Social</th><th class="r">Env.</th><th class="r">Total</th></tr></thead>
+        <tbody id="rows"></tbody>
+      </table>
+    </div>
+    <p class="legend" id="legend"></p>
+    <button type="button" class="btn more" id="more"></button>
+  </section>
+
+  <section id="view-evidence" hidden>
+    <div class="ev">
+      <aside class="index">
+        <h2>Evidence</h2>
+        <p>Six exhibits. Each makes one claim about the data and shows the check behind it.</p>
+        <ol id="index"></ol>
+      </aside>
+      <article class="exhibit" id="exhibit"></article>
+    </div>
+  </section>
+</main>
+
+<div class="scrim" id="scrim" hidden></div>
+<aside class="drawer" id="drawer" hidden aria-label="Company detail"></aside>
+
+<script src="data.js"></script>
+<script>
+const D = window.DATA;
+const CATS = [["economic", "Economic", "e", "--econ"], ["social", "Social", "so", "--soc"], ["environmental", "Environmental", "en", "--env"]];
+const META = Object.fromEntries(D.meta.map(m => [m.id, m]));
+const ORDER = D.meta.map(m => m.id);
+const SHORT = { tax_rate_gap: "Tax rate gap", revenue_volatility: "Revenue volatility", employer_retirement_contribution: "Retirement contribution", workplace_injury_rate: "Injury rate", resource_supply_risk: "Resource supply risk", critical_material_disclosure: "Material disclosure" };
+const $ = s => document.querySelector(s);
+const esc = s => String(s ?? "").replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+const f1 = v => v == null ? '<span class="muted">–</span>' : v.toFixed(1);
+const colOf = id => `var(${CATS.find(c => c[0] === META[id].cat)[3]})`;
+const fmtVal = (v, unit) => v == null ? "–" : unit === "pct_points" ? (v * 100).toFixed(1) + " pp" : Math.abs(v) >= 1000 ? Math.round(v).toLocaleString("en-US") : String(+v.toFixed(3));
+const unitTxt = u => u === "pct_points" ? "vs. 21% statutory" : u;
+const state = { w: [1, 1, 1], q: "", sector: "", limit: 40, ex: "A" };
+
+/* tabs */
+document.querySelectorAll("nav.tabs button").forEach(b => b.addEventListener("click", () => {
+  document.querySelectorAll("nav.tabs button").forEach(x => x.setAttribute("aria-selected", x === b));
+  $("#view-ranking").hidden = b.dataset.view !== "ranking";
+  $("#view-evidence").hidden = b.dataset.view !== "evidence";
+}));
+
+/* ---------- ranking ---------- */
+$("#summary").textContent = `${D.ev.kpi.scored} companies · ${D.ev.kpi.indicators} indicators in three categories · every value links to a public document. Data retrieved ${D.ev.kpi.retrieved}.`;
+$("#sector").innerHTML = `<option value="">All sectors</option>` + [...new Set(D.companies.map(c => c.s))].sort().map(s => `<option>${esc(s)}</option>`).join("");
+$("#legend").innerHTML = `<span>Fingerprint: one bar per indicator, height = points (0–100), hatched = no data.</span>` + CATS.map(([, n, , c]) => `<span><span class="sw" style="background:var(${c})"></span>${n}</span>`).join("");
+
+function renderWeights() {
+  $("#weights").innerHTML = CATS.map(([, n, , c], i) => `<div class="w"><span><span class="sw" style="background:var(${c})"></span>${n}</span><div class="seg" role="group" aria-label="${n} weight">${["Off", "1×", "2×"].map((l, k) => `<button type="button" data-i="${i}" data-k="${k}" aria-pressed="${state.w[i] === k}">${l}</button>`).join("")}</div></div>`).join("")
+    + `<small>Totals for each combination are precomputed by common/score.py; the page only displays them.</small>`;
+  $("#weights").querySelectorAll("button").forEach(b => b.addEventListener("click", () => {
+    const w = [...state.w]; w[+b.dataset.i] = +b.dataset.k; if (w.every(x => !x)) return;
+    state.w = w; renderWeights(); renderRows();
+  }));
+}
+$("#wbtn").addEventListener("click", () => { const o = $("#weights").hidden; $("#weights").hidden = !o; $("#wbtn").setAttribute("aria-expanded", o); });
+const totals = () => D.presets[state.w.join("")];
+
+function fingerprint(c) {
+  const by = Object.fromEntries(c.ind.map(x => [x.id, x]));
+  let prev = null, out = "";
+  ORDER.forEach(id => {
+    if (prev && META[id].cat !== prev) out += `<i class="sp"></i>`;
+    prev = META[id].cat;
+    const x = by[id];
+    out += x && x.pts != null ? `<i title="${esc(SHORT[id])}: ${x.pts}"><b style="height:${Math.max(2, x.pts * .26)}px;background:${colOf(id)}"></b></i>` : `<i class="gap" title="${esc(SHORT[id])}: no data"></i>`;
+  });
+  return `<span class="print">${out}</span>`;
+}
+
+function renderRows() {
+  const tot = totals();
+  let list = D.companies.map((c, i) => ({ c, t: tot[i] })).sort((a, b) => (b.t ?? -1) - (a.t ?? -1) || a.c.t.localeCompare(b.c.t));
+  list.forEach((r, i) => r.pos = r.t == null ? null : i + 1);
+  const q = state.q.toLowerCase();
+  if (q) list = list.filter(r => r.c.t.toLowerCase().includes(q) || r.c.n.toLowerCase().includes(q));
+  if (state.sector) list = list.filter(r => r.c.s === state.sector);
+  $("#rows").innerHTML = list.slice(0, state.limit).map(({ c, t, pos }) => `<tr tabindex="0" data-t="${c.t}">
+    <td class="pos num">${pos ?? "–"}</td><td class="co"><b>${esc(c.n)}</b><span class="mono">${c.t}</span></td>
+    <td class="muted">${esc(c.s)}</td><td>${fingerprint(c)}</td>
+    <td class="r num">${f1(c.e)}</td><td class="r num">${f1(c.so)}</td><td class="r num">${f1(c.en)}</td><td class="r tot">${f1(t)}</td></tr>`).join("");
+  $("#more").hidden = list.length <= state.limit; $("#more").textContent = `Show all ${list.length}`;
+  $("#rows").querySelectorAll("tr").forEach(tr => { tr.onclick = () => openCo(tr.dataset.t); tr.onkeydown = e => e.key === "Enter" && openCo(tr.dataset.t); });
+}
+$("#q").oninput = e => { state.q = e.target.value; renderRows(); };
+$("#sector").onchange = e => { state.sector = e.target.value; renderRows(); };
+$("#more").onclick = () => { state.limit = 1e4; renderRows(); };
+
+/* ---------- company: chain of evidence ---------- */
+function flow(c) {
+  const inds = ORDER.map(id => c.ind.find(x => x.id === id)).filter(Boolean);
+  const srcs = [...new Set(inds.map(x => x.src))];
+  const cats = CATS.filter(([id]) => inds.some(x => x.cat === id));
+  const W = 700, rowH = 46, H = Math.max(inds.length, srcs.length, 3) * rowH + 30;
+  const X = [0, 230, 470, 620], NW = [180, 180, 110, 80];
+  const yOf = (i, n) => 24 + (H - 24) / n * (i + .5);
+  const curve = (x1, y1, x2, y2) => `M${x1},${y1} C${(x1 + x2) / 2},${y1} ${(x1 + x2) / 2},${y2} ${x2},${y2}`;
+  let links = "", nodes = "";
+  ["Source document", "Indicator · points", "Category", "Total"].forEach((t, i) => nodes += `<text class="sub" x="${X[i]}" y="10">${t.toUpperCase()}</text>`);
+  srcs.forEach((s, i) => { const y = yOf(i, srcs.length); nodes += `<rect class="node" x="0" y="${y - 16}" width="${NW[0]}" height="32" rx="2"/><text x="10" y="${y + 4}">${esc(s.length > 26 ? s.slice(0, 25) + "…" : s)}</text>`; });
+  inds.forEach((x, i) => {
+    const y = yOf(i, inds.length), sy = yOf(srcs.indexOf(x.src), srcs.length), ci = cats.findIndex(k => k[0] === x.cat), cy = yOf(ci, cats.length), col = colOf(x.id);
+    links += `<g class="hov"><path class="link" style="stroke:${col}" stroke-width="2" d="${curve(NW[0], sy, X[1], y)}"/><path class="link" style="stroke:${col}" stroke-width="${1 + (x.pts ?? 0) / 12}" d="${curve(X[1] + NW[1], y, X[2], cy)}"/></g>`;
+    nodes += `<rect class="node" x="${X[1]}" y="${y - 16}" width="${NW[1]}" height="32" rx="2" style="stroke:${col}"/><text x="${X[1] + 10}" y="${y + 4}">${esc(SHORT[x.id])}</text><text class="sub" x="${X[1] + NW[1] - 8}" y="${y + 4}" text-anchor="end">${x.pts ?? "–"}</text>`;
+  });
+  const ty = yOf(0, 1);
+  cats.forEach(([id, n, k, col], i) => {
+    const y = yOf(i, cats.length);
+    links += `<path class="link" style="stroke:var(${col})" stroke-width="${1 + (c[k] ?? 0) / 10}" d="${curve(X[2] + NW[2], y, X[3], ty)}"/>`;
+    nodes += `<rect class="node" x="${X[2]}" y="${y - 16}" width="${NW[2]}" height="32" rx="2" style="stroke:var(${col})"/><text x="${X[2] + 10}" y="${y + 4}">${n.slice(0, 5)}.</text><text class="sub" x="${X[2] + NW[2] - 8}" y="${y + 4}" text-anchor="end">${c[k] == null ? "–" : c[k].toFixed(0)}</text>`;
+  });
+  return `<svg class="flow" viewBox="0 0 ${W} ${H}" role="img" aria-label="Chain from source documents to total score">${links}${nodes}</svg>`;
+}
+
+function openCo(tk) {
+  const i = D.companies.findIndex(c => c.t === tk), c = D.companies[i], t = totals()[i];
+  const rows = ORDER.map(id => c.ind.find(x => x.id === id)).filter(Boolean).map(x => {
+    const m = META[x.id];
+    return `<div class="row"><div><b>${esc(m.name)}</b><div class="cat"><span class="sw" style="background:${colOf(x.id)}"></span>${m.cat} · FY ${x.y}</div></div>
+      <div class="num">${fmtVal(x.v, m.unit)}<div class="cat">${esc(unitTxt(m.unit))}</div></div><div class="pts">${x.pts ?? "–"}</div>
+      <div class="src"><a href="${esc(x.url)}" target="_blank" rel="noopener">${esc(x.src)} ↗</a>${x.out ? `<span class="st flag">outlier · explanation pending</span>` : ""}<span class="st pending">agent check pending</span></div>
+      <div class="note">${esc(x.note)}</div></div>`;
+  }).join("");
+  $("#drawer").innerHTML = `<header><div><span class="label mono">${c.t} · ${esc(c.s)}</span><h2>${esc(c.n)}</h2></div><button type="button" class="btn" id="close">Close</button></header>
+    <div class="score-line"><div><span class="label">Total</span><span class="v">${f1(t)}</span></div>${CATS.map(([, n, k, col]) => `<div><span class="label"><span class="sw" style="background:var(${col})"></span>${n}</span><span class="v">${f1(c[k])}</span></div>`).join("")}</div>
+    <div class="chain-h"><h3>Chain of evidence</h3><span class="muted" style="font-size:12px">Line width = points</span></div>
+    ${flow(c)}
+    <div class="ledger">${rows}</div>`;
+  $("#drawer").hidden = $("#scrim").hidden = false; $("#close").onclick = closeCo; $("#close").focus();
+}
+function closeCo() { $("#drawer").hidden = $("#scrim").hidden = true; }
+$("#scrim").onclick = closeCo;
+document.addEventListener("keydown", e => e.key === "Escape" && closeCo());
+
+/* ---------- evidence ---------- */
+const sc = (d0, d1, r0, r1) => v => r0 + (v - d0) / (d1 - d0) * (r1 - r0);
+const svg = (w, h, g, label) => `<svg class="chart" viewBox="0 0 ${w} ${h}" role="img" aria-label="${label}">${g}</svg>`;
+
+function chartSourced() {
+  const perInd = ORDER.map(id => ({ id, n: D.companies.reduce((a, c) => a + (c.ind.some(x => x.id === id) ? 1 : 0), 0) }));
+  const W = 720, L = 190, R = 90, rowH = 34, H = perInd.length * rowH + 30, x = sc(0, 503, L, W - R);
+  let g = "";
+  [0, 100, 200, 300, 400, 503].forEach(v => g += `<line class="grid" x1="${x(v)}" x2="${x(v)}" y1="4" y2="${H - 22}"/><text x="${x(v)}" y="${H - 6}" text-anchor="middle">${v}</text>`);
+  perInd.forEach((p, i) => {
+    const y = 8 + i * rowH;
+    g += `<text class="strong" x="${L - 12}" y="${y + 15}" text-anchor="end">${SHORT[p.id]}</text><rect x="${L}" y="${y + 4}" width="${x(p.n) - L}" height="16" style="fill:${colOf(p.id)}"/><text x="${x(p.n) + 8}" y="${y + 16}">${p.n} / 503</text>`;
+  });
+  return svg(W, H, g, "Companies with a sourced value per indicator");
+}
+
+function chartHist() {
+  const h = D.ev.tax_hist, vals = h.values.map(v => v * 100), d0 = -60, d1 = 60, W = 720, H = 260, L = 36, R = 12, T = 22, B = 40;
+  const x = sc(d0, d1, L, W - R), n = 48, bw = (d1 - d0) / n, cnt = Array(n).fill(0); let lo = 0, hi = 0;
+  vals.forEach(v => v < d0 ? lo++ : v >= d1 ? hi++ : cnt[Math.floor((v - d0) / bw)]++);
+  const yM = Math.ceil(Math.max(...cnt) / 20) * 20, y = sc(0, yM, H - B, T);
+  let g = `<rect class="mark-band" x="${x(h.lo * 100)}" y="${T}" width="${x(h.hi * 100) - x(h.lo * 100)}" height="${H - B - T}"/>`;
+  for (let k = 0; k <= yM; k += yM / 4) g += `<line class="grid" x1="${L}" x2="${W - R}" y1="${y(k)}" y2="${y(k)}"/><text x="${L - 6}" y="${y(k) + 3}" text-anchor="end">${k}</text>`;
+  cnt.forEach((c, i) => c && (g += `<rect class="bar" x="${x(d0 + i * bw) + .5}" y="${y(c)}" width="${x(d0 + bw) - x(d0) - 1}" height="${y(0) - y(c)}"/>`));
+  for (let v = d0; v <= d1; v += 20) g += `<text x="${x(v)}" y="${H - B + 16}" text-anchor="middle">${v > 0 ? "+" : ""}${v}</text>`;
+  g += `<line class="axis" x1="${L}" x2="${W - R}" y1="${y(0)}" y2="${y(0)}"/>`;
+  [h.lo, h.hi].forEach((f, k) => g += `<line class="fence" x1="${x(f * 100)}" x2="${x(f * 100)}" y1="${T - 8}" y2="${y(0)}"/><text class="fence-t" x="${x(f * 100) + (k ? 5 : -5)}" y="${T - 10}" text-anchor="${k ? "start" : "end"}">fence ${(f * 100).toFixed(0)} pp</text>`);
+  g += `<text x="${L}" y="${H - 4}">◂ ${lo} beyond −60</text><text x="${W - R}" y="${H - 4}" text-anchor="end">${hi} beyond +60 ▸</text><text x="${(L + W - R) / 2}" y="${H - 4}" text-anchor="middle">percentage points below / above the 21% statutory rate</text>`;
+  return svg(W, H, g, "Distribution of tax rate gap");
+}
+
+function chartStability() {
+  const st = D.ev.stability, ids = Object.keys(st).filter(k => st[k].length >= 2 && k !== "resource_supply_risk");
+  const W = 720, H = 280, L = 36, R = 150, T = 16, B = 30, x = sc(2010, 2025, L, W - R), y = sc(0, 1, H - B, T);
+  let g = "";
+  [0, .25, .5, .75, 1].forEach(v => g += `<line class="grid" x1="${L}" x2="${W - R}" y1="${y(v)}" y2="${y(v)}"/><text x="${L - 6}" y="${y(v) + 3}" text-anchor="end">${v}</text>`);
+  [2010, 2013, 2016, 2019, 2022, 2025].forEach(v => g += `<text x="${x(v)}" y="${H - 8}" text-anchor="middle">${v}</text>`);
+  const dip = st.tax_rate_gap.find(p => p[0] === 2018);
+  if (dip) g += `<rect class="mark-band" x="${x(2016.6)}" y="${T}" width="${x(2018.4) - x(2016.6)}" height="${H - B - T}"/><text class="strong" x="${x(2018.4) + 8}" y="${y(.22)}">US tax reform, Dec 2017</text><text x="${x(2018.4) + 8}" y="${y(.22) + 14}">tax gap ranks reshuffle (${dip[1]})</text>`;
+  const labs = [];
+  ids.forEach(id => { const p = st[id], col = colOf(id), l = p[p.length - 1];
+    g += `<polyline class="line" style="stroke:${col}" points="${p.map(q => `${x(q[0])},${y(q[1])}`).join(" ")}"/><circle cx="${x(l[0])}" cy="${y(l[1])}" r="3.5" style="fill:${col}"/>`;
+    labs.push({ y: y(l[1]), t: SHORT[id], col }); });
+  labs.sort((a, b) => a.y - b.y).forEach((l, i, a) => { if (i && l.y - a[i - 1].y < 13) l.y = a[i - 1].y + 13; g += `<text class="strong" x="${W - R + 10}" y="${l.y + 4}" style="fill:${l.col}">${l.t}</text>`; });
+  return svg(W, H, g, "Year to year rank stability per indicator");
+}
+
+function chartSectors() {
+  const S = D.ev.sector_strip, med = a => a[Math.floor(a.length / 2)], names = Object.keys(S).sort((a, b) => med(S[b]) - med(S[a]));
+  const W = 720, rowH = 26, L = 170, R = 20, T = 6, H = T + names.length * rowH + 28, x = sc(0, .55, L, W - R);
+  let g = "";
+  [0, .1, .2, .3, .4, .5].forEach(v => g += `<line class="grid" x1="${x(v)}" x2="${x(v)}" y1="${T}" y2="${H - 24}"/><text x="${x(v)}" y="${H - 8}" text-anchor="middle">${v.toFixed(1)}</text>`);
+  names.forEach((n, i) => { const cy = T + i * rowH + rowH / 2;
+    g += `<text class="strong" x="${L - 12}" y="${cy + 4}" text-anchor="end">${esc(n)}</text>`;
+    S[n].forEach((v, k) => g += `<circle class="dot" style="fill:var(--env)" cx="${x(v)}" cy="${cy + ((k * 7) % 11 - 5)}" r="3"/>`);
+    g += `<line class="med" x1="${x(med(S[n]))}" x2="${x(med(S[n]))}" y1="${cy - 9}" y2="${cy + 9}"/>`; });
+  return svg(W, H, g, "Resource supply risk by sector");
+}
+
+function corrTable() {
+  const { ids, m } = D.ev.corr;
+  return `<div class="table-wrap"><table class="corr"><thead><tr><th></th>${ids.map(id => `<th>${SHORT[id]}</th>`).join("")}</tr></thead><tbody>${ids.map((id, i) => `<tr><th>${SHORT[id]}</th>${m[i].map((v, j) => {
+    if (j >= i) return `<td>${i === j ? '<span class="muted">·</span>' : ""}</td>`;
+    const a = Math.abs(v ?? 0);
+    return `<td style="background:color-mix(in srgb, ${a >= .8 ? "var(--flag)" : "var(--ink)"} ${Math.round(a * 60)}%, var(--bg));color:${a > .45 ? "var(--bg)" : "var(--ink)"}">${v == null ? "–" : v.toFixed(2)}</td>`;
+  }).join("")}</tr>`).join("")}</tbody></table></div>`;
+}
+
+const pending = (what, cmd) => `<div class="pend"><div><svg viewBox="0 0 220 140"><line class="axis" x1="10" y1="130" x2="210" y2="130"/><line class="axis" x1="10" y1="130" x2="10" y2="10"/><line class="ghost" x1="10" y1="130" x2="210" y2="10"/></svg><p style="margin:0 0 6px">${what}</p><code class="mono" style="font-size:12px">${cmd}</code></div></div>`;
+
+function maxOffDiag() { const { m } = D.ev.corr; let a = 0; m.forEach((r, i) => r.forEach((v, j) => { if (i !== j && v != null) a = Math.max(a, Math.abs(v)); })); return a; }
+
+const EX = [
+  { id: "A", title: "Every value points to a document", kind: "Code check", status: ["pass", "passed"],
+    verdict: () => `<mark>${D.ev.kpi.with_src.toLocaleString("en-US")} of ${D.ev.kpi.rows.toLocaleString("en-US")}</mark> values carry a link to their public source.`,
+    body: () => `<figure class="fig">${chartSourced()}<figcaption>Companies with a sourced value, per indicator (latest year). Colour = category.</figcaption></figure>`,
+    method: "Reads every indicator file and counts rows with a source_url, a retrieval date and a note. Next step: flag rows whose link is a generic API endpoint instead of one company's document." },
+  { id: "B", title: "The numbers are in the filings", kind: "Agent check", status: ["pending", "not run"],
+    verdict: () => `An agent reads the filing and finds <mark>the same number</mark> — or tells us it did not.`,
+    body: () => `<figure class="fig">${D.ev.emp_example.map(r => { const n = Number(r.employees).toLocaleString("en-US");
+      return `<div class="quote"><div><span class="mono">${r.ticker} · FY ${r.year}</span><span class="n">${n}</span><span class="muted">employees in our data</span></div><q>…${esc(r.quote).replace(n, `<mark>${n}</mark>`)}…</q><div><a href="${esc(r.url)}" target="_blank" rel="noopener">10-K ↗</a><br><span class="st pending">pending</span></div></div>`; }).join("")}
+      <figcaption>Three examples from the headcount extraction. The quote is stored with the value; the agent verdict appears once the check has run.</figcaption></figure>`,
+    method: "Samples 30 values per indicator, sends the source document to Claude with the question “does this document state this value?”, and stores confirmed / mismatch / not found with the exact quote. The agent never edits a value. Command: <code>python run.py verify agent_quote_verify</code>." },
+  { id: "C", title: "Recomputed independently, same result", kind: "Code + agent", status: ["pending", "not run"],
+    verdict: () => `Two independent routes to each number should land <mark>on the diagonal</mark>.`,
+    body: () => `<div class="fig" style="display:grid;gap:16px;grid-template-columns:repeat(auto-fit,minmax(260px,1fr))">${pending("Our effective tax rate vs. the rate companies report in XBRL", "verify cross_source_tax")}${pending("Our headcount vs. a blind agent reading the 10-K", "verify agent_blind_reextract")}</div>`,
+    method: "Tax: compares tax / pretax income with the XBRL tag EffectiveIncomeTaxRateContinuingOperations. Headcount: a second agent extracts the number without seeing ours. Share of points within 1% is the verdict." },
+  { id: "D", title: "Outliers are real, not errors", kind: "Code + agent", status: ["flag", `${D.ev.tax_hist.out.length} flagged`],
+    verdict: () => `<mark>${D.ev.tax_hist.out.length} of ${D.ev.tax_hist.values.length}</mark> tax gaps fall outside the fences. Each gets read, not deleted.`,
+    body: () => { const h = D.ev.tax_hist; return `<figure class="fig">${chartHist()}<figcaption>Tax rate gap FY ${h.year}. Highlighted band = normal range (3× interquartile range). Values beyond it are listed below.</figcaption></figure>
+      <div class="outs">${h.out.map(o => `<div><span class="mono">${o.t}</span><span class="num">${(o.v * 100).toFixed(1)} pp</span><span>${esc(o.note)}</span></div>`).join("")}</div>`; },
+    method: "Code flags values beyond 3× the interquartile range. An agent then reads the tax footnote of that 10-K and classifies the value as real (e.g. a one-off charge, near-zero pretax income) or a data error, with a quote." },
+  { id: "E", title: "Company traits persist over time", kind: "Code check", status: ["pass", "passed"],
+    verdict: () => `Rankings stay stable year to year — and <mark>break exactly where the law changed</mark>.`,
+    body: () => `<figure class="fig">${chartStability()}<figcaption>Rank correlation of each company's value with its own previous year (1 = identical order). Resource supply risk is industry-based and constant, so it is not shown.</figcaption></figure>`,
+    method: "For each indicator and year, the Spearman rank correlation between consecutive years over companies present in both (at least 100). Random noise would sit near 0." },
+  { id: "F", title: "No two indicators measure the same thing", kind: "Code check", status: ["pass", "passed"],
+    verdict: () => `The strongest overlap between any two indicators is <mark>${maxOffDiag().toFixed(2)}</mark>. Nothing is counted twice.`,
+    body: () => `<figure class="fig">${corrTable()}<figcaption>Rank correlation of latest values. Above 0.8 would be a duplicate and be highlighted.</figcaption></figure>
+      <figure class="fig" style="margin-top:32px">${chartSectors()}<figcaption>Sanity pattern: resource supply risk per company, grouped by sector, bar = median.</figcaption></figure>`,
+    method: "Spearman rank correlation of the latest value per company for every pair of indicators, on companies that have both (at least 50)." },
+];
+
+function renderIndex() {
+  $("#index").innerHTML = EX.map(e => `<li><button type="button" data-ex="${e.id}" aria-current="${state.ex === e.id}"><span class="ex">${e.id}</span><span class="t">${e.title}</span><span class="st ${e.status[0]}">${e.status[1]}</span></button></li>`).join("");
+  $("#index").querySelectorAll("button").forEach(b => b.onclick = () => { state.ex = b.dataset.ex; renderIndex(); renderExhibit(); });
+}
+function renderExhibit() {
+  const e = EX.find(x => x.id === state.ex);
+  $("#exhibit").innerHTML = `<div class="kicker"><span class="label">Exhibit ${e.id}</span><span class="tag">${e.kind}</span><span class="st ${e.status[0]}">${e.status[1]}</span></div>
+    <h3>${e.title}</h3><p class="verdict">${e.verdict()}</p>${e.body()}
+    <details class="method"><summary>How this is checked</summary><p>${e.method}</p></details>`;
+}
+
+renderWeights(); renderRows(); renderIndex(); renderExhibit();
+</script>
