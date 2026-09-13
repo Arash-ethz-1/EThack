@@ -12,8 +12,8 @@ sustainability-tilted index fund from the scores, and proves the score means som
 
 ## How it flows (redesign 2026-09-13 morning)
 
-1. **Start page** - title, our definition, three weights (Planet / People / Economic base, 0-3) and
-   "Equal" or "Net-zero emphasis" indicator weights. Button: Compute.
+1. **Start page** - title, our definition, three weights (Planet / People / Economic base, 0-3), a chip per
+   indicator to switch it off, and "Equal" or "Net zero" emphasis. Button: Compute.
 2. **Pipeline** - five lines that each run a real server call and show its result and time:
    scores -> $1bn fund -> back to 2021 vs EPA fines -> 1,000 random weightings -> carbon price stress.
 3. **Results** - Ranking, Fund, Net zero, Evidence, Method. Minimal look: white, black type,
@@ -102,6 +102,12 @@ sector peers (dot strip) -> rank formula -> pillar weighted means -> total -> fu
 (equal weight -> exclusions -> z-score -> tilt factor -> sector rescale -> cap -> dollars of $1bn).
 
 ## Evidence (Evidence tab, checks/)
+
+Design rule since the morning pass: few words, big numbers, charts; explanations sit in collapsed
+"How it's calculated" rows. **Audit (C)** now shows the company's own most concrete 10-K sentences on
+planet / people / lawsuits (keyword-highlighted, from the 10-Ks cached in economic/raw/, < 1 s), its EPA
+emissions and penalties as big numbers, and news loaded separately (GDELT still answers HTTP 429 - a news
+search button is the fallback).
 
 - **A - Low scores get caught later.** Scores rebuilt with data up to 2021 only; within
   each sector, the worst fifth: 26% fined by the EPA in 2022-2025, best fifth: 8% (3.3x).

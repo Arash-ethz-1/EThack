@@ -67,33 +67,33 @@ function renderMethod() {
   const cur = inds.find(x => x.indicator_id === TRACE.ind) || inds[0], cmp = cur.comparison;
   const opts = state.score.rows.slice().sort((a, b) => (a.name || "").localeCompare(b.name || ""))
     .map(r => `<option value="${r.ticker}"${r.ticker === c.ticker ? " selected" : ""}>${esc(r.name)} (${r.ticker})</option>`).join("");
-  const catName = id => (CATS.find(k => k[0] === id) || [id, id])[1];
+  const catName = id => (HOME_ORDER.find(k => k[0] === id) || [id, id])[1];
   const col = id => `var(${(CATS.find(k => k[0] === id) || CATS[0])[2]})`;
   const raw = cmp.position != null && cmp.n > 1 ? (cmp.position - 1) / (cmp.n - 1) : null;
 
-  const step = (n, title, text, inner) => `<li class="mstep"><div class="mstep-n num">${n}</div><div class="mstep-b"><h3>${title}</h3><p class="lead">${text}</p>${inner}</div></li>`;
+  const step = (n, title, text, inner) => `<li class="mstep"><div class="mstep-n num">${n}</div><div class="mstep-b"><h3>${title}</h3>${text ? `<p class="lead">${text}</p>` : ""}${inner}</div></li>`;
 
   const sourceTable = `<div class="table-wrap"><table class="mini wide"><thead><tr><th>Indicator</th><th class="r">Value</th><th class="r">Year</th><th>Source</th></tr></thead><tbody>
-    ${inds.map(x => `<tr class="${x.value == null ? "out" : ""}"><td><span class="sw" style="background:${col(x.category)}"></span>${esc(x.name)}</td>
+    ${inds.map(x => `<tr class="${x.value == null ? "out" : ""}"><td title="${esc(x.name)}"><span class="sw" style="background:${col(x.category)}"></span>${esc(short(x.indicator_id))}</td>
       <td class="r num">${x.value == null ? "no data" : `${fmtVal(x.value, x.unit)} <span class="muted small">${esc(x.unit || "")}</span>`}</td>
       <td class="r num">${x.year ?? "–"}</td>
-      <td>${x.source_url ? `<a href="${esc(x.source_url)}" target="_blank" rel="noopener">${esc(x.source || "source")} ↗</a>` : '<span class="muted">–</span>'}</td></tr>`).join("")}
+      <td class="small">${x.source_url ? `<a href="${esc(x.source_url)}" target="_blank" rel="noopener">${esc((x.source || "source").split(/[(+,]/)[0].trim())} ↗</a>` : '<span class="muted">–</span>'}</td></tr>`).join("")}
   </tbody></table></div>`;
 
-  const rankBlock = `<div class="chips">${inds.filter(x => x.comparison.rank != null).map(x => `<button type="button" data-ind="${x.indicator_id}" aria-pressed="${x.indicator_id === cur.indicator_id}">${esc(x.name)}</button>`).join("")}</div>
-    ${cmp.rank != null ? `<figure class="fig flat">${strip(cmp, cur.unit)}<figcaption>${cmp.n} ${esc(c.sector)} companies with a value for “${esc(cur.name)}”, sorted from lowest to highest.</figcaption></figure>
+  const rankBlock = `<div class="chips">${inds.filter(x => x.comparison.rank != null).map(x => `<button type="button" data-ind="${x.indicator_id}" aria-pressed="${x.indicator_id === cur.indicator_id}" title="${esc(x.name)}">${esc(short(x.indicator_id))}</button>`).join("")}</div>
+    ${cmp.rank != null ? `<figure class="fig flat">${strip(cmp, cur.unit)}<figcaption>${cmp.n} ${esc(c.sector)} companies, lowest to highest</figcaption></figure>
     <div class="calc">
-      <div><span>position among ${cmp.n}, lowest value first</span><b class="num">p = ${n2(cmp.position, cmp.position % 1 ? 1 : 0)}</b></div>
+      <div><span>position</span><b class="num">p = ${n2(cmp.position, cmp.position % 1 ? 1 : 0)}</b></div>
       <div><span>rank = (p − 1) / (n − 1)</span><b class="num">(${n2(cmp.position, cmp.position % 1 ? 1 : 0)} − 1) / (${cmp.n} − 1) = ${n2(raw, 3)}</b></div>
-      ${cmp.higher_is_better ? `<div><span>higher is better - keep</span><b class="num">${n2(cmp.rank, 3)}</b></div>` : `<div><span>lower is better - flip: 1 − rank</span><b class="num">1 − ${n2(raw, 3)} = ${n2(cmp.rank, 3)}</b></div>`}
-      <div class="res"><span>points for ${esc(cur.name)}</span><b class="num">${n2(cmp.rank * 100, 1)}</b></div>
+      ${cmp.higher_is_better ? `<div><span>higher is better</span><b class="num">${n2(cmp.rank, 3)}</b></div>` : `<div><span>lower is better → flip</span><b class="num">1 − ${n2(raw, 3)} = ${n2(cmp.rank, 3)}</b></div>`}
+      <div class="res"><span>points</span><b class="num">${n2(cmp.rank * 100, 1)}</b></div>
     </div>` : `<p class="muted">No value for this indicator - it is left out, not counted as zero.</p>`}`;
 
   const pillarBlock = `<div class="calc">${t.pillars.filter(p => p.terms.length).map(p => {
       const have = p.terms.filter(x => x.points != null);
       const sumW = have.reduce((a, x) => a + x.weight, 0);
       return `<div class="calc-p"><span><span class="sw" style="background:${col(p.category)}"></span>${catName(p.category)}
-          ${have.length < p.terms.length ? `<em class="muted small"> · ${p.terms.length - have.length} without data left out (${Math.round(p.weight_share * 100)}% of the weight present)</em>` : ""}</span>
+          ${have.length < p.terms.length ? `<em class="muted small"> · ${p.terms.length - have.length} without data, left out</em>` : ""}</span>
         <b class="num">${have.length ? `(${have.map(x => `${x.weight}×${n2(x.points, 1)}`).join(" + ")}) / ${sumW} = ` : ""}${p.score == null ? "no score" : n2(p.score, 1)}</b></div>`;
     }).join("")}</div>`;
 
@@ -103,45 +103,44 @@ function renderMethod() {
 
   const held = fund.status === "held";
   const fundBlock = !held ? `<div class="calc"><div class="res"><span>${esc(fund.reason)}</span><b class="num">0%</b></div></div>` : `<div class="calc">
-      <div><span>start: equal weight, ${fund.companies} companies</span><b class="num">1 / ${fund.companies} = ${pct(fund.benchmark, 3)}</b></div>
-      <div><span>drop excluded sub-industries, ${fund.held_companies} companies left</span><b class="num">${pct(fund.eligible, 3)}</b></div>
-      ${s.method === "tilt" ? `<div><span>how far above or below average: z = (score − mean) / std</span><b class="num">(${n2(fund.total_score, 1)} − ${n2(fund.mean, 1)}) / ${n2(fund.std, 1)} = ${signed(fund.z, 2)}</b></div>
-      <div><span>tilt: × e<sup>strength × z</sup>, then all weights rescaled to 100%</span><b class="num">× e<sup>${s.tilt_strength} × ${signed(fund.z, 2)}</sup> = × ${n2(fund.tilt_factor, 3)} → ${pct(fund.tilted, 3)}</b></div>` : `<div><span>exclude the worst ${pct(s.exclude_bottom_pct, 0)}</span><b class="num">${pct(fund.tilted, 3)}</b></div>`}
-      ${s.sector_neutral ? `<div><span>${esc(fund.sector)} keeps its ${pct(fund.sector_eligible, 2)} of the fund</span><b class="num">× ${pct(fund.sector_eligible, 2)} / ${pct(fund.sector_tilted, 2)} = ${pct(fund.sector_neutral, 3)}</b></div>` : ""}
-      <div><span>cap at ${pct(s.max_weight, 0)} per company</span><b class="num">${fund.capped >= s.max_weight - 1e-9 ? "capped" : "not reached"} → ${pct(fund.capped, 3)}</b></div>
-      <div class="res"><span>in a $1 billion fund${fund.holding !== c.ticker ? ` (held as ${esc(fund.holding)}, the voting share class)` : ""}</span><b class="num">${usd(fund.weight * fund.fund_usd)}</b></div>
+      <div><span>equal weight</span><b class="num">1 / ${fund.companies} = ${pct(fund.benchmark, 3)}</b></div>
+      <div><span>minus fossil fuels & tobacco (${fund.held_companies} left)</span><b class="num">${pct(fund.eligible, 3)}</b></div>
+      ${s.method === "tilt" ? `<div><span>distance from average, z</span><b class="num">(${n2(fund.total_score, 1)} − ${n2(fund.mean, 1)}) / ${n2(fund.std, 1)} = ${signed(fund.z, 2)}</b></div>
+      <div><span>tilt</span><b class="num">× e<sup>${s.tilt_strength} × ${signed(fund.z, 2)}</sup> = × ${n2(fund.tilt_factor, 3)} → ${pct(fund.tilted, 3)}</b></div>` : `<div><span>exclude the worst ${pct(s.exclude_bottom_pct, 0)}</span><b class="num">${pct(fund.tilted, 3)}</b></div>`}
+      ${s.sector_neutral ? `<div><span>${esc(fund.sector)} keeps its size</span><b class="num">× ${pct(fund.sector_eligible, 2)} / ${pct(fund.sector_tilted, 2)} = ${pct(fund.sector_neutral, 3)}</b></div>` : ""}
+      <div><span>cap ${pct(s.max_weight, 0)}</span><b class="num">${fund.capped >= s.max_weight - 1e-9 ? "capped" : "not reached"} → ${pct(fund.capped, 3)}</b></div>
+      <div class="res"><span>of $1 billion${fund.holding !== c.ticker ? ` (as ${esc(fund.holding)})` : ""}</span><b class="num">${usd(fund.weight * fund.fund_usd)}</b></div>
     </div>`;
 
-  const catalog = CATS.slice().reverse().map(([id, name]) => `<tr class="grp"><th colspan="4"><span class="sw" style="background:${col(id)}"></span>${PILLARS[id].name} · ${esc(PILLARS[id].q)}</th></tr>` +
-    state.meta.indicators.filter(m => m.category === id).map(m => `<tr><td><b>${esc(m.name)}</b><div class="sub">${esc(m.description)}</div></td>
-      <td class="small">${m.higher_is_better ? "higher is better" : "lower is better"}<div class="sub">${esc(m.source)}</div></td>
-      <td class="r num small">${m.companies} / ${state.meta.companies}<div class="sub">${m.year_min ?? "–"}–${m.year_max ?? "–"}</div></td>
+  const catalog = HOME_ORDER.map(([id, name]) => `<tr class="grp"><th colspan="4"><span class="sw" style="background:${col(id)}"></span>${name} <span class="muted">· ${esc(PILLARS[id].q)}</span></th></tr>` +
+    state.meta.indicators.filter(m => m.category === id).map(m => `<tr><td title="${esc(m.description)}"><b>${esc(short(m.id))}</b><div class="sub">${esc(m.name)}</div></td>
+      <td class="small">${m.higher_is_better ? "↑ better" : "↓ better"}</td>
+      <td class="r num small">${Math.round(m.companies / state.meta.companies * 100)}%</td>
       <td class="small muted">${esc(WEAK[m.id] || "–")}</td></tr>`).join("")).join("");
 
   $("#view-method").innerHTML = `
     <div class="head"><p class="eyebrow">Method</p>
-      <h2>From a public document to a dollar amount, step by step.</h2>
-      <p class="lead">The same arithmetic runs for all ${state.meta.companies} companies. Here it is for one of them, with your weights (${esc(weightsText())}). No model, no estimate: <code>common/score.py</code> and <code>portfolio/allocate.py</code>.</p></div>
+      <h2>From a public document to dollars, step by step.</h2>
+      <p class="lead">One company, real numbers, your weights. No model, no estimates.</p></div>
     <div class="filters"><select id="m-company" aria-label="Company">${opts}</select></div>
 
     <ol class="msteps">
-      ${step(1, "Collect", `${inds.length} indicators for ${esc(c.name)}, each rebuilt by a script from a public source. A missing value stays missing.`, sourceTable)}
-      ${step(2, "Rank within the sector", `Each value is compared only with other ${esc(c.sector)} companies${t.profile.sector_relative ? "" : " (here: the whole index)"}, from ${t.profile.min_year} on. Pick an indicator:`, rankBlock)}
-      ${step(3, "Combine into pillar scores", `Weighted mean of the points. An indicator without data is left out, not counted as zero; a pillar needs data for at least ${Math.round(t.profile.min_weight_share * 100)}% of its weight.`, pillarBlock)}
-      ${step(4, "Combine into the total", `Weighted mean of the pillars, with the weights you chose on the start page.`, totalBlock)}
-      ${step(5, "Turn the score into a fund weight", `Every company stays investable except the excluded sub-industries; better scores get more money, each sector keeps its size.`, fundBlock)}
-      ${step(6, "Test it", `Would these scores have predicted anything, and do they survive other weights? Computed live on the Evidence tab.`, `<div class="chips"><button type="button" data-go="evidence/A">A · Caught later →</button><button type="button" data-go="evidence/B">B · Robust to weights →</button><button type="button" data-go="netzero">Net zero stress →</button></div>`)}
+      ${step(1, "Collect", "", sourceTable)}
+      ${step(2, "Rank within the sector", "", rankBlock)}
+      ${step(3, "Pillar scores", "Weighted mean of the points", pillarBlock)}
+      ${step(4, "Total", "Weighted mean of the pillars", totalBlock)}
+      ${step(5, "Fund weight", "", fundBlock)}
+      ${step(6, "Test it", "", `<div class="chips"><button type="button" data-go="evidence/A">Caught later →</button><button type="button" data-go="evidence/B">Robust to weights →</button><button type="button" data-go="netzero">Carbon price →</button></div>`)}
     </ol>
 
-    <div class="row-h"><h3 class="h3">The ${state.meta.indicators.length} indicators</h3></div>
-    <div class="table-wrap"><table class="mini wide catalog"><thead><tr><th>Indicator</th><th>Direction · source</th><th class="r">Coverage</th><th>Weak spot</th></tr></thead><tbody>${catalog}</tbody></table></div>
-
-    <section class="limits"><h3 class="h3">What we do not claim</h3><ul>
-      <li>US data sources: foreign plants, foreign lawsuits and non-US pay practices are mostly invisible.</li>
-      <li>Targets are not emissions, and disclosure is not behaviour - we keep both kinds of indicator and label them.</li>
-      <li>No model or AI produces a score. Anyone can rerun the code and get the same numbers.</li>
-      <li>A sustainability-tilted index fund, not an impact fund: buying shares on the market does not fund new projects.</li>
-    </ul></section>`;
+    <details class="how"><summary>All ${state.meta.indicators.length} indicators · coverage · weak spots</summary>
+      <div class="table-wrap"><table class="mini wide catalog"><thead><tr><th>Indicator</th><th>Direction</th><th class="r">Coverage</th><th>Weak spot</th></tr></thead><tbody>${catalog}</tbody></table></div></details>
+    <details class="how"><summary>What we do not claim</summary><ul>
+      <li>US sources only: foreign plants, lawsuits and pay are mostly invisible.</li>
+      <li>Targets are not emissions; disclosure is not behaviour.</li>
+      <li>No AI produces a score - rerun the code, get the same numbers.</li>
+      <li>A sustainability-tilted index fund, not an impact fund.</li>
+    </ul></details>`;
 
   $("#m-company").onchange = e => { TRACE.ticker = e.target.value; TRACE.data = null; renderMethod(); };
   $$("#view-method .chips button[data-ind]").forEach(b => b.onclick = () => { TRACE.ind = b.dataset.ind; renderMethod(); });

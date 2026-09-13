@@ -160,6 +160,9 @@ def _profile_from_payload(payload: dict):
     weights = payload.get("category_weights")
     if weights:
         base = replace(base, category_weights={c: float(weights.get(c, 0)) for c in CATEGORIES})
+    indicators = payload.get("indicator_weights")  # {indicator_id: weight}; 0 switches one off
+    if indicators:
+        base = replace(base, indicator_weights={**base.indicator_weights, **{k: float(v) for k, v in indicators.items()}})
     return base
 
 
@@ -271,7 +274,7 @@ def api_audit(payload: dict) -> dict:
     """checks/_audit.py: filing quotes, regulator record and recent news for one company."""
     from checks._audit import audit
 
-    return clean(audit(str(payload["ticker"]), with_news=payload.get("news", True)))
+    return clean(audit(str(payload["ticker"]), with_news=payload.get("news", True), only_news=bool(payload.get("only_news"))))
 
 
 EVIDENCE = {"caught_later": "checks.caught_later", "weight_robustness": "checks.weight_robustness"}
@@ -287,7 +290,7 @@ def api_evidence(payload: dict) -> dict:
         raise KeyError(f"unknown evidence check {cid!r}")
     mod = importlib.import_module(EVIDENCE[cid])
     profile = _profile_from_payload(payload)
-    key = "evidence:" + cid + ":" + json.dumps({"p": payload.get("profile"), "w": profile.category_weights}, sort_keys=True)
+    key = "evidence:" + cid + ":" + json.dumps({"p": payload.get("profile"), "w": profile.category_weights, "i": profile.indicator_weights}, sort_keys=True)
     started = time.perf_counter()
     result = cached(key, lambda: {**mod.run(profile=profile, data=load_dataset()), "seconds": round(time.perf_counter() - started, 2)})
     return clean({"id": cid, "title": mod.TITLE, "exhibit": mod.EXHIBIT, "live": True, **result})

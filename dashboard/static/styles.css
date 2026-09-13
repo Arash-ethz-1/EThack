@@ -291,3 +291,43 @@ table.compare { min-width: 640px; margin-bottom: 44px; }
   .seg { flex-wrap: wrap; }
   .controls { gap: 14px 18px; }
 }
+
+/* ---------- less text, more shape (2026-09-13 pass) ---------- */
+.home-def span { display: block; color: var(--ink); margin-top: 6px; font-weight: 500; }
+.pick-t { display: flex; align-items: baseline; gap: 0; }
+.pick-n { margin-left: 10px; color: var(--muted); font-size: 13px; }
+.pick-i { grid-column: 1 / -1; display: flex; flex-wrap: wrap; gap: 6px; margin-top: -2px; }
+.pick-i button { background: none; border: 1px solid var(--rule-2); border-radius: 999px; padding: 4px 11px; font-size: 13px; color: var(--muted); text-decoration: line-through; text-decoration-color: var(--faint); }
+.pick-i button[aria-pressed="true"] { color: var(--ink); border-color: var(--ink-2); text-decoration: none; }
+.pick-i button:hover { border-color: var(--ink); }
+.pick.zero .pick-t b { color: var(--muted); }
+.steps .s-r { font-size: 17px; letter-spacing: -.01em; }
+.h3 .lg { font-weight: 400; font-size: 13px; margin-left: 4px; }
+.h3 .key { margin-left: 14px; }
+.h3 .key + .lg { margin-left: 0; color: var(--muted); }
+.chart .big { fill: var(--ink); font-size: 22px; font-weight: 600; letter-spacing: -.02em; }
+.chart .arrow { fill: var(--faint); font-size: 30px; }
+.claim { display: flex; align-items: baseline; gap: 20px; flex-wrap: wrap; margin: 0 0 28px; }
+.claim .v { font-size: clamp(56px, 7vw, 88px); line-height: 1; font-weight: 600; letter-spacing: -.045em; }
+.claim p { margin: 0; font-size: clamp(17px, 1.7vw, 21px); line-height: 1.35; color: var(--ink-2); max-width: 36ch; letter-spacing: -.01em; }
+details.how { border-top: 1px solid var(--rule); margin: 0 0 32px; }
+.fig details.how { margin: 16px 0 0; }
+details.how summary { cursor: pointer; padding: 12px 0; font-size: 13.5px; color: var(--muted); list-style: none; }
+details.how summary::before { content: "+"; display: inline-block; width: 18px; color: var(--ink); }
+details.how[open] summary::before { content: "–"; }
+details.how summary:hover { color: var(--ink); }
+details.how p, details.how ul { margin: 0 0 16px; color: var(--ink-2); font-size: 14px; max-width: 80ch; }
+details.how ul { padding-left: 18px; }
+mark { background: color-mix(in srgb, var(--env) 18%, transparent); color: inherit; padding: 0 2px; border-radius: 2px; }
+.cols3 section:nth-child(2) mark { background: color-mix(in srgb, var(--soc) 20%, transparent); }
+.cols3 section:nth-child(3) mark { background: color-mix(in srgb, var(--ink) 10%, transparent); }
+.quote p { font-size: 15px; line-height: 1.5; }
+.news-s { border-top: 1px solid var(--ink); margin-top: 36px; padding-top: 20px; }
+.news-s .ghost { display: inline-block; margin-top: 12px; text-decoration: none; }
+.bar-c { width: 34%; }
+.hbar { display: block; height: 6px; background: var(--rule); position: relative; }
+.hbar i { position: absolute; inset: 0 auto 0 0; }
+.exhibit .figures { margin-top: 8px; }
+.run h2 { margin-bottom: 4px; }
+.exhibit .aud-head { display: block; }
+.exhibit .aud-head .scores { margin: 20px 0 0; }

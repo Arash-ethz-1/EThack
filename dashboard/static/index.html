@@ -13,14 +13,13 @@
   <div class="home-in">
     <p class="eyebrow">S&amp;P 500 · public records only</p>
     <h1 id="home-title">How sustainable is<br>the S&amp;P 500?</h1>
-    <p class="home-def">A sustainable company can keep running for decades without wearing down the planet,
-      its people, or its own economic base. You decide how much each of those counts.</p>
+    <p class="home-def">Sustainable = can run for decades without wearing down the planet, its people or its own economic base.
+      <span>You choose what counts.</span></p>
 
     <div class="choose" id="choose" aria-label="Weights"></div>
 
     <div class="home-go">
       <button type="button" class="primary" id="go">Compute <span aria-hidden="true">→</span></button>
-      <p class="home-foot" id="home-foot"></p>
     </div>
   </div>
 </section>
@@ -29,7 +28,7 @@
 <section id="run" class="run" hidden aria-live="polite">
   <div class="run-in">
     <p class="eyebrow" id="run-weights"></p>
-    <h2>Computing</h2>
+    <h2>Computing…</h2>
     <ol class="steps" id="steps"></ol>
     <button type="button" class="primary" id="see" hidden>See the results <span aria-hidden="true">→</span></button>
   </div>
@@ -55,8 +54,7 @@
     <section id="view-ranking">
       <div class="head">
         <p class="eyebrow">Ranking</p>
-        <h2>Every company, compared only with its own sector.</h2>
-        <p class="lead" id="summary"></p>
+        <h2>Every company, ranked within its sector.</h2>
       </div>
       <div class="figures" id="overview"></div>
       <div class="filters">
@@ -65,7 +63,7 @@
       </div>
       <div class="table-wrap">
         <table class="rank">
-          <thead><tr><th class="r">#</th><th>Company</th><th>Sector</th><th>Indicators</th><th class="r">Econ.</th><th class="r">Social</th><th class="r">Env.</th><th class="r">Total</th></tr></thead>
+          <thead><tr><th class="r">#</th><th>Company</th><th>Sector</th><th>Indicators</th><th class="r">Planet</th><th class="r">People</th><th class="r">Econ.</th><th class="r">Total</th></tr></thead>
           <tbody id="rows"></tbody>
         </table>
       </div>

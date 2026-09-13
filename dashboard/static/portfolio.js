@@ -32,7 +32,7 @@ function kpi(label, fund, bench, note, good) {
 }
 
 function barsScores(scores) {
-  const rows = [["total_score", "Total"], ...CATS.map(([id, n]) => [`${id}_score`, n])];
+  const rows = [["total_score", "Total"], ...HOME_ORDER.map(([id, n]) => [`${id}_score`, n])];
   const W = 560, L = 110, R = 50, rowH = 44, H = rows.length * rowH + 24, x = v => L + (W - L - R) * v / 100;
   let g = "";
   [0, 25, 50, 75, 100].forEach(v => g += `<line class="grid" x1="${x(v)}" x2="${x(v)}" y1="0" y2="${H - 20}"/><text x="${x(v)}" y="${H - 6}" text-anchor="middle">${v}</text>`);
@@ -87,13 +87,12 @@ function holdingsTable() {
   const q = PF.q.toLowerCase();
   let rows = PF.data.holdings;
   if (q) rows = rows.filter(r => r.ticker.toLowerCase().includes(q) || (r.name || "").toLowerCase().includes(q));
-  const bodyRows = rows.slice(0, PF.limit).map(r => `<tr class="${r.status !== "held" ? "out" : ""}">
+  const bodyRows = rows.slice(0, PF.limit).map(r => `<tr class="${r.status !== "held" ? "out" : ""}" title="${esc(r.reason)}">
     <td class="co"><b>${esc(r.name || r.ticker)}</b><span class="tk">${r.ticker}</span></td>
     <td class="muted">${esc(r.sector || "")}</td><td class="r num">${f1(r.total_score)}</td>
     <td class="r num">${pct(r.benchmark_weight, 2)}</td><td class="r num"><b>${pct(r.weight, 2)}</b></td>
-    <td class="r num">${usd(r.weight * 1e9)}</td>
-    <td class="reason">${esc(r.reason)}</td></tr>`).join("");
-  return `<div class="table-wrap"><table class="rank holdings"><thead><tr><th>Company</th><th>Sector</th><th class="r">Score</th><th class="r">Index</th><th class="r">Fund</th><th class="r">of $1bn</th><th>Why</th></tr></thead>
+    <td class="r num">${usd(r.weight * 1e9)}</td></tr>`).join("");
+  return `<div class="table-wrap"><table class="rank holdings"><thead><tr><th>Company</th><th>Sector</th><th class="r">Score</th><th class="r">Index</th><th class="r">Fund</th><th class="r">of $1bn</th></tr></thead>
     <tbody>${bodyRows}</tbody></table></div>${rows.length > PF.limit ? `<button type="button" class="ghost more" id="pf-more">Show all ${rows.length}</button>` : ""}`;
 }
 
@@ -107,10 +106,9 @@ function renderPortfolio() {
   const r = d.risk;
 
   $("#view-portfolio").innerHTML = `
-    <div class="head"><p class="eyebrow">Fund · ${esc(weightsText())}</p>
-      <h2>A sustainability-tilted S&amp;P 500 fund.</h2>
-      <p class="lead">Every company stays investable except the excluded sub-industries. Better-scoring companies get more weight, worse ones less;
-      each sector keeps its size; no company above ${pct(s.max_weight, 0)}. Compared with the ${bench}.</p></div>
+    <div class="head"><p class="eyebrow">Fund</p>
+      <h2>The S&amp;P 500, tilted toward better companies.</h2>
+      <p class="lead">Same sectors · max ${pct(s.max_weight, 0)} per company · vs the ${bench}</p></div>
 
     <div class="controls">
       <div><span class="label">Method</span>${seg("method", [["tilt", "Tilt"], ["exclude", "Exclude worst"]], s.method)}</div>
@@ -123,27 +121,24 @@ function renderPortfolio() {
     </div>
 
     ${PF.error ? `<p class="note" role="status">${esc(PF.error)}</p>` : ""}
-    ${s.benchmark === "cap" && d.market && d.market.available ? `<p class="note" role="status">Market caps at ${esc(d.market.month)} month-end for ${d.market.with_cap} of ${d.market.companies} companies (SEC share counts × closing price). The ${d.market.companies - d.market.with_cap} without one are not in the benchmark and not held - nothing is estimated.</p>` : ""}
+    ${s.benchmark === "cap" && d.market && d.market.available ? `<p class="note" role="status">Market caps for ${d.market.with_cap} of ${d.market.companies} companies (${esc(d.market.month)}) - the rest are left out, nothing estimated.</p>` : ""}
     <div class="kpis">
-      ${kpi("Sustainability score", f1(t.portfolio), f1(t.benchmark), isNum(t.portfolio) && isNum(t.benchmark) ? `${signed(t.portfolio - t.benchmark)} points` : "", t.portfolio > t.benchmark)}
-      ${kpi("Carbon intensity", c.waci_tco2e_per_musd.portfolio == null ? "–" : c.waci_tco2e_per_musd.portfolio.toFixed(0), c.waci_tco2e_per_musd.benchmark == null ? "–" : c.waci_tco2e_per_musd.benchmark.toFixed(0) + " tCO₂e/$M", waciCut == null ? "" : `${waciCut >= 0 ? "−" : "+"}${Math.abs(waciCut * 100).toFixed(0)}%`, waciCut > 0)}
-      ${kpi("Science-based target", pct(c.sbti_target_share.portfolio, 0), pct(c.sbti_target_share.benchmark, 0), "of the money", c.sbti_target_share.portfolio > c.sbti_target_share.benchmark)}
-      ${kpi("Holdings", sm.holdings, sm.companies, `${sm.excluded_policy} excluded by sub-industry${sm.excluded_score ? `, ${sm.excluded_score} by score` : ""}`, false)}
-      ${r ? kpi("Tracking error", pct(r.tracking_error), "0%", `${r.months} months · correlation ${r.correlation.toFixed(2)}`, false)
-          : kpi("Active share", pct(sm.active_share, 0), "0%", "how different from the index", false)}
+      ${kpi("Score", f1(t.portfolio), f1(t.benchmark), isNum(t.portfolio) && isNum(t.benchmark) ? `${signed(t.portfolio - t.benchmark)} points` : "", t.portfolio > t.benchmark)}
+      ${kpi("Carbon intensity", c.waci_tco2e_per_musd.portfolio == null ? "–" : c.waci_tco2e_per_musd.portfolio.toFixed(0), c.waci_tco2e_per_musd.benchmark == null ? "–" : c.waci_tco2e_per_musd.benchmark.toFixed(0), waciCut == null ? "" : `${waciCut >= 0 ? "−" : "+"}${Math.abs(waciCut * 100).toFixed(0)}% · tCO₂e per $M`, waciCut > 0)}
+      ${kpi("Climate target", pct(c.sbti_target_share.portfolio, 0), pct(c.sbti_target_share.benchmark, 0), "of the money", c.sbti_target_share.portfolio > c.sbti_target_share.benchmark)}
+      ${kpi("Holdings", sm.holdings, sm.companies, `${sm.excluded_policy} excluded`, false)}
+      ${r ? kpi("Tracking error", pct(r.tracking_error), "0%", "moves like the index", false)
+          : kpi("Active share", pct(sm.active_share, 0), "0%", "", false)}
     </div>
 
     <div class="grid2">
-      <figure class="fig"><h3 class="h3">Scores, weighted by the fund</h3>${barsScores(sm.scores)}
-        <figcaption><span class="key fund"></span>Fund <span class="key bench"></span>Index · 0–100, ranked within sector</figcaption></figure>
-      <figure class="fig"><h3 class="h3">Sector weights</h3>${barsSectors(d.sectors)}
-        <figcaption><span class="key fund"></span>Fund <span class="key bench"></span>Index${s.sector_neutral ? " · sector-neutral: differences come only from exclusions" : ""}</figcaption></figure>
+      <figure class="fig"><h3 class="h3">Scores <span class="key fund"></span><span class="lg">Fund</span><span class="key bench"></span><span class="lg">Index</span></h3>${barsScores(sm.scores)}</figure>
+      <figure class="fig"><h3 class="h3">Sectors</h3>${barsSectors(d.sectors)}</figure>
     </div>
 
-    ${r ? `<figure class="fig"><h3 class="h3">Hypothetical: today's fund over the last ${r.months} months</h3>${lineGrowth(r)}
-      <figcaption>Fund ${pct(r.fund.annual_return)} a year (volatility ${pct(r.fund.volatility)}) · index ${pct(r.benchmark.annual_return)} (${pct(r.benchmark.volatility)}) ·
-      tracking error ${pct(r.tracking_error)}. ${esc(r.caveat)}. ${pct(r.covered_weight, 0)} of the fund has a full price history.</figcaption></figure>`
-      : `<p class="muted">Risk and return need price data: <code>python portfolio/marketdata.py</code></p>`}
+    ${r ? `<figure class="fig"><h3 class="h3">$1 over the last ${r.months} months <span class="muted lg">hypothetical · today's weights, not a backtest</span></h3>${lineGrowth(r)}
+      <figcaption>Fund ${pct(r.fund.annual_return)}/yr · index ${pct(r.benchmark.annual_return)}/yr</figcaption></figure>`
+      : ""}
 
     <div class="grid2">
       ${moverTable(sm.overweights, "Largest overweights")}

@@ -3,8 +3,11 @@
 Not a check with a verdict (leading underscore: `run.py verify` skips it) - the dashboard's
 "Audit a company" exhibit calls `audit(ticker)`:
 
-1. In its own words: the exact sentences from the company's SEC filings that our indicators
-   extracted (the `note` quotes of ceo_pay_ratio, median_worker_pay, employment_growth ...).
+1. In its own words: the most concrete sentences of the company's latest 10-K about the planet
+   (emissions, climate, EPA), its people (safety, injuries, unions, discrimination) and legal
+   trouble (lawsuits, penalties, settlements) - picked by keyword and by containing a number or a
+   date, hedged boilerplate ("may", "could") pushed down. From the 10-Ks already cached in
+   economic/raw/ (downloaded by the headcount scripts). Exact sentences, never rewritten.
 2. On the regulator's record: its federal EPA civil enforcement cases (EPA ECHO) and its
    large US facilities' greenhouse gas emissions (EPA GHGRP), with links.
 3. In the news: recent headlines about the company from the GDELT 2.0 DOC API
@@ -16,6 +19,9 @@ Not a check with a verdict (leading underscore: `run.py verify` skips it) - the 
 
 from __future__ import annotations
 
+from pathlib import Path
+
+import glob
 import re
 import time
 import urllib.parse
@@ -46,7 +52,65 @@ def whole_words(text: str) -> str:
         text = text.split(" ", 1)[1]
     if text and text[-1] not in '.!?)"' and " " in text:
         text = text.rsplit(" ", 1)[0]
-    return "…" + text + "…"
+    return "…" + text.replace("�", "").strip() + "…"
+
+
+THEMES = {
+    "planet": r"greenhouse gas|\bGHG\b|emissions|climate|carbon|Environmental Protection Agency|\bEPA\b|pollut|hazardous (?:waste|substances)|renewable|spill|contaminat",
+    "people": r"\bsafety\b|injur|\bOSHA\b|fatalit|collective bargaining|labor unions?|unionized|work stoppage|\bstrikes?\b|discriminat|harass|turnover",
+    "legal": r"lawsuit|class action|litigation|consent decree|civil penalt|settlement agreement|agreed to pay|\bfined\b|violations? of|alleg",
+}
+CONCRETE = re.compile(r"\$\s?\d|\d[\d,.]*\s?(?:%|percent|metric tons|tons|tonnes|million|billion)|\b(?:19|20)\d\d\b")
+HEDGE = re.compile(r"\b(?:may|could|might|cannot assure|no assurance|forward-looking|risk factors?)\b", re.I)
+NOT_THEME = re.compile(r"tax benefit|derivative|stock awards|shares? (?:were|are) reserved|European Union", re.I)
+ABBREV_END = re.compile(r"(?:\b[A-Z]|U\.S|No|Inc|Corp|Co|Mr|Ms|Dr|Jr|St|vs)\.$")
+
+
+def _sentences(text: str) -> list[str]:
+    parts, out = re.split(r"(?<=[.!?])\s+(?=[A-Z(])", text), []
+    for part in parts:
+        if out and ABBREV_END.search(out[-1]):
+            out[-1] += " " + part
+        else:
+            out.append(part)
+    return out
+
+
+def latest_10k(cik10: str) -> Path | None:
+    files = sorted(glob.glob(str(ROOT / "economic" / "raw" / f"10k_{cik10}_*.htm")))
+    return Path(files[-1]) if files else None
+
+
+def filing_passages(cik10: str, per_theme: int = 2) -> dict:
+    """The company's own most concrete 10-K sentences per theme, with the filing link."""
+    from social.scripts.ceo_pay_ratio import to_text
+
+    path = latest_10k(cik10)
+    if path is None:
+        return {"url": None, "passages": []}
+    accn = path.stem.split("_")[2]
+    url = f"https://www.sec.gov/Archives/edgar/data/{int(cik10)}/{accn}/"
+    text = to_text(path.read_text(encoding="utf-8", errors="ignore")).replace("�", " ")
+    sentences = [re.sub(r"\s+", " ", x).strip() for x in _sentences(text)]
+    out = []
+    for theme, pattern in THEMES.items():
+        rx = re.compile(pattern, re.I)
+        scored = []
+        for sent in sentences:
+            if not 80 <= len(sent) <= 360 or not rx.search(sent) or NOT_THEME.search(sent):
+                continue
+            score = 2 * bool(CONCRETE.search(sent)) + len(rx.findall(sent)) - 2 * len(HEDGE.findall(sent))
+            if score >= 2:
+                scored.append((score, sent))
+        seen = set()
+        for score, sent in sorted(scored, key=lambda x: -x[0]):
+            if sent[:60] in seen:
+                continue
+            seen.add(sent[:60])
+            out.append({"theme": theme, "text": sent, "keywords": sorted({m.group(0) for m in rx.finditer(sent)}, key=len, reverse=True)})
+            if sum(1 for o in out if o["theme"] == theme) >= per_theme:
+                break
+    return {"url": url, "filed": accn, "passages": out}
 
 
 def filing_quotes(ticker: str) -> list[dict]:
@@ -116,15 +180,18 @@ def news(name: str, ticker: str) -> dict:
     return {"query": query, "search_url": human, "articles": arts}
 
 
-def audit(ticker: str, with_news: bool = True) -> dict:
+def audit(ticker: str, with_news: bool = True, only_news: bool = False) -> dict:
     universe = pd.read_csv(UNIVERSE_CSV, dtype=str, keep_default_na=False).set_index("ticker")
     if ticker not in universe.index:
         raise KeyError(ticker)
     row = universe.loc[ticker]
     cik = row["cik"].zfill(10)
+    if only_news:  # the dashboard asks for news separately, so a slow news service never blocks the rest
+        return {"ticker": ticker, "news": news(row["name"], ticker)}
     return {
         "ticker": ticker, "name": row["name"], "sector": row["sector"], "sub_industry": row.get("sub_industry", ""),
         "filings": filing_quotes(ticker),
+        "tenk": filing_passages(cik),
         "regulators": regulator_record(ticker, cik),
         "news": news(row["name"], ticker) if with_news else None,
     }
