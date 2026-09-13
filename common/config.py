@@ -37,6 +37,10 @@ STATUSES = ("idea", "in_progress", "ready")
 # this share of the category's total weight. See docs/SCORING.md.
 MIN_WEIGHT_SHARE = 0.5
 
+# Only values describing this year or later count in a score - an older latest value is a
+# gap, not a score (decision 2026-09-13, docs/PLAN.md). A profile can override `min_year`.
+MIN_YEAR = 2022
+
 # git refuses files over 100 MB; we stop well before that.
 MAX_FILE_MB = 20
 

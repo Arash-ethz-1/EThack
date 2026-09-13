@@ -108,3 +108,29 @@ def test_shipped_profiles_load():
     assert "balanced" in list_profiles()
     for name in list_profiles():
         load_profile(name)
+
+
+def test_values_before_min_year_are_gaps_not_scores():
+    data = tiny_dataset()
+    data.years.loc["A", "eco1"] = 2019
+    result = score_profile(data, Profile("p", min_year=2022))
+    assert pd.isna(result.ranks.loc["A", "eco1"])
+    assert pd.notna(score_profile(data, Profile("p", min_year=2010)).ranks.loc["A", "eco1"])
+
+
+def test_share_classes_are_ranked_once():
+    data = tiny_dataset()
+    twin = data.universe.iloc[[0]].assign(ticker="A2")
+    data.universe = pd.concat([data.universe.assign(cik=[str(i) for i in range(len(data.universe))]),
+                               twin.assign(cik="0")], ignore_index=True)
+    data.values.loc["A2"] = data.values.loc["A"]
+    data.years.loc["A2"] = data.years.loc["A"]
+    alone = score_profile(tiny_dataset(), Profile("p")).ranks
+    result = score_profile(data, Profile("p"))
+    assert result.ranks.loc["A2"].equals(result.ranks.loc["A"])
+    pd.testing.assert_frame_equal(result.ranks.drop(index="A2"), alone, check_like=True)
+
+
+def test_profile_toml_writes_lists():
+    p = Profile("x", portfolio={"exclude_sub_industries": ["Tobacco", "Integrated Oil & Gas"]})
+    assert profile_from_dict(tomllib.loads(profile_to_toml(p)), "x") == p

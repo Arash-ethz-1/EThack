@@ -26,6 +26,7 @@ from common.config import (
     CATEGORIES,
     DEFAULT_PROFILE,
     MIN_WEIGHT_SHARE,
+    MIN_YEAR,
     PROFILES_DIR,
     ROOT,
     SCORES_DIR,
@@ -42,7 +43,7 @@ NO_SECTOR = "(no sector)"
 class Dataset:
     """Everything the scoring needs, in memory."""
 
-    universe: pd.DataFrame  # ticker, name, sector - one row per company
+    universe: pd.DataFrame  # ticker, name, sector (+ cik when known) - one row per ticker
     catalog: pd.DataFrame  # ready indicators of all categories, with a `category` column
     values: pd.DataFrame  # wide: index ticker, one column per indicator, latest value
     years: pd.DataFrame  # same shape: the year each value describes
@@ -75,7 +76,8 @@ def load_dataset() -> Dataset:
     values_df, years_df = pd.DataFrame(values), pd.DataFrame(years)
 
     if UNIVERSE_CSV.exists():
-        universe = pd.read_csv(UNIVERSE_CSV, dtype=str, keep_default_na=False)[["ticker", "name", "sector"]]
+        universe = pd.read_csv(UNIVERSE_CSV, dtype=str, keep_default_na=False)
+        universe = universe[[c for c in ["ticker", "name", "sector", "cik"] if c in universe.columns]]
         values_df = values_df.reindex(universe["ticker"])
         years_df = years_df.reindex(universe["ticker"])
     else:  # no universe yet: every ticker that appears in some indicator
@@ -129,7 +131,8 @@ class Profile:
     indicator_weights: dict[str, float] = field(default_factory=dict)
     min_weight_share: float = MIN_WEIGHT_SHARE
     sector_relative: bool = False
-    portfolio: dict = field(default_factory=dict)  # phase 3, not used yet
+    portfolio: dict = field(default_factory=dict)  # phase 3: portfolio/allocate.py
+    min_year: int = MIN_YEAR  # values describing an earlier year are gaps, not scores
 
     def weights(self, catalog: pd.DataFrame) -> pd.Series:
         """indicator_id -> weight for every chosen indicator (weight > 0)."""
@@ -164,6 +167,7 @@ def profile_from_dict(data: dict, name: str) -> Profile:
         min_weight_share=share,
         sector_relative=bool(data.get("sector_relative", False)),
         portfolio=dict(data.get("portfolio", {})),
+        min_year=int(data.get("min_year", MIN_YEAR)),
     )
 
 
@@ -193,6 +197,8 @@ def profile_to_toml(profile: Profile) -> str:
             return "true" if v else "false"
         if isinstance(v, (int, float)):
             return f"{v:g}"
+        if isinstance(v, (list, tuple)):
+            return "[" + ", ".join(value(x) for x in v) + "]"
         return '"' + str(v).replace("\\", "\\\\").replace('"', '\\"') + '"'
 
     lines = [
@@ -200,6 +206,7 @@ def profile_to_toml(profile: Profile) -> str:
         f"description = {value(profile.description)}",
         f"min_weight_share = {value(profile.min_weight_share)}",
         f"sector_relative = {value(profile.sector_relative)}",
+        f"min_year = {value(profile.min_year)}",
         "",
         "[categories]",
         *(f"{k} = {value(v)}" for k, v in profile.category_weights.items()),
@@ -250,11 +257,27 @@ class Result:
     category_weights: pd.Series  # category -> weight, only categories that have chosen indicators
 
 
+def primary_tickers(universe: pd.DataFrame) -> pd.Series:
+    """ticker -> the ticker that represents its company. Share classes of one company (same
+    SEC CIK: GOOG/GOOGL, FOX/FOXA, NWS/NWSA) are ranked once, so a company does not count
+    twice in everyone else's percentile. Without a cik column every ticker is its own company."""
+    tickers = universe["ticker"]
+    if "cik" not in universe.columns:
+        return pd.Series(tickers.values, index=tickers.values)
+    cik = universe["cik"].where(universe["cik"].astype(str).str.strip() != "", tickers)
+    first = dict(zip(cik[~cik.duplicated()], tickers[~cik.duplicated()]))
+    return pd.Series([first[c] for c in cik], index=tickers.values)
+
+
 def score_profile(data: Dataset, profile: Profile) -> Result:
     weights = profile.weights(data.catalog)
     chosen = data.catalog[data.catalog["indicator_id"].isin(weights.index)]
     sectors = data.universe.set_index("ticker")["sector"] if profile.sector_relative else None
-    ranks = rank_table(data.values, chosen, sectors)
+    values = data.values.where(data.years.reindex_like(data.values) >= profile.min_year)
+    primary = primary_tickers(data.universe)
+    unique = values.loc[values.index.isin(set(primary))]
+    ranks = rank_table(unique, chosen, sectors)
+    ranks = ranks.reindex(primary.reindex(values.index).values).set_axis(values.index)
 
     table = data.universe.set_index("ticker")[["name", "sector"]].copy()
     category_scores = {}

@@ -16,16 +16,19 @@ profiles/<name>.toml ──3 profile: which indicators, which weights ───�
                         5 portfolio: python run.py portfolio (portfolio/README.md)
 ```
 
-1. **Load** `ready` indicators only. Each company uses its most recent year.
+1. **Load** `ready` indicators only. Each company uses its most recent year - and only if
+   that year is `min_year` (default 2022) or later; an older value is a gap, not a score.
 2. **Percentile rank across the S&P 500 universe** -> 0 (worst) to 1 (best).
    If `higher_is_better = false` the rank is flipped. Ties share the average rank.
    With `sector_relative = true` a company is ranked only against its own GICS sector.
+   Share classes of one company (same SEC CIK: GOOG/GOOGL, FOX/FOXA, NWS/NWSA) are ranked
+   once and share the result, so no company counts twice in everyone else's percentile.
 3. **Profile** - the user of the tool decides what counts:
    - `[categories]` weight per category (0 = ignore the category)
    - `[indicators]` weight per indicator, overriding the catalog `weight`; `0` switches
      it off; indicators not listed keep their catalog weight (so new indicators join
      automatically). Unknown ids are ignored with a warning.
-   - `min_weight_share`, `sector_relative`, `[portfolio]` (phase 3)
+   - `min_weight_share`, `sector_relative`, `min_year`, `[portfolio]` (phase 3)
 4. **Category score** = weighted mean of the chosen indicator ranks x 100.
    **Total score** = weighted mean of the category scores with the category weights.
    A category with no chosen indicators drops out and the others are re-weighted.

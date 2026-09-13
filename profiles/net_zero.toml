@@ -1,8 +1,8 @@
 # Bonus question: the world commits to net zero as fast as possible.
 name = "Net Zero"
-description = "Environmental impact counts three times as much, emissions intensity is the key indicator."
+description = "Environmental counts three times as much; within it, actual emissions and a science-based climate target count three times as much as the other indicators."
 min_weight_share = 0.5
-sector_relative = false
+sector_relative = true
 
 [categories]
 economic = 1
@@ -10,7 +10,9 @@ social = 1
 environmental = 3
 
 [indicators]
+# the net-zero question: what a company emits today and whether it has a validated plan to stop
 ghg_intensity = 3
+sbti_climate_target = 3
 
 [portfolio]
 method = "tilt"

@@ -2,7 +2,7 @@
 name = "Balanced"
 description = "All ready indicators with their catalog weights, the three categories count equally."
 min_weight_share = 0.5
-sector_relative = false
+sector_relative = true
 
 [categories]
 economic = 1
