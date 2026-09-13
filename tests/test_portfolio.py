@@ -100,3 +100,48 @@ def test_summary_shows_portfolio_beats_benchmark_score():
     assert s["holdings"] == 4
     assert s["scores"]["total_score"]["portfolio"] > s["scores"]["total_score"]["benchmark"]
     assert 0 < s["active_share"] < 1
+
+
+def universe_for(rows):
+    return pd.DataFrame(rows, columns=["ticker", "name", "sector", "cik", "sub_industry"])
+
+
+def test_share_classes_are_one_holding_with_the_voting_class():
+    scores = table([("GOOG", "Tech", 80.0), ("GOOGL", "Tech", 80.0), ("B", "Tech", 20.0)])
+    uni = universe_for([("GOOG", "Alphabet C", "Tech", "1", "Media"), ("GOOGL", "Alphabet A", "Tech", "1", "Media"),
+                        ("B", "B", "Tech", "2", "Software")])
+    out = allocate(scores, profile(max_weight=1.0), uni).set_index("ticker")
+    assert list(out.index.sort_values()) == ["B", "GOOGL"]
+    assert out["benchmark_weight"].to_dict() == pytest.approx({"GOOGL": 0.5, "B": 0.5})  # counted once, not 2/3
+    assert "also GOOG" in out.at["GOOGL", "reason"]
+
+
+def test_excluding_a_whole_sector_does_not_readmit_it_through_sector_neutrality():
+    scores = table([("X1", "Energy", 99.0), ("X2", "Energy", 98.0), ("T1", "Tech", 10.0), ("T2", "Tech", 20.0)])
+    uni = universe_for([("X1", "", "Energy", "1", "Integrated Oil & Gas"), ("X2", "", "Energy", "2", "Integrated Oil & Gas"),
+                        ("T1", "", "Tech", "3", "Software"), ("T2", "", "Tech", "4", "Software")])
+    out = allocate(scores, profile(max_weight=1.0, exclude_sub_industries=["Integrated Oil & Gas"]), uni).set_index("ticker")
+    assert out.loc[["X1", "X2"], "weight"].sum() == 0
+    assert out["weight"].sum() == pytest.approx(1.0)
+    assert (out.loc[["X1", "X2"], "status"] == "excluded_policy").all()
+    with pytest.raises(ValueError):  # a typo in the exclusion list is an error
+        allocate(scores, profile(exclude_sub_industries=["Integrated Oil and Gas"]), uni)
+
+
+def test_cap_keeps_sector_totals_when_the_sector_can_hold_them():
+    w = pd.Series({"A": 0.40, "B": 0.10, "C": 0.30, "D": 0.20})
+    sectors = pd.Series({"A": "S1", "B": "S1", "C": "S2", "D": "S2"})
+    out = apply_cap(w, 0.3, sectors)
+    assert out.max() <= 0.3 + 1e-9
+    assert out.sum() == pytest.approx(1.0)
+    assert out[["A", "B"]].sum() == pytest.approx(0.5)
+    assert out[["C", "D"]].sum() == pytest.approx(0.5)
+
+
+def test_cap_weighted_benchmark_follows_market_caps_by_cik():
+    scores = table([("A", "Tech", 50.0), ("B", "Tech", 50.0), ("C", "Other", 50.0)])
+    uni = universe_for([("A", "", "Tech", "1", "S"), ("B", "", "Tech", "2", "S"), ("C", "", "Other", "3", "T")])
+    caps = pd.Series({"1": 300.0, "2": 100.0, "3": float("nan")})
+    out = allocate(scores, profile(benchmark="cap", max_weight=1.0), uni, caps).set_index("ticker")
+    assert out["benchmark_weight"].to_dict() == pytest.approx({"A": 0.75, "B": 0.25, "C": 0.0})
+    assert out.at["C", "status"] == "no_market_cap" and out.at["C", "weight"] == 0

@@ -17,3 +17,15 @@ sbti_climate_target = 3
 [portfolio]
 method = "tilt"
 max_weight = 0.05
+# Policy exclusions (decision 2026-09-13, docs/PLAN.md): GICS sub-industries the fund does
+# not hold at all, whatever their score - a classification, not a revenue test. Coal &
+# Consumable Fuels has no S&P 500 member today. Aerospace & Defense is NOT excluded: it
+# bundles Boeing/GE with weapons makers, and we have no controversial-weapons list.
+exclude_sub_industries = [
+  "Tobacco",
+  "Integrated Oil & Gas",
+  "Oil & Gas Exploration & Production",
+  "Oil & Gas Refining & Marketing",
+  "Oil & Gas Equipment & Services",
+  "Oil & Gas Storage & Transportation",
+]
