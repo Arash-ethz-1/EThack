@@ -420,3 +420,6 @@ html:has(#home:not([hidden])) { scroll-snap-type: y proximity; }
 .steps { margin: 22px 0; }
 .steps li { padding: 14px 0; }
 .home h1 { max-width: 1100px; font-size: clamp(52px, 7.6vw, 112px); }
+.scroll-cue { width: auto; height: auto; margin-left: 0; transform: translateX(-50%); border: 0; border-radius: 0; font-size: 30px; line-height: 1; color: var(--muted); text-decoration: none; animation: bob 2s ease-in-out infinite; }
+.scroll-cue:hover { color: var(--ink); }
+@keyframes bob { 0%, 100% { translate: 0 0; } 50% { translate: 0 8px; } }
