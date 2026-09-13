@@ -1,8 +1,8 @@
 {
   "status": "flagged",
-  "verdict": "2469 value(s) flagged as implausible or statistical outliers. Each gets read, not deleted.",
+  "verdict": "2850 value(s) flagged as implausible or statistical outliers. Each gets read, not deleted.",
   "numbers": {
-    "count": 2469
+    "count": 2850
   },
   "rows": [
     {
@@ -6231,26 +6231,3602 @@
     },
     {
       "ticker": "A",
-      "year": 2017,
-      "indicator_id": "labor_litigation_intensity",
-      "value": 0.0,
-      "detail": "year-over-year change -0.476 is outside this indicator's typical range [-0.2846, 0.2947] - from 0.476 (2016) to 0 (2017)",
-      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+      "year": 2025,
+      "indicator_id": "federal_contract_exposure",
+      "value": 0.0059,
+      "detail": "beyond the 3x IQR fence [-0.003, 0.004] for 2025",
+      "url": "https://api.usaspending.gov/api/v2/search/spending_over_time/"
+    },
+    {
+      "ticker": "ACN",
+      "year": 2025,
+      "indicator_id": "federal_contract_exposure",
+      "value": 0.0395,
+      "detail": "beyond the 3x IQR fence [-0.003, 0.004] for 2025",
+      "url": "https://api.usaspending.gov/api/v2/search/spending_over_time/"
+    },
+    {
+      "ticker": "AES",
+      "year": 2025,
+      "indicator_id": "federal_contract_exposure",
+      "value": 0.011,
+      "detail": "beyond the 3x IQR fence [-0.003, 0.004] for 2025",
+      "url": "https://api.usaspending.gov/api/v2/search/spending_over_time/"
+    },
+    {
+      "ticker": "APTV",
+      "year": 2025,
+      "indicator_id": "federal_contract_exposure",
+      "value": 0.0047,
+      "detail": "beyond the 3x IQR fence [-0.003, 0.004] for 2025",
+      "url": "https://api.usaspending.gov/api/v2/search/spending_over_time/"
+    },
+    {
+      "ticker": "AWK",
+      "year": 2025,
+      "indicator_id": "federal_contract_exposure",
+      "value": 0.0436,
+      "detail": "beyond the 3x IQR fence [-0.003, 0.004] for 2025",
+      "url": "https://api.usaspending.gov/api/v2/search/spending_over_time/"
+    },
+    {
+      "ticker": "AXON",
+      "year": 2025,
+      "indicator_id": "federal_contract_exposure",
+      "value": 0.0216,
+      "detail": "beyond the 3x IQR fence [-0.003, 0.004] for 2025",
+      "url": "https://api.usaspending.gov/api/v2/search/spending_over_time/"
+    },
+    {
+      "ticker": "BA",
+      "year": 2025,
+      "indicator_id": "federal_contract_exposure",
+      "value": 0.1889,
+      "detail": "beyond the 3x IQR fence [-0.003, 0.004] for 2025",
+      "url": "https://api.usaspending.gov/api/v2/search/spending_over_time/"
+    },
+    {
+      "ticker": "BALL",
+      "year": 2025,
+      "indicator_id": "federal_contract_exposure",
+      "value": 0.3854,
+      "detail": "beyond the 3x IQR fence [-0.003, 0.004] for 2025",
+      "url": "https://api.usaspending.gov/api/v2/search/spending_over_time/"
+    },
+    {
+      "ticker": "CAT",
+      "year": 2025,
+      "indicator_id": "federal_contract_exposure",
+      "value": 0.0056,
+      "detail": "beyond the 3x IQR fence [-0.003, 0.004] for 2025",
+      "url": "https://api.usaspending.gov/api/v2/search/spending_over_time/"
+    },
+    {
+      "ticker": "CDW",
+      "year": 2025,
+      "indicator_id": "federal_contract_exposure",
+      "value": 0.0131,
+      "detail": "beyond the 3x IQR fence [-0.003, 0.004] for 2025",
+      "url": "https://api.usaspending.gov/api/v2/search/spending_over_time/"
+    },
+    {
+      "ticker": "CHTR",
+      "year": 2025,
+      "indicator_id": "federal_contract_exposure",
+      "value": 0.0074,
+      "detail": "beyond the 3x IQR fence [-0.003, 0.004] for 2025",
+      "url": "https://api.usaspending.gov/api/v2/search/spending_over_time/"
+    },
+    {
+      "ticker": "CME",
+      "year": 2025,
+      "indicator_id": "federal_contract_exposure",
+      "value": 0.0425,
+      "detail": "beyond the 3x IQR fence [-0.003, 0.004] for 2025",
+      "url": "https://api.usaspending.gov/api/v2/search/spending_over_time/"
+    },
+    {
+      "ticker": "CMI",
+      "year": 2025,
+      "indicator_id": "federal_contract_exposure",
+      "value": 0.0089,
+      "detail": "beyond the 3x IQR fence [-0.003, 0.004] for 2025",
+      "url": "https://api.usaspending.gov/api/v2/search/spending_over_time/"
+    },
+    {
+      "ticker": "CRL",
+      "year": 2025,
+      "indicator_id": "federal_contract_exposure",
+      "value": 0.0162,
+      "detail": "beyond the 3x IQR fence [-0.003, 0.004] for 2025",
+      "url": "https://api.usaspending.gov/api/v2/search/spending_over_time/"
+    },
+    {
+      "ticker": "D",
+      "year": 2025,
+      "indicator_id": "federal_contract_exposure",
+      "value": 0.0097,
+      "detail": "beyond the 3x IQR fence [-0.003, 0.004] for 2025",
+      "url": "https://api.usaspending.gov/api/v2/search/spending_over_time/"
+    },
+    {
+      "ticker": "DGX",
+      "year": 2025,
+      "indicator_id": "federal_contract_exposure",
+      "value": 0.0062,
+      "detail": "beyond the 3x IQR fence [-0.003, 0.004] for 2025",
+      "url": "https://api.usaspending.gov/api/v2/search/spending_over_time/"
+    },
+    {
+      "ticker": "DHR",
+      "year": 2025,
+      "indicator_id": "federal_contract_exposure",
+      "value": 0.01,
+      "detail": "beyond the 3x IQR fence [-0.003, 0.004] for 2025",
+      "url": "https://api.usaspending.gov/api/v2/search/spending_over_time/"
+    },
+    {
+      "ticker": "DVA",
+      "year": 2025,
+      "indicator_id": "federal_contract_exposure",
+      "value": 0.0424,
+      "detail": "beyond the 3x IQR fence [-0.003, 0.004] for 2025",
+      "url": "https://api.usaspending.gov/api/v2/search/spending_over_time/"
+    },
+    {
+      "ticker": "EFX",
+      "year": 2025,
+      "indicator_id": "federal_contract_exposure",
+      "value": 0.0121,
+      "detail": "beyond the 3x IQR fence [-0.003, 0.004] for 2025",
+      "url": "https://api.usaspending.gov/api/v2/search/spending_over_time/"
+    },
+    {
+      "ticker": "EME",
+      "year": 2025,
+      "indicator_id": "federal_contract_exposure",
+      "value": 0.0059,
+      "detail": "beyond the 3x IQR fence [-0.003, 0.004] for 2025",
+      "url": "https://api.usaspending.gov/api/v2/search/spending_over_time/"
+    },
+    {
+      "ticker": "ETN",
+      "year": 2025,
+      "indicator_id": "federal_contract_exposure",
+      "value": 0.0054,
+      "detail": "beyond the 3x IQR fence [-0.003, 0.004] for 2025",
+      "url": "https://api.usaspending.gov/api/v2/search/spending_over_time/"
+    },
+    {
+      "ticker": "EW",
+      "year": 2025,
+      "indicator_id": "federal_contract_exposure",
+      "value": 0.0045,
+      "detail": "beyond the 3x IQR fence [-0.003, 0.004] for 2025",
+      "url": "https://api.usaspending.gov/api/v2/search/spending_over_time/"
+    },
+    {
+      "ticker": "FDX",
+      "year": 2025,
+      "indicator_id": "federal_contract_exposure",
+      "value": 0.0072,
+      "detail": "beyond the 3x IQR fence [-0.003, 0.004] for 2025",
+      "url": "https://api.usaspending.gov/api/v2/search/spending_over_time/"
+    },
+    {
+      "ticker": "FFIV",
+      "year": 2025,
+      "indicator_id": "federal_contract_exposure",
+      "value": 0.1113,
+      "detail": "beyond the 3x IQR fence [-0.003, 0.004] for 2025",
+      "url": "https://api.usaspending.gov/api/v2/search/spending_over_time/"
+    },
+    {
+      "ticker": "FOX",
+      "year": 2025,
+      "indicator_id": "federal_contract_exposure",
+      "value": 0.0217,
+      "detail": "beyond the 3x IQR fence [-0.003, 0.004] for 2025",
+      "url": "https://api.usaspending.gov/api/v2/search/spending_over_time/"
+    },
+    {
+      "ticker": "FOXA",
+      "year": 2025,
+      "indicator_id": "federal_contract_exposure",
+      "value": 0.0217,
+      "detail": "beyond the 3x IQR fence [-0.003, 0.004] for 2025",
+      "url": "https://api.usaspending.gov/api/v2/search/spending_over_time/"
+    },
+    {
+      "ticker": "GE",
+      "year": 2025,
+      "indicator_id": "federal_contract_exposure",
+      "value": 0.0418,
+      "detail": "beyond the 3x IQR fence [-0.003, 0.004] for 2025",
+      "url": "https://api.usaspending.gov/api/v2/search/spending_over_time/"
+    },
+    {
+      "ticker": "GWW",
+      "year": 2025,
+      "indicator_id": "federal_contract_exposure",
+      "value": 0.019,
+      "detail": "beyond the 3x IQR fence [-0.003, 0.004] for 2025",
+      "url": "https://api.usaspending.gov/api/v2/search/spending_over_time/"
+    },
+    {
+      "ticker": "HII",
+      "year": 2025,
+      "indicator_id": "federal_contract_exposure",
+      "value": 0.7434,
+      "detail": "beyond the 3x IQR fence [-0.003, 0.004] for 2025",
+      "url": "https://api.usaspending.gov/api/v2/search/spending_over_time/"
+    },
+    {
+      "ticker": "HON",
+      "year": 2025,
+      "indicator_id": "federal_contract_exposure",
+      "value": 0.0238,
+      "detail": "beyond the 3x IQR fence [-0.003, 0.004] for 2025",
+      "url": "https://api.usaspending.gov/api/v2/search/spending_over_time/"
+    },
+    {
+      "ticker": "HPQ",
+      "year": 2025,
+      "indicator_id": "federal_contract_exposure",
+      "value": 0.0827,
+      "detail": "beyond the 3x IQR fence [-0.003, 0.004] for 2025",
+      "url": "https://api.usaspending.gov/api/v2/search/spending_over_time/"
+    },
+    {
+      "ticker": "HRL",
+      "year": 2025,
+      "indicator_id": "federal_contract_exposure",
+      "value": 0.0042,
+      "detail": "beyond the 3x IQR fence [-0.003, 0.004] for 2025",
+      "url": "https://api.usaspending.gov/api/v2/search/spending_over_time/"
+    },
+    {
+      "ticker": "IBM",
+      "year": 2025,
+      "indicator_id": "federal_contract_exposure",
+      "value": 0.0157,
+      "detail": "beyond the 3x IQR fence [-0.003, 0.004] for 2025",
+      "url": "https://api.usaspending.gov/api/v2/search/spending_over_time/"
+    },
+    {
+      "ticker": "INTC",
+      "year": 2025,
+      "indicator_id": "federal_contract_exposure",
+      "value": 0.0104,
+      "detail": "beyond the 3x IQR fence [-0.003, 0.004] for 2025",
+      "url": "https://api.usaspending.gov/api/v2/search/spending_over_time/"
+    },
+    {
+      "ticker": "INTU",
+      "year": 2025,
+      "indicator_id": "federal_contract_exposure",
+      "value": 0.0304,
+      "detail": "beyond the 3x IQR fence [-0.003, 0.004] for 2025",
+      "url": "https://api.usaspending.gov/api/v2/search/spending_over_time/"
+    },
+    {
+      "ticker": "IRM",
+      "year": 2025,
+      "indicator_id": "federal_contract_exposure",
+      "value": 0.0097,
+      "detail": "beyond the 3x IQR fence [-0.003, 0.004] for 2025",
+      "url": "https://api.usaspending.gov/api/v2/search/spending_over_time/"
+    },
+    {
+      "ticker": "IT",
+      "year": 2025,
+      "indicator_id": "federal_contract_exposure",
+      "value": 0.0077,
+      "detail": "beyond the 3x IQR fence [-0.003, 0.004] for 2025",
+      "url": "https://api.usaspending.gov/api/v2/search/spending_over_time/"
+    },
+    {
+      "ticker": "J",
+      "year": 2025,
+      "indicator_id": "federal_contract_exposure",
+      "value": 0.0341,
+      "detail": "beyond the 3x IQR fence [-0.003, 0.004] for 2025",
+      "url": "https://api.usaspending.gov/api/v2/search/spending_over_time/"
+    },
+    {
+      "ticker": "KKR",
+      "year": 2025,
+      "indicator_id": "federal_contract_exposure",
+      "value": 0.0045,
+      "detail": "beyond the 3x IQR fence [-0.003, 0.004] for 2025",
+      "url": "https://api.usaspending.gov/api/v2/search/spending_over_time/"
+    },
+    {
+      "ticker": "KLAC",
+      "year": 2025,
+      "indicator_id": "federal_contract_exposure",
+      "value": 0.0274,
+      "detail": "beyond the 3x IQR fence [-0.003, 0.004] for 2025",
+      "url": "https://api.usaspending.gov/api/v2/search/spending_over_time/"
+    },
+    {
+      "ticker": "LDOS",
+      "year": 2025,
+      "indicator_id": "federal_contract_exposure",
+      "value": 0.5031,
+      "detail": "beyond the 3x IQR fence [-0.003, 0.004] for 2025",
+      "url": "https://api.usaspending.gov/api/v2/search/spending_over_time/"
+    },
+    {
+      "ticker": "LHX",
+      "year": 2025,
+      "indicator_id": "federal_contract_exposure",
+      "value": 0.2355,
+      "detail": "beyond the 3x IQR fence [-0.003, 0.004] for 2025",
+      "url": "https://api.usaspending.gov/api/v2/search/spending_over_time/"
+    },
+    {
+      "ticker": "LMT",
+      "year": 2025,
+      "indicator_id": "federal_contract_exposure",
+      "value": 0.7785,
+      "detail": "beyond the 3x IQR fence [-0.003, 0.004] for 2025",
+      "url": "https://api.usaspending.gov/api/v2/search/spending_over_time/"
+    },
+    {
+      "ticker": "MCK",
+      "year": 2025,
+      "indicator_id": "federal_contract_exposure",
+      "value": 0.0231,
+      "detail": "beyond the 3x IQR fence [-0.003, 0.004] for 2025",
+      "url": "https://api.usaspending.gov/api/v2/search/spending_over_time/"
+    },
+    {
+      "ticker": "MPC",
+      "year": 2025,
+      "indicator_id": "federal_contract_exposure",
+      "value": 0.0045,
+      "detail": "beyond the 3x IQR fence [-0.003, 0.004] for 2025",
+      "url": "https://api.usaspending.gov/api/v2/search/spending_over_time/"
+    },
+    {
+      "ticker": "MSI",
+      "year": 2025,
+      "indicator_id": "federal_contract_exposure",
+      "value": 0.0174,
+      "detail": "beyond the 3x IQR fence [-0.003, 0.004] for 2025",
+      "url": "https://api.usaspending.gov/api/v2/search/spending_over_time/"
+    },
+    {
+      "ticker": "NOC",
+      "year": 2025,
+      "indicator_id": "federal_contract_exposure",
+      "value": 0.2504,
+      "detail": "beyond the 3x IQR fence [-0.003, 0.004] for 2025",
+      "url": "https://api.usaspending.gov/api/v2/search/spending_over_time/"
+    },
+    {
+      "ticker": "ORCL",
+      "year": 2025,
+      "indicator_id": "federal_contract_exposure",
+      "value": 0.0173,
+      "detail": "beyond the 3x IQR fence [-0.003, 0.004] for 2025",
+      "url": "https://api.usaspending.gov/api/v2/search/spending_over_time/"
+    },
+    {
+      "ticker": "PH",
+      "year": 2025,
+      "indicator_id": "federal_contract_exposure",
+      "value": 0.016,
+      "detail": "beyond the 3x IQR fence [-0.003, 0.004] for 2025",
+      "url": "https://api.usaspending.gov/api/v2/search/spending_over_time/"
+    },
+    {
+      "ticker": "PLTR",
+      "year": 2025,
+      "indicator_id": "federal_contract_exposure",
+      "value": 0.2022,
+      "detail": "beyond the 3x IQR fence [-0.003, 0.004] for 2025",
+      "url": "https://api.usaspending.gov/api/v2/search/spending_over_time/"
+    },
+    {
+      "ticker": "PSX",
+      "year": 2025,
+      "indicator_id": "federal_contract_exposure",
+      "value": 0.0053,
+      "detail": "beyond the 3x IQR fence [-0.003, 0.004] for 2025",
+      "url": "https://api.usaspending.gov/api/v2/search/spending_over_time/"
+    },
+    {
+      "ticker": "PTC",
+      "year": 2025,
+      "indicator_id": "federal_contract_exposure",
+      "value": 0.0122,
+      "detail": "beyond the 3x IQR fence [-0.003, 0.004] for 2025",
+      "url": "https://api.usaspending.gov/api/v2/search/spending_over_time/"
+    },
+    {
+      "ticker": "RTX",
+      "year": 2025,
+      "indicator_id": "federal_contract_exposure",
+      "value": 0.0719,
+      "detail": "beyond the 3x IQR fence [-0.003, 0.004] for 2025",
+      "url": "https://api.usaspending.gov/api/v2/search/spending_over_time/"
+    },
+    {
+      "ticker": "SO",
+      "year": 2025,
+      "indicator_id": "federal_contract_exposure",
+      "value": 0.0143,
+      "detail": "beyond the 3x IQR fence [-0.003, 0.004] for 2025",
+      "url": "https://api.usaspending.gov/api/v2/search/spending_over_time/"
+    },
+    {
+      "ticker": "STE",
+      "year": 2025,
+      "indicator_id": "federal_contract_exposure",
+      "value": 0.0068,
+      "detail": "beyond the 3x IQR fence [-0.003, 0.004] for 2025",
+      "url": "https://api.usaspending.gov/api/v2/search/spending_over_time/"
+    },
+    {
+      "ticker": "SYK",
+      "year": 2025,
+      "indicator_id": "federal_contract_exposure",
+      "value": 0.0048,
+      "detail": "beyond the 3x IQR fence [-0.003, 0.004] for 2025",
+      "url": "https://api.usaspending.gov/api/v2/search/spending_over_time/"
+    },
+    {
+      "ticker": "T",
+      "year": 2025,
+      "indicator_id": "federal_contract_exposure",
+      "value": 0.0117,
+      "detail": "beyond the 3x IQR fence [-0.003, 0.004] for 2025",
+      "url": "https://api.usaspending.gov/api/v2/search/spending_over_time/"
+    },
+    {
+      "ticker": "TDG",
+      "year": 2025,
+      "indicator_id": "federal_contract_exposure",
+      "value": 0.0598,
+      "detail": "beyond the 3x IQR fence [-0.003, 0.004] for 2025",
+      "url": "https://api.usaspending.gov/api/v2/search/spending_over_time/"
+    },
+    {
+      "ticker": "TDY",
+      "year": 2025,
+      "indicator_id": "federal_contract_exposure",
+      "value": 0.0487,
+      "detail": "beyond the 3x IQR fence [-0.003, 0.004] for 2025",
+      "url": "https://api.usaspending.gov/api/v2/search/spending_over_time/"
+    },
+    {
+      "ticker": "TER",
+      "year": 2025,
+      "indicator_id": "federal_contract_exposure",
+      "value": 0.0189,
+      "detail": "beyond the 3x IQR fence [-0.003, 0.004] for 2025",
+      "url": "https://api.usaspending.gov/api/v2/search/spending_over_time/"
+    },
+    {
+      "ticker": "TKO",
+      "year": 2025,
+      "indicator_id": "federal_contract_exposure",
+      "value": 0.008,
+      "detail": "beyond the 3x IQR fence [-0.003, 0.004] for 2025",
+      "url": "https://api.usaspending.gov/api/v2/search/spending_over_time/"
+    },
+    {
+      "ticker": "TSN",
+      "year": 2025,
+      "indicator_id": "federal_contract_exposure",
+      "value": 0.0042,
+      "detail": "beyond the 3x IQR fence [-0.003, 0.004] for 2025",
+      "url": "https://api.usaspending.gov/api/v2/search/spending_over_time/"
+    },
+    {
+      "ticker": "TXT",
+      "year": 2025,
+      "indicator_id": "federal_contract_exposure",
+      "value": 0.1836,
+      "detail": "beyond the 3x IQR fence [-0.003, 0.004] for 2025",
+      "url": "https://api.usaspending.gov/api/v2/search/spending_over_time/"
+    },
+    {
+      "ticker": "TYL",
+      "year": 2025,
+      "indicator_id": "federal_contract_exposure",
+      "value": 0.0069,
+      "detail": "beyond the 3x IQR fence [-0.003, 0.004] for 2025",
+      "url": "https://api.usaspending.gov/api/v2/search/spending_over_time/"
+    },
+    {
+      "ticker": "UNH",
+      "year": 2025,
+      "indicator_id": "federal_contract_exposure",
+      "value": 0.0507,
+      "detail": "beyond the 3x IQR fence [-0.003, 0.004] for 2025",
+      "url": "https://api.usaspending.gov/api/v2/search/spending_over_time/"
+    },
+    {
+      "ticker": "WAT",
+      "year": 2025,
+      "indicator_id": "federal_contract_exposure",
+      "value": 0.0085,
+      "detail": "beyond the 3x IQR fence [-0.003, 0.004] for 2025",
+      "url": "https://api.usaspending.gov/api/v2/search/spending_over_time/"
     },
     {
       "ticker": "ABT",
       "year": 2019,
       "indicator_id": "labor_litigation_intensity",
       "value": 0.094,
-      "detail": "year-over-year change -0.3965 is outside this indicator's typical range [-0.2846, 0.2947] - from 0.4905 (2018) to 0.094 (2019)",
+      "detail": "year-over-year change -0.462 is outside this indicator's typical range [-0.4457, 0.4105] - from 0.556 (2018) to 0.094 (2019)",
       "url": "https://www.courtlistener.com/api/rest/v4/search/"
     },
     {
-      "ticker": "MMM",
+      "ticker": "ADSK",
+      "year": 2019,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 0.6108,
+      "detail": "year-over-year change +0.6108 is outside this indicator's typical range [-0.4457, 0.4105] - from 0 (2018) to 0.6108 (2019)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "AJG",
+      "year": 2018,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 0.1442,
+      "detail": "year-over-year change -0.4959 is outside this indicator's typical range [-0.4457, 0.4105] - from 0.6401 (2017) to 0.1442 (2018)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "AJG",
+      "year": 2019,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 0.5559,
+      "detail": "year-over-year change +0.4117 is outside this indicator's typical range [-0.4457, 0.4105] - from 0.1442 (2018) to 0.5559 (2019)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "AKAM",
+      "year": 2023,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 0.5247,
+      "detail": "year-over-year change +0.5247 is outside this indicator's typical range [-0.4457, 0.4105] - from 0 (2022) to 0.5247 (2023)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "AKAM",
       "year": 2024,
       "indicator_id": "labor_litigation_intensity",
       "value": 0.0,
-      "detail": "year-over-year change -0.4876 is outside this indicator's typical range [-0.2846, 0.2947] - from 0.4876 (2023) to 0 (2024)",
+      "detail": "year-over-year change -0.5247 is outside this indicator's typical range [-0.4457, 0.4105] - from 0.5247 (2023) to 0 (2024)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "ALB",
+      "year": 2017,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 0.651,
+      "detail": "year-over-year change +0.651 is outside this indicator's typical range [-0.4457, 0.4105] - from 0 (2016) to 0.651 (2017)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "ALB",
+      "year": 2018,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 0.0,
+      "detail": "year-over-year change -0.651 is outside this indicator's typical range [-0.4457, 0.4105] - from 0.651 (2017) to 0 (2018)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "ALGN",
+      "year": 2018,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 0.5085,
+      "detail": "year-over-year change +0.5085 is outside this indicator's typical range [-0.4457, 0.4105] - from 0 (2017) to 0.5085 (2018)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "ALLE",
+      "year": 2019,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 1.0512,
+      "detail": "year-over-year change +0.6851 is outside this indicator's typical range [-0.4457, 0.4105] - from 0.3661 (2018) to 1.051 (2019)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "ALLE",
+      "year": 2020,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 0.0,
+      "detail": "year-over-year change -1.051 is outside this indicator's typical range [-0.4457, 0.4105] - from 1.051 (2019) to 0 (2020)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "AXON",
+      "year": 2023,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 0.6407,
+      "detail": "year-over-year change +0.6407 is outside this indicator's typical range [-0.4457, 0.4105] - from 0 (2022) to 0.6407 (2023)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "AXON",
+      "year": 2024,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 0.0,
+      "detail": "year-over-year change -0.6407 is outside this indicator's typical range [-0.4457, 0.4105] - from 0.6407 (2023) to 0 (2024)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "BKR",
+      "year": 2017,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 0.3493,
+      "detail": "year-over-year change -0.568 is outside this indicator's typical range [-0.4457, 0.4105] - from 0.9173 (2016) to 0.3493 (2017)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "BMY",
+      "year": 2020,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 0.0235,
+      "detail": "year-over-year change -0.512 is outside this indicator's typical range [-0.4457, 0.4105] - from 0.5355 (2019) to 0.0235 (2020)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "BNY",
+      "year": 2018,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 0.305,
+      "detail": "year-over-year change -0.5314 is outside this indicator's typical range [-0.4457, 0.4105] - from 0.8364 (2017) to 0.305 (2018)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "BRO",
+      "year": 2017,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 1.5946,
+      "detail": "year-over-year change +0.4625 is outside this indicator's typical range [-0.4457, 0.4105] - from 1.132 (2016) to 1.595 (2017)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "BRO",
+      "year": 2018,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 0.4965,
+      "detail": "year-over-year change -1.098 is outside this indicator's typical range [-0.4457, 0.4105] - from 1.595 (2017) to 0.4965 (2018)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "BRO",
+      "year": 2019,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 0.0,
+      "detail": "year-over-year change -0.4965 is outside this indicator's typical range [-0.4457, 0.4105] - from 0.4965 (2018) to 0 (2019)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "BRO",
+      "year": 2020,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 0.7653,
+      "detail": "year-over-year change +0.7653 is outside this indicator's typical range [-0.4457, 0.4105] - from 0 (2019) to 0.7653 (2020)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "BRO",
+      "year": 2022,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 1.1195,
+      "detail": "year-over-year change +0.7918 is outside this indicator's typical range [-0.4457, 0.4105] - from 0.3277 (2021) to 1.119 (2022)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "BRO",
+      "year": 2023,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 0.0,
+      "detail": "year-over-year change -1.119 is outside this indicator's typical range [-0.4457, 0.4105] - from 1.119 (2022) to 0 (2023)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "CASY",
+      "year": 2018,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 0.8553,
+      "detail": "year-over-year change +0.617 is outside this indicator's typical range [-0.4457, 0.4105] - from 0.2383 (2017) to 0.8553 (2018)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "CASY",
+      "year": 2019,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 0.109,
+      "detail": "year-over-year change -0.7463 is outside this indicator's typical range [-0.4457, 0.4105] - from 0.8553 (2018) to 0.109 (2019)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "CCI",
+      "year": 2017,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 1.9194,
+      "detail": "year-over-year change -0.9876 is outside this indicator's typical range [-0.4457, 0.4105] - from 2.907 (2016) to 1.919 (2017)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "CCI",
+      "year": 2018,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 3.4843,
+      "detail": "year-over-year change +1.565 is outside this indicator's typical range [-0.4457, 0.4105] - from 1.919 (2017) to 3.484 (2018)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "CCI",
+      "year": 2019,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 0.1735,
+      "detail": "year-over-year change -3.311 is outside this indicator's typical range [-0.4457, 0.4105] - from 3.484 (2018) to 0.1735 (2019)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "CCL",
+      "year": 2022,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 0.0,
+      "detail": "year-over-year change -0.5241 is outside this indicator's typical range [-0.4457, 0.4105] - from 0.5241 (2021) to 0 (2022)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "CF",
+      "year": 2019,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 0.0,
+      "detail": "year-over-year change -0.4516 is outside this indicator's typical range [-0.4457, 0.4105] - from 0.4516 (2018) to 0 (2019)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "CF",
+      "year": 2020,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 0.485,
+      "detail": "year-over-year change +0.485 is outside this indicator's typical range [-0.4457, 0.4105] - from 0 (2019) to 0.485 (2020)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "CFG",
+      "year": 2018,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 3.5746,
+      "detail": "year-over-year change +3.399 is outside this indicator's typical range [-0.4457, 0.4105] - from 0.1752 (2017) to 3.575 (2018)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "CFG",
+      "year": 2019,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 0.0,
+      "detail": "year-over-year change -3.575 is outside this indicator's typical range [-0.4457, 0.4105] - from 3.575 (2018) to 0 (2019)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "CHD",
+      "year": 2024,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 0.4912,
+      "detail": "year-over-year change +0.4912 is outside this indicator's typical range [-0.4457, 0.4105] - from 0 (2023) to 0.4912 (2024)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "CHD",
+      "year": 2025,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 0.0,
+      "detail": "year-over-year change -0.4912 is outside this indicator's typical range [-0.4457, 0.4105] - from 0.4912 (2024) to 0 (2025)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "CHTR",
+      "year": 2017,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 0.7215,
+      "detail": "year-over-year change +0.4457 is outside this indicator's typical range [-0.4457, 0.4105] - from 0.2758 (2016) to 0.7215 (2017)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "CHTR",
+      "year": 2020,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 0.4366,
+      "detail": "year-over-year change -0.7652 is outside this indicator's typical range [-0.4457, 0.4105] - from 1.202 (2019) to 0.4366 (2020)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "CI",
+      "year": 2017,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 2.1767,
+      "detail": "year-over-year change +0.4196 is outside this indicator's typical range [-0.4457, 0.4105] - from 1.757 (2016) to 2.177 (2017)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "CI",
+      "year": 2019,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 0.2344,
+      "detail": "year-over-year change -1.636 is outside this indicator's typical range [-0.4457, 0.4105] - from 1.871 (2018) to 0.2344 (2019)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "CMG",
+      "year": 2018,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 2.4666,
+      "detail": "year-over-year change -0.8843 is outside this indicator's typical range [-0.4457, 0.4105] - from 3.351 (2017) to 2.467 (2018)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "CMG",
+      "year": 2019,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 1.074,
+      "detail": "year-over-year change -1.393 is outside this indicator's typical range [-0.4457, 0.4105] - from 2.467 (2018) to 1.074 (2019)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "CMG",
+      "year": 2021,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 0.265,
+      "detail": "year-over-year change -0.7376 is outside this indicator's typical range [-0.4457, 0.4105] - from 1.003 (2020) to 0.265 (2021)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "CNP",
+      "year": 2024,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 0.5785,
+      "detail": "year-over-year change +0.4635 is outside this indicator's typical range [-0.4457, 0.4105] - from 0.115 (2023) to 0.5785 (2024)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "CNP",
+      "year": 2025,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 0.0,
+      "detail": "year-over-year change -0.5785 is outside this indicator's typical range [-0.4457, 0.4105] - from 0.5785 (2024) to 0 (2025)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "COF",
+      "year": 2018,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 4.0804,
+      "detail": "year-over-year change +3.713 is outside this indicator's typical range [-0.4457, 0.4105] - from 0.3671 (2017) to 4.08 (2018)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "COF",
+      "year": 2019,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 0.4896,
+      "detail": "year-over-year change -3.591 is outside this indicator's typical range [-0.4457, 0.4105] - from 4.08 (2018) to 0.4896 (2019)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "COHR",
+      "year": 2019,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 1.4679,
+      "detail": "year-over-year change +1.468 is outside this indicator's typical range [-0.4457, 0.4105] - from 0 (2018) to 1.468 (2019)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "COHR",
+      "year": 2020,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 0.0,
+      "detail": "year-over-year change -1.468 is outside this indicator's typical range [-0.4457, 0.4105] - from 1.468 (2019) to 0 (2020)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "COO",
+      "year": 2017,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 2.805,
+      "detail": "year-over-year change -1.771 is outside this indicator's typical range [-0.4457, 0.4105] - from 4.576 (2016) to 2.805 (2017)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "COO",
+      "year": 2018,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 3.9482,
+      "detail": "year-over-year change +1.143 is outside this indicator's typical range [-0.4457, 0.4105] - from 2.805 (2017) to 3.948 (2018)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "COO",
+      "year": 2020,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 2.8796,
+      "detail": "year-over-year change -0.8891 is outside this indicator's typical range [-0.4457, 0.4105] - from 3.769 (2019) to 2.88 (2020)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "COO",
+      "year": 2021,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 0.3422,
+      "detail": "year-over-year change -2.537 is outside this indicator's typical range [-0.4457, 0.4105] - from 2.88 (2020) to 0.3422 (2021)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "COO",
+      "year": 2022,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 1.5113,
+      "detail": "year-over-year change +1.169 is outside this indicator's typical range [-0.4457, 0.4105] - from 0.3422 (2021) to 1.511 (2022)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "COO",
+      "year": 2024,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 0.2567,
+      "detail": "year-over-year change -0.8565 is outside this indicator's typical range [-0.4457, 0.4105] - from 1.113 (2023) to 0.2567 (2024)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "COO",
+      "year": 2025,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 1.2218,
+      "detail": "year-over-year change +0.9651 is outside this indicator's typical range [-0.4457, 0.4105] - from 0.2567 (2024) to 1.222 (2025)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "CPAY",
+      "year": 2018,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 0.4109,
+      "detail": "year-over-year change -0.9227 is outside this indicator's typical range [-0.4457, 0.4105] - from 1.334 (2017) to 0.4109 (2018)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "CPAY",
+      "year": 2021,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 0.7058,
+      "detail": "year-over-year change +0.7058 is outside this indicator's typical range [-0.4457, 0.4105] - from 0 (2020) to 0.7058 (2021)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "CPAY",
+      "year": 2022,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 0.0,
+      "detail": "year-over-year change -0.7058 is outside this indicator's typical range [-0.4457, 0.4105] - from 0.7058 (2021) to 0 (2022)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "CPRT",
+      "year": 2017,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 2.7625,
+      "detail": "year-over-year change +1.186 is outside this indicator's typical range [-0.4457, 0.4105] - from 1.577 (2016) to 2.763 (2017)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "CPRT",
+      "year": 2018,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 1.6614,
+      "detail": "year-over-year change -1.101 is outside this indicator's typical range [-0.4457, 0.4105] - from 2.763 (2017) to 1.661 (2018)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "CPRT",
+      "year": 2019,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 0.9795,
+      "detail": "year-over-year change -0.6819 is outside this indicator's typical range [-0.4457, 0.4105] - from 1.661 (2018) to 0.9795 (2019)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "CPRT",
+      "year": 2020,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 0.4534,
+      "detail": "year-over-year change -0.5261 is outside this indicator's typical range [-0.4457, 0.4105] - from 0.9795 (2019) to 0.4534 (2020)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "CPRT",
+      "year": 2021,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 0.0,
+      "detail": "year-over-year change -0.4534 is outside this indicator's typical range [-0.4457, 0.4105] - from 0.4534 (2020) to 0 (2021)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "CPRT",
+      "year": 2024,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 0.4721,
+      "detail": "year-over-year change +0.4721 is outside this indicator's typical range [-0.4457, 0.4105] - from 0 (2023) to 0.4721 (2024)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "CPRT",
+      "year": 2025,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 0.0,
+      "detail": "year-over-year change -0.4721 is outside this indicator's typical range [-0.4457, 0.4105] - from 0.4721 (2024) to 0 (2025)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "CPT",
+      "year": 2022,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 192.7525,
+      "detail": "year-over-year change +192.8 is outside this indicator's typical range [-0.4457, 0.4105] - from 0 (2021) to 192.8 (2022)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "CPT",
+      "year": 2023,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 289.7711,
+      "detail": "year-over-year change +97.02 is outside this indicator's typical range [-0.4457, 0.4105] - from 192.8 (2022) to 289.8 (2023)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "CPT",
+      "year": 2024,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 0.0,
+      "detail": "year-over-year change -289.8 is outside this indicator's typical range [-0.4457, 0.4105] - from 289.8 (2023) to 0 (2024)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "CRL",
+      "year": 2018,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 0.4413,
+      "detail": "year-over-year change +0.4413 is outside this indicator's typical range [-0.4457, 0.4105] - from 0 (2017) to 0.4413 (2018)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "CRL",
+      "year": 2019,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 2.289,
+      "detail": "year-over-year change +1.848 is outside this indicator's typical range [-0.4457, 0.4105] - from 0.4413 (2018) to 2.289 (2019)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "CRL",
+      "year": 2020,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 0.0,
+      "detail": "year-over-year change -2.289 is outside this indicator's typical range [-0.4457, 0.4105] - from 2.289 (2019) to 0 (2020)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "CRWD",
+      "year": 2022,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 0.4462,
+      "detail": "year-over-year change +0.4462 is outside this indicator's typical range [-0.4457, 0.4105] - from 0 (2021) to 0.4462 (2022)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "CRWD",
+      "year": 2023,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 0.0,
+      "detail": "year-over-year change -0.4462 is outside this indicator's typical range [-0.4457, 0.4105] - from 0.4462 (2022) to 0 (2023)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "CSGP",
+      "year": 2017,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 1.036,
+      "detail": "year-over-year change +1.036 is outside this indicator's typical range [-0.4457, 0.4105] - from 0 (2016) to 1.036 (2017)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "CSGP",
+      "year": 2018,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 0.0,
+      "detail": "year-over-year change -1.036 is outside this indicator's typical range [-0.4457, 0.4105] - from 1.036 (2017) to 0 (2018)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "CSGP",
+      "year": 2021,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 0.5144,
+      "detail": "year-over-year change +0.5144 is outside this indicator's typical range [-0.4457, 0.4105] - from 0 (2020) to 0.5144 (2021)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "CSGP",
+      "year": 2023,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 0.0,
+      "detail": "year-over-year change -0.4582 is outside this indicator's typical range [-0.4457, 0.4105] - from 0.4582 (2022) to 0 (2023)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "CTAS",
+      "year": 2018,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 0.8705,
+      "detail": "year-over-year change -0.5191 is outside this indicator's typical range [-0.4457, 0.4105] - from 1.39 (2017) to 0.8705 (2018)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "CTAS",
+      "year": 2019,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 0.4234,
+      "detail": "year-over-year change -0.4471 is outside this indicator's typical range [-0.4457, 0.4105] - from 0.8705 (2018) to 0.4234 (2019)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "CVNA",
+      "year": 2018,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 0.5114,
+      "detail": "year-over-year change +0.5114 is outside this indicator's typical range [-0.4457, 0.4105] - from 0 (2017) to 0.5114 (2018)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "CVNA",
+      "year": 2019,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 0.0,
+      "detail": "year-over-year change -0.5114 is outside this indicator's typical range [-0.4457, 0.4105] - from 0.5114 (2018) to 0 (2019)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "CVNA",
+      "year": 2020,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 0.537,
+      "detail": "year-over-year change +0.537 is outside this indicator's typical range [-0.4457, 0.4105] - from 0 (2019) to 0.537 (2020)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "DASH",
+      "year": 2019,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 9.0395,
+      "detail": "year-over-year change -1.27 is outside this indicator's typical range [-0.4457, 0.4105] - from 10.31 (2018) to 9.04 (2019)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "DASH",
+      "year": 2020,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 0.693,
+      "detail": "year-over-year change -8.347 is outside this indicator's typical range [-0.4457, 0.4105] - from 9.04 (2019) to 0.693 (2020)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "DASH",
+      "year": 2021,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 0.2046,
+      "detail": "year-over-year change -0.4884 is outside this indicator's typical range [-0.4457, 0.4105] - from 0.693 (2020) to 0.2046 (2021)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "DASH",
+      "year": 2025,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 0.4374,
+      "detail": "year-over-year change +0.4374 is outside this indicator's typical range [-0.4457, 0.4105] - from 0 (2024) to 0.4374 (2025)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "DD",
+      "year": 2023,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 0.6048,
+      "detail": "year-over-year change +0.4512 is outside this indicator's typical range [-0.4457, 0.4105] - from 0.1536 (2022) to 0.6048 (2023)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "DD",
+      "year": 2024,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 0.1488,
+      "detail": "year-over-year change -0.456 is outside this indicator's typical range [-0.4457, 0.4105] - from 0.6048 (2023) to 0.1488 (2024)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "DDOG",
+      "year": 2024,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 0.7451,
+      "detail": "year-over-year change +0.7451 is outside this indicator's typical range [-0.4457, 0.4105] - from 0 (2023) to 0.7451 (2024)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "DDOG",
+      "year": 2025,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 0.0,
+      "detail": "year-over-year change -0.7451 is outside this indicator's typical range [-0.4457, 0.4105] - from 0.7451 (2024) to 0 (2025)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "DGX",
+      "year": 2017,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 2.4318,
+      "detail": "year-over-year change +1.046 is outside this indicator's typical range [-0.4457, 0.4105] - from 1.386 (2016) to 2.432 (2017)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "DGX",
+      "year": 2018,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 1.1951,
+      "detail": "year-over-year change -1.237 is outside this indicator's typical range [-0.4457, 0.4105] - from 2.432 (2017) to 1.195 (2018)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "DGX",
+      "year": 2020,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 0.9537,
+      "detail": "year-over-year change -0.4701 is outside this indicator's typical range [-0.4457, 0.4105] - from 1.424 (2019) to 0.9537 (2020)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "DGX",
+      "year": 2024,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 0.3039,
+      "detail": "year-over-year change -0.4527 is outside this indicator's typical range [-0.4457, 0.4105] - from 0.7566 (2023) to 0.3039 (2024)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "DLTR",
+      "year": 2018,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 1.3144,
+      "detail": "year-over-year change +0.5052 is outside this indicator's typical range [-0.4457, 0.4105] - from 0.8092 (2017) to 1.314 (2018)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "DLTR",
+      "year": 2019,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 0.4235,
+      "detail": "year-over-year change -0.8909 is outside this indicator's typical range [-0.4457, 0.4105] - from 1.314 (2018) to 0.4235 (2019)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "DLTR",
+      "year": 2022,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 0.7786,
+      "detail": "year-over-year change +0.5506 is outside this indicator's typical range [-0.4457, 0.4105] - from 0.228 (2021) to 0.7786 (2022)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "DOV",
+      "year": 2020,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 0.0,
+      "detail": "year-over-year change -0.5605 is outside this indicator's typical range [-0.4457, 0.4105] - from 0.5605 (2019) to 0 (2020)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "DPZ",
+      "year": 2017,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 2.5108,
+      "detail": "year-over-year change -0.7246 is outside this indicator's typical range [-0.4457, 0.4105] - from 3.235 (2016) to 2.511 (2017)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "DPZ",
+      "year": 2018,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 1.7478,
+      "detail": "year-over-year change -0.763 is outside this indicator's typical range [-0.4457, 0.4105] - from 2.511 (2017) to 1.748 (2018)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "DPZ",
+      "year": 2022,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 0.6612,
+      "detail": "year-over-year change -0.7158 is outside this indicator's typical range [-0.4457, 0.4105] - from 1.377 (2021) to 0.6612 (2022)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "DPZ",
+      "year": 2024,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 1.2749,
+      "detail": "year-over-year change +1.052 is outside this indicator's typical range [-0.4457, 0.4105] - from 0.2232 (2023) to 1.275 (2024)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "DPZ",
+      "year": 2025,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 0.2024,
+      "detail": "year-over-year change -1.073 is outside this indicator's typical range [-0.4457, 0.4105] - from 1.275 (2024) to 0.2024 (2025)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "DRI",
+      "year": 2017,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 0.6188,
+      "detail": "year-over-year change +0.4793 is outside this indicator's typical range [-0.4457, 0.4105] - from 0.1395 (2016) to 0.6188 (2017)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "DRI",
+      "year": 2018,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 0.1175,
+      "detail": "year-over-year change -0.5013 is outside this indicator's typical range [-0.4457, 0.4105] - from 0.6188 (2017) to 0.1175 (2018)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "DVA",
+      "year": 2017,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 1.6549,
+      "detail": "year-over-year change +1.281 is outside this indicator's typical range [-0.4457, 0.4105] - from 0.3736 (2016) to 1.655 (2017)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "DVA",
+      "year": 2019,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 3.9514,
+      "detail": "year-over-year change +2.636 is outside this indicator's typical range [-0.4457, 0.4105] - from 1.315 (2018) to 3.951 (2019)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "DVA",
+      "year": 2020,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 0.4329,
+      "detail": "year-over-year change -3.518 is outside this indicator's typical range [-0.4457, 0.4105] - from 3.951 (2019) to 0.4329 (2020)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "DVN",
+      "year": 2018,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 0.1185,
+      "detail": "year-over-year change -0.4508 is outside this indicator's typical range [-0.4457, 0.4105] - from 0.5693 (2017) to 0.1185 (2018)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "DXCM",
+      "year": 2017,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 1.3918,
+      "detail": "year-over-year change +1.392 is outside this indicator's typical range [-0.4457, 0.4105] - from 0 (2016) to 1.392 (2017)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "DXCM",
+      "year": 2018,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 0.0,
+      "detail": "year-over-year change -1.392 is outside this indicator's typical range [-0.4457, 0.4105] - from 1.392 (2017) to 0 (2018)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "DXCM",
+      "year": 2019,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 0.6775,
+      "detail": "year-over-year change +0.6775 is outside this indicator's typical range [-0.4457, 0.4105] - from 0 (2018) to 0.6775 (2019)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "DXCM",
+      "year": 2020,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 0.0,
+      "detail": "year-over-year change -0.6775 is outside this indicator's typical range [-0.4457, 0.4105] - from 0.6775 (2019) to 0 (2020)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "ECHO",
+      "year": 2019,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 0.0,
+      "detail": "year-over-year change -0.5673 is outside this indicator's typical range [-0.4457, 0.4105] - from 0.5673 (2018) to 0 (2019)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "EL",
+      "year": 2019,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 0.471,
+      "detail": "year-over-year change +0.471 is outside this indicator's typical range [-0.4457, 0.4105] - from 0 (2018) to 0.471 (2019)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "ESS",
+      "year": 2017,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 0.0,
+      "detail": "year-over-year change -0.7728 is outside this indicator's typical range [-0.4457, 0.4105] - from 0.7728 (2016) to 0 (2017)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "ETN",
+      "year": 2021,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 0.1019,
+      "detail": "year-over-year change -0.4581 is outside this indicator's typical range [-0.4457, 0.4105] - from 0.56 (2020) to 0.1019 (2021)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "ETR",
+      "year": 2018,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 0.1817,
+      "detail": "year-over-year change -0.7213 is outside this indicator's typical range [-0.4457, 0.4105] - from 0.903 (2017) to 0.1817 (2018)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "EXPD",
+      "year": 2020,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 0.0,
+      "detail": "year-over-year change -0.5036 is outside this indicator's typical range [-0.4457, 0.4105] - from 0.5036 (2019) to 0 (2020)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "EXR",
+      "year": 2019,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 0.7643,
+      "detail": "year-over-year change +0.7643 is outside this indicator's typical range [-0.4457, 0.4105] - from 0 (2018) to 0.7643 (2019)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "EXR",
+      "year": 2022,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 0.0,
+      "detail": "year-over-year change -0.634 is outside this indicator's typical range [-0.4457, 0.4105] - from 0.634 (2021) to 0 (2022)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "FAST",
+      "year": 2017,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 1.5944,
+      "detail": "year-over-year change +0.5848 is outside this indicator's typical range [-0.4457, 0.4105] - from 1.01 (2016) to 1.594 (2017)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "FAST",
+      "year": 2018,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 0.8056,
+      "detail": "year-over-year change -0.7888 is outside this indicator's typical range [-0.4457, 0.4105] - from 1.594 (2017) to 0.8056 (2018)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "FAST",
+      "year": 2019,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 0.1875,
+      "detail": "year-over-year change -0.6181 is outside this indicator's typical range [-0.4457, 0.4105] - from 0.8056 (2018) to 0.1875 (2019)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "FFIV",
+      "year": 2020,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 0.4254,
+      "detail": "year-over-year change +0.4254 is outside this indicator's typical range [-0.4457, 0.4105] - from 0 (2019) to 0.4254 (2020)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "FICO",
+      "year": 2017,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 2.1391,
+      "detail": "year-over-year change +2.139 is outside this indicator's typical range [-0.4457, 0.4105] - from 0 (2016) to 2.139 (2017)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "FICO",
+      "year": 2018,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 0.0,
+      "detail": "year-over-year change -2.139 is outside this indicator's typical range [-0.4457, 0.4105] - from 2.139 (2017) to 0 (2018)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "FICO",
+      "year": 2019,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 0.862,
+      "detail": "year-over-year change +0.862 is outside this indicator's typical range [-0.4457, 0.4105] - from 0 (2018) to 0.862 (2019)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "FICO",
+      "year": 2020,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 0.0,
+      "detail": "year-over-year change -0.862 is outside this indicator's typical range [-0.4457, 0.4105] - from 0.862 (2019) to 0 (2020)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "FITB",
+      "year": 2017,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 1.8051,
+      "detail": "year-over-year change +1.805 is outside this indicator's typical range [-0.4457, 0.4105] - from 0 (2016) to 1.805 (2017)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "FITB",
+      "year": 2018,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 0.0,
+      "detail": "year-over-year change -1.805 is outside this indicator's typical range [-0.4457, 0.4105] - from 1.805 (2017) to 0 (2018)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "FITB",
+      "year": 2019,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 3.5398,
+      "detail": "year-over-year change +3.54 is outside this indicator's typical range [-0.4457, 0.4105] - from 0 (2018) to 3.54 (2019)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "FITB",
+      "year": 2020,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 0.0,
+      "detail": "year-over-year change -3.54 is outside this indicator's typical range [-0.4457, 0.4105] - from 3.54 (2019) to 0 (2020)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "FITB",
+      "year": 2021,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 3.3333,
+      "detail": "year-over-year change +3.333 is outside this indicator's typical range [-0.4457, 0.4105] - from 0 (2020) to 3.333 (2021)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "FITB",
+      "year": 2022,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 0.0,
+      "detail": "year-over-year change -3.333 is outside this indicator's typical range [-0.4457, 0.4105] - from 3.333 (2021) to 0 (2022)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "FIX",
+      "year": 2017,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 0.5593,
+      "detail": "year-over-year change +0.5593 is outside this indicator's typical range [-0.4457, 0.4105] - from 0 (2016) to 0.5593 (2017)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "FIX",
+      "year": 2019,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 0.0,
+      "detail": "year-over-year change -0.4581 is outside this indicator's typical range [-0.4457, 0.4105] - from 0.4581 (2018) to 0 (2019)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "FOX",
+      "year": 2018,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 0.0,
+      "detail": "year-over-year change -0.504 is outside this indicator's typical range [-0.4457, 0.4105] - from 0.504 (2017) to 0 (2018)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "FOXA",
+      "year": 2018,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 0.0,
+      "detail": "year-over-year change -0.504 is outside this indicator's typical range [-0.4457, 0.4105] - from 0.504 (2017) to 0 (2018)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "FRT",
+      "year": 2017,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 0.0,
+      "detail": "year-over-year change -1.248 is outside this indicator's typical range [-0.4457, 0.4105] - from 1.248 (2016) to 0 (2017)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "FSLR",
+      "year": 2018,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 0.8912,
+      "detail": "year-over-year change +0.8912 is outside this indicator's typical range [-0.4457, 0.4105] - from 0 (2017) to 0.8912 (2018)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "FSLR",
+      "year": 2019,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 0.3265,
+      "detail": "year-over-year change -0.5647 is outside this indicator's typical range [-0.4457, 0.4105] - from 0.8912 (2018) to 0.3265 (2019)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "GDDY",
+      "year": 2017,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 0.448,
+      "detail": "year-over-year change -1.175 is outside this indicator's typical range [-0.4457, 0.4105] - from 1.623 (2016) to 0.448 (2017)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "GDDY",
+      "year": 2018,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 0.0,
+      "detail": "year-over-year change -0.448 is outside this indicator's typical range [-0.4457, 0.4105] - from 0.448 (2017) to 0 (2018)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "GDDY",
+      "year": 2020,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 0.603,
+      "detail": "year-over-year change +0.603 is outside this indicator's typical range [-0.4457, 0.4105] - from 0 (2019) to 0.603 (2020)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "GDDY",
+      "year": 2021,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 0.0,
+      "detail": "year-over-year change -0.603 is outside this indicator's typical range [-0.4457, 0.4105] - from 0.603 (2020) to 0 (2021)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "GDDY",
+      "year": 2024,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 0.4373,
+      "detail": "year-over-year change +0.4373 is outside this indicator's typical range [-0.4457, 0.4105] - from 0 (2023) to 0.4373 (2024)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "GIS",
+      "year": 2024,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 0.7698,
+      "detail": "year-over-year change +0.7194 is outside this indicator's typical range [-0.4457, 0.4105] - from 0.0504 (2023) to 0.7698 (2024)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "GNRC",
+      "year": 2017,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 0.5955,
+      "detail": "year-over-year change +0.5955 is outside this indicator's typical range [-0.4457, 0.4105] - from 0 (2016) to 0.5955 (2017)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "GNRC",
+      "year": 2019,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 0.0,
+      "detail": "year-over-year change -0.4942 is outside this indicator's typical range [-0.4457, 0.4105] - from 0.4942 (2018) to 0 (2019)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "GNRC",
+      "year": 2021,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 0.8027,
+      "detail": "year-over-year change +0.8027 is outside this indicator's typical range [-0.4457, 0.4105] - from 0 (2020) to 0.8027 (2021)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "GNRC",
+      "year": 2022,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 0.2191,
+      "detail": "year-over-year change -0.5836 is outside this indicator's typical range [-0.4457, 0.4105] - from 0.8027 (2021) to 0.2191 (2022)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "GPN",
+      "year": 2018,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 0.5941,
+      "detail": "year-over-year change +0.5941 is outside this indicator's typical range [-0.4457, 0.4105] - from 0 (2017) to 0.5941 (2018)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "GPN",
+      "year": 2019,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 0.0,
+      "detail": "year-over-year change -0.5941 is outside this indicator's typical range [-0.4457, 0.4105] - from 0.5941 (2018) to 0 (2019)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "GWW",
+      "year": 2018,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 0.5347,
+      "detail": "year-over-year change +0.5347 is outside this indicator's typical range [-0.4457, 0.4105] - from 0 (2017) to 0.5347 (2018)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "HAL",
+      "year": 2017,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 0.1455,
+      "detail": "year-over-year change -0.4839 is outside this indicator's typical range [-0.4457, 0.4105] - from 0.6294 (2016) to 0.1455 (2017)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "HBAN",
+      "year": 2018,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 1.1351,
+      "detail": "year-over-year change +0.5525 is outside this indicator's typical range [-0.4457, 0.4105] - from 0.5826 (2017) to 1.135 (2018)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "HBAN",
+      "year": 2019,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 0.0,
+      "detail": "year-over-year change -1.135 is outside this indicator's typical range [-0.4457, 0.4105] - from 1.135 (2018) to 0 (2019)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "HBAN",
+      "year": 2021,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 0.8985,
+      "detail": "year-over-year change +0.8985 is outside this indicator's typical range [-0.4457, 0.4105] - from 0 (2020) to 0.8985 (2021)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "HBAN",
+      "year": 2024,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 0.0,
+      "detail": "year-over-year change -0.7143 is outside this indicator's typical range [-0.4457, 0.4105] - from 0.7143 (2023) to 0 (2024)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "HIG",
+      "year": 2017,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 172.3863,
+      "detail": "year-over-year change +160 is outside this indicator's typical range [-0.4457, 0.4105] - from 12.4 (2016) to 172.4 (2017)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "HIG",
+      "year": 2018,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 122.708,
+      "detail": "year-over-year change -49.68 is outside this indicator's typical range [-0.4457, 0.4105] - from 172.4 (2017) to 122.7 (2018)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "HIG",
+      "year": 2019,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 4.4359,
+      "detail": "year-over-year change -118.3 is outside this indicator's typical range [-0.4457, 0.4105] - from 122.7 (2018) to 4.436 (2019)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "HIG",
+      "year": 2020,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 3.1185,
+      "detail": "year-over-year change -1.317 is outside this indicator's typical range [-0.4457, 0.4105] - from 4.436 (2019) to 3.119 (2020)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "HIG",
+      "year": 2021,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 4.9129,
+      "detail": "year-over-year change +1.794 is outside this indicator's typical range [-0.4457, 0.4105] - from 3.119 (2020) to 4.913 (2021)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "HIG",
+      "year": 2023,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 2.4463,
+      "detail": "year-over-year change -2.339 is outside this indicator's typical range [-0.4457, 0.4105] - from 4.785 (2022) to 2.446 (2023)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "HIG",
+      "year": 2024,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 1.206,
+      "detail": "year-over-year change -1.24 is outside this indicator's typical range [-0.4457, 0.4105] - from 2.446 (2023) to 1.206 (2024)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "HLT",
+      "year": 2017,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 0.369,
+      "detail": "year-over-year change -0.9996 is outside this indicator's typical range [-0.4457, 0.4105] - from 1.369 (2016) to 0.369 (2017)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "HOOD",
+      "year": 2021,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 1.1019,
+      "detail": "year-over-year change +1.102 is outside this indicator's typical range [-0.4457, 0.4105] - from 0 (2020) to 1.102 (2021)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "HOOD",
+      "year": 2022,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 0.0,
+      "detail": "year-over-year change -1.102 is outside this indicator's typical range [-0.4457, 0.4105] - from 1.102 (2021) to 0 (2022)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "HUBB",
+      "year": 2019,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 0.0,
+      "detail": "year-over-year change -0.4463 is outside this indicator's typical range [-0.4457, 0.4105] - from 0.4463 (2018) to 0 (2019)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "HWM",
+      "year": 2022,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 1.0595,
+      "detail": "year-over-year change +0.4561 is outside this indicator's typical range [-0.4457, 0.4105] - from 0.6034 (2021) to 1.06 (2022)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "HWM",
+      "year": 2023,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 0.4518,
+      "detail": "year-over-year change -0.6077 is outside this indicator's typical range [-0.4457, 0.4105] - from 1.06 (2022) to 0.4518 (2023)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "IBKR",
+      "year": 2024,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 0.5058,
+      "detail": "year-over-year change +0.5058 is outside this indicator's typical range [-0.4457, 0.4105] - from 0 (2023) to 0.5058 (2024)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "IBKR",
+      "year": 2025,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 0.0,
+      "detail": "year-over-year change -0.5058 is outside this indicator's typical range [-0.4457, 0.4105] - from 0.5058 (2024) to 0 (2025)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "IDXX",
+      "year": 2019,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 0.4155,
+      "detail": "year-over-year change +0.4155 is outside this indicator's typical range [-0.4457, 0.4105] - from 0 (2018) to 0.4155 (2019)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "IDXX",
+      "year": 2023,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 0.8195,
+      "detail": "year-over-year change +0.8195 is outside this indicator's typical range [-0.4457, 0.4105] - from 0 (2022) to 0.8195 (2023)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "IDXX",
+      "year": 2024,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 0.0,
+      "detail": "year-over-year change -0.8195 is outside this indicator's typical range [-0.4457, 0.4105] - from 0.8195 (2023) to 0 (2024)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "INVH",
+      "year": 2018,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 0.5804,
+      "detail": "year-over-year change +0.5804 is outside this indicator's typical range [-0.4457, 0.4105] - from 0 (2017) to 0.5804 (2018)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "INVH",
+      "year": 2019,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 0.0,
+      "detail": "year-over-year change -0.5804 is outside this indicator's typical range [-0.4457, 0.4105] - from 0.5804 (2018) to 0 (2019)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "IR",
+      "year": 2017,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 0.842,
+      "detail": "year-over-year change -1.22 is outside this indicator's typical range [-0.4457, 0.4105] - from 2.062 (2016) to 0.842 (2017)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "IR",
+      "year": 2018,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 0.3718,
+      "detail": "year-over-year change -0.4702 is outside this indicator's typical range [-0.4457, 0.4105] - from 0.842 (2017) to 0.3718 (2018)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "IR",
+      "year": 2019,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 2.4783,
+      "detail": "year-over-year change +2.107 is outside this indicator's typical range [-0.4457, 0.4105] - from 0.3718 (2018) to 2.478 (2019)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "IR",
+      "year": 2020,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 0.2517,
+      "detail": "year-over-year change -2.227 is outside this indicator's typical range [-0.4457, 0.4105] - from 2.478 (2019) to 0.2517 (2020)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "IRM",
+      "year": 2017,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 1.3002,
+      "detail": "year-over-year change +0.7306 is outside this indicator's typical range [-0.4457, 0.4105] - from 0.5696 (2016) to 1.3 (2017)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "IRM",
+      "year": 2019,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 0.7038,
+      "detail": "year-over-year change -0.5436 is outside this indicator's typical range [-0.4457, 0.4105] - from 1.247 (2018) to 0.7038 (2019)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "ISRG",
+      "year": 2020,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 0.0,
+      "detail": "year-over-year change -0.6699 is outside this indicator's typical range [-0.4457, 0.4105] - from 0.6699 (2019) to 0 (2020)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "ISRG",
+      "year": 2025,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 0.4968,
+      "detail": "year-over-year change +0.4968 is outside this indicator's typical range [-0.4457, 0.4105] - from 0 (2024) to 0.4968 (2025)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "J",
+      "year": 2017,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 0.6984,
+      "detail": "year-over-year change +0.4248 is outside this indicator's typical range [-0.4457, 0.4105] - from 0.2736 (2016) to 0.6984 (2017)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "J",
+      "year": 2018,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 0.1335,
+      "detail": "year-over-year change -0.5649 is outside this indicator's typical range [-0.4457, 0.4105] - from 0.6984 (2017) to 0.1335 (2018)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "J",
+      "year": 2022,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 0.5111,
+      "detail": "year-over-year change +0.5111 is outside this indicator's typical range [-0.4457, 0.4105] - from 0 (2021) to 0.5111 (2022)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "J",
+      "year": 2024,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 0.0869,
+      "detail": "year-over-year change -0.466 is outside this indicator's typical range [-0.4457, 0.4105] - from 0.5529 (2023) to 0.0869 (2024)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "JBHT",
+      "year": 2017,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 0.4173,
+      "detail": "year-over-year change -0.8031 is outside this indicator's typical range [-0.4457, 0.4105] - from 1.22 (2016) to 0.4173 (2017)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "JBHT",
+      "year": 2020,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 0.2075,
+      "detail": "year-over-year change -0.4471 is outside this indicator's typical range [-0.4457, 0.4105] - from 0.6546 (2019) to 0.2075 (2020)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "JBHT",
+      "year": 2022,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 0.675,
+      "detail": "year-over-year change +0.5928 is outside this indicator's typical range [-0.4457, 0.4105] - from 0.0822 (2021) to 0.675 (2022)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "JKHY",
+      "year": 2017,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 0.7203,
+      "detail": "year-over-year change +0.7203 is outside this indicator's typical range [-0.4457, 0.4105] - from 0 (2016) to 0.7203 (2017)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "JKHY",
+      "year": 2020,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 0.0,
+      "detail": "year-over-year change -0.644 is outside this indicator's typical range [-0.4457, 0.4105] - from 0.644 (2019) to 0 (2020)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "JKHY",
+      "year": 2021,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 0.5688,
+      "detail": "year-over-year change +0.5688 is outside this indicator's typical range [-0.4457, 0.4105] - from 0 (2020) to 0.5688 (2021)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "JKHY",
+      "year": 2024,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 0.0,
+      "detail": "year-over-year change -0.4813 is outside this indicator's typical range [-0.4457, 0.4105] - from 0.4813 (2023) to 0 (2024)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "KIM",
+      "year": 2019,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 0.8629,
+      "detail": "year-over-year change +0.8629 is outside this indicator's typical range [-0.4457, 0.4105] - from 0 (2018) to 0.8629 (2019)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "KIM",
+      "year": 2020,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 0.0,
+      "detail": "year-over-year change -0.8629 is outside this indicator's typical range [-0.4457, 0.4105] - from 0.8629 (2019) to 0 (2020)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "KO",
+      "year": 2017,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 0.8285,
+      "detail": "year-over-year change +0.4941 is outside this indicator's typical range [-0.4457, 0.4105] - from 0.3344 (2016) to 0.8285 (2017)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "LDOS",
+      "year": 2024,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 0.4801,
+      "detail": "year-over-year change +0.4801 is outside this indicator's typical range [-0.4457, 0.4105] - from 0 (2023) to 0.4801 (2024)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "LHX",
+      "year": 2017,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 2.4319,
+      "detail": "year-over-year change -0.9059 is outside this indicator's typical range [-0.4457, 0.4105] - from 3.338 (2016) to 2.432 (2017)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "LHX",
+      "year": 2019,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 0.3889,
+      "detail": "year-over-year change -2.111 is outside this indicator's typical range [-0.4457, 0.4105] - from 2.5 (2018) to 0.3889 (2019)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "LOW",
+      "year": 2021,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 0.374,
+      "detail": "year-over-year change -0.6082 is outside this indicator's typical range [-0.4457, 0.4105] - from 0.9822 (2020) to 0.374 (2021)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "LUV",
+      "year": 2021,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 0.4433,
+      "detail": "year-over-year change -0.7724 is outside this indicator's typical range [-0.4457, 0.4105] - from 1.216 (2020) to 0.4433 (2021)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "MAA",
+      "year": 2025,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 0.4527,
+      "detail": "year-over-year change +0.4527 is outside this indicator's typical range [-0.4457, 0.4105] - from 0 (2024) to 0.4527 (2025)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "MAR",
+      "year": 2018,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 0.4336,
+      "detail": "year-over-year change -0.4954 is outside this indicator's typical range [-0.4457, 0.4105] - from 0.929 (2017) to 0.4336 (2018)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "MAR",
+      "year": 2020,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 1.6082,
+      "detail": "year-over-year change +1.036 is outside this indicator's typical range [-0.4457, 0.4105] - from 0.5722 (2019) to 1.608 (2020)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "MAR",
+      "year": 2021,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 0.5773,
+      "detail": "year-over-year change -1.031 is outside this indicator's typical range [-0.4457, 0.4105] - from 1.608 (2020) to 0.5773 (2021)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "MCD",
+      "year": 2020,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 0.9371,
+      "detail": "year-over-year change +0.4222 is outside this indicator's typical range [-0.4457, 0.4105] - from 0.5149 (2019) to 0.9371 (2020)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "MCD",
+      "year": 2021,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 0.3445,
+      "detail": "year-over-year change -0.5926 is outside this indicator's typical range [-0.4457, 0.4105] - from 0.9371 (2020) to 0.3445 (2021)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "MCHP",
+      "year": 2024,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 0.4544,
+      "detail": "year-over-year change +0.4544 is outside this indicator's typical range [-0.4457, 0.4105] - from 0 (2023) to 0.4544 (2024)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "MCHP",
+      "year": 2025,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 0.0,
+      "detail": "year-over-year change -0.4544 is outside this indicator's typical range [-0.4457, 0.4105] - from 0.4544 (2024) to 0 (2025)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "MET",
+      "year": 2018,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 5.5732,
+      "detail": "year-over-year change +5.429 is outside this indicator's typical range [-0.4457, 0.4105] - from 0.1444 (2017) to 5.573 (2018)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "MET",
+      "year": 2019,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 0.0718,
+      "detail": "year-over-year change -5.501 is outside this indicator's typical range [-0.4457, 0.4105] - from 5.573 (2018) to 0.0718 (2019)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "MGM",
+      "year": 2020,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 1.5498,
+      "detail": "year-over-year change +1.24 is outside this indicator's typical range [-0.4457, 0.4105] - from 0.3101 (2019) to 1.55 (2020)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "MGM",
+      "year": 2021,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 0.1033,
+      "detail": "year-over-year change -1.447 is outside this indicator's typical range [-0.4457, 0.4105] - from 1.55 (2020) to 0.1033 (2021)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "MKC",
+      "year": 2017,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 0.0,
+      "detail": "year-over-year change -0.9067 is outside this indicator's typical range [-0.4457, 0.4105] - from 0.9067 (2016) to 0 (2017)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "MKC",
+      "year": 2018,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 0.7543,
+      "detail": "year-over-year change +0.7543 is outside this indicator's typical range [-0.4457, 0.4105] - from 0 (2017) to 0.7543 (2018)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "MKC",
+      "year": 2019,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 0.0,
+      "detail": "year-over-year change -0.7543 is outside this indicator's typical range [-0.4457, 0.4105] - from 0.7543 (2018) to 0 (2019)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "MKC",
+      "year": 2021,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 0.9497,
+      "detail": "year-over-year change +0.9497 is outside this indicator's typical range [-0.4457, 0.4105] - from 0 (2020) to 0.9497 (2021)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "MKC",
+      "year": 2022,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 0.0,
+      "detail": "year-over-year change -0.9497 is outside this indicator's typical range [-0.4457, 0.4105] - from 0.9497 (2021) to 0 (2022)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "MLM",
+      "year": 2017,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 0.2522,
+      "detail": "year-over-year change -1.057 is outside this indicator's typical range [-0.4457, 0.4105] - from 1.309 (2016) to 0.2522 (2017)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "MLM",
+      "year": 2018,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 0.7068,
+      "detail": "year-over-year change +0.4546 is outside this indicator's typical range [-0.4457, 0.4105] - from 0.2522 (2017) to 0.7068 (2018)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "MPWR",
+      "year": 2017,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 0.0,
+      "detail": "year-over-year change -2.573 is outside this indicator's typical range [-0.4457, 0.4105] - from 2.573 (2016) to 0 (2017)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "MPWR",
+      "year": 2018,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 1.7171,
+      "detail": "year-over-year change +1.717 is outside this indicator's typical range [-0.4457, 0.4105] - from 0 (2017) to 1.717 (2018)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "MPWR",
+      "year": 2020,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 0.0,
+      "detail": "year-over-year change -1.593 is outside this indicator's typical range [-0.4457, 0.4105] - from 1.593 (2019) to 0 (2020)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "MPWR",
+      "year": 2023,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 0.5491,
+      "detail": "year-over-year change +0.5491 is outside this indicator's typical range [-0.4457, 0.4105] - from 0 (2022) to 0.5491 (2023)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "MPWR",
+      "year": 2024,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 0.0,
+      "detail": "year-over-year change -0.5491 is outside this indicator's typical range [-0.4457, 0.4105] - from 0.5491 (2023) to 0 (2024)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "MS",
+      "year": 2017,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 0.778,
+      "detail": "year-over-year change -0.6473 is outside this indicator's typical range [-0.4457, 0.4105] - from 1.425 (2016) to 0.778 (2017)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "MS",
+      "year": 2019,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 0.1204,
+      "detail": "year-over-year change -0.4555 is outside this indicator's typical range [-0.4457, 0.4105] - from 0.5759 (2018) to 0.1204 (2019)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "MTB",
+      "year": 2019,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 0.646,
+      "detail": "year-over-year change +0.4773 is outside this indicator's typical range [-0.4457, 0.4105] - from 0.1687 (2018) to 0.646 (2019)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "MTB",
+      "year": 2020,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 0.0,
+      "detail": "year-over-year change -0.646 is outside this indicator's typical range [-0.4457, 0.4105] - from 0.646 (2019) to 0 (2020)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "MTB",
+      "year": 2021,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 0.5007,
+      "detail": "year-over-year change +0.5007 is outside this indicator's typical range [-0.4457, 0.4105] - from 0 (2020) to 0.5007 (2021)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "MTB",
+      "year": 2025,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 0.6035,
+      "detail": "year-over-year change +0.6035 is outside this indicator's typical range [-0.4457, 0.4105] - from 0 (2024) to 0.6035 (2025)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "NDSN",
+      "year": 2017,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 0.4838,
+      "detail": "year-over-year change +0.4838 is outside this indicator's typical range [-0.4457, 0.4105] - from 0 (2016) to 0.4838 (2017)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "NDSN",
+      "year": 2019,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 0.0,
+      "detail": "year-over-year change -0.887 is outside this indicator's typical range [-0.4457, 0.4105] - from 0.887 (2018) to 0 (2019)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "NEM",
+      "year": 2019,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 0.0,
+      "detail": "year-over-year change -0.5515 is outside this indicator's typical range [-0.4457, 0.4105] - from 0.5515 (2018) to 0 (2019)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "NI",
+      "year": 2017,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 0.6342,
+      "detail": "year-over-year change +0.6342 is outside this indicator's typical range [-0.4457, 0.4105] - from 0 (2016) to 0.6342 (2017)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "NI",
+      "year": 2018,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 0.0,
+      "detail": "year-over-year change -0.6342 is outside this indicator's typical range [-0.4457, 0.4105] - from 0.6342 (2017) to 0 (2018)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "NSC",
+      "year": 2017,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 2.7486,
+      "detail": "year-over-year change +0.8271 is outside this indicator's typical range [-0.4457, 0.4105] - from 1.921 (2016) to 2.749 (2017)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "NSC",
+      "year": 2018,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 2.2692,
+      "detail": "year-over-year change -0.4794 is outside this indicator's typical range [-0.4457, 0.4105] - from 2.749 (2017) to 2.269 (2018)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "NSC",
+      "year": 2021,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 1.3463,
+      "detail": "year-over-year change -1.003 is outside this indicator's typical range [-0.4457, 0.4105] - from 2.35 (2020) to 1.346 (2021)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "NSC",
+      "year": 2025,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 0.4926,
+      "detail": "year-over-year change -0.4973 is outside this indicator's typical range [-0.4457, 0.4105] - from 0.9899 (2024) to 0.4926 (2025)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "NTRS",
+      "year": 2019,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 0.0,
+      "detail": "year-over-year change -0.5328 is outside this indicator's typical range [-0.4457, 0.4105] - from 0.5328 (2018) to 0 (2019)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "NTRS",
+      "year": 2020,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 0.4917,
+      "detail": "year-over-year change +0.4917 is outside this indicator's typical range [-0.4457, 0.4105] - from 0 (2019) to 0.4917 (2020)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "NVR",
+      "year": 2017,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 0.4757,
+      "detail": "year-over-year change +0.4757 is outside this indicator's typical range [-0.4457, 0.4105] - from 0 (2016) to 0.4757 (2017)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "NWS",
+      "year": 2017,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 0.4915,
+      "detail": "year-over-year change +0.4915 is outside this indicator's typical range [-0.4457, 0.4105] - from 0 (2016) to 0.4915 (2017)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "NWSA",
+      "year": 2017,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 0.4915,
+      "detail": "year-over-year change +0.4915 is outside this indicator's typical range [-0.4457, 0.4105] - from 0 (2016) to 0.4915 (2017)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "ODFL",
+      "year": 2017,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 4.4668,
+      "detail": "year-over-year change +1.793 is outside this indicator's typical range [-0.4457, 0.4105] - from 2.674 (2016) to 4.467 (2017)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "ODFL",
+      "year": 2018,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 3.4622,
+      "detail": "year-over-year change -1.005 is outside this indicator's typical range [-0.4457, 0.4105] - from 4.467 (2017) to 3.462 (2018)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "ODFL",
+      "year": 2019,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 1.9469,
+      "detail": "year-over-year change -1.515 is outside this indicator's typical range [-0.4457, 0.4105] - from 3.462 (2018) to 1.947 (2019)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "ODFL",
+      "year": 2020,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 3.4868,
+      "detail": "year-over-year change +1.54 is outside this indicator's typical range [-0.4457, 0.4105] - from 1.947 (2019) to 3.487 (2020)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "ODFL",
+      "year": 2021,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 1.1415,
+      "detail": "year-over-year change -2.345 is outside this indicator's typical range [-0.4457, 0.4105] - from 3.487 (2020) to 1.141 (2021)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "ODFL",
+      "year": 2022,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 0.639,
+      "detail": "year-over-year change -0.5025 is outside this indicator's typical range [-0.4457, 0.4105] - from 1.141 (2021) to 0.639 (2022)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "ODFL",
+      "year": 2023,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 1.1933,
+      "detail": "year-over-year change +0.5543 is outside this indicator's typical range [-0.4457, 0.4105] - from 0.639 (2022) to 1.193 (2023)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "ODFL",
+      "year": 2025,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 0.5458,
+      "detail": "year-over-year change -1.002 is outside this indicator's typical range [-0.4457, 0.4105] - from 1.548 (2024) to 0.5458 (2025)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "PANW",
+      "year": 2018,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 0.0,
+      "detail": "year-over-year change -0.5698 is outside this indicator's typical range [-0.4457, 0.4105] - from 0.5698 (2017) to 0 (2018)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "PAYX",
+      "year": 2017,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 1.2069,
+      "detail": "year-over-year change +0.5622 is outside this indicator's typical range [-0.4457, 0.4105] - from 0.6447 (2016) to 1.207 (2017)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "PAYX",
+      "year": 2018,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 0.5417,
+      "detail": "year-over-year change -0.6652 is outside this indicator's typical range [-0.4457, 0.4105] - from 1.207 (2017) to 0.5417 (2018)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "PAYX",
+      "year": 2019,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 0.99,
+      "detail": "year-over-year change +0.4483 is outside this indicator's typical range [-0.4457, 0.4105] - from 0.5417 (2018) to 0.99 (2019)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "PAYX",
+      "year": 2022,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 0.1997,
+      "detail": "year-over-year change -0.4508 is outside this indicator's typical range [-0.4457, 0.4105] - from 0.6505 (2021) to 0.1997 (2022)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "PH",
+      "year": 2021,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 0.5576,
+      "detail": "year-over-year change +0.4846 is outside this indicator's typical range [-0.4457, 0.4105] - from 0.073 (2020) to 0.5576 (2021)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "PH",
+      "year": 2022,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 0.063,
+      "detail": "year-over-year change -0.4946 is outside this indicator's typical range [-0.4457, 0.4105] - from 0.5576 (2021) to 0.063 (2022)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "PKG",
+      "year": 2024,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 0.1193,
+      "detail": "year-over-year change -0.5215 is outside this indicator's typical range [-0.4457, 0.4105] - from 0.6408 (2023) to 0.1193 (2024)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "PLTR",
+      "year": 2024,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 0.698,
+      "detail": "year-over-year change +0.698 is outside this indicator's typical range [-0.4457, 0.4105] - from 0 (2023) to 0.698 (2024)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "PLTR",
+      "year": 2025,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 0.0,
+      "detail": "year-over-year change -0.698 is outside this indicator's typical range [-0.4457, 0.4105] - from 0.698 (2024) to 0 (2025)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "PNR",
+      "year": 2019,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 1.3526,
+      "detail": "year-over-year change +1.015 is outside this indicator's typical range [-0.4457, 0.4105] - from 0.3373 (2018) to 1.353 (2019)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "PNR",
+      "year": 2020,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 0.3314,
+      "detail": "year-over-year change -1.021 is outside this indicator's typical range [-0.4457, 0.4105] - from 1.353 (2019) to 0.3314 (2020)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "PNW",
+      "year": 2022,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 0.4625,
+      "detail": "year-over-year change +0.4625 is outside this indicator's typical range [-0.4457, 0.4105] - from 0 (2021) to 0.4625 (2022)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "PNW",
+      "year": 2023,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 0.0,
+      "detail": "year-over-year change -0.4625 is outside this indicator's typical range [-0.4457, 0.4105] - from 0.4625 (2022) to 0 (2023)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "PODD",
+      "year": 2017,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 2.1561,
+      "detail": "year-over-year change +2.156 is outside this indicator's typical range [-0.4457, 0.4105] - from 0 (2016) to 2.156 (2017)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "PODD",
+      "year": 2018,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 0.0,
+      "detail": "year-over-year change -2.156 is outside this indicator's typical range [-0.4457, 0.4105] - from 2.156 (2017) to 0 (2018)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "PODD",
+      "year": 2020,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 1.1057,
+      "detail": "year-over-year change +1.106 is outside this indicator's typical range [-0.4457, 0.4105] - from 0 (2019) to 1.106 (2020)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "PODD",
+      "year": 2021,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 0.0,
+      "detail": "year-over-year change -1.106 is outside this indicator's typical range [-0.4457, 0.4105] - from 1.106 (2020) to 0 (2021)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "PSA",
+      "year": 2023,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 0.4427,
+      "detail": "year-over-year change +0.4427 is outside this indicator's typical range [-0.4457, 0.4105] - from 0 (2022) to 0.4427 (2023)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "PTC",
+      "year": 2020,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 0.6857,
+      "detail": "year-over-year change +0.6857 is outside this indicator's typical range [-0.4457, 0.4105] - from 0 (2019) to 0.6857 (2020)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "PTC",
+      "year": 2021,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 1.1067,
+      "detail": "year-over-year change +0.421 is outside this indicator's typical range [-0.4457, 0.4105] - from 0.6857 (2020) to 1.107 (2021)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "PTC",
+      "year": 2022,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 0.0,
+      "detail": "year-over-year change -1.107 is outside this indicator's typical range [-0.4457, 0.4105] - from 1.107 (2021) to 0 (2022)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "RCL",
+      "year": 2021,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 1.3055,
+      "detail": "year-over-year change +0.8528 is outside this indicator's typical range [-0.4457, 0.4105] - from 0.4527 (2020) to 1.306 (2021)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "RCL",
+      "year": 2022,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 0.0,
+      "detail": "year-over-year change -1.306 is outside this indicator's typical range [-0.4457, 0.4105] - from 1.306 (2021) to 0 (2022)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "RDDT",
+      "year": 2023,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 1.2437,
+      "detail": "year-over-year change +1.244 is outside this indicator's typical range [-0.4457, 0.4105] - from 0 (2022) to 1.244 (2023)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "RDDT",
+      "year": 2024,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 0.7691,
+      "detail": "year-over-year change -0.4746 is outside this indicator's typical range [-0.4457, 0.4105] - from 1.244 (2023) to 0.7691 (2024)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "RDDT",
+      "year": 2025,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 0.0,
+      "detail": "year-over-year change -0.7691 is outside this indicator's typical range [-0.4457, 0.4105] - from 0.7691 (2024) to 0 (2025)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "RF",
+      "year": 2017,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 16.6667,
+      "detail": "year-over-year change -17.82 is outside this indicator's typical range [-0.4457, 0.4105] - from 34.48 (2016) to 16.67 (2017)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "RF",
+      "year": 2018,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 28.169,
+      "detail": "year-over-year change +11.5 is outside this indicator's typical range [-0.4457, 0.4105] - from 16.67 (2017) to 28.17 (2018)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "RF",
+      "year": 2019,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 0.0,
+      "detail": "year-over-year change -28.17 is outside this indicator's typical range [-0.4457, 0.4105] - from 28.17 (2018) to 0 (2019)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "RF",
+      "year": 2020,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 11.9048,
+      "detail": "year-over-year change +11.9 is outside this indicator's typical range [-0.4457, 0.4105] - from 0 (2019) to 11.9 (2020)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "RF",
+      "year": 2021,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 9.6154,
+      "detail": "year-over-year change -2.289 is outside this indicator's typical range [-0.4457, 0.4105] - from 11.9 (2020) to 9.615 (2021)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "RF",
+      "year": 2022,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 0.196,
+      "detail": "year-over-year change -9.419 is outside this indicator's typical range [-0.4457, 0.4105] - from 9.615 (2021) to 0.196 (2022)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "RL",
+      "year": 2019,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 0.8117,
+      "detail": "year-over-year change +0.8117 is outside this indicator's typical range [-0.4457, 0.4105] - from 0 (2018) to 0.8117 (2019)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "RL",
+      "year": 2020,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 0.0,
+      "detail": "year-over-year change -0.8117 is outside this indicator's typical range [-0.4457, 0.4105] - from 0.8117 (2019) to 0 (2020)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "ROK",
+      "year": 2019,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 1.0456,
+      "detail": "year-over-year change +0.8956 is outside this indicator's typical range [-0.4457, 0.4105] - from 0.15 (2018) to 1.046 (2019)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "ROK",
+      "year": 2020,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 0.158,
+      "detail": "year-over-year change -0.8876 is outside this indicator's typical range [-0.4457, 0.4105] - from 1.046 (2019) to 0.158 (2020)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "ROL",
+      "year": 2017,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 1.7922,
+      "detail": "year-over-year change +1.157 is outside this indicator's typical range [-0.4457, 0.4105] - from 0.6355 (2016) to 1.792 (2017)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "ROL",
+      "year": 2018,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 0.549,
+      "detail": "year-over-year change -1.243 is outside this indicator's typical range [-0.4457, 0.4105] - from 1.792 (2017) to 0.549 (2018)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "ROL",
+      "year": 2019,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 0.9923,
+      "detail": "year-over-year change +0.4433 is outside this indicator's typical range [-0.4457, 0.4105] - from 0.549 (2018) to 0.9923 (2019)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "ROL",
+      "year": 2023,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 0.0,
+      "detail": "year-over-year change -1.113 is outside this indicator's typical range [-0.4457, 0.4105] - from 1.113 (2022) to 0 (2023)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "RSG",
+      "year": 2018,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 0.9959,
+      "detail": "year-over-year change -0.4979 is outside this indicator's typical range [-0.4457, 0.4105] - from 1.494 (2017) to 0.9959 (2018)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "RSG",
+      "year": 2020,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 0.0831,
+      "detail": "year-over-year change -0.491 is outside this indicator's typical range [-0.4457, 0.4105] - from 0.5741 (2019) to 0.0831 (2020)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "RVTY",
+      "year": 2025,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 0.7003,
+      "detail": "year-over-year change +0.7003 is outside this indicator's typical range [-0.4457, 0.4105] - from 0 (2024) to 0.7003 (2025)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "SBAC",
+      "year": 2018,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 7.9833,
+      "detail": "year-over-year change +7.983 is outside this indicator's typical range [-0.4457, 0.4105] - from 0 (2017) to 7.983 (2018)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "SBAC",
+      "year": 2019,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 0.0,
+      "detail": "year-over-year change -7.983 is outside this indicator's typical range [-0.4457, 0.4105] - from 7.983 (2018) to 0 (2019)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "SJM",
+      "year": 2023,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 0.8559,
+      "detail": "year-over-year change +0.7387 is outside this indicator's typical range [-0.4457, 0.4105] - from 0.1172 (2022) to 0.8559 (2023)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "SJM",
+      "year": 2024,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 0.0,
+      "detail": "year-over-year change -0.8559 is outside this indicator's typical range [-0.4457, 0.4105] - from 0.8559 (2023) to 0 (2024)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "SLB",
+      "year": 2017,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 0.23,
+      "detail": "year-over-year change -0.597 is outside this indicator's typical range [-0.4457, 0.4105] - from 0.827 (2016) to 0.23 (2017)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "SLB",
+      "year": 2020,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 0.6779,
+      "detail": "year-over-year change +0.4652 is outside this indicator's typical range [-0.4457, 0.4105] - from 0.2127 (2019) to 0.6779 (2020)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "SNA",
+      "year": 2021,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 0.0,
+      "detail": "year-over-year change -0.5073 is outside this indicator's typical range [-0.4457, 0.4105] - from 0.5073 (2020) to 0 (2021)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "SO",
+      "year": 2019,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 4.8239,
+      "detail": "year-over-year change -0.4964 is outside this indicator's typical range [-0.4457, 0.4105] - from 5.32 (2018) to 4.824 (2019)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "SO",
+      "year": 2021,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 2.9834,
+      "detail": "year-over-year change -1.52 is outside this indicator's typical range [-0.4457, 0.4105] - from 4.503 (2020) to 2.983 (2021)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "SO",
+      "year": 2023,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 2.4552,
+      "detail": "year-over-year change -0.6187 is outside this indicator's typical range [-0.4457, 0.4105] - from 3.074 (2022) to 2.455 (2023)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "SO",
+      "year": 2025,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 1.4212,
+      "detail": "year-over-year change -0.8206 is outside this indicator's typical range [-0.4457, 0.4105] - from 2.242 (2024) to 1.421 (2025)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "STE",
+      "year": 2017,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 1.145,
+      "detail": "year-over-year change +0.7623 is outside this indicator's typical range [-0.4457, 0.4105] - from 0.3827 (2016) to 1.145 (2017)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "STE",
+      "year": 2018,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 0.3594,
+      "detail": "year-over-year change -0.7856 is outside this indicator's typical range [-0.4457, 0.4105] - from 1.145 (2017) to 0.3594 (2018)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "STE",
+      "year": 2019,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 0.9898,
+      "detail": "year-over-year change +0.6304 is outside this indicator's typical range [-0.4457, 0.4105] - from 0.3594 (2018) to 0.9898 (2019)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "STE",
+      "year": 2020,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 0.0,
+      "detail": "year-over-year change -0.9898 is outside this indicator's typical range [-0.4457, 0.4105] - from 0.9898 (2019) to 0 (2020)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "TECH",
+      "year": 2022,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 0.9045,
+      "detail": "year-over-year change +0.9045 is outside this indicator's typical range [-0.4457, 0.4105] - from 0 (2021) to 0.9045 (2022)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "TECH",
+      "year": 2023,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 0.0,
+      "detail": "year-over-year change -0.9045 is outside this indicator's typical range [-0.4457, 0.4105] - from 0.9045 (2022) to 0 (2023)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "TFC",
+      "year": 2020,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 0.0643,
+      "detail": "year-over-year change -0.4671 is outside this indicator's typical range [-0.4457, 0.4105] - from 0.5314 (2019) to 0.0643 (2020)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "TPR",
+      "year": 2017,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 1.114,
+      "detail": "year-over-year change -0.667 is outside this indicator's typical range [-0.4457, 0.4105] - from 1.781 (2016) to 1.114 (2017)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "TROW",
+      "year": 2020,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 0.6445,
+      "detail": "year-over-year change +0.6445 is outside this indicator's typical range [-0.4457, 0.4105] - from 0 (2019) to 0.6445 (2020)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "TROW",
+      "year": 2021,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 0.0,
+      "detail": "year-over-year change -0.6445 is outside this indicator's typical range [-0.4457, 0.4105] - from 0.6445 (2020) to 0 (2021)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "TSCO",
+      "year": 2020,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 0.0942,
+      "detail": "year-over-year change -0.6242 is outside this indicator's typical range [-0.4457, 0.4105] - from 0.7184 (2019) to 0.0942 (2020)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "TTD",
+      "year": 2023,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 1.0277,
+      "detail": "year-over-year change +1.028 is outside this indicator's typical range [-0.4457, 0.4105] - from 0 (2022) to 1.028 (2023)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "TTD",
+      "year": 2024,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 0.0,
+      "detail": "year-over-year change -1.028 is outside this indicator's typical range [-0.4457, 0.4105] - from 1.028 (2023) to 0 (2024)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "TYL",
+      "year": 2019,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 1.8409,
+      "detail": "year-over-year change +1.841 is outside this indicator's typical range [-0.4457, 0.4105] - from 0 (2018) to 1.841 (2019)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "TYL",
+      "year": 2020,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 2.6866,
+      "detail": "year-over-year change +0.8457 is outside this indicator's typical range [-0.4457, 0.4105] - from 1.841 (2019) to 2.687 (2020)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "TYL",
+      "year": 2021,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 0.628,
+      "detail": "year-over-year change -2.059 is outside this indicator's typical range [-0.4457, 0.4105] - from 2.687 (2020) to 0.628 (2021)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "TYL",
+      "year": 2022,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 0.0,
+      "detail": "year-over-year change -0.628 is outside this indicator's typical range [-0.4457, 0.4105] - from 0.628 (2021) to 0 (2022)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "UAL",
+      "year": 2020,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 1.4328,
+      "detail": "year-over-year change +0.6006 is outside this indicator's typical range [-0.4457, 0.4105] - from 0.8322 (2019) to 1.433 (2020)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "UAL",
+      "year": 2022,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 0.5339,
+      "detail": "year-over-year change -0.5216 is outside this indicator's typical range [-0.4457, 0.4105] - from 1.056 (2021) to 0.5339 (2022)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "UBER",
+      "year": 2021,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 0.1146,
+      "detail": "year-over-year change -0.6036 is outside this indicator's typical range [-0.4457, 0.4105] - from 0.7182 (2020) to 0.1146 (2021)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "UDR",
+      "year": 2022,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 0.659,
+      "detail": "year-over-year change +0.659 is outside this indicator's typical range [-0.4457, 0.4105] - from 0 (2021) to 0.659 (2022)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "UDR",
+      "year": 2023,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 0.0,
+      "detail": "year-over-year change -0.659 is outside this indicator's typical range [-0.4457, 0.4105] - from 0.659 (2022) to 0 (2023)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "ULTA",
+      "year": 2017,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 1.6994,
+      "detail": "year-over-year change +1.081 is outside this indicator's typical range [-0.4457, 0.4105] - from 0.618 (2016) to 1.699 (2017)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "ULTA",
+      "year": 2018,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 0.8933,
+      "detail": "year-over-year change -0.8061 is outside this indicator's typical range [-0.4457, 0.4105] - from 1.699 (2017) to 0.8933 (2018)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "ULTA",
+      "year": 2021,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 1.1586,
+      "detail": "year-over-year change +0.6709 is outside this indicator's typical range [-0.4457, 0.4105] - from 0.4877 (2020) to 1.159 (2021)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "ULTA",
+      "year": 2022,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 0.3918,
+      "detail": "year-over-year change -0.7668 is outside this indicator's typical range [-0.4457, 0.4105] - from 1.159 (2021) to 0.3918 (2022)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "UNP",
+      "year": 2023,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 1.9072,
+      "detail": "year-over-year change +0.9826 is outside this indicator's typical range [-0.4457, 0.4105] - from 0.9246 (2022) to 1.907 (2023)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "UNP",
+      "year": 2024,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 0.701,
+      "detail": "year-over-year change -1.206 is outside this indicator's typical range [-0.4457, 0.4105] - from 1.907 (2023) to 0.701 (2024)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "URI",
+      "year": 2017,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 0.6023,
+      "detail": "year-over-year change +0.4287 is outside this indicator's typical range [-0.4457, 0.4105] - from 0.1736 (2016) to 0.6023 (2017)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "VEEV",
+      "year": 2023,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 0.8461,
+      "detail": "year-over-year change +0.8461 is outside this indicator's typical range [-0.4457, 0.4105] - from 0 (2022) to 0.8461 (2023)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "VEEV",
+      "year": 2024,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 0.3641,
+      "detail": "year-over-year change -0.482 is outside this indicator's typical range [-0.4457, 0.4105] - from 0.8461 (2023) to 0.3641 (2024)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "VMC",
+      "year": 2019,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 0.6086,
+      "detail": "year-over-year change +0.6086 is outside this indicator's typical range [-0.4457, 0.4105] - from 0 (2018) to 0.6086 (2019)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "VMC",
+      "year": 2022,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 0.0,
+      "detail": "year-over-year change -0.5403 is outside this indicator's typical range [-0.4457, 0.4105] - from 0.5403 (2021) to 0 (2022)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "VMRK",
+      "year": 2017,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 0.0,
+      "detail": "year-over-year change -0.8245 is outside this indicator's typical range [-0.4457, 0.4105] - from 0.8245 (2016) to 0 (2017)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "VRSN",
+      "year": 2022,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 0.7018,
+      "detail": "year-over-year change +0.7018 is outside this indicator's typical range [-0.4457, 0.4105] - from 0 (2021) to 0.7018 (2022)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "VRSN",
+      "year": 2023,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 0.0,
+      "detail": "year-over-year change -0.7018 is outside this indicator's typical range [-0.4457, 0.4105] - from 0.7018 (2022) to 0 (2023)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "VRT",
+      "year": 2020,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 0.0,
+      "detail": "year-over-year change -0.4513 is outside this indicator's typical range [-0.4457, 0.4105] - from 0.4513 (2019) to 0 (2020)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "WAT",
+      "year": 2019,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 1.6621,
+      "detail": "year-over-year change +0.4224 is outside this indicator's typical range [-0.4457, 0.4105] - from 1.24 (2018) to 1.662 (2019)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "WAT",
+      "year": 2020,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 4.6504,
+      "detail": "year-over-year change +2.988 is outside this indicator's typical range [-0.4457, 0.4105] - from 1.662 (2019) to 4.65 (2020)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "WAT",
+      "year": 2021,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 0.359,
+      "detail": "year-over-year change -4.291 is outside this indicator's typical range [-0.4457, 0.4105] - from 4.65 (2020) to 0.359 (2021)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "WAT",
+      "year": 2023,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 0.6765,
+      "detail": "year-over-year change +0.6765 is outside this indicator's typical range [-0.4457, 0.4105] - from 0 (2022) to 0.6765 (2023)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "WDAY",
+      "year": 2017,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 0.4666,
+      "detail": "year-over-year change +0.4666 is outside this indicator's typical range [-0.4457, 0.4105] - from 0 (2016) to 0.4666 (2017)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "WDAY",
+      "year": 2018,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 0.0,
+      "detail": "year-over-year change -0.4666 is outside this indicator's typical range [-0.4457, 0.4105] - from 0.4666 (2017) to 0 (2018)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "WDAY",
+      "year": 2023,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 0.6888,
+      "detail": "year-over-year change +0.6888 is outside this indicator's typical range [-0.4457, 0.4105] - from 0 (2022) to 0.6888 (2023)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "WDAY",
+      "year": 2024,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 0.0,
+      "detail": "year-over-year change -0.6888 is outside this indicator's typical range [-0.4457, 0.4105] - from 0.6888 (2023) to 0 (2024)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "WM",
+      "year": 2017,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 0.7594,
+      "detail": "year-over-year change -0.5633 is outside this indicator's typical range [-0.4457, 0.4105] - from 1.323 (2016) to 0.7594 (2017)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "WM",
+      "year": 2019,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 1.2294,
+      "detail": "year-over-year change +0.4248 is outside this indicator's typical range [-0.4457, 0.4105] - from 0.8046 (2018) to 1.229 (2019)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "WMB",
+      "year": 2017,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 1.4942,
+      "detail": "year-over-year change -0.9061 is outside this indicator's typical range [-0.4457, 0.4105] - from 2.4 (2016) to 1.494 (2017)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "WMB",
+      "year": 2018,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 2.6732,
+      "detail": "year-over-year change +1.179 is outside this indicator's typical range [-0.4457, 0.4105] - from 1.494 (2017) to 2.673 (2018)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "WMB",
+      "year": 2019,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 2.1949,
+      "detail": "year-over-year change -0.4783 is outside this indicator's typical range [-0.4457, 0.4105] - from 2.673 (2018) to 2.195 (2019)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "WMB",
+      "year": 2020,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 1.2955,
+      "detail": "year-over-year change -0.8994 is outside this indicator's typical range [-0.4457, 0.4105] - from 2.195 (2019) to 1.296 (2020)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "WMB",
+      "year": 2021,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 0.6258,
+      "detail": "year-over-year change -0.6697 is outside this indicator's typical range [-0.4457, 0.4105] - from 1.296 (2020) to 0.6258 (2021)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "WMB",
+      "year": 2022,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 1.1253,
+      "detail": "year-over-year change +0.4995 is outside this indicator's typical range [-0.4457, 0.4105] - from 0.6258 (2021) to 1.125 (2022)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "WSM",
+      "year": 2022,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 0.5764,
+      "detail": "year-over-year change +0.5764 is outside this indicator's typical range [-0.4457, 0.4105] - from 0 (2021) to 0.5764 (2022)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "WST",
+      "year": 2017,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 0.0,
+      "detail": "year-over-year change -0.6626 is outside this indicator's typical range [-0.4457, 0.4105] - from 0.6626 (2016) to 0 (2017)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "WST",
+      "year": 2019,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 1.087,
+      "detail": "year-over-year change +1.087 is outside this indicator's typical range [-0.4457, 0.4105] - from 0 (2018) to 1.087 (2019)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "WST",
+      "year": 2020,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 0.0,
+      "detail": "year-over-year change -1.087 is outside this indicator's typical range [-0.4457, 0.4105] - from 1.087 (2019) to 0 (2020)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "XYL",
+      "year": 2020,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 0.0,
+      "detail": "year-over-year change -0.5715 is outside this indicator's typical range [-0.4457, 0.4105] - from 0.5715 (2019) to 0 (2020)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "XYZ",
+      "year": 2017,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 4.9678,
+      "detail": "year-over-year change -3.226 is outside this indicator's typical range [-0.4457, 0.4105] - from 8.193 (2016) to 4.968 (2017)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "XYZ",
+      "year": 2018,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 3.7436,
+      "detail": "year-over-year change -1.224 is outside this indicator's typical range [-0.4457, 0.4105] - from 4.968 (2017) to 3.744 (2018)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "XYZ",
+      "year": 2019,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 1.9094,
+      "detail": "year-over-year change -1.834 is outside this indicator's typical range [-0.4457, 0.4105] - from 3.744 (2018) to 1.909 (2019)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "XYZ",
+      "year": 2020,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 0.9476,
+      "detail": "year-over-year change -0.9618 is outside this indicator's typical range [-0.4457, 0.4105] - from 1.909 (2019) to 0.9476 (2020)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "ZBH",
+      "year": 2018,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 0.1261,
+      "detail": "year-over-year change -0.5147 is outside this indicator's typical range [-0.4457, 0.4105] - from 0.6408 (2017) to 0.1261 (2018)",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "COO",
+      "year": 2025,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 1.2218,
+      "detail": "beyond the 3x IQR fence [-0.3867, 0.5156] for 2025",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "HIG",
+      "year": 2025,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 0.987,
+      "detail": "beyond the 3x IQR fence [-0.3867, 0.5156] for 2025",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "MTB",
+      "year": 2025,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 0.6035,
+      "detail": "beyond the 3x IQR fence [-0.3867, 0.5156] for 2025",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "ODFL",
+      "year": 2025,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 0.5458,
+      "detail": "beyond the 3x IQR fence [-0.3867, 0.5156] for 2025",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "RVTY",
+      "year": 2025,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 0.7003,
+      "detail": "beyond the 3x IQR fence [-0.3867, 0.5156] for 2025",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "SO",
+      "year": 2025,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 1.4212,
+      "detail": "beyond the 3x IQR fence [-0.3867, 0.5156] for 2025",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "TPR",
+      "year": 2025,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 0.6247,
+      "detail": "beyond the 3x IQR fence [-0.3867, 0.5156] for 2025",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/"
+    },
+    {
+      "ticker": "WMB",
+      "year": 2025,
+      "indicator_id": "labor_litigation_intensity",
+      "value": 0.6712,
+      "detail": "beyond the 3x IQR fence [-0.3867, 0.5156] for 2025",
       "url": "https://www.courtlistener.com/api/rest/v4/search/"
     },
     {
@@ -19126,534 +22702,6 @@
       "url": "https://www.sec.gov/Archives/edgar/data/4127/000000412725000085/0000004127-25-000085-index.htm"
     },
     {
-      "ticker": "A",
-      "year": 2025,
-      "indicator_id": "federal_contract_exposure",
-      "value": 0.0059,
-      "detail": "beyond the 3x IQR fence [-0.003, 0.004] for 2025",
-      "url": "https://api.usaspending.gov/api/v2/search/spending_over_time/"
-    },
-    {
-      "ticker": "ACN",
-      "year": 2025,
-      "indicator_id": "federal_contract_exposure",
-      "value": 0.0395,
-      "detail": "beyond the 3x IQR fence [-0.003, 0.004] for 2025",
-      "url": "https://api.usaspending.gov/api/v2/search/spending_over_time/"
-    },
-    {
-      "ticker": "AES",
-      "year": 2025,
-      "indicator_id": "federal_contract_exposure",
-      "value": 0.011,
-      "detail": "beyond the 3x IQR fence [-0.003, 0.004] for 2025",
-      "url": "https://api.usaspending.gov/api/v2/search/spending_over_time/"
-    },
-    {
-      "ticker": "APTV",
-      "year": 2025,
-      "indicator_id": "federal_contract_exposure",
-      "value": 0.0047,
-      "detail": "beyond the 3x IQR fence [-0.003, 0.004] for 2025",
-      "url": "https://api.usaspending.gov/api/v2/search/spending_over_time/"
-    },
-    {
-      "ticker": "AWK",
-      "year": 2025,
-      "indicator_id": "federal_contract_exposure",
-      "value": 0.0436,
-      "detail": "beyond the 3x IQR fence [-0.003, 0.004] for 2025",
-      "url": "https://api.usaspending.gov/api/v2/search/spending_over_time/"
-    },
-    {
-      "ticker": "AXON",
-      "year": 2025,
-      "indicator_id": "federal_contract_exposure",
-      "value": 0.0216,
-      "detail": "beyond the 3x IQR fence [-0.003, 0.004] for 2025",
-      "url": "https://api.usaspending.gov/api/v2/search/spending_over_time/"
-    },
-    {
-      "ticker": "BA",
-      "year": 2025,
-      "indicator_id": "federal_contract_exposure",
-      "value": 0.1889,
-      "detail": "beyond the 3x IQR fence [-0.003, 0.004] for 2025",
-      "url": "https://api.usaspending.gov/api/v2/search/spending_over_time/"
-    },
-    {
-      "ticker": "BALL",
-      "year": 2025,
-      "indicator_id": "federal_contract_exposure",
-      "value": 0.3854,
-      "detail": "beyond the 3x IQR fence [-0.003, 0.004] for 2025",
-      "url": "https://api.usaspending.gov/api/v2/search/spending_over_time/"
-    },
-    {
-      "ticker": "CAT",
-      "year": 2025,
-      "indicator_id": "federal_contract_exposure",
-      "value": 0.0056,
-      "detail": "beyond the 3x IQR fence [-0.003, 0.004] for 2025",
-      "url": "https://api.usaspending.gov/api/v2/search/spending_over_time/"
-    },
-    {
-      "ticker": "CDW",
-      "year": 2025,
-      "indicator_id": "federal_contract_exposure",
-      "value": 0.0131,
-      "detail": "beyond the 3x IQR fence [-0.003, 0.004] for 2025",
-      "url": "https://api.usaspending.gov/api/v2/search/spending_over_time/"
-    },
-    {
-      "ticker": "CHTR",
-      "year": 2025,
-      "indicator_id": "federal_contract_exposure",
-      "value": 0.0074,
-      "detail": "beyond the 3x IQR fence [-0.003, 0.004] for 2025",
-      "url": "https://api.usaspending.gov/api/v2/search/spending_over_time/"
-    },
-    {
-      "ticker": "CME",
-      "year": 2025,
-      "indicator_id": "federal_contract_exposure",
-      "value": 0.0425,
-      "detail": "beyond the 3x IQR fence [-0.003, 0.004] for 2025",
-      "url": "https://api.usaspending.gov/api/v2/search/spending_over_time/"
-    },
-    {
-      "ticker": "CMI",
-      "year": 2025,
-      "indicator_id": "federal_contract_exposure",
-      "value": 0.0089,
-      "detail": "beyond the 3x IQR fence [-0.003, 0.004] for 2025",
-      "url": "https://api.usaspending.gov/api/v2/search/spending_over_time/"
-    },
-    {
-      "ticker": "CRL",
-      "year": 2025,
-      "indicator_id": "federal_contract_exposure",
-      "value": 0.0162,
-      "detail": "beyond the 3x IQR fence [-0.003, 0.004] for 2025",
-      "url": "https://api.usaspending.gov/api/v2/search/spending_over_time/"
-    },
-    {
-      "ticker": "D",
-      "year": 2025,
-      "indicator_id": "federal_contract_exposure",
-      "value": 0.0097,
-      "detail": "beyond the 3x IQR fence [-0.003, 0.004] for 2025",
-      "url": "https://api.usaspending.gov/api/v2/search/spending_over_time/"
-    },
-    {
-      "ticker": "DGX",
-      "year": 2025,
-      "indicator_id": "federal_contract_exposure",
-      "value": 0.0062,
-      "detail": "beyond the 3x IQR fence [-0.003, 0.004] for 2025",
-      "url": "https://api.usaspending.gov/api/v2/search/spending_over_time/"
-    },
-    {
-      "ticker": "DHR",
-      "year": 2025,
-      "indicator_id": "federal_contract_exposure",
-      "value": 0.01,
-      "detail": "beyond the 3x IQR fence [-0.003, 0.004] for 2025",
-      "url": "https://api.usaspending.gov/api/v2/search/spending_over_time/"
-    },
-    {
-      "ticker": "DVA",
-      "year": 2025,
-      "indicator_id": "federal_contract_exposure",
-      "value": 0.0424,
-      "detail": "beyond the 3x IQR fence [-0.003, 0.004] for 2025",
-      "url": "https://api.usaspending.gov/api/v2/search/spending_over_time/"
-    },
-    {
-      "ticker": "EFX",
-      "year": 2025,
-      "indicator_id": "federal_contract_exposure",
-      "value": 0.0121,
-      "detail": "beyond the 3x IQR fence [-0.003, 0.004] for 2025",
-      "url": "https://api.usaspending.gov/api/v2/search/spending_over_time/"
-    },
-    {
-      "ticker": "EME",
-      "year": 2025,
-      "indicator_id": "federal_contract_exposure",
-      "value": 0.0059,
-      "detail": "beyond the 3x IQR fence [-0.003, 0.004] for 2025",
-      "url": "https://api.usaspending.gov/api/v2/search/spending_over_time/"
-    },
-    {
-      "ticker": "ETN",
-      "year": 2025,
-      "indicator_id": "federal_contract_exposure",
-      "value": 0.0054,
-      "detail": "beyond the 3x IQR fence [-0.003, 0.004] for 2025",
-      "url": "https://api.usaspending.gov/api/v2/search/spending_over_time/"
-    },
-    {
-      "ticker": "EW",
-      "year": 2025,
-      "indicator_id": "federal_contract_exposure",
-      "value": 0.0045,
-      "detail": "beyond the 3x IQR fence [-0.003, 0.004] for 2025",
-      "url": "https://api.usaspending.gov/api/v2/search/spending_over_time/"
-    },
-    {
-      "ticker": "FDX",
-      "year": 2025,
-      "indicator_id": "federal_contract_exposure",
-      "value": 0.0072,
-      "detail": "beyond the 3x IQR fence [-0.003, 0.004] for 2025",
-      "url": "https://api.usaspending.gov/api/v2/search/spending_over_time/"
-    },
-    {
-      "ticker": "FFIV",
-      "year": 2025,
-      "indicator_id": "federal_contract_exposure",
-      "value": 0.1113,
-      "detail": "beyond the 3x IQR fence [-0.003, 0.004] for 2025",
-      "url": "https://api.usaspending.gov/api/v2/search/spending_over_time/"
-    },
-    {
-      "ticker": "FOX",
-      "year": 2025,
-      "indicator_id": "federal_contract_exposure",
-      "value": 0.0217,
-      "detail": "beyond the 3x IQR fence [-0.003, 0.004] for 2025",
-      "url": "https://api.usaspending.gov/api/v2/search/spending_over_time/"
-    },
-    {
-      "ticker": "FOXA",
-      "year": 2025,
-      "indicator_id": "federal_contract_exposure",
-      "value": 0.0217,
-      "detail": "beyond the 3x IQR fence [-0.003, 0.004] for 2025",
-      "url": "https://api.usaspending.gov/api/v2/search/spending_over_time/"
-    },
-    {
-      "ticker": "GE",
-      "year": 2025,
-      "indicator_id": "federal_contract_exposure",
-      "value": 0.0418,
-      "detail": "beyond the 3x IQR fence [-0.003, 0.004] for 2025",
-      "url": "https://api.usaspending.gov/api/v2/search/spending_over_time/"
-    },
-    {
-      "ticker": "GWW",
-      "year": 2025,
-      "indicator_id": "federal_contract_exposure",
-      "value": 0.019,
-      "detail": "beyond the 3x IQR fence [-0.003, 0.004] for 2025",
-      "url": "https://api.usaspending.gov/api/v2/search/spending_over_time/"
-    },
-    {
-      "ticker": "HII",
-      "year": 2025,
-      "indicator_id": "federal_contract_exposure",
-      "value": 0.7434,
-      "detail": "beyond the 3x IQR fence [-0.003, 0.004] for 2025",
-      "url": "https://api.usaspending.gov/api/v2/search/spending_over_time/"
-    },
-    {
-      "ticker": "HON",
-      "year": 2025,
-      "indicator_id": "federal_contract_exposure",
-      "value": 0.0238,
-      "detail": "beyond the 3x IQR fence [-0.003, 0.004] for 2025",
-      "url": "https://api.usaspending.gov/api/v2/search/spending_over_time/"
-    },
-    {
-      "ticker": "HPQ",
-      "year": 2025,
-      "indicator_id": "federal_contract_exposure",
-      "value": 0.0827,
-      "detail": "beyond the 3x IQR fence [-0.003, 0.004] for 2025",
-      "url": "https://api.usaspending.gov/api/v2/search/spending_over_time/"
-    },
-    {
-      "ticker": "HRL",
-      "year": 2025,
-      "indicator_id": "federal_contract_exposure",
-      "value": 0.0042,
-      "detail": "beyond the 3x IQR fence [-0.003, 0.004] for 2025",
-      "url": "https://api.usaspending.gov/api/v2/search/spending_over_time/"
-    },
-    {
-      "ticker": "IBM",
-      "year": 2025,
-      "indicator_id": "federal_contract_exposure",
-      "value": 0.0157,
-      "detail": "beyond the 3x IQR fence [-0.003, 0.004] for 2025",
-      "url": "https://api.usaspending.gov/api/v2/search/spending_over_time/"
-    },
-    {
-      "ticker": "INTC",
-      "year": 2025,
-      "indicator_id": "federal_contract_exposure",
-      "value": 0.0104,
-      "detail": "beyond the 3x IQR fence [-0.003, 0.004] for 2025",
-      "url": "https://api.usaspending.gov/api/v2/search/spending_over_time/"
-    },
-    {
-      "ticker": "INTU",
-      "year": 2025,
-      "indicator_id": "federal_contract_exposure",
-      "value": 0.0304,
-      "detail": "beyond the 3x IQR fence [-0.003, 0.004] for 2025",
-      "url": "https://api.usaspending.gov/api/v2/search/spending_over_time/"
-    },
-    {
-      "ticker": "IRM",
-      "year": 2025,
-      "indicator_id": "federal_contract_exposure",
-      "value": 0.0097,
-      "detail": "beyond the 3x IQR fence [-0.003, 0.004] for 2025",
-      "url": "https://api.usaspending.gov/api/v2/search/spending_over_time/"
-    },
-    {
-      "ticker": "IT",
-      "year": 2025,
-      "indicator_id": "federal_contract_exposure",
-      "value": 0.0077,
-      "detail": "beyond the 3x IQR fence [-0.003, 0.004] for 2025",
-      "url": "https://api.usaspending.gov/api/v2/search/spending_over_time/"
-    },
-    {
-      "ticker": "J",
-      "year": 2025,
-      "indicator_id": "federal_contract_exposure",
-      "value": 0.0341,
-      "detail": "beyond the 3x IQR fence [-0.003, 0.004] for 2025",
-      "url": "https://api.usaspending.gov/api/v2/search/spending_over_time/"
-    },
-    {
-      "ticker": "KKR",
-      "year": 2025,
-      "indicator_id": "federal_contract_exposure",
-      "value": 0.0045,
-      "detail": "beyond the 3x IQR fence [-0.003, 0.004] for 2025",
-      "url": "https://api.usaspending.gov/api/v2/search/spending_over_time/"
-    },
-    {
-      "ticker": "KLAC",
-      "year": 2025,
-      "indicator_id": "federal_contract_exposure",
-      "value": 0.0274,
-      "detail": "beyond the 3x IQR fence [-0.003, 0.004] for 2025",
-      "url": "https://api.usaspending.gov/api/v2/search/spending_over_time/"
-    },
-    {
-      "ticker": "LDOS",
-      "year": 2025,
-      "indicator_id": "federal_contract_exposure",
-      "value": 0.5031,
-      "detail": "beyond the 3x IQR fence [-0.003, 0.004] for 2025",
-      "url": "https://api.usaspending.gov/api/v2/search/spending_over_time/"
-    },
-    {
-      "ticker": "LHX",
-      "year": 2025,
-      "indicator_id": "federal_contract_exposure",
-      "value": 0.2355,
-      "detail": "beyond the 3x IQR fence [-0.003, 0.004] for 2025",
-      "url": "https://api.usaspending.gov/api/v2/search/spending_over_time/"
-    },
-    {
-      "ticker": "LMT",
-      "year": 2025,
-      "indicator_id": "federal_contract_exposure",
-      "value": 0.7785,
-      "detail": "beyond the 3x IQR fence [-0.003, 0.004] for 2025",
-      "url": "https://api.usaspending.gov/api/v2/search/spending_over_time/"
-    },
-    {
-      "ticker": "MCK",
-      "year": 2025,
-      "indicator_id": "federal_contract_exposure",
-      "value": 0.0231,
-      "detail": "beyond the 3x IQR fence [-0.003, 0.004] for 2025",
-      "url": "https://api.usaspending.gov/api/v2/search/spending_over_time/"
-    },
-    {
-      "ticker": "MPC",
-      "year": 2025,
-      "indicator_id": "federal_contract_exposure",
-      "value": 0.0045,
-      "detail": "beyond the 3x IQR fence [-0.003, 0.004] for 2025",
-      "url": "https://api.usaspending.gov/api/v2/search/spending_over_time/"
-    },
-    {
-      "ticker": "MSI",
-      "year": 2025,
-      "indicator_id": "federal_contract_exposure",
-      "value": 0.0174,
-      "detail": "beyond the 3x IQR fence [-0.003, 0.004] for 2025",
-      "url": "https://api.usaspending.gov/api/v2/search/spending_over_time/"
-    },
-    {
-      "ticker": "NOC",
-      "year": 2025,
-      "indicator_id": "federal_contract_exposure",
-      "value": 0.2504,
-      "detail": "beyond the 3x IQR fence [-0.003, 0.004] for 2025",
-      "url": "https://api.usaspending.gov/api/v2/search/spending_over_time/"
-    },
-    {
-      "ticker": "ORCL",
-      "year": 2025,
-      "indicator_id": "federal_contract_exposure",
-      "value": 0.0173,
-      "detail": "beyond the 3x IQR fence [-0.003, 0.004] for 2025",
-      "url": "https://api.usaspending.gov/api/v2/search/spending_over_time/"
-    },
-    {
-      "ticker": "PH",
-      "year": 2025,
-      "indicator_id": "federal_contract_exposure",
-      "value": 0.016,
-      "detail": "beyond the 3x IQR fence [-0.003, 0.004] for 2025",
-      "url": "https://api.usaspending.gov/api/v2/search/spending_over_time/"
-    },
-    {
-      "ticker": "PLTR",
-      "year": 2025,
-      "indicator_id": "federal_contract_exposure",
-      "value": 0.2022,
-      "detail": "beyond the 3x IQR fence [-0.003, 0.004] for 2025",
-      "url": "https://api.usaspending.gov/api/v2/search/spending_over_time/"
-    },
-    {
-      "ticker": "PSX",
-      "year": 2025,
-      "indicator_id": "federal_contract_exposure",
-      "value": 0.0053,
-      "detail": "beyond the 3x IQR fence [-0.003, 0.004] for 2025",
-      "url": "https://api.usaspending.gov/api/v2/search/spending_over_time/"
-    },
-    {
-      "ticker": "PTC",
-      "year": 2025,
-      "indicator_id": "federal_contract_exposure",
-      "value": 0.0122,
-      "detail": "beyond the 3x IQR fence [-0.003, 0.004] for 2025",
-      "url": "https://api.usaspending.gov/api/v2/search/spending_over_time/"
-    },
-    {
-      "ticker": "RTX",
-      "year": 2025,
-      "indicator_id": "federal_contract_exposure",
-      "value": 0.0719,
-      "detail": "beyond the 3x IQR fence [-0.003, 0.004] for 2025",
-      "url": "https://api.usaspending.gov/api/v2/search/spending_over_time/"
-    },
-    {
-      "ticker": "SO",
-      "year": 2025,
-      "indicator_id": "federal_contract_exposure",
-      "value": 0.0143,
-      "detail": "beyond the 3x IQR fence [-0.003, 0.004] for 2025",
-      "url": "https://api.usaspending.gov/api/v2/search/spending_over_time/"
-    },
-    {
-      "ticker": "STE",
-      "year": 2025,
-      "indicator_id": "federal_contract_exposure",
-      "value": 0.0068,
-      "detail": "beyond the 3x IQR fence [-0.003, 0.004] for 2025",
-      "url": "https://api.usaspending.gov/api/v2/search/spending_over_time/"
-    },
-    {
-      "ticker": "SYK",
-      "year": 2025,
-      "indicator_id": "federal_contract_exposure",
-      "value": 0.0048,
-      "detail": "beyond the 3x IQR fence [-0.003, 0.004] for 2025",
-      "url": "https://api.usaspending.gov/api/v2/search/spending_over_time/"
-    },
-    {
-      "ticker": "T",
-      "year": 2025,
-      "indicator_id": "federal_contract_exposure",
-      "value": 0.0117,
-      "detail": "beyond the 3x IQR fence [-0.003, 0.004] for 2025",
-      "url": "https://api.usaspending.gov/api/v2/search/spending_over_time/"
-    },
-    {
-      "ticker": "TDG",
-      "year": 2025,
-      "indicator_id": "federal_contract_exposure",
-      "value": 0.0598,
-      "detail": "beyond the 3x IQR fence [-0.003, 0.004] for 2025",
-      "url": "https://api.usaspending.gov/api/v2/search/spending_over_time/"
-    },
-    {
-      "ticker": "TDY",
-      "year": 2025,
-      "indicator_id": "federal_contract_exposure",
-      "value": 0.0487,
-      "detail": "beyond the 3x IQR fence [-0.003, 0.004] for 2025",
-      "url": "https://api.usaspending.gov/api/v2/search/spending_over_time/"
-    },
-    {
-      "ticker": "TER",
-      "year": 2025,
-      "indicator_id": "federal_contract_exposure",
-      "value": 0.0189,
-      "detail": "beyond the 3x IQR fence [-0.003, 0.004] for 2025",
-      "url": "https://api.usaspending.gov/api/v2/search/spending_over_time/"
-    },
-    {
-      "ticker": "TKO",
-      "year": 2025,
-      "indicator_id": "federal_contract_exposure",
-      "value": 0.008,
-      "detail": "beyond the 3x IQR fence [-0.003, 0.004] for 2025",
-      "url": "https://api.usaspending.gov/api/v2/search/spending_over_time/"
-    },
-    {
-      "ticker": "TSN",
-      "year": 2025,
-      "indicator_id": "federal_contract_exposure",
-      "value": 0.0042,
-      "detail": "beyond the 3x IQR fence [-0.003, 0.004] for 2025",
-      "url": "https://api.usaspending.gov/api/v2/search/spending_over_time/"
-    },
-    {
-      "ticker": "TXT",
-      "year": 2025,
-      "indicator_id": "federal_contract_exposure",
-      "value": 0.1836,
-      "detail": "beyond the 3x IQR fence [-0.003, 0.004] for 2025",
-      "url": "https://api.usaspending.gov/api/v2/search/spending_over_time/"
-    },
-    {
-      "ticker": "TYL",
-      "year": 2025,
-      "indicator_id": "federal_contract_exposure",
-      "value": 0.0069,
-      "detail": "beyond the 3x IQR fence [-0.003, 0.004] for 2025",
-      "url": "https://api.usaspending.gov/api/v2/search/spending_over_time/"
-    },
-    {
-      "ticker": "UNH",
-      "year": 2025,
-      "indicator_id": "federal_contract_exposure",
-      "value": 0.0507,
-      "detail": "beyond the 3x IQR fence [-0.003, 0.004] for 2025",
-      "url": "https://api.usaspending.gov/api/v2/search/spending_over_time/"
-    },
-    {
-      "ticker": "WAT",
-      "year": 2025,
-      "indicator_id": "federal_contract_exposure",
-      "value": 0.0085,
-      "detail": "beyond the 3x IQR fence [-0.003, 0.004] for 2025",
-      "url": "https://api.usaspending.gov/api/v2/search/spending_over_time/"
-    },
-    {
       "ticker": "CNP",
       "year": 2020,
       "indicator_id": "ghg_intensity",
@@ -19758,5 +22806,5 @@
       "url": "https://data.epa.gov/efservice/RLPS_GHG_EMITTER_GAS"
     }
   ],
-  "ran_at": "2026-09-12T23:48:21Z"
+  "ran_at": "2026-09-12T23:58:56Z"
 }

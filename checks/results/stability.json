@@ -1,6 +1,6 @@
 {
   "status": "passed",
-  "verdict": "Average year-to-year rank correlation across indicators with enough overlap: 0.78.",
+  "verdict": "Average year-to-year rank correlation across indicators with enough overlap: 0.74.",
   "numbers": {
     "series": {
       "tax_rate_gap": [
@@ -83,6 +83,90 @@
           "year": 2025,
           "rho": 0.504,
           "n": 425
+        }
+      ],
+      "federal_contract_exposure": [
+        {
+          "year": 2019,
+          "rho": 0.937,
+          "n": 434
+        },
+        {
+          "year": 2020,
+          "rho": 0.779,
+          "n": 433
+        },
+        {
+          "year": 2021,
+          "rho": 0.938,
+          "n": 440
+        },
+        {
+          "year": 2022,
+          "rho": 0.928,
+          "n": 441
+        },
+        {
+          "year": 2023,
+          "rho": 0.93,
+          "n": 440
+        },
+        {
+          "year": 2024,
+          "rho": 0.919,
+          "n": 446
+        },
+        {
+          "year": 2025,
+          "rho": 0.914,
+          "n": 448
+        }
+      ],
+      "labor_litigation_intensity": [
+        {
+          "year": 2017,
+          "rho": 0.592,
+          "n": 409
+        },
+        {
+          "year": 2018,
+          "rho": 0.546,
+          "n": 418
+        },
+        {
+          "year": 2019,
+          "rho": 0.529,
+          "n": 425
+        },
+        {
+          "year": 2020,
+          "rho": 0.456,
+          "n": 424
+        },
+        {
+          "year": 2021,
+          "rho": 0.445,
+          "n": 428
+        },
+        {
+          "year": 2022,
+          "rho": 0.45,
+          "n": 432
+        },
+        {
+          "year": 2023,
+          "rho": 0.438,
+          "n": 436
+        },
+        {
+          "year": 2024,
+          "rho": 0.395,
+          "n": 437
+        },
+        {
+          "year": 2025,
+          "rho": 0.382,
+          "n": 435
         }
       ],
       "political_alignment": [
@@ -266,46 +350,9 @@
           "rho": 0.897,
           "n": 202
         }
-      ],
-      "federal_contract_exposure": [
-        {
-          "year": 2019,
-          "rho": 0.937,
-          "n": 434
-        },
-        {
-          "year": 2020,
-          "rho": 0.779,
-          "n": 433
-        },
-        {
-          "year": 2021,
-          "rho": 0.938,
-          "n": 440
-        },
-        {
-          "year": 2022,
-          "rho": 0.928,
-          "n": 441
-        },
-        {
-          "year": 2023,
-          "rho": 0.93,
-          "n": 440
-        },
-        {
-          "year": 2024,
-          "rho": 0.919,
-          "n": 446
-        },
-        {
-          "year": 2025,
-          "rho": 0.914,
-          "n": 448
-        }
       ]
     }
   },
   "rows": [],
-  "ran_at": "2026-09-12T23:48:23Z"
+  "ran_at": "2026-09-12T23:58:58Z"
 }

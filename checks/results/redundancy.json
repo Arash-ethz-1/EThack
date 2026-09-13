@@ -23,6 +23,14 @@
         "rho": -0.578,
         "n": 97
       },
+      "ceo_pay_ratio|human_capital_disclosure": {
+        "rho": -0.088,
+        "n": 477
+      },
+      "ceo_pay_ratio|labor_litigation_intensity": {
+        "rho": 0.132,
+        "n": 423
+      },
       "ceo_pay_ratio|political_alignment": {
         "rho": -0.026,
         "n": 446
@@ -63,6 +71,14 @@
         "rho": -0.315,
         "n": 67
       },
+      "critical_material_disclosure|human_capital_disclosure": {
+        "rho": 0.003,
+        "n": 296
+      },
+      "critical_material_disclosure|labor_litigation_intensity": {
+        "rho": 0.045,
+        "n": 262
+      },
       "critical_material_disclosure|political_alignment": {
         "rho": -0.095,
         "n": 277
@@ -99,6 +115,14 @@
         "rho": 0.027,
         "n": 94
       },
+      "employer_retirement_contribution|human_capital_disclosure": {
+        "rho": 0.023,
+        "n": 462
+      },
+      "employer_retirement_contribution|labor_litigation_intensity": {
+        "rho": -0.176,
+        "n": 411
+      },
       "employer_retirement_contribution|political_alignment": {
         "rho": 0.188,
         "n": 432
@@ -131,6 +155,14 @@
         "rho": 0.301,
         "n": 66
       },
+      "employment_growth|human_capital_disclosure": {
+        "rho": 0.007,
+        "n": 343
+      },
+      "employment_growth|labor_litigation_intensity": {
+        "rho": -0.189,
+        "n": 305
+      },
       "employment_growth|political_alignment": {
         "rho": -0.07,
         "n": 315
@@ -159,6 +191,14 @@
         "rho": 0.08,
         "n": 100
       },
+      "federal_contract_exposure|human_capital_disclosure": {
+        "rho": 0.105,
+        "n": 471
+      },
+      "federal_contract_exposure|labor_litigation_intensity": {
+        "rho": 0.051,
+        "n": 415
+      },
       "federal_contract_exposure|political_alignment": {
         "rho": 0.239,
         "n": 442
@@ -183,6 +223,14 @@
         "rho": -0.142,
         "n": 313
       },
+      "ghg_intensity|human_capital_disclosure": {
+        "rho": 0.129,
+        "n": 100
+      },
+      "ghg_intensity|labor_litigation_intensity": {
+        "rho": -0.114,
+        "n": 93
+      },
       "ghg_intensity|political_alignment": {
         "rho": 0.15,
         "n": 97
@@ -206,6 +254,58 @@
       "ghg_intensity|workplace_injury_rate": {
         "rho": -0.142,
         "n": 89
+      },
+      "human_capital_disclosure|labor_litigation_intensity": {
+        "rho": 0.045,
+        "n": 437
+      },
+      "human_capital_disclosure|political_alignment": {
+        "rho": 0.071,
+        "n": 463
+      },
+      "human_capital_disclosure|resource_supply_risk": {
+        "rho": 0.114,
+        "n": 500
+      },
+      "human_capital_disclosure|revenue_volatility": {
+        "rho": -0.039,
+        "n": 453
+      },
+      "human_capital_disclosure|shareholder_payout_ratio": {
+        "rho": 0.045,
+        "n": 499
+      },
+      "human_capital_disclosure|tax_rate_gap": {
+        "rho": 0.009,
+        "n": 483
+      },
+      "human_capital_disclosure|workplace_injury_rate": {
+        "rho": -0.049,
+        "n": 325
+      },
+      "labor_litigation_intensity|political_alignment": {
+        "rho": 0.116,
+        "n": 409
+      },
+      "labor_litigation_intensity|resource_supply_risk": {
+        "rho": -0.083,
+        "n": 439
+      },
+      "labor_litigation_intensity|revenue_volatility": {
+        "rho": -0.052,
+        "n": 409
+      },
+      "labor_litigation_intensity|shareholder_payout_ratio": {
+        "rho": 0.086,
+        "n": 438
+      },
+      "labor_litigation_intensity|tax_rate_gap": {
+        "rho": -0.063,
+        "n": 426
+      },
+      "labor_litigation_intensity|workplace_injury_rate": {
+        "rho": 0.232,
+        "n": 300
       },
       "political_alignment|resource_supply_risk": {
         "rho": 0.004,
@@ -270,5 +370,5 @@
     }
   },
   "rows": [],
-  "ran_at": "2026-09-12T23:48:25Z"
+  "ran_at": "2026-09-12T23:59:00Z"
 }
