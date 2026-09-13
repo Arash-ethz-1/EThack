@@ -152,6 +152,7 @@ const STEPS = [
 
 async function compute(thenView) {
   show("run");
+  $("#run-title").textContent = "Computing…";
   $("#run-weights").textContent = weightsText();
   $("#see").hidden = true;
   PF.data = null; state.evidence = {}; AUD.data = null; AUD.ticker = null; TRACE.data = null;
@@ -171,6 +172,7 @@ async function compute(thenView) {
     clearInterval(tick);
     li.querySelector(".s-t").textContent = ((performance.now() - t0) / 1000).toFixed(1) + " s";
   }
+  $("#run-title").textContent = "Computed";
   $("#see").hidden = false;
   $("#see").focus();
   $("#see").onclick = () => openApp(thenView || "ranking");
