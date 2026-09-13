@@ -380,7 +380,8 @@ def summary(scores: pd.DataFrame, portfolio: pd.DataFrame, universe: pd.DataFram
         "scores": score_rows,
         "sector_weights": sec,
         "overweights": rows(active[active > 0].sort_values(ascending=False).index[:top]),
-        "underweights": rows(active[active < 0].sort_values().index[:top]),
+        # held companies only - the excluded ones are listed under "excluded"
+        "underweights": rows(active[(active < 0) & (p["status"].reindex(active.index) != "excluded_policy")].sort_values().index[:top]),
         "largest": rows(w[w > 0].sort_values(ascending=False).index[:top]),
         "excluded": rows(p.index[p["status"] == "excluded_policy"]),
         "climate": climate,

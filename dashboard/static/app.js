@@ -1,4 +1,4 @@
-/* S&P 500 Impact - dashboard/static/app.js
+/* S&P 500 Sustainability - dashboard/static/app.js
    Only displays. Every score comes from POST /api/score (common/score.py); every
    check result comes from GET /api/checks (checks/results/*.json, written by
    `python run.py verify`). Nothing here ranks, scores or calls a model. */
@@ -38,6 +38,7 @@ function bindTabs() {
     if (b.dataset.view === "portfolio") renderPortfolio();
     if (b.dataset.view === "evidence") { renderIndex(); renderExhibit(); }
     if (b.dataset.view === "method") renderMethod();
+    history.replaceState(null, "", b.dataset.view === "ranking" ? location.pathname : "#" + b.dataset.view);
   }));
 }
 
@@ -173,6 +174,8 @@ async function init() {
   renderWeights();
   await loadScore();
   $("#summary").textContent = `${state.score.scored} of ${state.meta.companies} companies scored · ${state.meta.indicators.length} indicators in three categories · every value links to a public document. Data retrieved ${state.meta.retrieved || "–"}.`;
+  const deep = $(`nav.tabs button[data-view="${location.hash.slice(1)}"]`);
+  if (deep) deep.click();
   $("#legend").innerHTML = `<span>Fingerprint: one bar per indicator, height = points (0–100), hatched = no data.</span>` + CATS.map(([, n, c]) => `<span><span class="sw" style="background:var(${c})"></span>${n}</span>`).join("");
 }
 

@@ -64,7 +64,7 @@ function barsSectors(sectors) {
 }
 
 function lineGrowth(risk) {
-  const pts = risk.growth, W = 560, H = 220, L = 44, R = 70, T = 10, B = 26;
+  const pts = risk.growth, W = 1120, H = 300, L = 48, R = 90, T = 12, B = 28;
   const lo = Math.min(...pts.map(p => Math.min(p.fund, p.benchmark)), 1), hi = Math.max(...pts.map(p => Math.max(p.fund, p.benchmark)), 1);
   const x = i => L + (W - L - R) * i / (pts.length - 1), y = v => T + (H - T - B) * (hi - v) / (hi - lo || 1);
   let g = "";
@@ -73,7 +73,9 @@ function lineGrowth(risk) {
   const path = k => pts.map((p, i) => `${i ? "L" : "M"}${x(i)},${y(p[k])}`).join("");
   g += `<path class="l-bench" d="${path("benchmark")}"/><path class="l-fund" d="${path("fund")}"/>`;
   const last = pts[pts.length - 1];
-  g += `<text class="strong" x="${W - R + 6}" y="${y(last.fund) + 4}">Fund</text><text x="${W - R + 6}" y="${y(last.benchmark) + 4}">Benchmark</text>`;
+  let yf = y(last.fund), yb = y(last.benchmark);
+  if (Math.abs(yf - yb) < 14) { const mid = (yf + yb) / 2, up = last.fund >= last.benchmark; yf = mid + (up ? -8 : 8); yb = mid + (up ? 8 : -8); }
+  g += `<text class="strong" x="${W - R + 8}" y="${yf + 4}">Fund</text><text x="${W - R + 8}" y="${yb + 4}">Benchmark</text>`;
   pts.forEach((p, i) => g += `<rect class="hit" x="${x(i) - (W - L - R) / pts.length / 2}" y="${T}" width="${(W - L - R) / pts.length}" height="${H - T - B}"><title>${p.month}: fund ${p.fund.toFixed(3)}, benchmark ${p.benchmark.toFixed(3)}</title></rect>`);
   return svg(W, H, g, "Growth of 1 dollar, fund vs benchmark");
 }
@@ -155,7 +157,7 @@ function renderPortfolio() {
     <div id="pf-holdings">${holdingsTable()}</div>
 
     <div class="cube-card">
-      <div class="chain-h"><h3>Where the fund leans</h3><span class="muted" style="font-size:12px">every company by its three pillar scores · red = overweight · drag to rotate</span></div>
+      <div class="chain-h"><h3>Where the fund leans</h3><span class="muted" style="font-size:12px">every company by its three pillar scores · green = overweight · drag to rotate</span></div>
       <canvas id="cube" height="320"></canvas>
     </div>`;
 
