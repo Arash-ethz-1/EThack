@@ -331,3 +331,5 @@ mark { background: color-mix(in srgb, var(--env) 18%, transparent); color: inher
 .run h2 { margin-bottom: 4px; }
 .exhibit .aud-head { display: block; }
 .exhibit .aud-head .scores { margin: 20px 0 0; }
+nav.tabs { overflow: visible; }
+@media (max-width: 900px) { nav.tabs { overflow-x: auto; overflow-y: hidden; scrollbar-width: none; } nav.tabs::-webkit-scrollbar { display: none; } }
