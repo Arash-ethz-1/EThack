@@ -39,6 +39,16 @@ def short_name(name: str) -> str:
     return name
 
 
+def whole_words(text: str) -> str:
+    """The stored quotes are fixed-width windows; drop the cut-off word at each end."""
+    text = re.sub(r"\s+", " ", text).strip()
+    if text and not text[0].isupper() and " " in text:
+        text = text.split(" ", 1)[1]
+    if text and text[-1] not in '.!?)"' and " " in text:
+        text = text.rsplit(" ", 1)[0]
+    return "…" + text + "…"
+
+
 def filing_quotes(ticker: str) -> list[dict]:
     out = []
     for category in CATEGORIES:
@@ -58,7 +68,7 @@ def filing_quotes(ticker: str) -> list[dict]:
                 continue
             out.append({"category": category, "indicator_id": ind["indicator_id"], "name": ind["name"], "year": int(r["year"]),
                         "value": float(r["value"]), "unit": ind["unit"], "source_url": r["source_url"],
-                        "quote": re.sub(r"\s+", " ", quotes[0]).strip()})
+                        "quote": whole_words(quotes[0])})
     return out
 
 

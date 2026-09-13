@@ -275,3 +275,4 @@ table.mini { width: 100%; border-collapse: collapse; }
   .exhibit, #view-portfolio > *, #view-method > * { animation: fade .25s ease-out both; } @keyframes fade { from { opacity: 0; transform: translateY(6px); } }
 }
 .m-grid { align-items: start; }
+.outs.slim { max-height: none; overflow: visible; }

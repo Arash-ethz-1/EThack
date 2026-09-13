@@ -174,8 +174,11 @@ async function init() {
   renderWeights();
   await loadScore();
   $("#summary").textContent = `${state.score.scored} of ${state.meta.companies} companies scored · ${state.meta.indicators.length} indicators in three categories · every value links to a public document. Data retrieved ${state.meta.retrieved || "–"}.`;
-  const deep = $(`nav.tabs button[data-view="${location.hash.slice(1)}"]`);
+  const [view, sub, auditTicker] = location.hash.slice(1).split("/");  // #portfolio, #evidence/B, #evidence/C/AAPL
+  if (view === "evidence" && sub) state.ex = sub.toUpperCase();
+  const deep = $(`nav.tabs button[data-view="${view}"]`);
   if (deep) deep.click();
+  if (view === "evidence" && auditTicker && typeof runAudit === "function") runAudit(auditTicker.toUpperCase());
   $("#legend").innerHTML = `<span>Fingerprint: one bar per indicator, height = points (0–100), hatched = no data.</span>` + CATS.map(([, n, c]) => `<span><span class="sw" style="background:var(${c})"></span>${n}</span>`).join("");
 }
 
