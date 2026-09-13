@@ -28,10 +28,10 @@ def test_benchmark_is_equal_weight_without_market_caps():
     assert w.to_dict() == pytest.approx({"A": 1 / 3, "B": 1 / 3, "C": 1 / 3})
 
 
-def test_benchmark_uses_market_caps_and_fills_missing_with_median():
+def test_benchmark_uses_market_caps_and_never_fills_missing():
     scores = table([("A", "Tech", 80.0), ("B", "Tech", 40.0), ("C", "Tech", 40.0)])
-    w = benchmark_weights(scores, pd.Series({"A": 300.0, "B": 100.0}))  # C gets the median, 200
-    assert w.to_dict() == pytest.approx({"A": 0.5, "B": 1 / 6, "C": 1 / 3})
+    w = benchmark_weights(scores, pd.Series({"A": 300.0, "B": 100.0}))  # C has no cap -> not in benchmark
+    assert w.to_dict() == pytest.approx({"A": 0.75, "B": 0.25, "C": 0.0})
 
 
 def test_z_is_neutral_for_unscored_and_zero_for_identical_scores():
@@ -75,7 +75,7 @@ def test_exclude_drops_worst_scored_but_never_unscored():
 def test_allocate_fixed_columns_sum_to_one_and_leader_gains():
     scores = table([("A", "Tech", 90.0), ("B", "Tech", 10.0), ("C", "Energy", 50.0), ("D", "Energy", float("nan"))])
     out = allocate(scores, profile(max_weight=1.0))
-    assert list(out.columns) == ["ticker", "weight", "reason"]
+    assert list(out.columns) == ["ticker", "weight", "benchmark_weight", "active_weight", "status", "reason"]
     assert out["weight"].sum() == pytest.approx(1.0)
     w = out.set_index("ticker")["weight"]
     assert w["A"] > w["B"]

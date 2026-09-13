@@ -10,8 +10,11 @@ up the cases and hours of the establishments it filed under, then
 Lower is better. It is a rate, so company size does not matter.
 
 Coverage caveat: industries OSHA exempts from record keeping (banks, insurers, software,
-real estate, ...) do not file, and railroads/airlines report elsewhere, so those
-companies have no row - a missing row, never a zero.
+real estate, restaurants, telecom carriers, ...) do not file, railroads report to the FRA
+and mines to MSHA, so those companies have no row - a missing row, never a zero. Searched
+by hand and not in the ITA files under any name: AutoZone, Ross, Hasbro, Deckers, United
+Rentals, NetApp, Supermicro, PG&E, Centene, Elevance, Quest Diagnostics, IQVIA, CSX,
+Norfolk Southern, Union Pacific, Newmont. That caps coverage below 70% of the S&P 500.
 
 Establishments are linked to companies by EIN, SEC name or 10-K Exhibit 21 subsidiary
 name (social/scripts/_company_match.py), plus a short reviewed list of filer names the

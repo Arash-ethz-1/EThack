@@ -44,6 +44,13 @@ Matching dashboard rows to universe tickers, most reliable first:
   MATCH_EXCLUDE lists rows found wrong by hand. Share classes of one company (same SEC
   CIK, e.g. GOOG/GOOGL) get the same value.
 
+Hand checks before `ready` (file downloaded 2026-09-13), raw rows vs. indicator value:
+  AAPL 3, MSFT 3 (net-zero commitment removed), GOOGL 3, V 4, ABT 2, MCO 4; AMZN, TSLA,
+  AVGO, LOW 0 (commitment removed); BRK.B, XOM, JPM, LLY, COST, BAC, WFC, KO, GS, CAT,
+  IBM, INTC, LMT, RTX, BA, NEE, SO, DUK 0 (no row under any name variant searched).
+  Every zero company was also searched by its distinctive name words to find missed
+  matches - that search produced MANUAL_MATCHES, NAME_MATCH_NON_US and SUBSIDIARY_ONLY.
+
 The dashboard is a snapshot of current status, so `year` = the year the file was
 downloaded (from environmental/raw/_downloads.csv), not a reporting year.
 

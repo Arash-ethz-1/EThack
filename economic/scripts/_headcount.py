@@ -80,6 +80,62 @@ PATTERNS = [
     ),
 ]
 
+# Added 2026-09-13 after a per-company failure diagnosis (116 of the 160 missing
+# companies had a plain headcount sentence the 3 patterns above did not match, e.g.
+# "Eaton has approximately 97,000 employees", "HP employs approximately 55,000
+# employees", "our total headcount was 15,109 employees", "we had a global workforce
+# of 78,865 employees", "approximately 415,000 full-time, part-time, and seasonal team
+# members"). Stricter than the patterns above: no digits allowed between the number
+# and its noun, lower bounds ("more than", "over") rejected, and matches near union /
+# workforce-reduction language dropped (see EXTRA_BAD_CONTEXT) - because these feed
+# the same max-of-candidates rule, a false positive here would override a correct total.
+_QUAL = r"(?:approximately|about|nearly|roughly)\s+"
+_NOUN_EXTRA = r"employees|team members|employee-partners|associates|colleagues"
+_MODIFIERS = (
+    r"(?:(?:full|part)[- ]time|full-|part-|and|or|seasonal|regular|permanent|global|"
+    r"worldwide|total|active|hourly|salaried|equivalent|,|\s)*?"
+)
+EXTRA_PATTERNS = [
+    # "Eaton has approximately 97,000 employees" / "HP employs approximately 55,000 employees"
+    re.compile(
+        rf"\b(?:has|employs|employ|employing)\s+(?:{_QUAL})?({_NUM})(?![\d%])\s*(million|thousand)?"
+        rf"[^.\d%$]{{0,40}}?\b(?:{_NOUN_EXTRA}|people|persons)\b",
+    ),
+    # "our total headcount was 15,109" / "a global workforce of 78,865 employees"
+    re.compile(
+        rf"\b(?:workforce|headcount|worldwide employment|total employment)\b[^.\d%$]{{0,40}}?"
+        rf"\b(?:was|of|totaled|totaling|consists of|consisted of|comprised of|comprises|numbered)\s+"
+        rf"(?:{_QUAL})?({_NUM})(?![\d%])\s*(million|thousand)?",
+        re.IGNORECASE,
+    ),
+    # "with approximately 26,000 team members" / "our approximately 42,000 full-time
+    # employees" - only right after a word that introduces the company's own total;
+    # otherwise "we add approximately 2,500 employees" (an acquisition) or "and
+    # approximately 1,100 employees who supported" (a divestiture) would match
+    re.compile(
+        rf"(?i:\b(?:with|our|had|has|have|employs|employ|employed|of|total|includes))\s+"
+        rf"(?:approximately|about|nearly|roughly)\s+({_NUM})(?![\d%])\s*(million|thousand)?\s+"
+        rf"{_MODIFIERS}(?:{_NOUN_EXTRA})\b",
+    ),
+]
+EXTRA_BAD_CONTEXT = re.compile(
+    r"more than|\bover\s|at least|in excess of|\bunion|represented|bargaining|reduc|restructur|"
+    r"layoff|laid off|severance|eliminat|per 100|franchise|averag|exclud",
+    re.IGNORECASE,
+)
+# Extra patterns only - a subset stated right after the matched noun: "... employees in
+# the United States", "... in Israel", "... people in research and development",
+# "... employees who supported these pet food brands", "... employees and their spouses".
+SUBSET_AFTER = re.compile(
+    r"^\W*(?:(?:in|outside(?: of)?)\s+(?:the\s+)?(?:United States|U\.S\.|Israel|research)|"
+    r"who\s|dedicated to the production|partnering|and their)",
+    re.IGNORECASE,
+)
+# Every pattern - checked on the match itself plus 30 characters after it: "have issued
+# 88,846 shares of Class A common stock to certain employees", "had 2.9 million people
+# visit each month", "have trained over 20,000 of our people".
+NOT_A_HEADCOUNT = re.compile(r"shares|stock|trained|visit", re.IGNORECASE)
+
 MULTI_YEAR_PATTERN = re.compile(
     r"number of regular employees was\s+([\d,]+)\s*(thousand)?,\s*([\d,]+)\s*(thousand)?,?\s*and\s*"
     r"([\d,]+)\s*(thousand)?\s+at years ended\s+(\d{4}),\s*(\d{4}),?\s*and\s*(\d{4})",
@@ -117,6 +173,40 @@ def fetch_filing_list(cik: str, ticker: str) -> pd.DataFrame:
         {k: recent[k] for k in ["form", "filingDate", "reportDate", "accessionNumber", "primaryDocument"]}
     )
     return df[df["form"] == "10-K"].sort_values("filingDate", ascending=False).reset_index(drop=True)
+
+
+def fetch_older_10k(cik: str, ticker: str, report_year: int) -> pd.DataFrame:
+    """10-K filings for `report_year` from SEC's older submissions pages.
+
+    The submissions JSON's "recent" block holds only the last ~1,000 filings. Banks and
+    other heavy filers (JPM, GS, MS, WFC, BAC, C ...) file so many prospectuses that
+    "recent" covers barely one year, so a 10-K from 3 years ago is only listed in the
+    paginated "files" pages. Only pages whose filing-date range can contain that 10-K
+    (filed within 15 months after the fiscal year) are downloaded, newest first,
+    stopping at the first page that has it.
+    """
+    cik = CIK_OVERRIDES.get(ticker, cik)
+    cik10 = str(cik).zfill(10)
+    try:
+        data = cached_json(SUBMISSIONS_URL.format(cik=cik10), "economic", f"submissions_{cik10}.json")
+    except Exception:
+        return pd.DataFrame()
+    window_from, window_to = f"{report_year}-01-01", f"{report_year + 2}-03-31"
+    cols = ["form", "filingDate", "reportDate", "accessionNumber", "primaryDocument"]
+    for page in data.get("filings", {}).get("files", []):
+        if page["filingTo"] < window_from or page["filingFrom"] > window_to:
+            continue
+        name = page["name"]
+        try:
+            older = cached_json(f"https://data.sec.gov/submissions/{name}", "economic", f"submissions_{name}")
+        except Exception as e:
+            print(f"  skip {ticker} submissions page {name}: {e}")
+            continue
+        df = pd.DataFrame({k: older[k] for k in cols})
+        df = df[(df["form"] == "10-K") & (df["reportDate"].str[:4].astype(str) == str(report_year))]
+        if not df.empty:
+            return df.sort_values("filingDate", ascending=False).reset_index(drop=True)
+    return pd.DataFrame()
 
 
 def _clean_html(html: str) -> str:
@@ -160,8 +250,26 @@ def extract_headcount(cik: str, ticker: str, accession: str, primary_doc: str, r
     for pat in PATTERNS:
         for m in pat.finditer(text):
             ctx = text[max(0, m.start() - 120) : m.end() + 30]
-            if BAD_CONTEXT.search(ctx):
+            if BAD_CONTEXT.search(ctx) or NOT_A_HEADCOUNT.search(text[m.start() : m.end() + 30]):
                 continue
+            value = _to_number(m.group(1), m.group(2))
+            if value < 50 or value > 5_000_000:  # sanity bounds
+                continue
+            if best is None or value > best.value:
+                best = Candidate(year=report_year, value=int(round(value)), quote=ctx.strip())
+    for pat in EXTRA_PATTERNS:
+        for m in pat.finditer(text):
+            ctx = text[max(0, m.start() - 120) : m.end() + 30]
+            if (
+                BAD_CONTEXT.search(ctx)
+                or NOT_A_HEADCOUNT.search(text[m.start() : m.end() + 30])
+                or EXTRA_BAD_CONTEXT.search(text[max(0, m.start() - 60) : m.end() + 30])
+                or re.search(r"exclud", text[max(0, m.start() - 120) : m.start()], re.IGNORECASE)
+                or SUBSET_AFTER.search(text[m.end() : m.end() + 40])
+            ):
+                continue
+            if re.fullmatch(r"(?:19|20)\d\d", m.group(1)):
+                continue  # a year, not a headcount
             value = _to_number(m.group(1), m.group(2))
             if value < 50 or value > 5_000_000:  # sanity bounds
                 continue

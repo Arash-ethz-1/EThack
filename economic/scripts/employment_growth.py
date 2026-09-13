@@ -28,7 +28,13 @@ Output: economic/indicators/employment_growth.csv in the shared format (docs/DAT
 import pandas as pd
 
 from common.io import load_universe, today_utc, write_indicator
-from economic.scripts._headcount import ARCHIVE_URL, CIK_OVERRIDES, extract_headcount, fetch_filing_list
+from economic.scripts._headcount import (
+    ARCHIVE_URL,
+    CIK_OVERRIDES,
+    extract_headcount,
+    fetch_filing_list,
+    fetch_older_10k,
+)
 
 CATEGORY = "economic"
 INDICATOR_ID = "employment_growth"
@@ -68,6 +74,8 @@ def _headcount_for_company(cik: str, ticker: str, filings: pd.DataFrame) -> dict
     if prior_target not in found:
         report_years = filings["reportDate"].str[:4].astype(int)
         older = filings[report_years == prior_target]
+        if older.empty:  # heavy filers: the 10-K is only in SEC's older submissions pages
+            older = fetch_older_10k(cik, ticker, prior_target)
         if not older.empty:
             add_from_filing(older.iloc[0])
 
