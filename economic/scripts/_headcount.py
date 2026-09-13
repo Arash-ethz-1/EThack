@@ -50,7 +50,16 @@ CIK_OVERRIDES = {
 }
 
 BAD_CONTEXT = re.compile(
-    r"litigation|lawsuit|tribunal|allege|claimant|plaintiff|class action|former\s",
+    r"litigation|lawsuit|tribunal|allege|claimant|plaintiff|class action|former\s"
+    # geographic/disease/incident stats that also read as "N people/employees" but
+    # aren't headcount: a utility's service-area population, a drug's patient
+    # population, a plant-explosion casualty count, an acquisition's headcount at
+    # close, a PEO's client ("worksite") headcount. "employee population" /
+    # "workforce population" (real HR usage) stays allowed.
+    r"|(?<!employee )(?<!workforce )population|service area|square miles|households"
+    r"|residents\b|subscribers|people with\b|patients\b|diagnosed|estimate that|affects approximately"
+    r"|fatalit|injur|explosion|\bfire\b|worksite employees|visit each"
+    r"|acquisition|\bwe add\b|added approximately|addition of",
     re.IGNORECASE,
 )
 
@@ -134,7 +143,7 @@ SUBSET_AFTER = re.compile(
 # Every pattern - checked on the match itself plus 30 characters after it: "have issued
 # 88,846 shares of Class A common stock to certain employees", "had 2.9 million people
 # visit each month", "have trained over 20,000 of our people".
-NOT_A_HEADCOUNT = re.compile(r"shares|stock|trained|visit", re.IGNORECASE)
+NOT_A_HEADCOUNT = re.compile(r"shares|stock|trained|visit|RSUs?\b|PSUs?\b|granted to", re.IGNORECASE)
 # Every pattern - a percentage ("achieved 100% pay equity for ... employees", MDT) or a
 # US-only count right after the noun ("over 1,400 active employees located in the United
 # States", GEN) is never the company total. Dropping these can only remove wrong

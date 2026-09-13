@@ -40,11 +40,30 @@ CATEGORY = "economic"
 INDICATOR_ID = "employment_growth"
 SOURCE = "SEC 10-K Human Capital disclosures"
 CAGR_YEARS = 3
+# sanity bound on the raw 3-year ratio (emp_now / emp_prior), not the annualised CAGR.
+# Extraction mistakes found by hand (a stock-unit vesting count, a PEO's client
+# headcount, a website's visitor count, disease-prevalence stats, a subsidiary's
+# headcount at acquisition) all produced ratios in the dozens-to-hundreds; no real
+# company's total headcount swings that much in 3 years without a divestiture or
+# merger big enough to warrant its own footnote. A missing row beats a wrong one.
+MIN_RATIO, MAX_RATIO = 0.15, 6.0
 
 EXCLUDE_TICKERS = {
     "NEE": "10-K states FPL and NEER subsidiary headcounts separately (9,400 / 7,900 in "
     "the 2025 filing), never a consolidated NextEra Energy total in prose - no reliable "
     "single number to extract.",
+    "FIS": "only totals found are the unionized-employee subset (\"approximately 2,000 of "
+    "our employees, primarily in Brazil and Europe...\") - the real total (\"over 27,000 "
+    "employees principally employed outside of the U.S.\") is stated with \"including over\", "
+    "a verb form not worth chasing for one company.",
+    "HWM": "a 'worldwide employment ... was approximately 25,430' sentence has 'end of "
+    "2025 was' right before it, which a regex bug reads as 'of 2025' (the year, not the "
+    "headcount) - falls through to a smaller business-segment subset instead. Not worth "
+    "a special-cased fix for one company.",
+    "IRM": "\"we employed approximately 11,700 employees in the United States and "
+    "approximately [more] internationally\" - a US-only subset. The US-only filter "
+    "needs a verb ('located/based/working in') before 'in the United States' that "
+    "isn't present in this phrasing.",
 }
 
 
@@ -103,7 +122,10 @@ def build() -> pd.DataFrame:
             emp_prior, quote_prior, _ = found[prior_year]
             if emp_now <= 0 or emp_prior <= 0:
                 continue
-            cagr = (emp_now / emp_prior) ** (1 / CAGR_YEARS) - 1
+            ratio = emp_now / emp_prior
+            if not (MIN_RATIO <= ratio <= MAX_RATIO):
+                continue  # extraction mistake, not a real swing - see MIN_RATIO/MAX_RATIO above
+            cagr = ratio ** (1 / CAGR_YEARS) - 1
             rows.append(
                 {
                     "ticker": ticker,
