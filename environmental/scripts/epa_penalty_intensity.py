@@ -17,7 +17,7 @@ How:
      the same reviewed matcher as workplace_injury_rate. A case's penalty is split equally
      across its distinct defendants; the matched share goes to the parent.
   3. value = sum of matched penalties with a settlement date in [year-4, year] / mean annual
-     revenue over those years (SEC XBRL, social/raw/financials.csv) in $bn -> USD per $bn.
+     revenue over those years (SEC XBRL, environmental/scripts/_revenue.py) in $bn -> USD per $bn.
   4. A company with revenue but no matched case gets 0, with the note saying so. That is an
      observation (no federal EPA civil penalty found under its name or its subsidiaries'),
      not a guess - but a subsidiary missing from Exhibit 21 would be missed, so 0 means
@@ -46,7 +46,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
 
 from common.io import cached_download, load_universe, today_utc, write_indicator  # noqa: E402
 from social.scripts._company_match import CompanyMatcher  # noqa: E402
-from social.scripts.labor_litigation_intensity import load_revenue  # noqa: E402
+from environmental.scripts._revenue import load_revenue  # noqa: E402
 
 CATEGORY = "environmental"
 INDICATOR_ID = "epa_penalty_intensity"

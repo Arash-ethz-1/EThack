@@ -1,80 +1,42 @@
-"""ghg_intensity - carbon intensity of S&P 500 companies with large US industrial facilities.
+"""ghg_intensity - direct US greenhouse gas emissions per $M of revenue.
 
-What it measures: for each company that owns at least one facility big enough to be
-required to report to EPA's Greenhouse Gas Reporting Program (GHGRP, 40 CFR Part 98 -
-power plants, refineries, cement/steel/chemical plants, etc.), its facilities' Scope 1
-CO2e emissions - split across owners by the ownership share GHGRP itself records -
-divided by that year's revenue (SEC XBRL). Higher = more direct emissions per dollar
-of revenue that year. A missing company means "no GHGRP facility found under its
-name", not "zero emissions" or "clean" - most services/finance/tech/retail companies
-have no such facility and are correctly absent, not scored as good.
+What it measures: the Scope 1 CO2e emitted by a company's large US facilities - every
+facility above 25,000 tCO2e/yr must report to EPA's Greenhouse Gas Reporting Program
+(GHGRP, 40 CFR Part 98: power plants, refineries, cement/steel/chemical plants, landfills,
+pipelines ...) - split across owners by the ownership share GHGRP itself records, divided
+by that year's revenue. Lower is better: less climate damage per dollar the company earns.
+Size-neutral by construction.
 
-Method, in full:
-  1. EPA Envirofacts GHGRP:
-     - RLPS_GHG_EMITTER_GAS: facility x year x gas -> co2e_emission (tonnes),
-       summed per facility_id + year to a facility-year total.
-     - PUB_DIM_FACILITY: facility x year -> free-text `parent_company`, e.g.
-       "Exxon Mobil Corp (100%)" or several co-owners with a % each - GHGRP requires
-       filers to report their ownership share of a facility, so this is EPA's own
-       reported split, not an assumption this script adds.
-  2. Each parent_company string is split on ";" into (name, ownership share) pairs
-     (share = 1.0 when no "(NN%)" is present). A facility's total emissions are
-     multiplied by each owner's share before being attributed to that owner.
-  3. Each owner name is matched to `universe/sp500.csv` by normalising both sides
-     (uppercase, drop Inc/Corp/Corporation/Co/Company/The/LLC/LLP/LP/PLC/Ltd/
-     Holdings/Group/plc, punctuation) and requiring the full normalised S&P 500 name
-     (>= 6 characters, to avoid short-name false positives) to appear in the
-     normalised owner text as a whole word (word-boundary, not a raw substring - a
-     3-letter ticker cannot match inside an unrelated longer word). A name that
-     normalises to a common English/geographic word alone (e.g. "Southern Co" ->
-     "SOUTHERN", which also matches "Southern California Public Power Authority", or
-     "Waste Management, Inc." -> "WASTE MANAGEMENT", which also matches dozens of
-     unrelated county "Solid Waste Management" agencies) is required to match the
-     owner text *exactly* instead - see GENERIC_NAMES. An owner segment naming a
-     government/municipal body (county, city, authority, district, cooperative, ...)
-     is skipped outright before matching - see GOVERNMENT_ENTITY_RE - since no
-     S&P 500 company's own name contains those words. Both found by hand-checking
-     the match log per AGENTS.md rule 6. Matched shares are summed per ticker + year.
-     Every match is written to environmental/raw/ghg_intensity_matches.csv for a
-     human to spot-check; this remains a heuristic name match, not a certified
-     ownership record - re-check the log after every rebuild.
-  4. Revenue per ticker + fiscal year from SEC XBRL companyconcept: first of
-     Revenues / RevenueFromContractWithCustomerExcludingAssessedTax /
-     RevenueFromContractWithCustomerIncludingAssessedTax / SalesRevenueNet that has
-     a 10-K annual fact (duration 350-380 days) for that fiscal year.
-  5. raw_ratio = attributed tCO2e / (revenue_usd / 1e6) = tCO2e per $M revenue.
+Every company with revenue gets a value. A company with no matched GHGRP facility gets 0
+with a note: its direct US emissions are below the reporting threshold (typical for
+software, banks, retail) - an observation from EPA's complete facility list, not "zero
+emissions". Rank it within a sector (sector_relative profiles): a bank is not compared
+with a steel maker. Hand-checked: in Utilities 30/31, Energy 17/20 and Materials 20/25
+companies have facilities (2023); the zeros there (AWK, BKR, SLB, TPL, AVY, BALL, ECL,
+SHW, VMC) are service, packaging, coatings and aggregates firms without a >=25 kt plant.
 
-Deviation from docs/DATA_FORMAT.md, done on Jean's explicit instruction: the `value`
-column is NOT the raw ratio in its native unit. It is the raw ratio's percentile
-rank *within this indicator's own matched companies, that year* (0 = lowest carbon
-intensity among matched peers = best, 1 = highest = worst), so it already sits in
-[0,1] instead of leaving 0-1 normalisation to common/score.py's percentile rank over
-the full universe. Consequences, so a reader is not misled:
-  - This is a rank among the ~handful of matched heavy emitters, not among all 503
-    companies - it says nothing about how a matched company compares to one with no
-    GHGRP facility at all.
-  - Percentile ranks are correct, but plain, unlabelled floats: this file cannot be
-    told apart from a "properly" 0-1 unit indicator like resource_supply_risk just
-    by looking at `value`. See catalog `unit` and this docstring for the difference.
-  - common/score.py will percentile-rank this already-percentile-ranked number
-    again, compressing it further. Flagged to Arash - see commit message; not
-    changed here because common/score.py is shared infrastructure Jean does not own.
+Method:
+  1. EPA Envirofacts GHGRP: RLPS_GHG_EMITTER_GAS (facility x year x gas -> co2e, summed
+     per facility-year) joined with PUB_DIM_FACILITY `parent_company` ("EXXON MOBIL CORP
+     (100%)", or several owners with a % each - EPA's own reported split).
+  2. Owner names -> S&P 500 parent (match_owners): social/scripts/_company_match.py
+     (current/former SEC names, 10-K Exhibit 21 subsidiaries), then the whole-word rule on
+     the normalised S&P 500 name (also with spaces removed, "EXXONMOBIL" = "EXXON MOBIL";
+     names under 6 letters only as the whole owner name, "AES CORP"; GENERIC_NAMES exact
+     only); government/municipal owners never. Spin-off collisions (Howmet vs Alcoa Corp /
+     Arconic Corp) are blocked. Every match: environmental/raw/ghg_intensity_matches.csv.
+  3. Revenue: environmental/scripts/_revenue.py (SEC XBRL, fiscal year = year the period
+     ends; companyfacts fallback, e.g. XOM under its pre-2026 CIK).
+  4. value = attributed tCO2e / revenue in $M. Raw numbers: ghg_intensity_raw_ratio.csv.
 
-Coverage: well under the 70% S&P 500 bar for `ready` (docs/AGENTS.md #4) - GHGRP only
-reaches direct heavy industrial/power/energy emitters. Left as `in_progress`.
+Changed 2026-09-13 (Arash): the value was a percentile rank among only the ~95 matched
+companies and dropped every company whose revenue lookup used SEC's `fy` field (XEL, DTE
+...). Now the raw ratio for all companies, so common/score.py ranks it like every other
+indicator.
 
-No 2024/2025 rows: GHGRP reporting-year-2024 data was not yet published by EPA as of
-2026-09-12 (RLPS_GHG_EMITTER_GAS returns 0 rows for year 2024) - a missing year, not
-a zero, and is not filled in or estimated (AGENTS.md rule 6).
-
-No quarterly rows: also requested, not built. GHGRP - like every other public GHG
-disclosure checked for this indicator - is an annual figure; no company reports
-quarterly Scope 1/2 emissions, so quarterly rows would mean inventing numbers
-(AGENTS.md rule 6, not overridden by the normalisation request above). Separately,
-the shared indicator format has one row per ticker+year (common/config.py,
-Arash's file, `environmental/` does not own it) with no quarter column - social
-already has an open request for one (see git history). Both are blockers independent
-of the 0-1 request; raise the need for a quarter column with Arash if still wanted.
+Limits: US facilities only (foreign plants invisible), Scope 1 only, facilities below the
+threshold invisible, asset managers are listed as parents of fund-owned plants (ARES, BX).
+No 2024/2025 rows: GHGRP publishes year Y in autumn of Y+1; missing years are not filled.
 
 Sources:
   EPA Envirofacts GHGRP API (facility emissions + reported ownership)
@@ -83,7 +45,7 @@ Sources:
   SEC EDGAR XBRL companyconcept (annual revenue)
   https://data.sec.gov/api/xbrl/companyconcept/
 
-Owner:  Jean
+Owner:  Jean (method reworked by Arash 2026-09-13)
 Run:    python run.py build environmental ghg_intensity
 Refresh cadence: annual - GHGRP publishes year Y data in autumn of Y+1.
 
@@ -268,108 +230,121 @@ def match_year(year: int, name_index: dict[str, str]) -> tuple[pd.DataFrame, pd.
     return result, pd.DataFrame(matches)
 
 
-def sec_annual_revenue(cik: str, year: int) -> float | None:
-    tags = [
-        "Revenues",
-        "RevenueFromContractWithCustomerExcludingAssessedTax",
-        "RevenueFromContractWithCustomerIncludingAssessedTax",
-        "SalesRevenueNet",
-    ]
-    cik10 = str(cik).zfill(10)
-    for tag in tags:
-        try:
-            data = cached_json(
-                f"https://data.sec.gov/api/xbrl/companyconcept/CIK{cik10}/us-gaap/{tag}.json",
-                CATEGORY,
-                f"sec_revenue_{cik10}_{tag}.json",
-            )
-        except requests.HTTPError:
-            continue
-        facts = data.get("units", {}).get("USD", [])
-        for f in facts:
-            if f.get("form") != "10-K" or f.get("fy") != year:
+def owner_segments(years: list[int]) -> pd.DataFrame:
+    """Every (year, facility, owner name, share, facility co2e) row for the given years."""
+    rows = []
+    for year in years:
+        joined = facility_totals(year).merge(facility_parents(year), on="facility_id", how="inner")
+        for _, row in joined.iterrows():
+            for owner_name, share in parse_owners(row["parent_company"]):
+                rows.append({"year": year, "facility_id": row["facility_id"], "parent_company_raw": row["parent_company"],
+                             "owner_segment": owner_name, "share": share, "facility_co2e_tonnes": row["co2e_tonnes"]})
+    return pd.DataFrame(rows)
+
+
+def match_owners(owners: pd.Series, universe: pd.DataFrame) -> pd.Series:
+    """owner name -> ticker (first ticker of the CIK), None if no S&P 500 parent.
+
+    1. social/scripts/_company_match.py: exact normalised parent name, former SEC names,
+       or a subsidiary from the parent's 10-K Exhibit 21 ("WILLIAMS PARTNERS, LP" -> WMB).
+    2. the original whole-word rule on the normalised S&P 500 name, now also comparing
+       with spaces removed ("EXXONMOBIL CORP" = "Exxon Mobil"), GENERIC_NAMES exact only.
+    Government/municipal owners are never matched.
+    """
+    from social.scripts._company_match import CompanyMatcher
+
+    unique = pd.Series(sorted(set(owners.dropna())))
+    unique = unique[~unique.map(lambda n: bool(GOVERNMENT_ENTITY_RE.search(normalise(n))))]
+    first_ticker = universe.drop_duplicates("cik").assign(cik=lambda d: d["cik"].astype(str).str.zfill(10))
+    first_ticker = dict(zip(first_ticker["cik"], first_ticker["ticker"]))
+    by_matcher = CompanyMatcher().match(pd.Series([None] * len(unique), index=unique.index), unique)["cik"].map(first_ticker)
+
+    name_index = {normalise(n): t for n, t in zip(universe["name"], universe["ticker"])}
+    compact_index = {k.replace(" ", ""): t for k, t in name_index.items() if len(k.replace(" ", "")) >= 6}
+
+    def by_rule(owner: str) -> str | None:
+        norm = normalise(owner)
+        compact = norm.replace(" ", "")
+        for sp500_norm, ticker in name_index.items():
+            if len(sp500_norm) < 6:
+                if norm == sp500_norm:  # short names only as the WHOLE owner name: "AES CORP", "DOW INC"
+                    return ticker
                 continue
-            try:
-                start = pd.Timestamp(f["start"])
-                end = pd.Timestamp(f["end"])
-            except (KeyError, ValueError):
-                continue
-            if 350 <= (end - start).days <= 380:
-                return float(f["val"])
-    return None
+            if sp500_norm in GENERIC_NAMES:
+                if norm == sp500_norm:
+                    return ticker
+            elif re.search(rf"\b{re.escape(sp500_norm)}\b", norm):
+                return ticker
+        return compact_index.get(compact)
+
+    result = by_matcher.where(by_matcher.notna(), unique.map(by_rule))
+    # A former SEC name that now belongs to a separate, spun-off company must not pull that
+    # company's plants to the old parent: Howmet (HWM) was "Alcoa Inc." and "Arconic Inc.",
+    # but GHGRP's "ALCOA CORP" (2016 spin-off) and "ARCONIC CORP" (2020 spin-off) are other
+    # companies. Found by hand-checking the match log.
+    # ("ARCONIC INC" in 2018-19 WAS Howmet and stays matched - only the spin-offs' own names are blocked)
+    spun_off = {"ALCOA CORP", "ALCOA CORPORATION", "ARCONIC CORP", "ARCONIC CORPORATION"}
+    blocked = unique.map(lambda n: " ".join(PUNCT_RE.sub(" ", n.upper()).split()) in spun_off)
+    result = result.where(~blocked.values, None)
+    return pd.Series(result.values, index=unique.values)
 
 
 def build() -> pd.DataFrame:
-    universe = load_universe()
-    name_index = {normalise(row["name"]): row["ticker"] for _, row in universe.iterrows()}
-    cik_by_ticker = dict(zip(universe["ticker"], universe["cik"]))
+    from environmental.scripts._revenue import load_revenue
 
+    universe = load_universe()
     years = available_years()
     print(f"  EPA GHGRP years with published data: {years}")
 
-    year_frames, match_frames = [], []
-    for year in years:
-        result, matches = match_year(year, name_index)
-        if not result.empty:
-            year_frames.append(result)
-        if not matches.empty:
-            match_frames.append(matches)
-        print(f"  {year}: {len(result)} companies matched to a GHGRP facility")
+    segments = owner_segments(years)
+    owner_to_ticker = match_owners(segments["owner_segment"], universe)
+    segments["ticker"] = segments["owner_segment"].map(owner_to_ticker)
+    # "ARCONIC INC" was Howmet's name until the April 2020 split; from 2020 the name belongs
+    # to the spun-off Arconic Corp (taken private 2023), so those facilities are not Howmet's
+    late_arconic = (segments["ticker"] == "HWM") & (segments["year"] >= 2020) & segments["owner_segment"].str.upper().str.startswith("ARCONIC")
+    segments.loc[late_arconic, "ticker"] = None
+    matches = segments.dropna(subset=["ticker"]).copy()
+    matches["attributed_co2e_tonnes"] = matches["facility_co2e_tonnes"] * matches["share"]
+    MATCHES_PATH.parent.mkdir(parents=True, exist_ok=True)
+    matches.to_csv(MATCHES_PATH, index=False)
+    print(f"  wrote {len(matches)} owner-name matches ({matches['ticker'].nunique()} companies) -> {MATCHES_PATH}")
 
-    co2e = pd.concat(year_frames, ignore_index=True) if year_frames else pd.DataFrame(columns=["ticker", "year", "co2e_tonnes"])
-    matches_log = pd.concat(match_frames, ignore_index=True) if match_frames else pd.DataFrame()
-    if not matches_log.empty:
-        MATCHES_PATH.parent.mkdir(parents=True, exist_ok=True)
-        matches_log.to_csv(MATCHES_PATH, index=False)
-        print(f"  wrote {len(matches_log)} owner-name matches -> {MATCHES_PATH} (spot-check these)")
+    co2e = matches.groupby(["ticker", "year"])["attributed_co2e_tonnes"].sum()
+    facilities = matches.groupby(["ticker", "year"])["facility_id"].nunique()
+    revenue = load_revenue()
+    cik_tickers: dict[str, list[str]] = {}
+    for t, c in zip(universe["ticker"], universe["cik"]):
+        cik_tickers.setdefault(str(c), []).append(t)
 
-    rows = []
-    for _, r in co2e.iterrows():
-        cik = cik_by_ticker.get(r["ticker"])
-        if cik is None:
-            continue
-        revenue = sec_annual_revenue(cik, int(r["year"]))
-        if not revenue or revenue <= 0:
-            continue
-        rows.append(
-            {
-                "ticker": r["ticker"],
-                "year": int(r["year"]),
-                "co2e_tonnes": r["co2e_tonnes"],
-                "revenue_usd": revenue,
-                "raw_ratio": r["co2e_tonnes"] / (revenue / 1e6),
-            }
-        )
-    raw = pd.DataFrame(rows)
-    if raw.empty:
-        raise RuntimeError("no ticker matched both a GHGRP facility and SEC revenue - nothing to write")
-
-    raw_ratio_out = raw.copy()
-    raw_ratio_out["source"] = SOURCE
-    raw_ratio_out["source_url"] = "https://data.epa.gov/efservice/RLPS_GHG_EMITTER_GAS"
-    raw_ratio_out["retrieved"] = today_utc()
-    RAW_RATIO_PATH.parent.mkdir(parents=True, exist_ok=True)
-    raw_ratio_out.to_csv(RAW_RATIO_PATH, index=False)
-    print(f"  wrote raw tCO2e/$M-revenue ratios -> {RAW_RATIO_PATH}")
-
-    raw["value"] = raw.groupby("year")["raw_ratio"].rank(pct=True).round(4)
-    raw["source"] = SOURCE
-    raw["source_url"] = "https://data.epa.gov/efservice/RLPS_GHG_EMITTER_GAS"
-    raw["retrieved"] = today_utc()
-    raw["note"] = (
-        "percentile rank of "
-        + raw["raw_ratio"].round(1).astype(str)
-        + " tCO2e/$M revenue among "
-        + raw.groupby("year")["ticker"].transform("count").astype(str)
-        + " GHGRP-matched companies that year (see ghg_intensity_raw_ratio.csv)"
-    )
-    return raw[["ticker", "year", "value", "source", "source_url", "retrieved", "note"]]
+    rows, raw_rows = [], []
+    for tickers in cik_tickers.values():
+        # share classes: the facility owner matches the first class; every class gets the value
+        key_ticker = next((t for t in tickers if any((t, y) in co2e.index for y in years)), tickers[0])
+        for year in years:
+            rev = revenue.get((tickers[0], year))
+            if not rev:
+                continue
+            tonnes = float(co2e.get((key_ticker, year), 0.0))
+            ratio = tonnes / (rev / 1e6)
+            if tonnes > 0:
+                note = (f"{tonnes:,.0f} tCO2e direct (Scope 1) from {int(facilities.get((key_ticker, year)))} GHGRP "
+                        f"facilities, ownership-weighted, over revenue ${rev / 1e9:,.2f}bn")
+            else:
+                note = ("no US facility reporting to EPA GHGRP (>= 25,000 tCO2e/yr) found under the company's name, "
+                        "former names or 10-K subsidiaries - direct US emissions below the reporting threshold, "
+                        "not zero emissions")
+            for ticker in tickers:
+                rows.append({"ticker": ticker, "year": year, "value": round(ratio, 3), "source": SOURCE,
+                             "source_url": "https://ghgdata.epa.gov/ghgp/main.do", "retrieved": today_utc(), "note": note})
+            raw_rows.append({"ticker": tickers[0], "year": year, "co2e_tonnes": tonnes, "revenue_usd": rev, "raw_ratio": ratio})
+    pd.DataFrame(raw_rows).to_csv(RAW_RATIO_PATH, index=False)
+    return pd.DataFrame(rows)
 
 
 if __name__ == "__main__":
     df = build()
     write_indicator(CATEGORY, INDICATOR_ID, df)
     latest = df[df["year"] == df["year"].max()]
-    print(f"\n  highest carbon intensity (percentile) in {int(df['year'].max())}:")
+    print(f"  highest tCO2e per $M revenue in {int(df['year'].max())}:")
     print(latest.nlargest(10, "value")[["ticker", "value"]].to_string(index=False))
-    print(f"\n  coverage: {df['ticker'].nunique()} / 503 companies have >=1 year scored")
+    print(f"  companies with a GHGRP facility that year: {(latest['value'] > 0).sum()} of {latest['ticker'].nunique()}")
