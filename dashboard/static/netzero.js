@@ -25,13 +25,13 @@ function nzCurve(st) {
 
 /* the story in three bars: index -> sell fossil fuels -> re-weight inside sectors */
 function nzSteps(at, excluded) {
-  const W = 1120, H = 260, T = 48, B = 60, max = Math.max(at.index, at.exclusion, at.fund) * 1.05;
+  const W = 1120, H = 220, T = 40, B = 56, max = Math.max(at.index, at.exclusion, at.fund) * 1.05;
   const cols = [["index", "S&P 500", "today"], ["exclusion", "1 · Sell oil, gas & tobacco", `${excluded} companies out`], ["fund", "2 · Re-weight inside sectors", "less carbon, more climate targets"]];
   const bw = 160, gap = (W - cols.length * bw) / cols.length;
   let g = `<line class="grid" x1="0" x2="${W}" y1="${H - B}" y2="${H - B}"/>`;
   cols.forEach(([k, label, sub], i) => {
     const x = gap / 2 + i * (bw + gap), h = (H - T - B) * at[k] / max;
-    g += `<rect class="${k === "fund" ? "b-fund" : "b-bench"}" x="${x}" y="${H - B - h}" width="${bw}" height="${h}"/>
+    g += `<rect class="${k === "fund" ? "q-good" : k === "index" ? "q-bad" : "q-mid"}" x="${x}" y="${H - B - h}" width="${bw}" height="${h}" rx="4"/>
       <text class="big" x="${x + bw / 2}" y="${H - B - h - 12}" text-anchor="middle">${(at[k] * 100).toFixed(1)}%</text>
       <text class="strong" x="${x + bw / 2}" y="${H - B + 24}" text-anchor="middle">${label}</text>
       <text x="${x + bw / 2}" y="${H - B + 44}" text-anchor="middle">${sub}</text>`;

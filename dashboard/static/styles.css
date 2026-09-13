@@ -333,3 +333,32 @@ mark { background: color-mix(in srgb, var(--env) 18%, transparent); color: inher
 .exhibit .aud-head .scores { margin: 20px 0 0; }
 nav.tabs { overflow: visible; }
 @media (max-width: 900px) { nav.tabs { overflow-x: auto; overflow-y: hidden; scrollbar-width: none; } nav.tabs::-webkit-scrollbar { display: none; } }
+
+/* ---------- colour + calmer sizes (fast pass) ---------- */
+:root { --bad: #c2412d; --good: var(--env); }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --bad: #ff7a5c; } }
+:root[data-theme="dark"] { --bad: #ff7a5c; }
+.chart .q-bad { fill: var(--bad); }
+.chart .q-good { fill: var(--good); }
+.chart .q-mid { fill: color-mix(in srgb, var(--faint) 70%, var(--bg)); }
+.chart .b-fund { fill: var(--good); }
+.chart .l-fund { stroke: var(--good); stroke-width: 2.6; }
+.chart .l-bench { stroke: var(--bad); stroke-opacity: .55; }
+.chart .dot-me { fill: var(--good); }
+.key.fund { background: var(--good); }
+.chart .big { font-size: 17px; }
+.claim { gap: 14px; margin: 0 0 16px; }
+.claim .v { font-size: clamp(38px, 4vw, 52px); color: var(--good); }
+.claim p { font-size: 16px; max-width: 48ch; }
+.exhibit .fig { max-width: 980px; margin-bottom: 28px; }
+.verdict { font-size: 20px; }
+.subnav { margin-bottom: 24px; }
+.subnav button { padding: 10px 16px 10px 0; }
+#view-evidence .head { margin: 40px 0 20px; }
+#view-evidence .head h2 { font-size: clamp(22px, 2.4vw, 28px); }
+.exhibit .figures .fig-n .v { font-size: 30px; }
+.exhibit .h2 { font-size: 26px; }
+.quote p { font-size: 14px; }
+.filters input#aud-search { width: min(100%, 420px); }
+.exhibit .chart text { font-size: 13px; }
+.exhibit .chart .big { font-size: 17px; }

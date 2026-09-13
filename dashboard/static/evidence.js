@@ -16,12 +16,12 @@ const THEME = { planet: ["Planet", "--env"], people: ["People", "--soc"], legal:
 
 /* A - caught later: share fined per within-sector quintile of the 2021 score */
 function chartQuintiles(rows) {
-  const W = 1120, H = 300, L = 44, R = 10, T = 26, B = 50, max = Math.max(...rows.map(r => r.share || 0), 0.05);
+  const W = 1120, H = 230, L = 44, R = 10, T = 26, B = 36, max = Math.max(...rows.map(r => r.share || 0), 0.05);
   const bw = (W - L - R) / rows.length, y = sc(0, max * 1.12, H - B, T);
   let g = `<line class="grid" x1="${L}" x2="${W - R}" y1="${H - B}" y2="${H - B}"/>`;
   rows.forEach((r, i) => {
     const x = L + i * bw + bw * .3, w = bw * .4, top = y(r.share || 0), edge = i === 0 || i === rows.length - 1;
-    g += `<rect class="${edge ? "q-edge" : "q-mid"}" x="${x}" y="${top}" width="${w}" height="${H - B - top}"><title>${r.group}: ${r.hits} of ${r.companies} companies fined</title></rect>
+    g += `<rect class="${i === 0 ? "q-bad" : i === rows.length - 1 ? "q-good" : "q-mid"}" x="${x}" y="${top}" width="${w}" height="${H - B - top}" rx="4"><title>${r.group}: ${r.hits} of ${r.companies} companies fined</title></rect>
       <text class="big" x="${x + w / 2}" y="${top - 10}" text-anchor="middle">${Math.round(r.share * 100)}%</text>
       <text class="strong" x="${x + w / 2}" y="${H - B + 22}" text-anchor="middle">${i === 0 ? "Worst fifth" : i === rows.length - 1 ? "Best fifth" : r.group.split(" ")[0]}</text>`;
   });
@@ -30,12 +30,12 @@ function chartQuintiles(rows) {
 
 /* B - robustness: histogram of rank correlations */
 function chartHistogram(counts, median) {
-  const W = 1120, H = 220, L = 10, R = 10, T = 26, B = 30, max = Math.max(...counts, 1), bw = (W - L - R) / counts.length;
+  const W = 1120, H = 170, L = 10, R = 10, T = 26, B = 30, max = Math.max(...counts, 1), bw = (W - L - R) / counts.length;
   const y = sc(0, max, H - B, T), xm = L + median * (W - L - R);
   let g = `<line class="grid" x1="${L}" x2="${W - R}" y1="${H - B}" y2="${H - B}"/>`;
   counts.forEach((c, i) => {
     const lo = i / counts.length;
-    g += `<rect class="${lo >= 0.7 ? "q-edge" : "q-mid"}" x="${L + i * bw + 1}" y="${y(c)}" width="${bw - 2}" height="${H - B - y(c)}"><title>${c} runs with correlation ${lo.toFixed(2)}–${(lo + 1 / counts.length).toFixed(2)}</title></rect>`;
+    g += `<rect rx="3" class="${lo >= 0.7 ? "q-good" : "q-mid"}" x="${L + i * bw + 1}" y="${y(c)}" width="${bw - 2}" height="${H - B - y(c)}"><title>${c} runs with correlation ${lo.toFixed(2)}–${(lo + 1 / counts.length).toFixed(2)}</title></rect>`;
   });
   g += `<line class="ref" x1="${xm}" x2="${xm}" y1="${T - 10}" y2="${H - B}"/><text class="strong" x="${xm - 6}" y="${T - 2}" text-anchor="end">median ${median.toFixed(2)}</text>`;
   [[0, "0 · unrelated"], [.5, "0.5"], [1, "1 · identical"]].forEach(([v, t]) => g += `<text x="${L + v * (W - L - R)}" y="${H - 8}" text-anchor="${v === 0 ? "start" : v === 1 ? "end" : "middle"}">${t}</text>`);
@@ -75,7 +75,7 @@ function mark(text, keywords) {
 
 function exhibitC() {
   const opts = (state.score ? state.score.rows : []).slice().sort((a, b) => (a.name || "").localeCompare(b.name || ""))
-    .map(r => `<option value="${r.ticker}"${r.ticker === AUD.ticker ? " selected" : ""}>${esc(r.name)} (${r.ticker})</option>`).join("");
+    .map(r => `<option value="${esc(r.name)} (${r.ticker})"></option>`).join("");
   const a = AUD.data;
   let out = `<p class="muted">What the company says in its own annual report, what the regulator recorded, what the news says.</p>`;
   if (AUD.loading) out = `<p class="muted">Reading ${esc(AUD.ticker)}'s 10-K and EPA record…</p>`;
@@ -107,8 +107,8 @@ function exhibitC() {
         ${news && news.search_url ? `<a class="ghost" href="${esc(news.search_url)}" target="_blank" rel="noopener">Search the news ↗</a>` : ""}
       </section>`;
   }
-  return `<div class="filters"><select id="aud-select" aria-label="Company"><option value="">Choose a company…</option>${opts}</select>
-    <button type="button" class="ghost" id="aud-random">Random</button></div>${out}`;
+  return `<div class="filters"><input type="search" id="aud-search" list="aud-list" placeholder="Search a company or ticker…" aria-label="Search company" value="${esc(AUD.ticker ? `${(state.score.rows.find(r => r.ticker === AUD.ticker) || {}).name || ""} (${AUD.ticker})` : "")}">
+    <datalist id="aud-list">${opts}</datalist></div>${out}`;
 }
 
 async function runAudit(ticker) {
@@ -142,8 +142,12 @@ async function renderEvidence() {
     </article>`;
   $$("#view-evidence .subnav button").forEach(b => b.onclick = () => go("evidence", b.dataset.ex));
   if (e.id === "C") {
-    $("#aud-select").onchange = ev => ev.target.value && runAudit(ev.target.value);
-    $("#aud-random").onclick = () => { const rows = state.score.rows; runAudit(rows[Math.floor(Math.random() * rows.length)].ticker); };
+    const pick = ev => {
+      const v = ev.target.value.trim(), m = v.match(/\(([A-Z.\-]+)\)$/), q = v.toUpperCase();
+      const row = m ? state.score.rows.find(r => r.ticker === m[1]) : state.score.rows.find(r => r.ticker === q || (r.name || "").toUpperCase() === q);
+      if (row && row.ticker !== AUD.ticker) runAudit(row.ticker);
+    };
+    $("#aud-search").oninput = pick; $("#aud-search").onchange = pick;
     if (!AUD.ticker) runAudit(state.score.rows.find(r => r.ticker === "NUE") ? "NUE" : state.score.rows[0].ticker);
   }
 }
