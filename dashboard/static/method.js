@@ -5,9 +5,9 @@
    Indicator facts come from GET /api/meta; the pillar questions and weak spots are editorial text. */
 
 const PILLARS = {
-  environmental: { q: "Is it damaging nature - and does it depend on resources that may run out?", name: "Planet" },
-  social: { q: "Does it treat the people who work for it fairly and safely?", name: "People" },
-  economic: { q: "Can it sustain itself and the economy around it?", name: "Economic base" },
+  environmental: { q: "Is it damaging nature - and does it depend on resources that may run out?", name: "Environmental Factors" },
+  social: { q: "Does it treat the people who work for it fairly and safely?", name: "Social Factors" },
+  economic: { q: "Can it sustain itself and the economy around it?", name: "Economic Factors" },
 };
 const WEAK = {
   tax_rate_gap: "Part of a gap comes from legal R&D credits and foreign tax rates.",
@@ -130,7 +130,7 @@ function renderMethod() {
       ${step(3, "Pillar scores", "Weighted mean of the points", pillarBlock)}
       ${step(4, "Total", "Weighted mean of the pillars", totalBlock)}
       ${step(5, "Fund weight", "", fundBlock)}
-      ${step(6, "Test it", "", `<div class="chips"><button type="button" data-go="evidence/A">Caught later →</button><button type="button" data-go="evidence/B">Robust to weights →</button><button type="button" data-go="netzero">Carbon price →</button></div>`)}
+      ${step(6, "Test it", "", `<div class="chips"><button type="button" data-go="evidence/A">Caught later</button><button type="button" data-go="evidence/B">Robust to weights</button><button type="button" data-go="netzero">Carbon price</button></div>`)}
     </ol>
 
     <details class="how"><summary>All ${state.meta.indicators.length} indicators · coverage · weak spots</summary>

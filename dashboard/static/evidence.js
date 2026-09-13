@@ -12,7 +12,7 @@ const EX = [
   { id: "C", check: null, title: "Audit a company" },
 ];
 const AUD = { ticker: null, data: null, news: null, loading: false };
-const THEME = { planet: ["Planet", "--env"], people: ["People", "--soc"], legal: ["Lawsuits & fines", "--ink"] };
+const THEME = { planet: ["Environmental Factors", "--env"], people: ["Social Factors", "--soc"], legal: ["Lawsuits & fines", "--ink"] };
 
 /* A - caught later: share fined per within-sector quintile of the 2021 score */
 function chartQuintiles(rows) {

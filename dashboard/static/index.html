@@ -13,6 +13,7 @@
   <div class="home-in">
     <div class="hero">
       <h1 id="home-title">How sustainable is the S&amp;P&nbsp;500?</h1>
+      <p class="stats" id="home-stats"></p>
       <a class="scroll-cue" href="#choose-anchor" aria-label="Scroll to the weights">↓</a>
     </div>
 
@@ -20,16 +21,14 @@
     <div class="console">
       <div class="console-h"><div><h2 class="console-t">What counts for you?</h2>
         <p class="console-def">A company is sustainable if it can run for decades without wearing down the planet, its people or its own economic base.</p>
-        <p class="stats" id="home-stats"></p></div><span id="emph-slot"></span></div>
+        </div></div>
       <div class="choose" id="choose" aria-label="Weights"></div>
-      <div class="mix">
-        <div class="mix-top"><span class="small muted">Your score is made of</span><span class="small muted" id="mix-count"></span></div>
-        <div class="mix-bar" id="mix-bar"></div>
-        <div class="mix-legend" id="mix-legend"></div>
-      </div>
+      <!-- composition bar removed: each pillar card prints its own share. To restore, put back
+           .mix / #mix-count / #mix-bar / #mix-legend here - renderChoose() fills them if present. -->
       <div class="home-go">
-        <button type="button" class="primary" id="go">Compute <span aria-hidden="true">→</span></button>
-        <span class="small muted">Scores, a $1bn fund, a 2021 back-test, 1,000 alternative weightings and a carbon price - in about 15 seconds.</span>
+        <button type="button" class="primary" id="go">Compute</button>
+        <span class="small muted">about 15 seconds</span>
+        <span id="emph-slot"></span>
       </div>
     </div>
     </div>
@@ -42,7 +41,7 @@
     <p class="eyebrow" id="run-weights"></p>
     <h2 id="run-title">Computing…</h2>
     <ol class="steps" id="steps"></ol>
-    <button type="button" class="primary" id="see" hidden>See the results <span aria-hidden="true">→</span></button>
+    <button type="button" class="primary" id="see" hidden>See the results</button>
   </div>
 </section>
 
@@ -50,7 +49,7 @@
 <div id="app" hidden>
   <header class="bar">
     <div class="wrap bar-in">
-      <button type="button" class="mark" id="home-link" title="Back to start"><span class="brand"><i></i><i></i><i></i>S&amp;P 500 Sustainability</span></button>
+      <button type="button" class="mark" id="home-link" title="Back to start"><span class="brand">S&amp;P 500 Sustainability</span></button>
       <nav class="tabs" role="tablist">
         <button type="button" role="tab" aria-selected="true" data-view="ranking">Ranking</button>
         <button type="button" role="tab" aria-selected="false" data-view="portfolio">Fund</button>
@@ -75,7 +74,7 @@
       </div>
       <div class="table-wrap">
         <table class="rank">
-          <thead><tr><th class="r">#</th><th>Company</th><th>Sector</th><th>Indicators</th><th class="r">Planet</th><th class="r">People</th><th class="r">Econ.</th><th class="r">Total</th></tr></thead>
+          <thead><tr><th class="r">#</th><th>Company</th><th>Sector</th><th>Indicators</th><th class="r">Environmental</th><th class="r">Social</th><th class="r">Economic</th><th class="r">Total</th></tr></thead>
           <tbody id="rows"></tbody>
         </table>
       </div>

@@ -6,7 +6,7 @@
    Nothing here ranks, scores or calls a model. */
 
 const CATS = [["economic", "Economic", "--econ"], ["social", "Social", "--soc"], ["environmental", "Environmental", "--env"]];
-const HOME_ORDER = [["environmental", "Planet"], ["social", "People"], ["economic", "Economic base"]];
+const HOME_ORDER = [["environmental", "Environmental Factors"], ["social", "Social Factors"], ["economic", "Economic Factors"]];
 const SHORT = {
   tax_rate_gap: "Tax paid", revenue_volatility: "Stable revenue", employment_growth: "Job growth",
   federal_contract_exposure: "Gov. dependence", median_worker_pay: "Worker pay",
@@ -27,6 +27,7 @@ const short = id => SHORT[id] || (state.meta.indicators.find(m => m.id === id) |
 const state = {
   meta: null, profileId: "balanced", categoryWeights: { economic: 1, social: 1, environmental: 1 }, off: new Set(),
   score: null, checks: null, evidence: {}, netzero: null, q: "", sector: "", limit: 50, ex: "A", view: "ranking",
+  openPillars: new Set(),
 };
 
 async function getJSON(path) { const r = await fetch(path); return r.json(); }
@@ -63,32 +64,42 @@ function mixShares() {
 function renderChoose() {
   const shares = mixShares();
   const pillarShare = id => state.meta.indicators.filter(m => m.category === id).reduce((a, m) => a + (shares[m.id] || 0), 0);
-  $("#home-stats").innerHTML = [[state.meta.companies, "companies"], [state.meta.indicators.length, "indicators"], [state.meta.sectors.length, "sectors"], ["0", "estimates"]]
+  $("#home-stats").innerHTML = [[state.meta.companies, "companies"], [state.meta.indicators.length, "indicators"], [state.meta.sectors.length, "sectors"]]
     .map(([v, l]) => `<span><b class="num">${v}</b> ${l}</span>`).join("");
   $("#choose").innerHTML = HOME_ORDER.map(([id, name]) => {
     const col = CATS.find(c => c[0] === id)[2], w = state.categoryWeights[id] || 0;
     const inds = state.meta.indicators.filter(m => m.category === id);
+    const on = inds.filter(m => !state.off.has(m.id)).length, open = state.openPillars.has(id);
     return `<div class="pcard ${w ? "" : "off"}" style="--c:var(${col})">
       <div class="pcard-h"><span class="pdot"></span><b>${name}</b><span class="pshare num">${Math.round(pillarShare(id) * 100)}<small>%</small></span></div>
-      <div class="stepper" role="radiogroup" aria-label="${name} weight"><span class="small muted">Weight</span>${[0, 1, 2, 3].map(k =>
+      <div class="stepper" role="radiogroup" aria-label="${name} weight">${[0, 1, 2, 3].map(k =>
         `<button type="button" role="radio" data-id="${id}" data-k="${k}" aria-checked="${w === k}">${k}</button>`).join("")}</div>
-      <ul class="inds">${inds.map(m => `<li><button type="button" role="switch" data-ind="${m.id}" data-cat="${id}" aria-checked="${!state.off.has(m.id)}" title="${esc(m.name)}">
+      <button type="button" class="pmore" data-open="${id}" aria-expanded="${open}" aria-controls="inds-${id}">
+        ${inds.length} indicators <span class="muted">· ${on === inds.length ? "all on" : `${on} on`}</span><span class="sign" aria-hidden="true">${open ? "–" : "+"}</span></button>
+      <ul class="inds" id="inds-${id}"${open ? "" : " hidden"}>${inds.map(m => `<li><button type="button" role="switch" data-ind="${m.id}" data-cat="${id}" aria-checked="${!state.off.has(m.id)}" title="${esc(m.name)}">
           <span class="tog"><i></i></span><span class="nm">${esc(short(m.id))}</span><span class="pc num">${shares[m.id] ? (shares[m.id] * 100).toFixed(0) + "%" : "–"}</span></button></li>`).join("")}</ul>
     </div>`;
   }).join("");
-  $("#emph-slot").innerHTML = `<span class="seg soft" role="radiogroup" aria-label="Indicator emphasis">
-      <button type="button" role="radio" data-p="balanced" aria-checked="${state.profileId === "balanced"}">Equal</button>
-      <button type="button" role="radio" data-p="net_zero" aria-checked="${state.profileId === "net_zero"}" title="Emissions and climate targets count 3×">Net zero</button></span>`;
-  const segs = HOME_ORDER.flatMap(([id]) => state.meta.indicators.filter(m => m.category === id && shares[m.id]).map(m => ({ m, col: CATS.find(c => c[0] === id)[2] })));
-  $("#mix-bar").innerHTML = segs.map(({ m, col }) => `<i style="flex:${shares[m.id]};background:var(${col})" title="${esc(short(m.id))} ${(shares[m.id] * 100).toFixed(1)}%"></i>`).join("");
-  $("#mix-count").textContent = `${segs.length} of ${state.meta.indicators.length} indicators`;
-  $("#mix-legend").innerHTML = HOME_ORDER.map(([id, n]) => `<span><span class="sw" style="background:var(${CATS.find(c => c[0] === id)[2]})"></span>${n} <b class="num">${Math.round(pillarShare(id) * 100)}%</b></span>`).join("");
+  const nz = state.profileId === "net_zero";
+  $("#emph-slot").innerHTML = `<button type="button" class="linky" data-p="${nz ? "balanced" : "net_zero"}" title="Emissions and climate targets count 3×">${
+    nz ? "net-zero emphasis on · back to equal weights" : "or use the net-zero preset"}</button>`;
+  if ($("#mix-bar")) {  // only if the composition bar is in the page
+    const segs = HOME_ORDER.flatMap(([id]) => state.meta.indicators.filter(m => m.category === id && shares[m.id]).map(m => ({ m, col: CATS.find(c => c[0] === id)[2] })));
+    $("#mix-bar").innerHTML = segs.map(({ m, col }) => `<i style="flex:${shares[m.id]};background:var(${col})" title="${esc(short(m.id))} ${(shares[m.id] * 100).toFixed(1)}%"></i>`).join("");
+    $("#mix-count").textContent = `${segs.length} of ${state.meta.indicators.length} indicators`;
+    $("#mix-legend").innerHTML = HOME_ORDER.map(([id, n]) => `<span><span class="sw" style="background:var(${CATS.find(c => c[0] === id)[2]})"></span>${n}</span>`).join("");
+  }
 
   $$("#choose .stepper button").forEach(b => b.onclick = () => {
     const next = { ...state.categoryWeights, [b.dataset.id]: +b.dataset.k };
     if (Object.values(next).every(x => !x)) return;
     if (+b.dataset.k > 0) state.meta.indicators.filter(m => m.category === b.dataset.id).forEach(m => state.off.delete(m.id));
     state.categoryWeights = next; renderChoose();
+  });
+  $$("#choose .pmore").forEach(b => b.onclick = () => {
+    const id = b.dataset.open;
+    state.openPillars.has(id) ? state.openPillars.delete(id) : state.openPillars.add(id);
+    renderChoose();
   });
   $$("#choose .inds button").forEach(b => b.onclick = () => {
     const id = b.dataset.ind, cat = b.dataset.cat;
@@ -267,7 +278,7 @@ async function openCompany(ticker) {
   $("#drawer").innerHTML = `<header><div><p class="eyebrow">${c.ticker} · ${esc(c.sector || "")}</p><h2>${esc(c.name || c.ticker)}</h2></div>
       <button type="button" class="ghost" id="close" aria-label="Close">✕</button></header>
     <div class="scores">${[["total", "Total", null], ...HOME_ORDER.map(([id, n]) => [id, n, CATS.find(k => k[0] === id)[2]])].map(([id, n, col]) => `<div><span class="label">${col ? `<span class="sw" style="background:var(${col})"></span>` : ""}${n}</span><span class="v num">${f1(c[`${id}_score`])}</span></div>`).join("")}</div>
-    <div class="drawer-actions"><button type="button" class="ghost" id="trace-co">How it's calculated →</button><button type="button" class="ghost" id="audit-co">Audit →</button></div>
+    <div class="drawer-actions"><button type="button" class="ghost" id="trace-co">How it's calculated</button><button type="button" class="ghost" id="audit-co">Audit</button></div>
     <table class="ledger"><thead><tr><th>Indicator</th><th class="r">Value</th><th>Rank in sector</th><th></th><th></th></tr></thead><tbody>${rows}</tbody></table>`;
   $("#drawer").hidden = $("#scrim").hidden = false; $("#close").onclick = closeCompany; $("#close").focus();
   $("#audit-co").onclick = () => { closeCompany(); go("evidence", "C"); runAudit(ticker); };
