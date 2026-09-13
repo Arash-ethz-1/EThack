@@ -1,4 +1,7 @@
-# EThack - sustainability impact of the S&P 500
+# EThack - S&P 500 Sustainability
+
+**New here? Read [`docs/PRODUCT.md`](docs/PRODUCT.md) (what exists) and [`docs/PITCH.md`](docs/PITCH.md) (the story).**
+Run it: `python run.py dashboard` -> Ranking, Portfolio, Evidence, Method.
 
 Challenge: quantify and compare the sustainability of S&P 500 companies for an
 ETH-affiliated fund, and use it to weight a portfolio.
@@ -11,7 +14,9 @@ economic/  social/  environmental/      >= 3 sub-indicators each, one shared dat
                |
       python run.py score / dashboard   0-100 score per category + total, per company
                |
-          portfolio/                    allocation weights (phase 3, placeholder)
+          portfolio/                    sustainability-tilted fund: weights, climate numbers, risk
+               |
+          checks/                       evidence: caught_later, weight_robustness, company audit
 ```
 
 | Category | Who |

@@ -93,6 +93,7 @@ async function loadScore() {
   state.score = await postJSON("/api/score", { profile: state.profileId, category_weights: state.categoryWeights });
   renderRows();
   if (typeof PF !== "undefined") { PF.data = null; if (!$("#view-portfolio").hidden) loadPortfolio(); }
+  if (state.checks) renderOverview();
 }
 
 /* ---------- company drawer: chain of evidence ---------- */
@@ -133,18 +134,45 @@ async function openCompany(ticker) {
       <div class="num">${fmtVal(x.value, x.unit)}<div class="cat">${esc(x.unit || "")}</div></div><div class="pts">${x.points != null ? Math.round(x.points) : "–"}</div>
       <div class="src">${x.source_url ? `<a href="${esc(x.source_url)}" target="_blank" rel="noopener">${esc(x.source || "source")} ↗</a>` : '<span class="muted">no link on record</span>'}</div>
       <div class="note">${esc(x.note || "")}</div></div>`).join("");
-  $("#drawer").innerHTML = `<header><div><span class="label mono">${c.ticker} · ${esc(c.sector || "")}</span><h2>${esc(c.name || c.ticker)}</h2></div><button type="button" class="btn" id="close">Close</button></header>
+  $("#drawer").innerHTML = `<header><div><span class="label mono">${c.ticker} · ${esc(c.sector || "")}</span><h2>${esc(c.name || c.ticker)}</h2></div><div class="tools"><button type="button" class="btn" id="audit-co">Audit this company</button><button type="button" class="btn" id="close">Close</button></div></header>
     <div class="score-line"><div><span class="label">Total</span><span class="v">${f1(c.total_score)}</span></div>${CATS.map(([id, n, col]) => `<div><span class="label"><span class="sw" style="background:var(${col})"></span>${n}</span><span class="v">${f1(c[`${id}_score`])}</span></div>`).join("")}</div>
     <div class="chain-h"><h3>Chain of evidence</h3><span class="muted" style="font-size:12px">Line width = points</span></div>
     ${flow(ticker, cats, detail.indicators)}
     <div class="ledger">${rows || '<p class="muted">No ready indicator has a value for this company.</p>'}</div>`;
   $("#drawer").hidden = $("#scrim").hidden = false; $("#close").onclick = closeCompany; $("#close").focus();
+  $("#audit-co").onclick = () => { closeCompany(); state.ex = "C"; $('nav.tabs button[data-view="evidence"]').click(); runAudit(ticker); };
 }
 function closeCompany() { $("#drawer").hidden = $("#scrim").hidden = true; }
 $("#scrim").onclick = closeCompany;
 document.addEventListener("keydown", e => e.key === "Escape" && closeCompany());
 
 /* ---------- portfolio: see portfolio.js ---------- */
+
+/* ---------- overview strip: headline results, each a door into its tab ---------- */
+async function renderOverview() {
+  const el = $("#overview");
+  const chk = id => (state.checks.checks || []).find(c => c.id === id);
+  const a = chk("caught_later"), b = chk("weight_robustness");
+  const tile = (view, label, value, text) => `<button type="button" class="ov" data-go="${view}"><span class="label">${label}</span><span class="v">${value}</span><span class="t">${text}</span></button>`;
+  const draw = pf => {
+    const c = pf && pf.summary ? pf.summary.climate : null, t = pf && pf.summary ? pf.summary.scores.total_score : null;
+    const cut = c && c.waci_tco2e_per_musd.benchmark ? 1 - c.waci_tco2e_per_musd.portfolio / c.waci_tco2e_per_musd.benchmark : null;
+    el.innerHTML = [
+      tile("portfolio", "Our fund vs the index", t ? `+${(t.portfolio - t.benchmark).toFixed(1)}` : "…", "sustainability points, sector mix unchanged"),
+      tile("portfolio", "Carbon intensity", cut != null ? `−${Math.round(cut * 100)}%` : "…", "tCO₂e per $M revenue vs the index"),
+      tile("evidence/A", "Low scores get caught", a && a.numbers.worst_to_best_ratio ? `${a.numbers.worst_to_best_ratio.toFixed(1)}×` : "–", "more EPA fines for the worst-rated fifth, 2022–25"),
+      tile("evidence/B", "Robust to weights", b && b.numbers.median_rho ? b.numbers.median_rho.toFixed(2) : "–", "rank correlation across 1,000 random weightings"),
+    ].join("");
+    $$("#overview .ov").forEach(x => x.onclick = () => {
+      const [view, sub] = x.dataset.go.split("/");
+      if (sub) state.ex = sub;
+      $(`nav.tabs button[data-view="${view}"]`).click();
+    });
+  };
+  draw(null);
+  const pf = await postJSON("/api/portfolio", { profile: state.profileId, category_weights: state.categoryWeights });
+  if (!pf.error) draw(pf);
+}
 
 /* ---------- evidence: see evidence.js ---------- */
 
