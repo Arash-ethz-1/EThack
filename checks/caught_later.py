@@ -66,16 +66,19 @@ def quintile_rates(score: pd.Series, sectors: pd.Series, outcome: pd.Series) -> 
     return out
 
 
-def run() -> dict:
-    data = load_dataset()
+def run(profile: Profile | None = None, data: Dataset | None = None) -> dict:
+    """`profile`: whose weights to test (default: balanced) - the dashboard passes the user's choice.
+    Its category and indicator weights are used; the sector-relative ranking and the 2021 cut-off are fixed."""
+    data = data or load_dataset()
     universe = pd.read_csv(UNIVERSE_CSV, dtype=str, keep_default_na=False)
     universe["cik10"] = universe["cik"].str.zfill(10)
     primary = universe.drop_duplicates("cik10")  # share classes once
     first_ticker = primary.set_index("cik10")["ticker"]
 
     past = dataset_as_of(data, LEFT_OUT)
-    base = load_profile("balanced")
-    profile = Profile("caught_later", category_weights=base.category_weights, sector_relative=True, min_year=2016)
+    base = profile or load_profile("balanced")
+    profile = Profile("caught_later", category_weights=base.category_weights, indicator_weights=base.indicator_weights,
+                      sector_relative=True, min_year=2016)
     table = score_profile(past, profile).table.set_index("ticker")
     table = table[table.index.isin(primary["ticker"])].dropna(subset=["total_score"])
 

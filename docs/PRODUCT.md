@@ -1,4 +1,4 @@
-# S&P 500 Sustainability - what we built (state 2026-09-13, night)
+# S&P 500 Sustainability - what we built (state 2026-09-13, morning)
 
 Read this first when you wake up. Numbers below were printed by the code in this repo.
 
@@ -10,7 +10,22 @@ sustainability-tilted index fund from the scores, and proves the score means som
     python run.py start        # pull everything
     python run.py dashboard    # http://127.0.0.1:8500
 
-Deep links for the pitch: `#portfolio`, `#evidence/A`, `#evidence/B`, `#evidence/C/NUE`, `#method`.
+## How it flows (redesign 2026-09-13 morning)
+
+1. **Start page** - title, our definition, three weights (Planet / People / Economic base, 0-3) and
+   "Equal" or "Net-zero emphasis" indicator weights. Button: Compute.
+2. **Pipeline** - five lines that each run a real server call and show its result and time:
+   scores -> $1bn fund -> back to 2021 vs EPA fines -> 1,000 random weightings -> carbon price stress.
+3. **Results** - Ranking, Fund, Net zero, Evidence, Method. Minimal look: white, black type,
+   hairlines, one typeface; colour only for the three pillars; fund = black, index = grey.
+
+Evidence A and B are **computed live on the chosen weights** (`POST /api/evidence`, same code as
+`python run.py verify`). The weight test went from 214 s to ~9 s: ranks are computed once
+(`common.score.profile_ranks`) and every weighting is scored with `common.score.total_scores`
+(identical numbers, tested).
+
+Deep links for the pitch (they run the pipeline with default weights, then open the tab):
+`#netzero`, `#portfolio`, `#evidence/A`, `#evidence/B`, `#evidence/C/NUE`, `#method/NUE`.
 
 ## Our definition
 
@@ -60,6 +75,31 @@ fossil exclusion live.
 
 Market-cap weights exist for 461 of 500 companies (SEC share counts x Yahoo closes); the cap
 benchmark is a toggle, equal weight stays the default so nobody drops out.
+
+## Net zero - the bonus question (Net zero tab, portfolio/transition.py)
+
+Answer: **sell the fuel, re-weight the rest, keep the market.** Three funds side by side
+(profile net_zero, printed by `python portfolio/transition.py`):
+
+| | Index (equal weight) | Without fossil fuels & tobacco | Net-zero fund |
+|---|---|---|---|
+| Holdings | 500 | 477 | 477 |
+| Carbon intensity (tCO2e/$M) | 138.2 | 136.3 | 79.6 |
+| Money with a science-based target | 45.2% | 47.0% | 60.1% |
+| Pre-tax profit a $130/t carbon price would take (IEA 2030) | 8.21% | 8.01% | 5.28% |
+| same at $250/t (IEA 2050) | 9.92% | 9.30% | 6.30% |
+
+The point for the jury: **excluding oil & gas alone barely changes the direct carbon cost
+exposure** (8.21% -> 8.01%); the tilt inside every sector does the work (-> 5.28%).
+Method: EPA GHGRP Scope 1 tonnes (US facilities > 25 kt, 2023) x carbon price / SEC pre-tax income of
+the same year, capped at 100%, a loss-making emitter counts as 100%. 131 emitters, 3 without income
+on record left out. No pass-through, no Scope 2/3 - stated on the page.
+
+## Method tab - the calculation for one company
+
+`POST /api/trace` shows every step with the real numbers: source values with links -> position among
+sector peers (dot strip) -> rank formula -> pillar weighted means -> total -> fund weight
+(equal weight -> exclusions -> z-score -> tilt factor -> sector rescale -> cap -> dollars of $1bn).
 
 ## Evidence (Evidence tab, checks/)
 

@@ -1,6 +1,6 @@
 {
   "status": "passed",
-  "verdict": "Across 1,000 random weightings the ranking barely moves (median correlation with ours 0.87): 78% of our top 50 stay in the top fifth in at least 80% of them.",
+  "verdict": "Across 1,000 random weightings the ranking barely moves (median rank correlation with the chosen weights 0.87): 78% of the top 50 stay in the top fifth in at least 80% of them.",
   "numbers": {
     "runs": 1000,
     "seed": 2026,
@@ -22,28 +22,28 @@
       2,
       4,
       12,
-      37,
-      105,
-      213,
-      366,
+      36,
+      107,
+      215,
+      363,
       233,
       27
     ],
     "top50_stay_share": 0.78,
-    "always_top": 25,
+    "always_top": 24,
     "always_bottom": 24,
     "companies_detail": [
       {
         "ticker": "COR",
         "name": "Cencora",
-        "default_score": 70.7,
+        "default_score": 70.6,
         "top_share": 0.999,
         "bottom_share": 0.0
       },
       {
         "ticker": "VEEV",
         "name": "Veeva Systems",
-        "default_score": 70.5,
+        "default_score": 70.4,
         "top_share": 0.99,
         "bottom_share": 0.0
       },
@@ -79,21 +79,21 @@
         "ticker": "KVUE",
         "name": "Kenvue",
         "default_score": 67.9,
-        "top_share": 0.959,
+        "top_share": 0.96,
         "bottom_share": 0.0
       },
       {
         "ticker": "TPL",
         "name": "Texas Pacific Land Corporation",
         "default_score": 67.6,
-        "top_share": 0.959,
+        "top_share": 0.96,
         "bottom_share": 0.0
       },
       {
         "ticker": "PWR",
         "name": "Quanta Services",
         "default_score": 67.5,
-        "top_share": 0.95,
+        "top_share": 0.949,
         "bottom_share": 0.0
       },
       {
@@ -104,13 +104,6 @@
         "bottom_share": 0.0
       },
       {
-        "ticker": "DECK",
-        "name": "Deckers Brands",
-        "default_score": 67.1,
-        "top_share": 0.955,
-        "bottom_share": 0.0
-      },
-      {
         "ticker": "EME",
         "name": "Emcor",
         "default_score": 67.1,
@@ -118,24 +111,24 @@
         "bottom_share": 0.0
       },
       {
+        "ticker": "DECK",
+        "name": "Deckers Brands",
+        "default_score": 67.1,
+        "top_share": 0.954,
+        "bottom_share": 0.0
+      },
+      {
         "ticker": "FCX",
         "name": "Freeport-McMoRan",
         "default_score": 67.1,
-        "top_share": 0.933,
+        "top_share": 0.932,
         "bottom_share": 0.0
       },
       {
         "ticker": "EIX",
         "name": "Edison International",
         "default_score": 66.9,
-        "top_share": 0.898,
-        "bottom_share": 0.0
-      },
-      {
-        "ticker": "VRSK",
-        "name": "Verisk Analytics",
-        "default_score": 66.6,
-        "top_share": 0.926,
+        "top_share": 0.899,
         "bottom_share": 0.0
       },
       {
@@ -146,10 +139,17 @@
         "bottom_share": 0.0
       },
       {
+        "ticker": "VRSK",
+        "name": "Verisk Analytics",
+        "default_score": 66.6,
+        "top_share": 0.925,
+        "bottom_share": 0.0
+      },
+      {
         "ticker": "INCY",
         "name": "Incyte",
         "default_score": 66.4,
-        "top_share": 0.934,
+        "top_share": 0.935,
         "bottom_share": 0.0
       },
       {
@@ -169,15 +169,8 @@
       {
         "ticker": "ADBE",
         "name": "Adobe Inc.",
-        "default_score": 65.4,
-        "top_share": 0.899,
-        "bottom_share": 0.0
-      },
-      {
-        "ticker": "CDNS",
-        "name": "Cadence Design Systems",
         "default_score": 65.2,
-        "top_share": 0.896,
+        "top_share": 0.895,
         "bottom_share": 0.0
       },
       {
@@ -188,87 +181,87 @@
         "bottom_share": 0.0
       },
       {
-        "ticker": "BKNG",
-        "name": "Booking Holdings",
-        "default_score": 64.9,
-        "top_share": 0.957,
+        "ticker": "CDNS",
+        "name": "Cadence Design Systems",
+        "default_score": 65.1,
+        "top_share": 0.893,
         "bottom_share": 0.0
       },
       {
         "ticker": "CBOE",
         "name": "Cboe Global Markets",
         "default_score": 64.9,
-        "top_share": 0.693,
+        "top_share": 0.694,
         "bottom_share": 0.001
       },
       {
         "ticker": "ED",
         "name": "Consolidated Edison",
         "default_score": 64.9,
-        "top_share": 0.905,
+        "top_share": 0.904,
         "bottom_share": 0.0
       },
       {
         "ticker": "IR",
         "name": "Ingersoll Rand",
         "default_score": 64.9,
-        "top_share": 0.923,
+        "top_share": 0.922,
+        "bottom_share": 0.0
+      },
+      {
+        "ticker": "BKNG",
+        "name": "Booking Holdings",
+        "default_score": 64.9,
+        "top_share": 0.956,
         "bottom_share": 0.0
       },
       {
         "ticker": "WDAY",
         "name": "Workday, Inc.",
         "default_score": 64.9,
-        "top_share": 0.829,
+        "top_share": 0.831,
         "bottom_share": 0.0
       },
       {
         "ticker": "CRWD",
         "name": "CrowdStrike",
-        "default_score": 64.7,
+        "default_score": 64.6,
         "top_share": 0.847,
         "bottom_share": 0.0
       },
       {
         "ticker": "HST",
         "name": "Host Hotels & Resorts",
-        "default_score": 64.7,
-        "top_share": 0.824,
-        "bottom_share": 0.0
-      },
-      {
-        "ticker": "RJF",
-        "name": "Raymond James Financial",
-        "default_score": 64.4,
-        "top_share": 0.914,
+        "default_score": 64.5,
+        "top_share": 0.814,
         "bottom_share": 0.0
       },
       {
         "ticker": "VLTO",
         "name": "Veralto",
         "default_score": 64.4,
-        "top_share": 0.791,
+        "top_share": 0.79,
+        "bottom_share": 0.0
+      },
+      {
+        "ticker": "RJF",
+        "name": "Raymond James Financial",
+        "default_score": 64.4,
+        "top_share": 0.913,
         "bottom_share": 0.0
       },
       {
         "ticker": "NVDA",
         "name": "Nvidia",
         "default_score": 64.3,
-        "top_share": 0.823,
+        "top_share": 0.824,
         "bottom_share": 0.0
       },
       {
         "ticker": "FTNT",
         "name": "Fortinet",
-        "default_score": 64.2,
-        "top_share": 0.942,
-        "bottom_share": 0.0
-      },
-      {
-        "ticker": "META",
-        "name": "Meta Platforms",
-        "default_score": 64.0,
-        "top_share": 0.883,
+        "default_score": 64.1,
+        "top_share": 0.941,
         "bottom_share": 0.0
       },
       {
@@ -279,17 +272,24 @@
         "bottom_share": 0.0
       },
       {
+        "ticker": "META",
+        "name": "Meta Platforms",
+        "default_score": 64.0,
+        "top_share": 0.887,
+        "bottom_share": 0.0
+      },
+      {
         "ticker": "CL",
         "name": "Colgate-Palmolive",
-        "default_score": 63.6,
-        "top_share": 0.901,
+        "default_score": 63.4,
+        "top_share": 0.893,
         "bottom_share": 0.0
       },
       {
         "ticker": "AMCR",
         "name": "Amcor",
         "default_score": 63.4,
-        "top_share": 0.786,
+        "top_share": 0.789,
         "bottom_share": 0.0
       },
       {
@@ -302,50 +302,50 @@
       {
         "ticker": "CHD",
         "name": "Church & Dwight",
-        "default_score": 63.3,
-        "top_share": 0.839,
+        "default_score": 63.2,
+        "top_share": 0.835,
         "bottom_share": 0.0
       },
       {
         "ticker": "MSCI",
         "name": "MSCI",
-        "default_score": 63.2,
-        "top_share": 0.807,
+        "default_score": 63.1,
+        "top_share": 0.808,
         "bottom_share": 0.0
       },
       {
         "ticker": "OMC",
         "name": "Omnicom Group",
         "default_score": 63.1,
-        "top_share": 0.598,
-        "bottom_share": 0.036
-      },
-      {
-        "ticker": "PODD",
-        "name": "Insulet Corporation",
-        "default_score": 63.0,
-        "top_share": 0.707,
-        "bottom_share": 0.002
+        "top_share": 0.599,
+        "bottom_share": 0.035
       },
       {
         "ticker": "TT",
         "name": "Trane Technologies",
         "default_score": 63.0,
-        "top_share": 0.837,
+        "top_share": 0.839,
+        "bottom_share": 0.0
+      },
+      {
+        "ticker": "PODD",
+        "name": "Insulet Corporation",
+        "default_score": 63.0,
+        "top_share": 0.706,
+        "bottom_share": 0.002
+      },
+      {
+        "ticker": "URI",
+        "name": "United Rentals",
+        "default_score": 62.9,
+        "top_share": 0.878,
         "bottom_share": 0.0
       },
       {
         "ticker": "SJM",
         "name": "J.M. Smucker Company (The)",
         "default_score": 62.9,
-        "top_share": 0.807,
-        "bottom_share": 0.0
-      },
-      {
-        "ticker": "URI",
-        "name": "United Rentals",
-        "default_score": 62.9,
-        "top_share": 0.876,
+        "top_share": 0.81,
         "bottom_share": 0.0
       },
       {
@@ -356,80 +356,87 @@
         "bottom_share": 0.008
       },
       {
-        "ticker": "VRSN",
-        "name": "Verisign",
-        "default_score": 62.5,
-        "top_share": 0.766,
-        "bottom_share": 0.0
-      },
-      {
         "ticker": "PM",
         "name": "Philip Morris International",
         "default_score": 62.4,
-        "top_share": 0.787,
+        "top_share": 0.786,
+        "bottom_share": 0.0
+      },
+      {
+        "ticker": "VRSN",
+        "name": "Verisign",
+        "default_score": 62.4,
+        "top_share": 0.758,
         "bottom_share": 0.0
       },
       {
         "ticker": "HSIC",
         "name": "Henry Schein",
         "default_score": 62.2,
-        "top_share": 0.752,
+        "top_share": 0.753,
         "bottom_share": 0.0
       },
       {
         "ticker": "SNPS",
         "name": "Synopsys",
         "default_score": 62.0,
-        "top_share": 0.725,
+        "top_share": 0.722,
         "bottom_share": 0.0
       },
       {
         "ticker": "CB",
         "name": "Chubb Limited",
-        "default_score": 61.9,
-        "top_share": 0.73,
+        "default_score": 61.8,
+        "top_share": 0.732,
         "bottom_share": 0.0
       },
       {
         "ticker": "DDOG",
         "name": "Datadog",
         "default_score": 61.7,
-        "top_share": 0.729,
-        "bottom_share": 0.0
-      },
-      {
-        "ticker": "ADSK",
-        "name": "Autodesk",
-        "default_score": 61.6,
-        "top_share": 0.722,
+        "top_share": 0.728,
         "bottom_share": 0.0
       },
       {
         "ticker": "COST",
         "name": "Costco",
         "default_score": 61.5,
-        "top_share": 0.729,
+        "top_share": 0.726,
+        "bottom_share": 0.0
+      },
+      {
+        "ticker": "ADSK",
+        "name": "Autodesk",
+        "default_score": 61.4,
+        "top_share": 0.713,
         "bottom_share": 0.0
       },
       {
         "ticker": "ACGL",
         "name": "Arch Capital Group",
         "default_score": 61.4,
-        "top_share": 0.733,
+        "top_share": 0.731,
         "bottom_share": 0.0
+      },
+      {
+        "ticker": "BMY",
+        "name": "Bristol Myers Squibb",
+        "default_score": 61.4,
+        "top_share": 0.696,
+        "bottom_share": 0.001
       },
       {
         "ticker": "FIX",
         "name": "Comfort Systems USA",
         "default_score": 61.1,
-        "top_share": 0.702,
+        "top_share": 0.703,
         "bottom_share": 0.0
       },
       {
         "ticker": "ROL",
         "name": "Rollins, Inc.",
         "default_score": 61.1,
-        "top_share": 0.669,
+        "top_share": 0.67,
         "bottom_share": 0.001
       },
       {
@@ -440,31 +447,31 @@
         "bottom_share": 0.0
       },
       {
-        "ticker": "BXP",
-        "name": "BXP, Inc.",
-        "default_score": 61.0,
-        "top_share": 0.702,
-        "bottom_share": 0.0
-      },
-      {
         "ticker": "WYNN",
         "name": "Wynn Resorts",
         "default_score": 60.9,
-        "top_share": 0.676,
+        "top_share": 0.678,
         "bottom_share": 0.0
       },
       {
-        "ticker": "CINF",
-        "name": "Cincinnati Financial",
+        "ticker": "BXP",
+        "name": "BXP, Inc.",
         "default_score": 60.6,
-        "top_share": 0.624,
+        "top_share": 0.677,
         "bottom_share": 0.0
       },
       {
         "ticker": "HUBB",
         "name": "Hubbell Incorporated",
         "default_score": 60.6,
-        "top_share": 0.601,
+        "top_share": 0.598,
+        "bottom_share": 0.0
+      },
+      {
+        "ticker": "CINF",
+        "name": "Cincinnati Financial",
+        "default_score": 60.6,
+        "top_share": 0.625,
         "bottom_share": 0.0
       },
       {
@@ -477,23 +484,9 @@
       {
         "ticker": "MNST",
         "name": "Monster Beverage",
-        "default_score": 60.5,
-        "top_share": 0.615,
-        "bottom_share": 0.003
-      },
-      {
-        "ticker": "REG",
-        "name": "Regency Centers",
         "default_score": 60.4,
-        "top_share": 0.626,
-        "bottom_share": 0.0
-      },
-      {
-        "ticker": "HAS",
-        "name": "Hasbro",
-        "default_score": 60.3,
-        "top_share": 0.558,
-        "bottom_share": 0.002
+        "top_share": 0.614,
+        "bottom_share": 0.003
       },
       {
         "ticker": "RDDT",
@@ -503,15 +496,22 @@
         "bottom_share": 0.008
       },
       {
-        "ticker": "MDLZ",
-        "name": "Mondelez International",
+        "ticker": "HAS",
+        "name": "Hasbro",
+        "default_score": 60.3,
+        "top_share": 0.557,
+        "bottom_share": 0.002
+      },
+      {
+        "ticker": "REG",
+        "name": "Regency Centers",
         "default_score": 60.2,
-        "top_share": 0.616,
+        "top_share": 0.615,
         "bottom_share": 0.0
       },
       {
-        "ticker": "CSX",
-        "name": "CSX Corporation",
+        "ticker": "MDLZ",
+        "name": "Mondelez International",
         "default_score": 60.0,
         "top_share": 0.605,
         "bottom_share": 0.0
@@ -519,50 +519,50 @@
       {
         "ticker": "VRTX",
         "name": "Vertex Pharmaceuticals",
-        "default_score": 60.0,
-        "top_share": 0.567,
+        "default_score": 59.9,
+        "top_share": 0.566,
         "bottom_share": 0.0
       },
       {
         "ticker": "ALLE",
         "name": "Allegion",
         "default_score": 59.9,
-        "top_share": 0.578,
+        "top_share": 0.575,
         "bottom_share": 0.0
       },
       {
-        "ticker": "ADP",
-        "name": "Automatic Data Processing",
-        "default_score": 59.8,
-        "top_share": 0.597,
+        "ticker": "CSX",
+        "name": "CSX Corporation",
+        "default_score": 59.9,
+        "top_share": 0.606,
         "bottom_share": 0.0
-      },
-      {
-        "ticker": "DG",
-        "name": "Dollar General",
-        "default_score": 59.8,
-        "top_share": 0.563,
-        "bottom_share": 0.001
       },
       {
         "ticker": "FDXF",
         "name": "FedEx Freight",
         "default_score": 59.8,
-        "top_share": 0.43,
+        "top_share": 0.432,
         "bottom_share": 0.001
+      },
+      {
+        "ticker": "DG",
+        "name": "Dollar General",
+        "default_score": 59.8,
+        "top_share": 0.564,
+        "bottom_share": 0.001
+      },
+      {
+        "ticker": "ADP",
+        "name": "Automatic Data Processing",
+        "default_score": 59.8,
+        "top_share": 0.598,
+        "bottom_share": 0.0
       },
       {
         "ticker": "PSKY",
         "name": "Paramount Skydance Corporation",
         "default_score": 59.8,
-        "top_share": 0.545,
-        "bottom_share": 0.0
-      },
-      {
-        "ticker": "CVS",
-        "name": "CVS Health",
-        "default_score": 59.6,
-        "top_share": 0.59,
+        "top_share": 0.552,
         "bottom_share": 0.0
       },
       {
@@ -573,164 +573,143 @@
         "bottom_share": 0.0
       },
       {
-        "ticker": "XYL",
-        "name": "Xylem Inc.",
-        "default_score": 59.5,
-        "top_share": 0.561,
-        "bottom_share": 0.0
-      },
-      {
         "ticker": "YUM",
         "name": "Yum! Brands",
         "default_score": 59.5,
-        "top_share": 0.573,
+        "top_share": 0.577,
+        "bottom_share": 0.0
+      },
+      {
+        "ticker": "XYL",
+        "name": "Xylem Inc.",
+        "default_score": 59.4,
+        "top_share": 0.56,
+        "bottom_share": 0.0
+      },
+      {
+        "ticker": "CVS",
+        "name": "CVS Health",
+        "default_score": 59.4,
+        "top_share": 0.577,
         "bottom_share": 0.0
       },
       {
         "ticker": "APO",
         "name": "Apollo Global Management",
         "default_score": 59.1,
-        "top_share": 0.491,
+        "top_share": 0.499,
         "bottom_share": 0.0
       },
       {
         "ticker": "EFX",
         "name": "Equifax",
-        "default_score": 58.9,
-        "top_share": 0.525,
+        "default_score": 58.8,
+        "top_share": 0.522,
         "bottom_share": 0.0
       },
       {
         "ticker": "ALB",
         "name": "Albemarle Corporation",
-        "default_score": 58.8,
-        "top_share": 0.475,
-        "bottom_share": 0.002
-      },
-      {
-        "ticker": "BMY",
-        "name": "Bristol Myers Squibb",
         "default_score": 58.7,
-        "top_share": 0.475,
-        "bottom_share": 0.001
-      },
-      {
-        "ticker": "CTVA",
-        "name": "Corteva",
-        "default_score": 58.7,
-        "top_share": 0.482,
-        "bottom_share": 0.0
-      },
-      {
-        "ticker": "EL",
-        "name": "Est\u00e9e Lauder Companies (The)",
-        "default_score": 58.6,
-        "top_share": 0.522,
+        "top_share": 0.467,
         "bottom_share": 0.002
       },
       {
         "ticker": "NFLX",
         "name": "Netflix",
         "default_score": 58.6,
-        "top_share": 0.509,
+        "top_share": 0.513,
+        "bottom_share": 0.0
+      },
+      {
+        "ticker": "EL",
+        "name": "Est\u00e9e Lauder Companies (The)",
+        "default_score": 58.6,
+        "top_share": 0.523,
+        "bottom_share": 0.002
+      },
+      {
+        "ticker": "CTVA",
+        "name": "Corteva",
+        "default_score": 58.5,
+        "top_share": 0.472,
         "bottom_share": 0.0
       },
       {
         "ticker": "CBRE",
         "name": "CBRE Group",
         "default_score": 58.5,
-        "top_share": 0.494,
+        "top_share": 0.495,
         "bottom_share": 0.0
       },
       {
-        "ticker": "FRT",
-        "name": "Federal Realty Investment Trust",
+        "ticker": "TTWO",
+        "name": "Take-Two Interactive",
         "default_score": 58.3,
-        "top_share": 0.42,
+        "top_share": 0.462,
         "bottom_share": 0.0
       },
       {
         "ticker": "PAYX",
         "name": "Paychex",
         "default_score": 58.3,
-        "top_share": 0.462,
+        "top_share": 0.458,
         "bottom_share": 0.002
-      },
-      {
-        "ticker": "TTWO",
-        "name": "Take-Two Interactive",
-        "default_score": 58.3,
-        "top_share": 0.46,
-        "bottom_share": 0.0
       },
       {
         "ticker": "MRNA",
         "name": "Moderna",
-        "default_score": 58.2,
-        "top_share": 0.462,
+        "default_score": 58.1,
+        "top_share": 0.456,
         "bottom_share": 0.011
       },
       {
-        "ticker": "WST",
-        "name": "West Pharmaceutical Services",
-        "default_score": 58.2,
-        "top_share": 0.427,
-        "bottom_share": 0.0
-      },
-      {
-        "ticker": "EXC",
-        "name": "Exelon",
+        "ticker": "MCO",
+        "name": "Moody's Corporation",
         "default_score": 58.1,
-        "top_share": 0.422,
+        "top_share": 0.399,
         "bottom_share": 0.0
       },
       {
         "ticker": "LITE",
         "name": "Lumentum",
         "default_score": 58.1,
-        "top_share": 0.457,
+        "top_share": 0.456,
         "bottom_share": 0.0
       },
       {
-        "ticker": "MCO",
-        "name": "Moody's Corporation",
+        "ticker": "EXC",
+        "name": "Exelon",
         "default_score": 58.1,
-        "top_share": 0.398,
+        "top_share": 0.423,
         "bottom_share": 0.0
       },
       {
-        "ticker": "PTC",
-        "name": "PTC Inc.",
+        "ticker": "FRT",
+        "name": "Federal Realty Investment Trust",
         "default_score": 58.1,
-        "top_share": 0.447,
+        "top_share": 0.4,
         "bottom_share": 0.0
       },
       {
         "ticker": "UBER",
         "name": "Uber",
-        "default_score": 58.1,
-        "top_share": 0.463,
+        "default_score": 58.0,
+        "top_share": 0.459,
         "bottom_share": 0.003
       },
       {
-        "ticker": "EQIX",
-        "name": "Equinix",
+        "ticker": "WST",
+        "name": "West Pharmaceutical Services",
         "default_score": 58.0,
-        "top_share": 0.426,
-        "bottom_share": 0.001
+        "top_share": 0.412,
+        "bottom_share": 0.0
       },
       {
-        "ticker": "ABBV",
-        "name": "AbbVie",
-        "default_score": 57.9,
-        "top_share": 0.405,
-        "bottom_share": 0.001
-      },
-      {
-        "ticker": "CEG",
-        "name": "Constellation Energy",
-        "default_score": 57.9,
-        "top_share": 0.349,
+        "ticker": "PTC",
+        "name": "PTC Inc.",
+        "default_score": 58.0,
+        "top_share": 0.439,
         "bottom_share": 0.0
       },
       {
@@ -741,13 +720,6 @@
         "bottom_share": 0.0
       },
       {
-        "ticker": "LULU",
-        "name": "Lululemon Athletica",
-        "default_score": 57.9,
-        "top_share": 0.4,
-        "bottom_share": 0.0
-      },
-      {
         "ticker": "NRG",
         "name": "NRG Energy",
         "default_score": 57.9,
@@ -755,200 +727,228 @@
         "bottom_share": 0.011
       },
       {
+        "ticker": "CEG",
+        "name": "Constellation Energy",
+        "default_score": 57.9,
+        "top_share": 0.349,
+        "bottom_share": 0.0
+      },
+      {
+        "ticker": "EQIX",
+        "name": "Equinix",
+        "default_score": 57.9,
+        "top_share": 0.421,
+        "bottom_share": 0.001
+      },
+      {
+        "ticker": "LULU",
+        "name": "Lululemon Athletica",
+        "default_score": 57.9,
+        "top_share": 0.405,
+        "bottom_share": 0.0
+      },
+      {
+        "ticker": "ABBV",
+        "name": "AbbVie",
+        "default_score": 57.8,
+        "top_share": 0.394,
+        "bottom_share": 0.001
+      },
+      {
         "ticker": "ES",
         "name": "Eversource Energy",
         "default_score": 57.8,
-        "top_share": 0.363,
+        "top_share": 0.365,
         "bottom_share": 0.0
       },
       {
         "ticker": "JKHY",
         "name": "Jack Henry & Associates",
         "default_score": 57.6,
-        "top_share": 0.403,
+        "top_share": 0.399,
         "bottom_share": 0.001
-      },
-      {
-        "ticker": "DPZ",
-        "name": "Domino's",
-        "default_score": 57.5,
-        "top_share": 0.431,
-        "bottom_share": 0.0
-      },
-      {
-        "ticker": "EQT",
-        "name": "EQT Corporation",
-        "default_score": 57.5,
-        "top_share": 0.376,
-        "bottom_share": 0.0
       },
       {
         "ticker": "IBKR",
         "name": "Interactive Brokers",
         "default_score": 57.5,
-        "top_share": 0.351,
+        "top_share": 0.346,
         "bottom_share": 0.0
       },
       {
         "ticker": "LVS",
         "name": "Las Vegas Sands",
         "default_score": 57.5,
-        "top_share": 0.37,
+        "top_share": 0.369,
         "bottom_share": 0.0
       },
       {
-        "ticker": "AKAM",
-        "name": "Akamai Technologies",
-        "default_score": 57.4,
-        "top_share": 0.279,
+        "ticker": "EQT",
+        "name": "EQT Corporation",
+        "default_score": 57.5,
+        "top_share": 0.377,
+        "bottom_share": 0.0
+      },
+      {
+        "ticker": "DPZ",
+        "name": "Domino's",
+        "default_score": 57.5,
+        "top_share": 0.435,
         "bottom_share": 0.0
       },
       {
         "ticker": "CLX",
         "name": "Clorox",
-        "default_score": 57.4,
-        "top_share": 0.341,
+        "default_score": 57.3,
+        "top_share": 0.338,
         "bottom_share": 0.0
       },
       {
-        "ticker": "ARES",
-        "name": "Ares Management",
+        "ticker": "AKAM",
+        "name": "Akamai Technologies",
         "default_score": 57.2,
-        "top_share": 0.39,
-        "bottom_share": 0.009
+        "top_share": 0.266,
+        "bottom_share": 0.0
       },
       {
         "ticker": "CAH",
         "name": "Cardinal Health",
         "default_score": 57.2,
-        "top_share": 0.301,
+        "top_share": 0.296,
         "bottom_share": 0.0
-      },
-      {
-        "ticker": "INTU",
-        "name": "Intuit",
-        "default_score": 57.2,
-        "top_share": 0.42,
-        "bottom_share": 0.002
       },
       {
         "ticker": "DVN",
         "name": "Devon Energy",
         "default_score": 57.1,
-        "top_share": 0.318,
+        "top_share": 0.317,
         "bottom_share": 0.001
+      },
+      {
+        "ticker": "ARES",
+        "name": "Ares Management",
+        "default_score": 57.1,
+        "top_share": 0.393,
+        "bottom_share": 0.009
       },
       {
         "ticker": "AXON",
         "name": "Axon Enterprise",
         "default_score": 57.0,
-        "top_share": 0.387,
-        "bottom_share": 0.036
+        "top_share": 0.388,
+        "bottom_share": 0.035
+      },
+      {
+        "ticker": "INTU",
+        "name": "Intuit",
+        "default_score": 57.0,
+        "top_share": 0.402,
+        "bottom_share": 0.002
       },
       {
         "ticker": "GOOG",
         "name": "Alphabet Inc. (Class C)",
         "default_score": 56.9,
-        "top_share": 0.33,
+        "top_share": 0.333,
         "bottom_share": 0.007
       },
       {
         "ticker": "V",
         "name": "Visa Inc.",
         "default_score": 56.9,
-        "top_share": 0.334,
+        "top_share": 0.335,
         "bottom_share": 0.007
       },
       {
         "ticker": "TRV",
         "name": "Travelers Companies (The)",
         "default_score": 56.8,
-        "top_share": 0.178,
-        "bottom_share": 0.0
-      },
-      {
-        "ticker": "AMP",
-        "name": "Ameriprise Financial",
-        "default_score": 56.6,
-        "top_share": 0.227,
-        "bottom_share": 0.0
-      },
-      {
-        "ticker": "CPRT",
-        "name": "Copart",
-        "default_score": 56.6,
-        "top_share": 0.339,
-        "bottom_share": 0.004
-      },
-      {
-        "ticker": "CSGP",
-        "name": "CoStar Group",
-        "default_score": 56.6,
-        "top_share": 0.366,
-        "bottom_share": 0.081
-      },
-      {
-        "ticker": "DOC",
-        "name": "Healthpeak Properties",
-        "default_score": 56.6,
-        "top_share": 0.217,
+        "top_share": 0.169,
         "bottom_share": 0.0
       },
       {
         "ticker": "ETN",
         "name": "Eaton Corporation",
         "default_score": 56.6,
-        "top_share": 0.322,
+        "top_share": 0.321,
         "bottom_share": 0.002
+      },
+      {
+        "ticker": "CSGP",
+        "name": "CoStar Group",
+        "default_score": 56.6,
+        "top_share": 0.367,
+        "bottom_share": 0.079
+      },
+      {
+        "ticker": "DOC",
+        "name": "Healthpeak Properties",
+        "default_score": 56.6,
+        "top_share": 0.218,
+        "bottom_share": 0.0
       },
       {
         "ticker": "VTR",
         "name": "Ventas",
-        "default_score": 56.6,
-        "top_share": 0.22,
+        "default_score": 56.5,
+        "top_share": 0.215,
         "bottom_share": 0.0
+      },
+      {
+        "ticker": "CPRT",
+        "name": "Copart",
+        "default_score": 56.5,
+        "top_share": 0.34,
+        "bottom_share": 0.004
+      },
+      {
+        "ticker": "AMP",
+        "name": "Ameriprise Financial",
+        "default_score": 56.5,
+        "top_share": 0.221,
+        "bottom_share": 0.0
+      },
+      {
+        "ticker": "WM",
+        "name": "Waste Management",
+        "default_score": 56.3,
+        "top_share": 0.353,
+        "bottom_share": 0.023
       },
       {
         "ticker": "GEHC",
         "name": "GE HealthCare",
-        "default_score": 56.5,
-        "top_share": 0.251,
-        "bottom_share": 0.0
-      },
-      {
-        "ticker": "HUM",
-        "name": "Humana",
-        "default_score": 56.4,
-        "top_share": 0.303,
-        "bottom_share": 0.0
-      },
-      {
-        "ticker": "ATO",
-        "name": "Atmos Energy",
         "default_score": 56.3,
-        "top_share": 0.342,
+        "top_share": 0.238,
         "bottom_share": 0.0
       },
       {
         "ticker": "CVNA",
         "name": "Carvana",
         "default_score": 56.3,
-        "top_share": 0.222,
+        "top_share": 0.221,
+        "bottom_share": 0.0
+      },
+      {
+        "ticker": "ATO",
+        "name": "Atmos Energy",
+        "default_score": 56.3,
+        "top_share": 0.344,
         "bottom_share": 0.0
       },
       {
         "ticker": "L",
         "name": "Loews Corporation",
-        "default_score": 56.3,
-        "top_share": 0.271,
-        "bottom_share": 0.005
+        "default_score": 56.2,
+        "top_share": 0.261,
+        "bottom_share": 0.006
       },
       {
-        "ticker": "WM",
-        "name": "Waste Management",
-        "default_score": 56.3,
-        "top_share": 0.352,
-        "bottom_share": 0.023
+        "ticker": "ICE",
+        "name": "Intercontinental Exchange",
+        "default_score": 56.2,
+        "top_share": 0.244,
+        "bottom_share": 0.0
       },
       {
         "ticker": "CIEN",
@@ -958,46 +958,25 @@
         "bottom_share": 0.0
       },
       {
-        "ticker": "ICE",
-        "name": "Intercontinental Exchange",
-        "default_score": 56.2,
-        "top_share": 0.245,
-        "bottom_share": 0.0
-      },
-      {
         "ticker": "AJG",
         "name": "Arthur J. Gallagher & Co.",
         "default_score": 56.1,
-        "top_share": 0.211,
-        "bottom_share": 0.0
-      },
-      {
-        "ticker": "INVH",
-        "name": "Invitation Homes",
-        "default_score": 56.1,
-        "top_share": 0.225,
+        "top_share": 0.214,
         "bottom_share": 0.0
       },
       {
         "ticker": "MA",
         "name": "Mastercard",
         "default_score": 56.1,
-        "top_share": 0.323,
+        "top_share": 0.326,
         "bottom_share": 0.003
       },
       {
-        "ticker": "TYL",
-        "name": "Tyler Technologies",
+        "ticker": "HUM",
+        "name": "Humana",
         "default_score": 56.1,
-        "top_share": 0.266,
+        "top_share": 0.283,
         "bottom_share": 0.0
-      },
-      {
-        "ticker": "MRSH",
-        "name": "Marsh McLennan",
-        "default_score": 56.0,
-        "top_share": 0.311,
-        "bottom_share": 0.003
       },
       {
         "ticker": "PNW",
@@ -1007,101 +986,122 @@
         "bottom_share": 0.002
       },
       {
+        "ticker": "INVH",
+        "name": "Invitation Homes",
+        "default_score": 56.0,
+        "top_share": 0.219,
+        "bottom_share": 0.0
+      },
+      {
+        "ticker": "TYL",
+        "name": "Tyler Technologies",
+        "default_score": 55.9,
+        "top_share": 0.261,
+        "bottom_share": 0.0
+      },
+      {
+        "ticker": "MRSH",
+        "name": "Marsh McLennan",
+        "default_score": 55.9,
+        "top_share": 0.309,
+        "bottom_share": 0.003
+      },
+      {
         "ticker": "SMCI",
         "name": "Supermicro",
-        "default_score": 56.0,
-        "top_share": 0.298,
+        "default_score": 55.9,
+        "top_share": 0.288,
         "bottom_share": 0.01
       },
       {
         "ticker": "TROW",
         "name": "T. Rowe Price",
-        "default_score": 56.0,
-        "top_share": 0.249,
-        "bottom_share": 0.001
+        "default_score": 55.9,
+        "top_share": 0.242,
+        "bottom_share": 0.002
       },
       {
-        "ticker": "IEX",
-        "name": "IDEX Corporation",
+        "ticker": "HSY",
+        "name": "Hershey Company (The)",
         "default_score": 55.9,
-        "top_share": 0.232,
+        "top_share": 0.183,
         "bottom_share": 0.0
       },
       {
         "ticker": "LYV",
         "name": "Live Nation Entertainment",
         "default_score": 55.9,
-        "top_share": 0.301,
+        "top_share": 0.304,
         "bottom_share": 0.003
       },
       {
-        "ticker": "HSY",
-        "name": "Hershey Company (The)",
-        "default_score": 55.7,
-        "top_share": 0.175,
-        "bottom_share": 0.0
-      },
-      {
-        "ticker": "MKC",
-        "name": "McCormick & Company",
-        "default_score": 55.7,
-        "top_share": 0.239,
+        "ticker": "IEX",
+        "name": "IDEX Corporation",
+        "default_score": 55.8,
+        "top_share": 0.229,
         "bottom_share": 0.0
       },
       {
         "ticker": "MSFT",
         "name": "Microsoft",
-        "default_score": 55.7,
-        "top_share": 0.219,
+        "default_score": 55.6,
+        "top_share": 0.212,
         "bottom_share": 0.001
       },
       {
         "ticker": "MTD",
         "name": "Mettler Toledo",
-        "default_score": 55.7,
-        "top_share": 0.257,
+        "default_score": 55.5,
+        "top_share": 0.254,
         "bottom_share": 0.0
       },
       {
-        "ticker": "SPG",
-        "name": "Simon Property Group",
+        "ticker": "MKC",
+        "name": "McCormick & Company",
         "default_score": 55.5,
-        "top_share": 0.1,
+        "top_share": 0.235,
         "bottom_share": 0.0
       },
       {
         "ticker": "EOG",
         "name": "EOG Resources",
         "default_score": 55.4,
-        "top_share": 0.195,
+        "top_share": 0.194,
+        "bottom_share": 0.0
+      },
+      {
+        "ticker": "SPG",
+        "name": "Simon Property Group",
+        "default_score": 55.4,
+        "top_share": 0.09,
         "bottom_share": 0.0
       },
       {
         "ticker": "ARE",
         "name": "Alexandria Real Estate Equities",
         "default_score": 55.3,
-        "top_share": 0.175,
-        "bottom_share": 0.022
+        "top_share": 0.177,
+        "bottom_share": 0.025
       },
       {
         "ticker": "CTAS",
         "name": "Cintas",
-        "default_score": 55.3,
-        "top_share": 0.244,
+        "default_score": 55.2,
+        "top_share": 0.239,
         "bottom_share": 0.007
       },
       {
         "ticker": "RMD",
         "name": "ResMed|",
-        "default_score": 55.3,
-        "top_share": 0.223,
-        "bottom_share": 0.01
+        "default_score": 55.2,
+        "top_share": 0.215,
+        "bottom_share": 0.011
       },
       {
         "ticker": "LDOS",
         "name": "Leidos",
-        "default_score": 55.2,
-        "top_share": 0.231,
+        "default_score": 55.1,
+        "top_share": 0.23,
         "bottom_share": 0.002
       },
       {
@@ -1112,25 +1112,11 @@
         "bottom_share": 0.003
       },
       {
-        "ticker": "GILD",
-        "name": "Gilead Sciences",
-        "default_score": 55.0,
-        "top_share": 0.118,
-        "bottom_share": 0.0
-      },
-      {
         "ticker": "WELL",
         "name": "Welltower",
-        "default_score": 55.0,
-        "top_share": 0.145,
-        "bottom_share": 0.003
-      },
-      {
-        "ticker": "HLT",
-        "name": "Hilton Worldwide",
         "default_score": 54.9,
-        "top_share": 0.283,
-        "bottom_share": 0.033
+        "top_share": 0.143,
+        "bottom_share": 0.003
       },
       {
         "ticker": "NI",
@@ -1140,179 +1126,200 @@
         "bottom_share": 0.0
       },
       {
-        "ticker": "O",
-        "name": "Realty Income",
-        "default_score": 54.8,
-        "top_share": 0.167,
-        "bottom_share": 0.001
+        "ticker": "HLT",
+        "name": "Hilton Worldwide",
+        "default_score": 54.9,
+        "top_share": 0.283,
+        "bottom_share": 0.032
       },
       {
         "ticker": "PPL",
         "name": "PPL Corporation",
         "default_score": 54.8,
         "top_share": 0.186,
-        "bottom_share": 0.042
+        "bottom_share": 0.041
       },
       {
-        "ticker": "NTRS",
-        "name": "Northern Trust",
-        "default_score": 54.7,
-        "top_share": 0.167,
+        "ticker": "GILD",
+        "name": "Gilead Sciences",
+        "default_score": 54.8,
+        "top_share": 0.113,
         "bottom_share": 0.0
+      },
+      {
+        "ticker": "O",
+        "name": "Realty Income",
+        "default_score": 54.8,
+        "top_share": 0.164,
+        "bottom_share": 0.001
+      },
+      {
+        "ticker": "ORCL",
+        "name": "Oracle Corporation",
+        "default_score": 54.8,
+        "top_share": 0.147,
+        "bottom_share": 0.013
       },
       {
         "ticker": "REGN",
         "name": "Regeneron Pharmaceuticals",
         "default_score": 54.7,
-        "top_share": 0.139,
+        "top_share": 0.137,
         "bottom_share": 0.0
       },
       {
         "ticker": "J",
         "name": "Jacobs Solutions",
         "default_score": 54.6,
-        "top_share": 0.242,
+        "top_share": 0.245,
         "bottom_share": 0.01
       },
       {
-        "ticker": "BRO",
-        "name": "Brown & Brown",
-        "default_score": 54.4,
-        "top_share": 0.116,
-        "bottom_share": 0.002
+        "ticker": "NTRS",
+        "name": "Northern Trust",
+        "default_score": 54.6,
+        "top_share": 0.164,
+        "bottom_share": 0.0
       },
       {
         "ticker": "MS",
         "name": "Morgan Stanley",
-        "default_score": 54.4,
-        "top_share": 0.11,
+        "default_score": 54.3,
+        "top_share": 0.105,
         "bottom_share": 0.016
       },
       {
-        "ticker": "SYY",
-        "name": "Sysco",
+        "ticker": "BRO",
+        "name": "Brown & Brown",
         "default_score": 54.3,
-        "top_share": 0.143,
-        "bottom_share": 0.005
-      },
-      {
-        "ticker": "CRM",
-        "name": "Salesforce",
-        "default_score": 54.2,
-        "top_share": 0.208,
-        "bottom_share": 0.008
-      },
-      {
-        "ticker": "PGR",
-        "name": "Progressive Corporation",
-        "default_score": 54.2,
-        "top_share": 0.091,
-        "bottom_share": 0.0
+        "top_share": 0.114,
+        "bottom_share": 0.002
       },
       {
         "ticker": "UAL",
         "name": "United Airlines Holdings",
         "default_score": 54.2,
-        "top_share": 0.136,
+        "top_share": 0.134,
         "bottom_share": 0.008
       },
       {
-        "ticker": "APP",
-        "name": "AppLovin",
-        "default_score": 54.1,
-        "top_share": 0.173,
-        "bottom_share": 0.006
+        "ticker": "SYY",
+        "name": "Sysco",
+        "default_score": 54.2,
+        "top_share": 0.137,
+        "bottom_share": 0.005
+      },
+      {
+        "ticker": "PGR",
+        "name": "Progressive Corporation",
+        "default_score": 54.2,
+        "top_share": 0.088,
+        "bottom_share": 0.0
       },
       {
         "ticker": "GWW",
         "name": "W. W. Grainger",
         "default_score": 54.1,
-        "top_share": 0.096,
+        "top_share": 0.099,
         "bottom_share": 0.0
+      },
+      {
+        "ticker": "APP",
+        "name": "AppLovin",
+        "default_score": 54.1,
+        "top_share": 0.169,
+        "bottom_share": 0.006
       },
       {
         "ticker": "EBAY",
         "name": "eBay Inc.",
         "default_score": 54.0,
-        "top_share": 0.178,
+        "top_share": 0.176,
         "bottom_share": 0.01
+      },
+      {
+        "ticker": "CRM",
+        "name": "Salesforce",
+        "default_score": 54.0,
+        "top_share": 0.192,
+        "bottom_share": 0.011
       },
       {
         "ticker": "UHS",
         "name": "Universal Health Services",
-        "default_score": 54.0,
-        "top_share": 0.107,
+        "default_score": 53.9,
+        "top_share": 0.102,
         "bottom_share": 0.002
       },
       {
         "ticker": "CNC",
         "name": "Centene Corporation",
         "default_score": 53.9,
-        "top_share": 0.162,
+        "top_share": 0.161,
         "bottom_share": 0.005
       },
       {
         "ticker": "AIZ",
         "name": "Assurant",
         "default_score": 53.8,
-        "top_share": 0.059,
-        "bottom_share": 0.0
-      },
-      {
-        "ticker": "CI",
-        "name": "Cigna",
-        "default_score": 53.8,
-        "top_share": 0.063,
+        "top_share": 0.058,
         "bottom_share": 0.0
       },
       {
         "ticker": "GRMN",
         "name": "Garmin",
         "default_score": 53.8,
-        "top_share": 0.145,
+        "top_share": 0.148,
         "bottom_share": 0.011
-      },
-      {
-        "ticker": "PYPL",
-        "name": "PayPal",
-        "default_score": 53.8,
-        "top_share": 0.164,
-        "bottom_share": 0.004
       },
       {
         "ticker": "ERIE",
         "name": "Erie Indemnity",
         "default_score": 53.7,
-        "top_share": 0.054,
+        "top_share": 0.057,
         "bottom_share": 0.016
+      },
+      {
+        "ticker": "NTAP",
+        "name": "NetApp",
+        "default_score": 53.7,
+        "top_share": 0.042,
+        "bottom_share": 0.0
       },
       {
         "ticker": "MO",
         "name": "Altria",
         "default_score": 53.7,
-        "top_share": 0.213,
-        "bottom_share": 0.031
+        "top_share": 0.214,
+        "bottom_share": 0.03
       },
       {
-        "ticker": "JBHT",
-        "name": "J.B. Hunt",
-        "default_score": 53.6,
-        "top_share": 0.124,
-        "bottom_share": 0.008
+        "ticker": "PYPL",
+        "name": "PayPal",
+        "default_score": 53.7,
+        "top_share": 0.159,
+        "bottom_share": 0.005
       },
       {
         "ticker": "SBUX",
         "name": "Starbucks",
         "default_score": 53.6,
-        "top_share": 0.2,
+        "top_share": 0.199,
         "bottom_share": 0.017
       },
       {
-        "ticker": "FAST",
-        "name": "Fastenal",
-        "default_score": 53.4,
-        "top_share": 0.078,
-        "bottom_share": 0.005
+        "ticker": "CI",
+        "name": "Cigna",
+        "default_score": 53.5,
+        "top_share": 0.059,
+        "bottom_share": 0.0
+      },
+      {
+        "ticker": "JBHT",
+        "name": "J.B. Hunt",
+        "default_score": 53.5,
+        "top_share": 0.119,
+        "bottom_share": 0.008
       },
       {
         "ticker": "SLB",
@@ -1322,53 +1329,53 @@
         "bottom_share": 0.006
       },
       {
-        "ticker": "TECH",
-        "name": "Bio-Techne",
+        "ticker": "FAST",
+        "name": "Fastenal",
         "default_score": 53.4,
-        "top_share": 0.084,
-        "bottom_share": 0.002
+        "top_share": 0.075,
+        "bottom_share": 0.005
       },
       {
         "ticker": "PLD",
         "name": "Prologis",
         "default_score": 53.3,
-        "top_share": 0.077,
+        "top_share": 0.079,
         "bottom_share": 0.0
+      },
+      {
+        "ticker": "TECH",
+        "name": "Bio-Techne",
+        "default_score": 53.2,
+        "top_share": 0.078,
+        "bottom_share": 0.002
       },
       {
         "ticker": "BEN",
         "name": "Franklin Resources",
-        "default_score": 53.2,
-        "top_share": 0.084,
+        "default_score": 53.1,
+        "top_share": 0.082,
         "bottom_share": 0.004
       },
       {
         "ticker": "QCOM",
         "name": "Qualcomm",
         "default_score": 53.1,
-        "top_share": 0.126,
-        "bottom_share": 0.06
-      },
-      {
-        "ticker": "ODFL",
-        "name": "Old Dominion",
-        "default_score": 53.0,
-        "top_share": 0.107,
-        "bottom_share": 0.009
-      },
-      {
-        "ticker": "FANG",
-        "name": "Diamondback Energy",
-        "default_score": 52.9,
-        "top_share": 0.098,
-        "bottom_share": 0.008
+        "top_share": 0.127,
+        "bottom_share": 0.059
       },
       {
         "ticker": "SCHW",
         "name": "Charles Schwab Corporation",
         "default_score": 52.9,
-        "top_share": 0.076,
+        "top_share": 0.079,
         "bottom_share": 0.014
+      },
+      {
+        "ticker": "FANG",
+        "name": "Diamondback Energy",
+        "default_score": 52.9,
+        "top_share": 0.099,
+        "bottom_share": 0.008
       },
       {
         "ticker": "AVY",
@@ -1378,95 +1385,102 @@
         "bottom_share": 0.084
       },
       {
-        "ticker": "ZBRA",
-        "name": "Zebra Technologies",
+        "ticker": "ODFL",
+        "name": "Old Dominion",
         "default_score": 52.8,
-        "top_share": 0.029,
-        "bottom_share": 0.002
+        "top_share": 0.105,
+        "bottom_share": 0.009
       },
       {
         "ticker": "EXE",
         "name": "Expand Energy",
         "default_score": 52.7,
-        "top_share": 0.115,
+        "top_share": 0.116,
         "bottom_share": 0.019
       },
       {
         "ticker": "LUV",
         "name": "Southwest Airlines",
         "default_score": 52.6,
-        "top_share": 0.064,
-        "bottom_share": 0.02
-      },
-      {
-        "ticker": "EMR",
-        "name": "Emerson Electric",
-        "default_score": 52.5,
-        "top_share": 0.192,
-        "bottom_share": 0.013
+        "top_share": 0.066,
+        "bottom_share": 0.021
       },
       {
         "ticker": "NDAQ",
         "name": "Nasdaq, Inc.",
         "default_score": 52.5,
-        "top_share": 0.09,
+        "top_share": 0.092,
         "bottom_share": 0.006
+      },
+      {
+        "ticker": "EMR",
+        "name": "Emerson Electric",
+        "default_score": 52.5,
+        "top_share": 0.193,
+        "bottom_share": 0.013
+      },
+      {
+        "ticker": "ZBRA",
+        "name": "Zebra Technologies",
+        "default_score": 52.5,
+        "top_share": 0.026,
+        "bottom_share": 0.002
       },
       {
         "ticker": "SNDK",
         "name": "Sandisk",
         "default_score": 52.4,
         "top_share": 0.061,
-        "bottom_share": 0.077
+        "bottom_share": 0.078
       },
       {
         "ticker": "CNP",
         "name": "CenterPoint Energy",
         "default_score": 52.3,
-        "top_share": 0.129,
+        "top_share": 0.13,
         "bottom_share": 0.024
       },
       {
         "ticker": "SYK",
         "name": "Stryker Corporation",
-        "default_score": 52.3,
-        "top_share": 0.09,
-        "bottom_share": 0.017
+        "default_score": 52.2,
+        "top_share": 0.085,
+        "bottom_share": 0.018
       },
       {
-        "ticker": "IQV",
-        "name": "IQVIA",
+        "ticker": "PCAR",
+        "name": "Paccar",
         "default_score": 52.1,
-        "top_share": 0.073,
+        "top_share": 0.033,
         "bottom_share": 0.0
-      },
-      {
-        "ticker": "BSX",
-        "name": "Boston Scientific",
-        "default_score": 52.0,
-        "top_share": 0.079,
-        "bottom_share": 0.01
       },
       {
         "ticker": "HOOD",
         "name": "Robinhood Markets",
-        "default_score": 52.0,
+        "default_score": 51.9,
         "top_share": 0.019,
         "bottom_share": 0.006
+      },
+      {
+        "ticker": "BSX",
+        "name": "Boston Scientific",
+        "default_score": 51.9,
+        "top_share": 0.077,
+        "bottom_share": 0.01
+      },
+      {
+        "ticker": "IQV",
+        "name": "IQVIA",
+        "default_score": 51.9,
+        "top_share": 0.071,
+        "bottom_share": 0.001
       },
       {
         "ticker": "GEN",
         "name": "Gen Digital",
         "default_score": 51.9,
-        "top_share": 0.1,
+        "top_share": 0.099,
         "bottom_share": 0.048
-      },
-      {
-        "ticker": "KEYS",
-        "name": "Keysight Technologies",
-        "default_score": 51.9,
-        "top_share": 0.107,
-        "bottom_share": 0.026
       },
       {
         "ticker": "EXPE",
@@ -1478,37 +1492,23 @@
       {
         "ticker": "PKG",
         "name": "Packaging Corporation of America",
-        "default_score": 51.8,
-        "top_share": 0.078,
+        "default_score": 51.7,
+        "top_share": 0.073,
         "bottom_share": 0.074
       },
       {
         "ticker": "ROP",
         "name": "Roper Technologies",
-        "default_score": 51.8,
-        "top_share": 0.005,
+        "default_score": 51.7,
+        "top_share": 0.004,
         "bottom_share": 0.003
       },
       {
-        "ticker": "COIN",
-        "name": "Coinbase",
+        "ticker": "KEYS",
+        "name": "Keysight Technologies",
         "default_score": 51.7,
-        "top_share": 0.056,
-        "bottom_share": 0.011
-      },
-      {
-        "ticker": "NTAP",
-        "name": "NetApp",
-        "default_score": 51.7,
-        "top_share": 0.006,
-        "bottom_share": 0.0
-      },
-      {
-        "ticker": "ZTS",
-        "name": "Zoetis",
-        "default_score": 51.7,
-        "top_share": 0.013,
-        "bottom_share": 0.003
+        "top_share": 0.104,
+        "bottom_share": 0.028
       },
       {
         "ticker": "BLK",
@@ -1518,52 +1518,73 @@
         "bottom_share": 0.056
       },
       {
+        "ticker": "ZTS",
+        "name": "Zoetis",
+        "default_score": 51.6,
+        "top_share": 0.012,
+        "bottom_share": 0.003
+      },
+      {
+        "ticker": "COIN",
+        "name": "Coinbase",
+        "default_score": 51.6,
+        "top_share": 0.056,
+        "bottom_share": 0.011
+      },
+      {
         "ticker": "APTV",
         "name": "Aptiv",
         "default_score": 51.5,
         "top_share": 0.157,
-        "bottom_share": 0.067
+        "bottom_share": 0.066
       },
       {
         "ticker": "AME",
         "name": "Ametek",
         "default_score": 51.4,
-        "top_share": 0.009,
+        "top_share": 0.01,
         "bottom_share": 0.001
       },
       {
         "ticker": "LH",
         "name": "Labcorp",
         "default_score": 51.3,
-        "top_share": 0.095,
+        "top_share": 0.096,
         "bottom_share": 0.074
       },
       {
         "ticker": "EXPD",
         "name": "Expeditors International",
-        "default_score": 51.2,
-        "top_share": 0.033,
-        "bottom_share": 0.015
+        "default_score": 51.1,
+        "top_share": 0.032,
+        "bottom_share": 0.014
       },
       {
-        "ticker": "IT",
-        "name": "Gartner",
-        "default_score": 51.2,
-        "top_share": 0.017,
-        "bottom_share": 0.018
+        "ticker": "PG",
+        "name": "Procter & Gamble",
+        "default_score": 51.1,
+        "top_share": 0.018,
+        "bottom_share": 0.023
       },
       {
         "ticker": "UNP",
         "name": "Union Pacific Corporation",
-        "default_score": 51.1,
-        "top_share": 0.07,
-        "bottom_share": 0.038
+        "default_score": 51.0,
+        "top_share": 0.064,
+        "bottom_share": 0.042
+      },
+      {
+        "ticker": "IT",
+        "name": "Gartner",
+        "default_score": 51.0,
+        "top_share": 0.013,
+        "bottom_share": 0.024
       },
       {
         "ticker": "SYF",
         "name": "Synchrony Financial",
-        "default_score": 51.0,
-        "top_share": 0.199,
+        "default_score": 50.9,
+        "top_share": 0.198,
         "bottom_share": 0.025
       },
       {
@@ -1576,29 +1597,29 @@
       {
         "ticker": "AOS",
         "name": "A. O. Smith",
-        "default_score": 50.9,
+        "default_score": 50.8,
         "top_share": 0.02,
         "bottom_share": 0.007
       },
       {
         "ticker": "LII",
         "name": "Lennox International",
-        "default_score": 50.9,
-        "top_share": 0.025,
+        "default_score": 50.8,
+        "top_share": 0.024,
         "bottom_share": 0.004
       },
       {
         "ticker": "ZBH",
         "name": "Zimmer Biomet",
-        "default_score": 50.9,
-        "top_share": 0.039,
+        "default_score": 50.8,
+        "top_share": 0.037,
         "bottom_share": 0.01
       },
       {
         "ticker": "OTIS",
         "name": "Otis Worldwide",
-        "default_score": 50.8,
-        "top_share": 0.025,
+        "default_score": 50.7,
+        "top_share": 0.026,
         "bottom_share": 0.005
       },
       {
@@ -1609,23 +1630,23 @@
         "bottom_share": 0.03
       },
       {
+        "ticker": "BLDR",
+        "name": "Builders FirstSource",
+        "default_score": 50.5,
+        "top_share": 0.032,
+        "bottom_share": 0.022
+      },
+      {
         "ticker": "AMD",
         "name": "Advanced Micro Devices",
-        "default_score": 50.6,
+        "default_score": 50.5,
         "top_share": 0.034,
         "bottom_share": 0.027
       },
       {
-        "ticker": "BLDR",
-        "name": "Builders FirstSource",
-        "default_score": 50.6,
-        "top_share": 0.033,
-        "bottom_share": 0.022
-      },
-      {
         "ticker": "VRT",
         "name": "Vertiv",
-        "default_score": 50.6,
+        "default_score": 50.5,
         "top_share": 0.025,
         "bottom_share": 0.025
       },
@@ -1640,71 +1661,57 @@
         "ticker": "NWS",
         "name": "News Corp (Class B)",
         "default_score": 50.4,
-        "top_share": 0.081,
+        "top_share": 0.082,
         "bottom_share": 0.033
-      },
-      {
-        "ticker": "PG",
-        "name": "Procter & Gamble",
-        "default_score": 50.4,
-        "top_share": 0.009,
-        "bottom_share": 0.025
       },
       {
         "ticker": "SOLV",
         "name": "Solventum",
         "default_score": 50.4,
-        "top_share": 0.158,
+        "top_share": 0.161,
         "bottom_share": 0.051
       },
       {
         "ticker": "ULTA",
         "name": "Ulta Beauty",
         "default_score": 50.3,
-        "top_share": 0.03,
-        "bottom_share": 0.029
-      },
-      {
-        "ticker": "CF",
-        "name": "CF Industries",
-        "default_score": 50.2,
-        "top_share": 0.077,
-        "bottom_share": 0.101
+        "top_share": 0.031,
+        "bottom_share": 0.03
       },
       {
         "ticker": "DD",
         "name": "DuPont",
         "default_score": 50.2,
-        "top_share": 0.053,
-        "bottom_share": 0.05
-      },
-      {
-        "ticker": "PLTR",
-        "name": "Palantir Technologies",
-        "default_score": 50.2,
-        "top_share": 0.038,
-        "bottom_share": 0.058
+        "top_share": 0.054,
+        "bottom_share": 0.051
       },
       {
         "ticker": "VST",
         "name": "Vistra Corp.",
         "default_score": 50.2,
-        "top_share": 0.051,
-        "bottom_share": 0.08
+        "top_share": 0.05,
+        "bottom_share": 0.079
       },
       {
-        "ticker": "BAC",
-        "name": "Bank of America",
+        "ticker": "PLTR",
+        "name": "Palantir Technologies",
         "default_score": 50.1,
-        "top_share": 0.018,
-        "bottom_share": 0.008
+        "top_share": 0.036,
+        "bottom_share": 0.061
       },
       {
-        "ticker": "CPAY",
-        "name": "Corpay",
+        "ticker": "WEC",
+        "name": "WEC Energy Group",
         "default_score": 50.1,
-        "top_share": 0.047,
-        "bottom_share": 0.06
+        "top_share": 0.019,
+        "bottom_share": 0.026
+      },
+      {
+        "ticker": "HAL",
+        "name": "Halliburton",
+        "default_score": 50.1,
+        "top_share": 0.058,
+        "bottom_share": 0.084
       },
       {
         "ticker": "DAL",
@@ -1714,38 +1721,45 @@
         "bottom_share": 0.024
       },
       {
-        "ticker": "HAL",
-        "name": "Halliburton",
+        "ticker": "CF",
+        "name": "CF Industries",
         "default_score": 50.1,
-        "top_share": 0.056,
-        "bottom_share": 0.085
+        "top_share": 0.077,
+        "bottom_share": 0.104
       },
       {
-        "ticker": "TEL",
-        "name": "TE Connectivity",
+        "ticker": "CPAY",
+        "name": "Corpay",
         "default_score": 50.1,
-        "top_share": 0.014,
-        "bottom_share": 0.003
+        "top_share": 0.05,
+        "bottom_share": 0.058
       },
       {
-        "ticker": "WEC",
-        "name": "WEC Energy Group",
-        "default_score": 50.1,
-        "top_share": 0.02,
-        "bottom_share": 0.025
+        "ticker": "ORLY",
+        "name": "O'Reilly Automotive",
+        "default_score": 50.0,
+        "top_share": 0.011,
+        "bottom_share": 0.042
       },
       {
         "ticker": "WMT",
         "name": "Walmart",
-        "default_score": 50.1,
-        "top_share": 0.054,
+        "default_score": 50.0,
+        "top_share": 0.052,
         "bottom_share": 0.048
+      },
+      {
+        "ticker": "MAR",
+        "name": "Marriott International",
+        "default_score": 50.0,
+        "top_share": 0.043,
+        "bottom_share": 0.055
       },
       {
         "ticker": "CMG",
         "name": "Chipotle Mexican Grill",
         "default_score": 50.0,
-        "top_share": 0.143,
+        "top_share": 0.145,
         "bottom_share": 0.144
       },
       {
@@ -1756,102 +1770,81 @@
         "bottom_share": 0.046
       },
       {
-        "ticker": "MAR",
-        "name": "Marriott International",
+        "ticker": "TEL",
+        "name": "TE Connectivity",
         "default_score": 50.0,
-        "top_share": 0.043,
-        "bottom_share": 0.055
+        "top_share": 0.014,
+        "bottom_share": 0.003
       },
       {
-        "ticker": "ORLY",
-        "name": "O'Reilly Automotive",
+        "ticker": "BAC",
+        "name": "Bank of America",
         "default_score": 50.0,
-        "top_share": 0.011,
-        "bottom_share": 0.042
+        "top_share": 0.017,
+        "bottom_share": 0.008
       },
       {
         "ticker": "COHR",
         "name": "Coherent Corp.",
         "default_score": 49.9,
-        "top_share": 0.04,
-        "bottom_share": 0.072
+        "top_share": 0.042,
+        "bottom_share": 0.073
       },
       {
         "ticker": "NVR",
         "name": "NVR, Inc.",
         "default_score": 49.9,
-        "top_share": 0.024,
+        "top_share": 0.025,
         "bottom_share": 0.043
-      },
-      {
-        "ticker": "AMAT",
-        "name": "Applied Materials",
-        "default_score": 49.8,
-        "top_share": 0.001,
-        "bottom_share": 0.001
-      },
-      {
-        "ticker": "ESS",
-        "name": "Essex Property Trust",
-        "default_score": 49.8,
-        "top_share": 0.16,
-        "bottom_share": 0.056
       },
       {
         "ticker": "Q",
         "name": "Qnity Electronics",
         "default_score": 49.8,
         "top_share": 0.117,
-        "bottom_share": 0.09
+        "bottom_share": 0.089
+      },
+      {
+        "ticker": "VICI",
+        "name": "Vici Properties",
+        "default_score": 49.7,
+        "top_share": 0.016,
+        "bottom_share": 0.047
       },
       {
         "ticker": "ECHO",
         "name": "EchoStar",
         "default_score": 49.7,
         "top_share": 0.064,
-        "bottom_share": 0.095
+        "bottom_share": 0.093
       },
       {
-        "ticker": "FICO",
-        "name": "Fair Isaac",
-        "default_score": 49.7,
-        "top_share": 0.008,
-        "bottom_share": 0.027
-      },
-      {
-        "ticker": "VICI",
-        "name": "Vici Properties",
-        "default_score": 49.7,
-        "top_share": 0.017,
-        "bottom_share": 0.049
-      },
-      {
-        "ticker": "FITB",
-        "name": "Fifth Third Bancorp",
+        "ticker": "AMAT",
+        "name": "Applied Materials",
         "default_score": 49.6,
-        "top_share": 0.011,
-        "bottom_share": 0.002
-      },
-      {
-        "ticker": "MLM",
-        "name": "Martin Marietta Materials",
-        "default_score": 49.6,
-        "top_share": 0.014,
-        "bottom_share": 0.041
+        "top_share": 0.0,
+        "bottom_share": 0.001
       },
       {
         "ticker": "BIIB",
         "name": "Biogen",
         "default_score": 49.5,
         "top_share": 0.061,
-        "bottom_share": 0.117
+        "bottom_share": 0.116
       },
       {
-        "ticker": "KIM",
-        "name": "Kimco Realty",
+        "ticker": "FITB",
+        "name": "Fifth Third Bancorp",
         "default_score": 49.5,
-        "top_share": 0.0,
-        "bottom_share": 0.0
+        "top_share": 0.011,
+        "bottom_share": 0.003
+      },
+      {
+        "ticker": "FICO",
+        "name": "Fair Isaac",
+        "default_score": 49.5,
+        "top_share": 0.007,
+        "bottom_share": 0.029
       },
       {
         "ticker": "MCD",
@@ -1861,53 +1854,53 @@
         "bottom_share": 0.072
       },
       {
-        "ticker": "A",
-        "name": "Agilent Technologies",
-        "default_score": 49.4,
-        "top_share": 0.072,
-        "bottom_share": 0.082
-      },
-      {
-        "ticker": "BALL",
-        "name": "Ball Corporation",
-        "default_score": 49.4,
-        "top_share": 0.275,
-        "bottom_share": 0.151
-      },
-      {
-        "ticker": "CTSH",
-        "name": "Cognizant",
-        "default_score": 49.4,
-        "top_share": 0.059,
-        "bottom_share": 0.084
-      },
-      {
-        "ticker": "TAP",
-        "name": "Molson Coors Beverage Company",
-        "default_score": 49.4,
-        "top_share": 0.013,
-        "bottom_share": 0.06
+        "ticker": "KIM",
+        "name": "Kimco Realty",
+        "default_score": 49.5,
+        "top_share": 0.0,
+        "bottom_share": 0.0
       },
       {
         "ticker": "WMB",
         "name": "Williams Companies",
         "default_score": 49.4,
-        "top_share": 0.032,
-        "bottom_share": 0.076
+        "top_share": 0.031,
+        "bottom_share": 0.075
       },
       {
-        "ticker": "MRVL",
-        "name": "Marvell Technology",
+        "ticker": "MLM",
+        "name": "Martin Marietta Materials",
+        "default_score": 49.4,
+        "top_share": 0.014,
+        "bottom_share": 0.044
+      },
+      {
+        "ticker": "BALL",
+        "name": "Ball Corporation",
+        "default_score": 49.4,
+        "top_share": 0.276,
+        "bottom_share": 0.151
+      },
+      {
+        "ticker": "ESS",
+        "name": "Essex Property Trust",
+        "default_score": 49.4,
+        "top_share": 0.157,
+        "bottom_share": 0.066
+      },
+      {
+        "ticker": "A",
+        "name": "Agilent Technologies",
         "default_score": 49.3,
-        "top_share": 0.007,
-        "bottom_share": 0.02
+        "top_share": 0.073,
+        "bottom_share": 0.089
       },
       {
-        "ticker": "GPC",
-        "name": "Genuine Parts Company",
-        "default_score": 49.2,
-        "top_share": 0.007,
-        "bottom_share": 0.052
+        "ticker": "TAP",
+        "name": "Molson Coors Beverage Company",
+        "default_score": 49.3,
+        "top_share": 0.012,
+        "bottom_share": 0.061
       },
       {
         "ticker": "PHM",
@@ -1917,11 +1910,18 @@
         "bottom_share": 0.119
       },
       {
-        "ticker": "RCL",
-        "name": "Royal Caribbean Group",
+        "ticker": "GPC",
+        "name": "Genuine Parts Company",
         "default_score": 49.2,
-        "top_share": 0.047,
-        "bottom_share": 0.067
+        "top_share": 0.007,
+        "bottom_share": 0.054
+      },
+      {
+        "ticker": "CTSH",
+        "name": "Cognizant",
+        "default_score": 49.2,
+        "top_share": 0.055,
+        "bottom_share": 0.09
       },
       {
         "ticker": "ROK",
@@ -1931,25 +1931,25 @@
         "bottom_share": 0.057
       },
       {
-        "ticker": "WAT",
-        "name": "Waters Corporation",
+        "ticker": "RCL",
+        "name": "Royal Caribbean Group",
         "default_score": 49.2,
-        "top_share": 0.039,
-        "bottom_share": 0.077
+        "top_share": 0.047,
+        "bottom_share": 0.067
+      },
+      {
+        "ticker": "MRVL",
+        "name": "Marvell Technology",
+        "default_score": 49.1,
+        "top_share": 0.007,
+        "bottom_share": 0.022
       },
       {
         "ticker": "FDS",
         "name": "FactSet",
         "default_score": 49.0,
         "top_share": 0.032,
-        "bottom_share": 0.076
-      },
-      {
-        "ticker": "FTV",
-        "name": "Fortive",
-        "default_score": 49.0,
-        "top_share": 0.02,
-        "bottom_share": 0.052
+        "bottom_share": 0.077
       },
       {
         "ticker": "NDSN",
@@ -1959,11 +1959,25 @@
         "bottom_share": 0.012
       },
       {
+        "ticker": "FTV",
+        "name": "Fortive",
+        "default_score": 49.0,
+        "top_share": 0.02,
+        "bottom_share": 0.052
+      },
+      {
         "ticker": "NUE",
         "name": "Nucor",
         "default_score": 48.9,
-        "top_share": 0.029,
-        "bottom_share": 0.096
+        "top_share": 0.028,
+        "bottom_share": 0.097
+      },
+      {
+        "ticker": "WAT",
+        "name": "Waters Corporation",
+        "default_score": 48.9,
+        "top_share": 0.037,
+        "bottom_share": 0.081
       },
       {
         "ticker": "RL",
@@ -1973,39 +1987,11 @@
         "bottom_share": 0.001
       },
       {
-        "ticker": "DRI",
-        "name": "Darden Restaurants",
-        "default_score": 48.8,
-        "top_share": 0.02,
-        "bottom_share": 0.059
-      },
-      {
-        "ticker": "ELV",
-        "name": "Elevance Health",
-        "default_score": 48.8,
-        "top_share": 0.05,
-        "bottom_share": 0.115
-      },
-      {
         "ticker": "GL",
         "name": "Globe Life",
         "default_score": 48.8,
         "top_share": 0.0,
         "bottom_share": 0.018
-      },
-      {
-        "ticker": "HPE",
-        "name": "Hewlett Packard Enterprise",
-        "default_score": 48.8,
-        "top_share": 0.015,
-        "bottom_share": 0.017
-      },
-      {
-        "ticker": "PFG",
-        "name": "Principal Financial Group",
-        "default_score": 48.8,
-        "top_share": 0.105,
-        "bottom_share": 0.06
       },
       {
         "ticker": "PRU",
@@ -2015,6 +2001,13 @@
         "bottom_share": 0.022
       },
       {
+        "ticker": "ELV",
+        "name": "Elevance Health",
+        "default_score": 48.8,
+        "top_share": 0.051,
+        "bottom_share": 0.116
+      },
+      {
         "ticker": "WAB",
         "name": "Wabtec",
         "default_score": 48.8,
@@ -2022,11 +2015,11 @@
         "bottom_share": 0.147
       },
       {
-        "ticker": "AON",
-        "name": "Aon plc",
-        "default_score": 48.7,
-        "top_share": 0.039,
-        "bottom_share": 0.104
+        "ticker": "DRI",
+        "name": "Darden Restaurants",
+        "default_score": 48.8,
+        "top_share": 0.019,
+        "bottom_share": 0.059
       },
       {
         "ticker": "HIG",
@@ -2036,11 +2029,46 @@
         "bottom_share": 0.024
       },
       {
+        "ticker": "AON",
+        "name": "Aon plc",
+        "default_score": 48.7,
+        "top_share": 0.039,
+        "bottom_share": 0.104
+      },
+      {
         "ticker": "LLY",
         "name": "Lilly (Eli)",
-        "default_score": 48.7,
+        "default_score": 48.6,
         "top_share": 0.016,
-        "bottom_share": 0.126
+        "bottom_share": 0.127
+      },
+      {
+        "ticker": "HPE",
+        "name": "Hewlett Packard Enterprise",
+        "default_score": 48.6,
+        "top_share": 0.015,
+        "bottom_share": 0.019
+      },
+      {
+        "ticker": "PFG",
+        "name": "Principal Financial Group",
+        "default_score": 48.6,
+        "top_share": 0.102,
+        "bottom_share": 0.063
+      },
+      {
+        "ticker": "MOS",
+        "name": "Mosaic Company (The)",
+        "default_score": 48.6,
+        "top_share": 0.024,
+        "bottom_share": 0.112
+      },
+      {
+        "ticker": "WBD",
+        "name": "Warner Bros. Discovery",
+        "default_score": 48.6,
+        "top_share": 0.01,
+        "bottom_share": 0.061
       },
       {
         "ticker": "EXR",
@@ -2050,34 +2078,6 @@
         "bottom_share": 0.107
       },
       {
-        "ticker": "WBD",
-        "name": "Warner Bros. Discovery",
-        "default_score": 48.6,
-        "top_share": 0.011,
-        "bottom_share": 0.062
-      },
-      {
-        "ticker": "ACN",
-        "name": "Accenture",
-        "default_score": 48.5,
-        "top_share": 0.029,
-        "bottom_share": 0.076
-      },
-      {
-        "ticker": "MOS",
-        "name": "Mosaic Company (The)",
-        "default_score": 48.5,
-        "top_share": 0.023,
-        "bottom_share": 0.123
-      },
-      {
-        "ticker": "PCAR",
-        "name": "Paccar",
-        "default_score": 48.5,
-        "top_share": 0.002,
-        "bottom_share": 0.026
-      },
-      {
         "ticker": "WTW",
         "name": "Willis Towers Watson",
         "default_score": 48.5,
@@ -2085,32 +2085,32 @@
         "bottom_share": 0.105
       },
       {
-        "ticker": "GNRC",
-        "name": "Generac",
+        "ticker": "ACN",
+        "name": "Accenture",
         "default_score": 48.4,
-        "top_share": 0.014,
-        "bottom_share": 0.032
+        "top_share": 0.029,
+        "bottom_share": 0.078
       },
       {
         "ticker": "ISRG",
         "name": "Intuitive Surgical",
         "default_score": 48.4,
-        "top_share": 0.023,
-        "bottom_share": 0.125
+        "top_share": 0.024,
+        "bottom_share": 0.126
       },
       {
         "ticker": "STZ",
         "name": "Constellation Brands",
         "default_score": 48.4,
         "top_share": 0.015,
-        "bottom_share": 0.067
+        "bottom_share": 0.062
       },
       {
         "ticker": "APH",
         "name": "Amphenol",
         "default_score": 48.3,
         "top_share": 0.003,
-        "bottom_share": 0.043
+        "bottom_share": 0.042
       },
       {
         "ticker": "CASY",
@@ -2120,18 +2120,18 @@
         "bottom_share": 0.088
       },
       {
-        "ticker": "IVZ",
-        "name": "Invesco",
+        "ticker": "GNRC",
+        "name": "Generac",
         "default_score": 48.3,
-        "top_share": 0.005,
-        "bottom_share": 0.072
+        "top_share": 0.014,
+        "bottom_share": 0.033
       },
       {
-        "ticker": "ALL",
-        "name": "Allstate",
+        "ticker": "IVZ",
+        "name": "Invesco",
         "default_score": 48.2,
-        "top_share": 0.003,
-        "bottom_share": 0.011
+        "top_share": 0.005,
+        "bottom_share": 0.075
       },
       {
         "ticker": "AMGN",
@@ -2141,74 +2141,81 @@
         "bottom_share": 0.055
       },
       {
-        "ticker": "FFIV",
-        "name": "F5, Inc.",
-        "default_score": 48.2,
-        "top_share": 0.018,
-        "bottom_share": 0.095
-      },
-      {
         "ticker": "STT",
         "name": "State Street Corporation",
-        "default_score": 48.2,
+        "default_score": 48.1,
         "top_share": 0.007,
         "bottom_share": 0.079
       },
       {
-        "ticker": "DLR",
-        "name": "Digital Realty",
-        "default_score": 48.0,
-        "top_share": 0.001,
-        "bottom_share": 0.125
+        "ticker": "FFIV",
+        "name": "F5, Inc.",
+        "default_score": 48.1,
+        "top_share": 0.018,
+        "bottom_share": 0.098
+      },
+      {
+        "ticker": "ALL",
+        "name": "Allstate",
+        "default_score": 48.1,
+        "top_share": 0.003,
+        "bottom_share": 0.013
       },
       {
         "ticker": "HRL",
         "name": "Hormel Foods",
-        "default_score": 48.0,
-        "top_share": 0.018,
-        "bottom_share": 0.129
-      },
-      {
-        "ticker": "UNH",
-        "name": "UnitedHealth Group",
         "default_score": 47.9,
-        "top_share": 0.034,
-        "bottom_share": 0.139
+        "top_share": 0.014,
+        "bottom_share": 0.133
       },
       {
-        "ticker": "DE",
-        "name": "Deere & Company",
-        "default_score": 47.8,
-        "top_share": 0.027,
-        "bottom_share": 0.104
+        "ticker": "DLR",
+        "name": "Digital Realty",
+        "default_score": 47.9,
+        "top_share": 0.001,
+        "bottom_share": 0.124
       },
       {
         "ticker": "SRE",
         "name": "Sempra",
         "default_score": 47.8,
-        "top_share": 0.096,
+        "top_share": 0.095,
         "bottom_share": 0.215
       },
       {
         "ticker": "COP",
         "name": "ConocoPhillips",
         "default_score": 47.7,
-        "top_share": 0.011,
-        "bottom_share": 0.152
+        "top_share": 0.01,
+        "bottom_share": 0.151
+      },
+      {
+        "ticker": "DE",
+        "name": "Deere & Company",
+        "default_score": 47.7,
+        "top_share": 0.026,
+        "bottom_share": 0.107
+      },
+      {
+        "ticker": "UNH",
+        "name": "UnitedHealth Group",
+        "default_score": 47.7,
+        "top_share": 0.032,
+        "bottom_share": 0.143
       },
       {
         "ticker": "XEL",
         "name": "Xcel Energy",
         "default_score": 47.7,
-        "top_share": 0.002,
-        "bottom_share": 0.207
+        "top_share": 0.003,
+        "bottom_share": 0.203
       },
       {
         "ticker": "DELL",
         "name": "Dell Technologies",
         "default_score": 47.6,
         "top_share": 0.009,
-        "bottom_share": 0.085
+        "bottom_share": 0.084
       },
       {
         "ticker": "FDX",
@@ -2218,102 +2225,102 @@
         "bottom_share": 0.115
       },
       {
-        "ticker": "AXP",
-        "name": "American Express",
+        "ticker": "TDY",
+        "name": "Teledyne Technologies",
         "default_score": 47.5,
-        "top_share": 0.006,
-        "bottom_share": 0.042
-      },
-      {
-        "ticker": "KLAC",
-        "name": "KLA Corporation",
-        "default_score": 47.5,
-        "top_share": 0.004,
-        "bottom_share": 0.04
-      },
-      {
-        "ticker": "MRK",
-        "name": "Merck & Co.",
-        "default_score": 47.5,
-        "top_share": 0.004,
-        "bottom_share": 0.124
+        "top_share": 0.034,
+        "bottom_share": 0.162
       },
       {
         "ticker": "PPG",
         "name": "PPG Industries",
         "default_score": 47.5,
         "top_share": 0.023,
-        "bottom_share": 0.178
+        "bottom_share": 0.177
       },
       {
-        "ticker": "TDY",
-        "name": "Teledyne Technologies",
+        "ticker": "AXP",
+        "name": "American Express",
         "default_score": 47.5,
-        "top_share": 0.035,
-        "bottom_share": 0.163
+        "top_share": 0.006,
+        "bottom_share": 0.047
       },
       {
         "ticker": "VLO",
         "name": "Valero Energy",
         "default_score": 47.5,
         "top_share": 0.001,
-        "bottom_share": 0.097
+        "bottom_share": 0.099
+      },
+      {
+        "ticker": "MRK",
+        "name": "Merck & Co.",
+        "default_score": 47.4,
+        "top_share": 0.003,
+        "bottom_share": 0.127
+      },
+      {
+        "ticker": "KLAC",
+        "name": "KLA Corporation",
+        "default_score": 47.4,
+        "top_share": 0.004,
+        "bottom_share": 0.042
       },
       {
         "ticker": "C",
         "name": "Citigroup",
-        "default_score": 47.4,
+        "default_score": 47.3,
         "top_share": 0.006,
-        "bottom_share": 0.036
-      },
-      {
-        "ticker": "LRCX",
-        "name": "Lam Research",
-        "default_score": 47.4,
-        "top_share": 0.0,
-        "bottom_share": 0.012
+        "bottom_share": 0.037
       },
       {
         "ticker": "CDW",
         "name": "CDW Corporation",
         "default_score": 47.3,
         "top_share": 0.004,
-        "bottom_share": 0.096
+        "bottom_share": 0.094
       },
       {
-        "ticker": "FSLR",
-        "name": "First Solar",
+        "ticker": "LRCX",
+        "name": "Lam Research",
         "default_score": 47.3,
-        "top_share": 0.025,
-        "bottom_share": 0.143
+        "top_share": 0.0,
+        "bottom_share": 0.011
       },
       {
         "ticker": "DXCM",
         "name": "Dexcom",
         "default_score": 47.2,
-        "top_share": 0.03,
+        "top_share": 0.031,
         "bottom_share": 0.183
+      },
+      {
+        "ticker": "FSLR",
+        "name": "First Solar",
+        "default_score": 47.2,
+        "top_share": 0.025,
+        "bottom_share": 0.145
+      },
+      {
+        "ticker": "IRM",
+        "name": "Iron Mountain",
+        "default_score": 47.1,
+        "top_share": 0.054,
+        "bottom_share": 0.189
       },
       {
         "ticker": "NSC",
         "name": "Norfolk Southern",
-        "default_score": 47.2,
+        "default_score": 47.1,
         "top_share": 0.002,
-        "bottom_share": 0.12
+        "bottom_share": 0.124
       },
       {
         "ticker": "CRH",
         "name": "CRH plc",
         "default_score": 47.0,
         "top_share": 0.02,
-        "bottom_share": 0.122
-      },
-      {
-        "ticker": "SNA",
-        "name": "Snap-on",
-        "default_score": 47.0,
-        "top_share": 0.0,
-        "bottom_share": 0.02
+        "bottom_share": 0.118
       },
       {
         "ticker": "TJX",
@@ -2323,382 +2330,382 @@
         "bottom_share": 0.129
       },
       {
-        "ticker": "LIN",
-        "name": "Linde plc",
-        "default_score": 46.8,
-        "top_share": 0.028,
-        "bottom_share": 0.169
-      },
-      {
-        "ticker": "ORCL",
-        "name": "Oracle Corporation",
-        "default_score": 46.7,
-        "top_share": 0.054,
-        "bottom_share": 0.146
+        "ticker": "SNA",
+        "name": "Snap-on",
+        "default_score": 46.9,
+        "top_share": 0.0,
+        "bottom_share": 0.021
       },
       {
         "ticker": "PEG",
         "name": "Public Service Enterprise Group",
         "default_score": 46.7,
-        "top_share": 0.008,
-        "bottom_share": 0.138
+        "top_share": 0.007,
+        "bottom_share": 0.137
+      },
+      {
+        "ticker": "LIN",
+        "name": "Linde plc",
+        "default_score": 46.6,
+        "top_share": 0.027,
+        "bottom_share": 0.176
       },
       {
         "ticker": "AEE",
         "name": "Ameren",
         "default_score": 46.6,
         "top_share": 0.0,
-        "bottom_share": 0.072
+        "bottom_share": 0.075
       },
       {
         "ticker": "LEN",
         "name": "Lennar",
         "default_score": 46.6,
         "top_share": 0.008,
-        "bottom_share": 0.253
-      },
-      {
-        "ticker": "TRMB",
-        "name": "Trimble Inc.",
-        "default_score": 46.5,
-        "top_share": 0.004,
-        "bottom_share": 0.157
+        "bottom_share": 0.251
       },
       {
         "ticker": "AZO",
         "name": "AutoZone",
         "default_score": 46.4,
         "top_share": 0.0,
-        "bottom_share": 0.132
+        "bottom_share": 0.131
       },
       {
-        "ticker": "HBAN",
-        "name": "Huntington Bancshares",
+        "ticker": "TRMB",
+        "name": "Trimble Inc.",
         "default_score": 46.4,
-        "top_share": 0.002,
-        "bottom_share": 0.093
+        "top_share": 0.004,
+        "bottom_share": 0.161
       },
       {
         "ticker": "CHRW",
         "name": "C.H. Robinson",
-        "default_score": 46.2,
+        "default_score": 46.3,
         "top_share": 0.006,
-        "bottom_share": 0.18
+        "bottom_share": 0.179
+      },
+      {
+        "ticker": "HBAN",
+        "name": "Huntington Bancshares",
+        "default_score": 46.3,
+        "top_share": 0.002,
+        "bottom_share": 0.094
       },
       {
         "ticker": "STLD",
         "name": "Steel Dynamics",
         "default_score": 46.2,
-        "top_share": 0.008,
-        "bottom_share": 0.226
+        "top_share": 0.007,
+        "bottom_share": 0.229
       },
       {
-        "ticker": "TER",
-        "name": "Teradyne",
-        "default_score": 46.2,
-        "top_share": 0.013,
-        "bottom_share": 0.195
+        "ticker": "GDDY",
+        "name": "GoDaddy",
+        "default_score": 46.1,
+        "top_share": 0.0,
+        "bottom_share": 0.159
       },
       {
         "ticker": "AVGO",
         "name": "Broadcom",
         "default_score": 46.1,
-        "top_share": 0.034,
-        "bottom_share": 0.282
+        "top_share": 0.035,
+        "bottom_share": 0.281
       },
       {
         "ticker": "CSCO",
         "name": "Cisco",
-        "default_score": 46.1,
+        "default_score": 46.0,
         "top_share": 0.005,
-        "bottom_share": 0.142
+        "bottom_share": 0.144
       },
       {
         "ticker": "RSG",
         "name": "Republic Services",
-        "default_score": 46.1,
+        "default_score": 46.0,
         "top_share": 0.001,
-        "bottom_share": 0.169
+        "bottom_share": 0.171
       },
       {
-        "ticker": "GDDY",
-        "name": "GoDaddy",
-        "default_score": 46.0,
-        "top_share": 0.0,
-        "bottom_share": 0.161
+        "ticker": "KR",
+        "name": "Kroger",
+        "default_score": 45.9,
+        "top_share": 0.016,
+        "bottom_share": 0.199
       },
       {
         "ticker": "IDXX",
         "name": "Idexx Laboratories",
-        "default_score": 46.0,
+        "default_score": 45.8,
         "top_share": 0.0,
-        "bottom_share": 0.164
+        "bottom_share": 0.167
       },
       {
         "ticker": "BKR",
         "name": "Baker Hughes",
         "default_score": 45.8,
         "top_share": 0.024,
-        "bottom_share": 0.211
+        "bottom_share": 0.214
       },
       {
         "ticker": "CMI",
         "name": "Cummins",
-        "default_score": 45.8,
+        "default_score": 45.7,
         "top_share": 0.0,
-        "bottom_share": 0.151
-      },
-      {
-        "ticker": "KR",
-        "name": "Kroger",
-        "default_score": 45.8,
-        "top_share": 0.016,
-        "bottom_share": 0.203
+        "bottom_share": 0.158
       },
       {
         "ticker": "DHI",
         "name": "D. R. Horton",
         "default_score": 45.7,
         "top_share": 0.012,
-        "bottom_share": 0.266
+        "bottom_share": 0.264
       },
       {
         "ticker": "KEY",
         "name": "KeyCorp",
-        "default_score": 45.7,
-        "top_share": 0.0,
-        "bottom_share": 0.069
-      },
-      {
-        "ticker": "MPWR",
-        "name": "Monolithic Power Systems",
         "default_score": 45.6,
         "top_share": 0.0,
-        "bottom_share": 0.192
-      },
-      {
-        "ticker": "MSI",
-        "name": "Motorola Solutions",
-        "default_score": 45.6,
-        "top_share": 0.0,
-        "bottom_share": 0.231
+        "bottom_share": 0.077
       },
       {
         "ticker": "TRGP",
         "name": "Targa Resources",
         "default_score": 45.6,
         "top_share": 0.0,
-        "bottom_share": 0.18
+        "bottom_share": 0.179
       },
       {
-        "ticker": "CAT",
-        "name": "Caterpillar Inc.",
+        "ticker": "MPWR",
+        "name": "Monolithic Power Systems",
         "default_score": 45.5,
-        "top_share": 0.026,
-        "bottom_share": 0.314
-      },
-      {
-        "ticker": "CME",
-        "name": "CME Group",
-        "default_score": 45.5,
-        "top_share": 0.005,
-        "bottom_share": 0.173
+        "top_share": 0.0,
+        "bottom_share": 0.196
       },
       {
         "ticker": "DVA",
         "name": "DaVita",
         "default_score": 45.5,
         "top_share": 0.022,
-        "bottom_share": 0.211
-      },
-      {
-        "ticker": "SPGI",
-        "name": "S&P Global",
-        "default_score": 45.5,
-        "top_share": 0.013,
-        "bottom_share": 0.235
+        "bottom_share": 0.212
       },
       {
         "ticker": "KHC",
         "name": "Kraft Heinz",
-        "default_score": 45.3,
-        "top_share": 0.018,
-        "bottom_share": 0.185
+        "default_score": 45.5,
+        "top_share": 0.02,
+        "bottom_share": 0.177
       },
       {
-        "ticker": "RTX",
-        "name": "RTX Corporation",
-        "default_score": 45.3,
-        "top_share": 0.006,
-        "bottom_share": 0.275
+        "ticker": "CME",
+        "name": "CME Group",
+        "default_score": 45.5,
+        "top_share": 0.005,
+        "bottom_share": 0.177
+      },
+      {
+        "ticker": "MSI",
+        "name": "Motorola Solutions",
+        "default_score": 45.5,
+        "top_share": 0.0,
+        "bottom_share": 0.238
+      },
+      {
+        "ticker": "CAT",
+        "name": "Caterpillar Inc.",
+        "default_score": 45.4,
+        "top_share": 0.025,
+        "bottom_share": 0.315
       },
       {
         "ticker": "VMC",
         "name": "Vulcan Materials Company",
-        "default_score": 45.3,
+        "default_score": 45.4,
         "top_share": 0.009,
-        "bottom_share": 0.273
+        "bottom_share": 0.272
+      },
+      {
+        "ticker": "SPGI",
+        "name": "S&P Global",
+        "default_score": 45.4,
+        "top_share": 0.013,
+        "bottom_share": 0.243
       },
       {
         "ticker": "KMI",
         "name": "Kinder Morgan",
         "default_score": 45.2,
         "top_share": 0.016,
-        "bottom_share": 0.287
+        "bottom_share": 0.288
       },
       {
-        "ticker": "CARR",
-        "name": "Carrier Global",
+        "ticker": "RTX",
+        "name": "RTX Corporation",
+        "default_score": 45.2,
+        "top_share": 0.006,
+        "bottom_share": 0.279
+      },
+      {
+        "ticker": "TER",
+        "name": "Teradyne",
         "default_score": 45.1,
-        "top_share": 0.028,
-        "bottom_share": 0.294
+        "top_share": 0.013,
+        "bottom_share": 0.276
       },
       {
         "ticker": "FE",
         "name": "FirstEnergy",
         "default_score": 45.1,
         "top_share": 0.0,
-        "bottom_share": 0.161
+        "bottom_share": 0.166
       },
       {
-        "ticker": "ECL",
-        "name": "Ecolab",
+        "ticker": "CARR",
+        "name": "Carrier Global",
         "default_score": 45.0,
-        "top_share": 0.042,
-        "bottom_share": 0.297
+        "top_share": 0.026,
+        "bottom_share": 0.298
       },
       {
         "ticker": "F",
         "name": "Ford Motor Company",
         "default_score": 44.9,
         "top_share": 0.002,
-        "bottom_share": 0.299
-      },
-      {
-        "ticker": "JPM",
-        "name": "JPMorgan Chase",
-        "default_score": 44.9,
-        "top_share": 0.0,
-        "bottom_share": 0.196
+        "bottom_share": 0.3
       },
       {
         "ticker": "MCK",
         "name": "McKesson Corporation",
         "default_score": 44.9,
         "top_share": 0.001,
-        "bottom_share": 0.237
+        "bottom_share": 0.236
       },
       {
         "ticker": "USB",
         "name": "U.S. Bancorp",
-        "default_score": 44.9,
-        "top_share": 0.0,
-        "bottom_share": 0.124
-      },
-      {
-        "ticker": "SBAC",
-        "name": "SBA Communications",
         "default_score": 44.8,
         "top_share": 0.0,
-        "bottom_share": 0.143
+        "bottom_share": 0.144
       },
       {
-        "ticker": "TDG",
-        "name": "TransDigm Group",
+        "ticker": "ECL",
+        "name": "Ecolab",
         "default_score": 44.8,
-        "top_share": 0.001,
-        "bottom_share": 0.204
+        "top_share": 0.041,
+        "bottom_share": 0.31
+      },
+      {
+        "ticker": "JPM",
+        "name": "JPMorgan Chase",
+        "default_score": 44.8,
+        "top_share": 0.0,
+        "bottom_share": 0.195
       },
       {
         "ticker": "TSLA",
         "name": "Tesla, Inc.",
         "default_score": 44.7,
-        "top_share": 0.03,
-        "bottom_share": 0.368
+        "top_share": 0.031,
+        "bottom_share": 0.369
+      },
+      {
+        "ticker": "TDG",
+        "name": "TransDigm Group",
+        "default_score": 44.7,
+        "top_share": 0.001,
+        "bottom_share": 0.203
+      },
+      {
+        "ticker": "SHW",
+        "name": "Sherwin-Williams",
+        "default_score": 44.6,
+        "top_share": 0.006,
+        "bottom_share": 0.303
       },
       {
         "ticker": "OXY",
         "name": "Occidental Petroleum",
         "default_score": 44.6,
-        "top_share": 0.009,
-        "bottom_share": 0.319
+        "top_share": 0.008,
+        "bottom_share": 0.317
+      },
+      {
+        "ticker": "SBAC",
+        "name": "SBA Communications",
+        "default_score": 44.6,
+        "top_share": 0.0,
+        "bottom_share": 0.152
       },
       {
         "ticker": "KMB",
         "name": "Kimberly-Clark",
         "default_score": 44.5,
         "top_share": 0.001,
-        "bottom_share": 0.293
+        "bottom_share": 0.291
       },
       {
         "ticker": "BBY",
         "name": "Best Buy",
         "default_score": 44.4,
         "top_share": 0.0,
-        "bottom_share": 0.194
+        "bottom_share": 0.195
       },
       {
         "ticker": "NKE",
         "name": "Nike, Inc.",
         "default_score": 44.4,
         "top_share": 0.0,
-        "bottom_share": 0.194
+        "bottom_share": 0.195
+      },
+      {
+        "ticker": "ALGN",
+        "name": "Align Technology",
+        "default_score": 44.2,
+        "top_share": 0.001,
+        "bottom_share": 0.294
       },
       {
         "ticker": "PH",
         "name": "Parker Hannifin",
-        "default_score": 44.3,
+        "default_score": 44.2,
         "top_share": 0.0,
-        "bottom_share": 0.189
+        "bottom_share": 0.197
       },
       {
         "ticker": "COF",
         "name": "Capital One",
         "default_score": 44.2,
         "top_share": 0.0,
-        "bottom_share": 0.221
+        "bottom_share": 0.218
       },
       {
         "ticker": "VZ",
         "name": "Verizon",
         "default_score": 44.2,
-        "top_share": 0.005,
-        "bottom_share": 0.331
-      },
-      {
-        "ticker": "ALGN",
-        "name": "Align Technology",
-        "default_score": 44.1,
-        "top_share": 0.001,
-        "bottom_share": 0.303
+        "top_share": 0.004,
+        "bottom_share": 0.333
       },
       {
         "ticker": "CCL",
         "name": "Carnival Corporation",
         "default_score": 44.1,
         "top_share": 0.001,
-        "bottom_share": 0.294
+        "bottom_share": 0.297
       },
       {
         "ticker": "GIS",
         "name": "General Mills",
         "default_score": 44.1,
         "top_share": 0.01,
-        "bottom_share": 0.331
+        "bottom_share": 0.33
       },
       {
         "ticker": "ROST",
         "name": "Ross Stores",
         "default_score": 44.1,
         "top_share": 0.0,
-        "bottom_share": 0.281
-      },
-      {
-        "ticker": "FERG",
-        "name": "Ferguson Enterprises",
-        "default_score": 44.0,
-        "top_share": 0.0,
-        "bottom_share": 0.278
+        "bottom_share": 0.283
       },
       {
         "ticker": "NCLH",
@@ -2708,158 +2715,137 @@
         "bottom_share": 0.368
       },
       {
-        "ticker": "IRM",
-        "name": "Iron Mountain",
+        "ticker": "FERG",
+        "name": "Ferguson Enterprises",
+        "default_score": 44.0,
+        "top_share": 0.0,
+        "bottom_share": 0.279
+      },
+      {
+        "ticker": "APD",
+        "name": "Air Products",
         "default_score": 43.9,
-        "top_share": 0.013,
-        "bottom_share": 0.345
+        "top_share": 0.005,
+        "bottom_share": 0.306
       },
       {
         "ticker": "PNC",
         "name": "PNC Financial Services",
         "default_score": 43.9,
         "top_share": 0.0,
-        "bottom_share": 0.274
-      },
-      {
-        "ticker": "APD",
-        "name": "Air Products",
-        "default_score": 43.8,
-        "top_share": 0.004,
-        "bottom_share": 0.32
-      },
-      {
-        "ticker": "AIG",
-        "name": "American International Group",
-        "default_score": 43.6,
-        "top_share": 0.004,
-        "bottom_share": 0.362
+        "bottom_share": 0.273
       },
       {
         "ticker": "TSCO",
         "name": "Tractor Supply",
         "default_score": 43.6,
         "top_share": 0.0,
-        "bottom_share": 0.312
+        "bottom_share": 0.314
+      },
+      {
+        "ticker": "AIG",
+        "name": "American International Group",
+        "default_score": 43.5,
+        "top_share": 0.004,
+        "bottom_share": 0.367
       },
       {
         "ticker": "CRL",
         "name": "Charles River Laboratories",
         "default_score": 43.4,
         "top_share": 0.0,
-        "bottom_share": 0.287
+        "bottom_share": 0.284
       },
       {
         "ticker": "RF",
         "name": "Regions Financial Corporation",
         "default_score": 43.3,
         "top_share": 0.0,
-        "bottom_share": 0.239
-      },
-      {
-        "ticker": "SHW",
-        "name": "Sherwin-Williams",
-        "default_score": 43.3,
-        "top_share": 0.002,
-        "bottom_share": 0.368
+        "bottom_share": 0.246
       },
       {
         "ticker": "GS",
         "name": "Goldman Sachs",
         "default_score": 43.2,
-        "top_share": 0.007,
-        "bottom_share": 0.273
+        "top_share": 0.006,
+        "bottom_share": 0.271
       },
       {
         "ticker": "MPC",
         "name": "Marathon Petroleum",
         "default_score": 43.2,
         "top_share": 0.0,
-        "bottom_share": 0.318
+        "bottom_share": 0.315
       },
       {
         "ticker": "DTE",
         "name": "DTE Energy",
         "default_score": 43.1,
-        "top_share": 0.033,
-        "bottom_share": 0.354
+        "top_share": 0.032,
+        "bottom_share": 0.353
       },
       {
         "ticker": "DGX",
         "name": "Quest Diagnostics",
-        "default_score": 42.9,
+        "default_score": 42.8,
         "top_share": 0.001,
-        "bottom_share": 0.375
+        "bottom_share": 0.379
       },
       {
         "ticker": "MDT",
         "name": "Medtronic",
         "default_score": 42.7,
         "top_share": 0.003,
-        "bottom_share": 0.41
+        "bottom_share": 0.408
       },
       {
         "ticker": "SWK",
         "name": "Stanley Black & Decker",
-        "default_score": 42.7,
-        "top_share": 0.001,
-        "bottom_share": 0.391
-      },
-      {
-        "ticker": "ABT",
-        "name": "Abbott Laboratories",
         "default_score": 42.6,
-        "top_share": 0.0,
-        "bottom_share": 0.428
+        "top_share": 0.001,
+        "bottom_share": 0.401
       },
       {
         "ticker": "AFL",
         "name": "Aflac",
         "default_score": 42.6,
         "top_share": 0.0,
-        "bottom_share": 0.36
-      },
-      {
-        "ticker": "BNY",
-        "name": "BNY Mellon",
-        "default_score": 42.5,
-        "top_share": 0.0,
-        "bottom_share": 0.384
+        "bottom_share": 0.358
       },
       {
         "ticker": "COO",
         "name": "Cooper Companies (The)",
         "default_score": 42.5,
         "top_share": 0.004,
-        "bottom_share": 0.436
+        "bottom_share": 0.438
       },
       {
         "ticker": "DUK",
         "name": "Duke Energy",
         "default_score": 42.4,
         "top_share": 0.001,
-        "bottom_share": 0.482
+        "bottom_share": 0.48
+      },
+      {
+        "ticker": "ABT",
+        "name": "Abbott Laboratories",
+        "default_score": 42.4,
+        "top_share": 0.0,
+        "bottom_share": 0.442
+      },
+      {
+        "ticker": "BNY",
+        "name": "BNY Mellon",
+        "default_score": 42.3,
+        "top_share": 0.0,
+        "bottom_share": 0.397
       },
       {
         "ticker": "NXPI",
         "name": "NXP Semiconductors",
         "default_score": 42.3,
         "top_share": 0.002,
-        "bottom_share": 0.421
-      },
-      {
-        "ticker": "DIS",
-        "name": "Walt Disney Company (The)",
-        "default_score": 42.2,
-        "top_share": 0.0,
-        "bottom_share": 0.418
-      },
-      {
-        "ticker": "HPQ",
-        "name": "HP Inc.",
-        "default_score": 42.2,
-        "top_share": 0.036,
-        "bottom_share": 0.358
+        "bottom_share": 0.424
       },
       {
         "ticker": "IFF",
@@ -2869,207 +2855,221 @@
         "bottom_share": 0.422
       },
       {
-        "ticker": "UDR",
-        "name": "UDR, Inc.",
+        "ticker": "DIS",
+        "name": "Walt Disney Company (The)",
         "default_score": 42.2,
         "top_share": 0.0,
-        "bottom_share": 0.482
+        "bottom_share": 0.417
+      },
+      {
+        "ticker": "HPQ",
+        "name": "HP Inc.",
+        "default_score": 42.2,
+        "top_share": 0.036,
+        "bottom_share": 0.356
+      },
+      {
+        "ticker": "UDR",
+        "name": "UDR, Inc.",
+        "default_score": 42.1,
+        "top_share": 0.0,
+        "bottom_share": 0.498
       },
       {
         "ticker": "MAS",
         "name": "Masco",
-        "default_score": 42.0,
+        "default_score": 41.9,
         "top_share": 0.0,
-        "bottom_share": 0.461
+        "bottom_share": 0.467
       },
       {
         "ticker": "TPR",
         "name": "Tapestry, Inc.",
         "default_score": 41.7,
-        "top_share": 0.002,
-        "bottom_share": 0.449
-      },
-      {
-        "ticker": "PSA",
-        "name": "Public Storage",
-        "default_score": 41.6,
         "top_share": 0.001,
-        "bottom_share": 0.509
-      },
-      {
-        "ticker": "CFG",
-        "name": "Citizens Financial Group",
-        "default_score": 41.5,
-        "top_share": 0.0,
-        "bottom_share": 0.48
+        "bottom_share": 0.45
       },
       {
         "ticker": "WSM",
         "name": "Williams-Sonoma, Inc.",
         "default_score": 41.5,
         "top_share": 0.0,
-        "bottom_share": 0.484
+        "bottom_share": 0.481
       },
       {
-        "ticker": "JNJ",
-        "name": "Johnson & Johnson",
+        "ticker": "CFG",
+        "name": "Citizens Financial Group",
         "default_score": 41.4,
         "top_share": 0.0,
-        "bottom_share": 0.519
+        "bottom_share": 0.491
       },
       {
-        "ticker": "AMT",
-        "name": "American Tower",
+        "ticker": "PSA",
+        "name": "Public Storage",
         "default_score": 41.3,
-        "top_share": 0.0,
-        "bottom_share": 0.51
+        "top_share": 0.001,
+        "bottom_share": 0.522
       },
       {
         "ticker": "TFC",
         "name": "Truist Financial",
         "default_score": 41.2,
         "top_share": 0.0,
-        "bottom_share": 0.481
+        "bottom_share": 0.483
       },
       {
         "ticker": "AEP",
         "name": "American Electric Power",
         "default_score": 41.1,
         "top_share": 0.0,
-        "bottom_share": 0.552
+        "bottom_share": 0.556
       },
       {
-        "ticker": "JCI",
-        "name": "Johnson Controls",
-        "default_score": 41.0,
-        "top_share": 0.003,
-        "bottom_share": 0.537
-      },
-      {
-        "ticker": "LMT",
-        "name": "Lockheed Martin",
-        "default_score": 41.0,
-        "top_share": 0.001,
-        "bottom_share": 0.584
+        "ticker": "JNJ",
+        "name": "Johnson & Johnson",
+        "default_score": 41.1,
+        "top_share": 0.0,
+        "bottom_share": 0.567
       },
       {
         "ticker": "LYB",
         "name": "LyondellBasell",
-        "default_score": 40.9,
+        "default_score": 41.1,
         "top_share": 0.0,
-        "bottom_share": 0.561
+        "bottom_share": 0.551
       },
       {
-        "ticker": "MAA",
-        "name": "Mid-America Apartment Communities",
-        "default_score": 40.8,
+        "ticker": "AMT",
+        "name": "American Tower",
+        "default_score": 41.0,
         "top_share": 0.0,
-        "bottom_share": 0.6
+        "bottom_share": 0.538
+      },
+      {
+        "ticker": "JCI",
+        "name": "Johnson Controls",
+        "default_score": 40.9,
+        "top_share": 0.003,
+        "bottom_share": 0.54
+      },
+      {
+        "ticker": "LMT",
+        "name": "Lockheed Martin",
+        "default_score": 40.9,
+        "top_share": 0.001,
+        "bottom_share": 0.586
       },
       {
         "ticker": "MGM",
         "name": "MGM Resorts",
         "default_score": 40.8,
         "top_share": 0.0,
-        "bottom_share": 0.541
+        "bottom_share": 0.537
       },
       {
-        "ticker": "HCA",
-        "name": "HCA Healthcare",
+        "ticker": "MAA",
+        "name": "Mid-America Apartment Communities",
         "default_score": 40.7,
         "top_share": 0.0,
-        "bottom_share": 0.531
+        "bottom_share": 0.619
       },
       {
         "ticker": "TMUS",
         "name": "T-Mobile US",
         "default_score": 40.7,
         "top_share": 0.0,
-        "bottom_share": 0.58
+        "bottom_share": 0.582
+      },
+      {
+        "ticker": "HCA",
+        "name": "HCA Healthcare",
+        "default_score": 40.6,
+        "top_share": 0.0,
+        "bottom_share": 0.542
       },
       {
         "ticker": "WY",
         "name": "Weyerhaeuser",
-        "default_score": 40.5,
+        "default_score": 40.3,
         "top_share": 0.001,
-        "bottom_share": 0.546
+        "bottom_share": 0.561
       },
       {
         "ticker": "CMCSA",
         "name": "Comcast",
         "default_score": 40.3,
         "top_share": 0.0,
-        "bottom_share": 0.618
+        "bottom_share": 0.613
       },
       {
         "ticker": "DOV",
         "name": "Dover Corporation",
-        "default_score": 40.2,
+        "default_score": 40.1,
         "top_share": 0.0,
-        "bottom_share": 0.644
+        "bottom_share": 0.653
+      },
+      {
+        "ticker": "EW",
+        "name": "Edwards Lifesciences",
+        "default_score": 40.1,
+        "top_share": 0.001,
+        "bottom_share": 0.507
       },
       {
         "ticker": "HII",
         "name": "Huntington Ingalls Industries",
         "default_score": 40.1,
         "top_share": 0.0,
-        "bottom_share": 0.606
-      },
-      {
-        "ticker": "AAPL",
-        "name": "Apple Inc.",
-        "default_score": 40.0,
-        "top_share": 0.0,
-        "bottom_share": 0.606
-      },
-      {
-        "ticker": "IBM",
-        "name": "IBM",
-        "default_score": 40.0,
-        "top_share": 0.0,
-        "bottom_share": 0.5
+        "bottom_share": 0.609
       },
       {
         "ticker": "JBL",
         "name": "Jabil",
         "default_score": 40.0,
         "top_share": 0.0,
-        "bottom_share": 0.637
+        "bottom_share": 0.636
       },
       {
         "ticker": "LNT",
         "name": "Alliant Energy",
         "default_score": 40.0,
-        "top_share": 0.001,
-        "bottom_share": 0.572
+        "top_share": 0.0,
+        "bottom_share": 0.573
       },
       {
-        "ticker": "STX",
-        "name": "Seagate Technology",
+        "ticker": "IBM",
+        "name": "IBM",
         "default_score": 40.0,
         "top_share": 0.0,
-        "bottom_share": 0.615
+        "bottom_share": 0.498
       },
       {
         "ticker": "INTC",
         "name": "Intel",
         "default_score": 39.9,
         "top_share": 0.004,
-        "bottom_share": 0.62
+        "bottom_share": 0.621
+      },
+      {
+        "ticker": "STX",
+        "name": "Seagate Technology",
+        "default_score": 39.9,
+        "top_share": 0.0,
+        "bottom_share": 0.618
+      },
+      {
+        "ticker": "AAPL",
+        "name": "Apple Inc.",
+        "default_score": 39.8,
+        "top_share": 0.0,
+        "bottom_share": 0.617
       },
       {
         "ticker": "HD",
         "name": "Home Depot (The)",
         "default_score": 39.8,
         "top_share": 0.0,
-        "bottom_share": 0.631
-      },
-      {
-        "ticker": "ITW",
-        "name": "Illinois Tool Works",
-        "default_score": 39.7,
-        "top_share": 0.0,
-        "bottom_share": 0.656
+        "bottom_share": 0.626
       },
       {
         "ticker": "T",
@@ -3086,18 +3086,18 @@
         "bottom_share": 0.634
       },
       {
-        "ticker": "EW",
-        "name": "Edwards Lifesciences",
+        "ticker": "ITW",
+        "name": "Illinois Tool Works",
         "default_score": 39.6,
         "top_share": 0.0,
-        "bottom_share": 0.683
+        "bottom_share": 0.66
       },
       {
         "ticker": "IP",
         "name": "International Paper",
-        "default_score": 39.6,
+        "default_score": 39.5,
         "top_share": 0.0,
-        "bottom_share": 0.612
+        "bottom_share": 0.607
       },
       {
         "ticker": "GLW",
@@ -3109,44 +3109,44 @@
       {
         "ticker": "FISV",
         "name": "Fiserv",
-        "default_score": 39.1,
+        "default_score": 39.0,
         "top_share": 0.0,
-        "bottom_share": 0.684
+        "bottom_share": 0.694
       },
       {
         "ticker": "CVX",
         "name": "Chevron Corporation",
         "default_score": 38.9,
         "top_share": 0.0,
-        "bottom_share": 0.705
+        "bottom_share": 0.706
       },
       {
         "ticker": "KKR",
         "name": "KKR & Co.",
-        "default_score": 38.9,
+        "default_score": 38.8,
         "top_share": 0.0,
-        "bottom_share": 0.663
+        "bottom_share": 0.665
       },
       {
         "ticker": "BDX",
         "name": "Becton Dickinson",
         "default_score": 38.4,
         "top_share": 0.0,
-        "bottom_share": 0.723
-      },
-      {
-        "ticker": "BF.B",
-        "name": "Brown\u2013Forman",
-        "default_score": 38.3,
-        "top_share": 0.0,
-        "bottom_share": 0.789
+        "bottom_share": 0.721
       },
       {
         "ticker": "GEV",
         "name": "GE Vernova",
         "default_score": 38.3,
         "top_share": 0.0,
-        "bottom_share": 0.724
+        "bottom_share": 0.725
+      },
+      {
+        "ticker": "BF.B",
+        "name": "Brown\u2013Forman",
+        "default_score": 38.3,
+        "top_share": 0.0,
+        "bottom_share": 0.791
       },
       {
         "ticker": "MMM",
@@ -3165,9 +3165,9 @@
       {
         "ticker": "BRK.B",
         "name": "Berkshire Hathaway",
-        "default_score": 38.0,
+        "default_score": 37.9,
         "top_share": 0.004,
-        "bottom_share": 0.675
+        "bottom_share": 0.676
       },
       {
         "ticker": "HWM",
@@ -3177,39 +3177,39 @@
         "bottom_share": 0.741
       },
       {
+        "ticker": "PEP",
+        "name": "PepsiCo",
+        "default_score": 37.8,
+        "top_share": 0.0,
+        "bottom_share": 0.817
+      },
+      {
         "ticker": "NEE",
         "name": "NextEra Energy",
         "default_score": 37.8,
         "top_share": 0.0,
-        "bottom_share": 0.666
+        "bottom_share": 0.665
       },
       {
         "ticker": "FOX",
         "name": "Fox Corporation (Class B)",
         "default_score": 37.7,
         "top_share": 0.0,
-        "bottom_share": 0.802
-      },
-      {
-        "ticker": "MU",
-        "name": "Micron Technology",
-        "default_score": 37.7,
-        "top_share": 0.001,
-        "bottom_share": 0.738
-      },
-      {
-        "ticker": "PEP",
-        "name": "PepsiCo",
-        "default_score": 37.7,
-        "top_share": 0.0,
-        "bottom_share": 0.823
+        "bottom_share": 0.801
       },
       {
         "ticker": "VTRS",
         "name": "Viatris",
         "default_score": 37.6,
         "top_share": 0.002,
-        "bottom_share": 0.7
+        "bottom_share": 0.702
+      },
+      {
+        "ticker": "MU",
+        "name": "Micron Technology",
+        "default_score": 37.6,
+        "top_share": 0.001,
+        "bottom_share": 0.75
       },
       {
         "ticker": "GM",
@@ -3223,42 +3223,42 @@
         "name": "Boeing",
         "default_score": 37.2,
         "top_share": 0.0,
-        "bottom_share": 0.77
+        "bottom_share": 0.769
       },
       {
         "ticker": "AES",
         "name": "AES Corporation",
         "default_score": 37.1,
         "top_share": 0.004,
-        "bottom_share": 0.732
+        "bottom_share": 0.733
       },
       {
         "ticker": "WDC",
         "name": "Western Digital",
         "default_score": 37.0,
         "top_share": 0.0,
-        "bottom_share": 0.762
+        "bottom_share": 0.763
       },
       {
         "ticker": "MTB",
         "name": "M&T Bank",
-        "default_score": 36.9,
+        "default_score": 36.8,
         "top_share": 0.0,
-        "bottom_share": 0.834
+        "bottom_share": 0.84
       },
       {
         "ticker": "FLEX",
         "name": "Flex Ltd.",
-        "default_score": 36.8,
+        "default_score": 36.7,
         "top_share": 0.0,
-        "bottom_share": 0.839
+        "bottom_share": 0.84
       },
       {
         "ticker": "ADI",
         "name": "Analog Devices",
-        "default_score": 36.6,
+        "default_score": 36.4,
         "top_share": 0.0,
-        "bottom_share": 0.79
+        "bottom_share": 0.798
       },
       {
         "ticker": "LOW",
@@ -3272,42 +3272,35 @@
         "name": "Global Payments",
         "default_score": 35.8,
         "top_share": 0.0,
-        "bottom_share": 0.963
+        "bottom_share": 0.967
       },
       {
         "ticker": "PNR",
         "name": "Pentair",
         "default_score": 35.8,
         "top_share": 0.0,
-        "bottom_share": 0.912
+        "bottom_share": 0.914
       },
       {
         "ticker": "BAX",
         "name": "Baxter International",
         "default_score": 35.7,
         "top_share": 0.001,
-        "bottom_share": 0.772
-      },
-      {
-        "ticker": "CPT",
-        "name": "Camden Property Trust",
-        "default_score": 35.6,
-        "top_share": 0.0,
-        "bottom_share": 0.907
+        "bottom_share": 0.773
       },
       {
         "ticker": "NOC",
         "name": "Northrop Grumman",
-        "default_score": 35.6,
+        "default_score": 35.5,
         "top_share": 0.0,
-        "bottom_share": 0.883
+        "bottom_share": 0.886
       },
       {
         "ticker": "CHTR",
         "name": "Charter Communications",
         "default_score": 35.5,
         "top_share": 0.0,
-        "bottom_share": 0.939
+        "bottom_share": 0.94
       },
       {
         "ticker": "DOW",
@@ -3317,109 +3310,123 @@
         "bottom_share": 0.869
       },
       {
+        "ticker": "CPT",
+        "name": "Camden Property Trust",
+        "default_score": 35.3,
+        "top_share": 0.0,
+        "bottom_share": 0.914
+      },
+      {
         "ticker": "XYZ",
         "name": "Block, Inc.",
-        "default_score": 35.5,
+        "default_score": 35.3,
         "top_share": 0.0,
-        "bottom_share": 0.837
+        "bottom_share": 0.845
+      },
+      {
+        "ticker": "DHR",
+        "name": "Danaher Corporation",
+        "default_score": 34.8,
+        "top_share": 0.0,
+        "bottom_share": 0.834
       },
       {
         "ticker": "TSN",
         "name": "Tyson Foods",
         "default_score": 34.8,
         "top_share": 0.0,
-        "bottom_share": 0.881
+        "bottom_share": 0.877
       },
       {
         "ticker": "TXT",
         "name": "Textron",
-        "default_score": 34.8,
-        "top_share": 0.0,
-        "bottom_share": 0.843
-      },
-      {
-        "ticker": "DHR",
-        "name": "Danaher Corporation",
         "default_score": 34.7,
         "top_share": 0.0,
-        "bottom_share": 0.834
+        "bottom_share": 0.847
       },
       {
         "ticker": "DLTR",
         "name": "Dollar Tree",
         "default_score": 34.6,
         "top_share": 0.001,
-        "bottom_share": 0.827
+        "bottom_share": 0.825
       },
       {
         "ticker": "TGT",
         "name": "Target Corporation",
-        "default_score": 34.4,
+        "default_score": 34.5,
         "top_share": 0.0,
-        "bottom_share": 0.879
+        "bottom_share": 0.878
       },
       {
         "ticker": "SWKS",
         "name": "Skyworks Solutions",
-        "default_score": 34.2,
+        "default_score": 34.1,
         "top_share": 0.0,
-        "bottom_share": 0.895
-      },
-      {
-        "ticker": "VMRK",
-        "name": "Vivmark Residential",
-        "default_score": 34.0,
-        "top_share": 0.0,
-        "bottom_share": 0.775
-      },
-      {
-        "ticker": "UPS",
-        "name": "United Parcel Service",
-        "default_score": 33.9,
-        "top_share": 0.0,
-        "bottom_share": 0.933
+        "bottom_share": 0.896
       },
       {
         "ticker": "D",
         "name": "Dominion Energy",
         "default_score": 33.8,
         "top_share": 0.0,
-        "bottom_share": 0.945
+        "bottom_share": 0.944
+      },
+      {
+        "ticker": "UPS",
+        "name": "United Parcel Service",
+        "default_score": 33.8,
+        "top_share": 0.0,
+        "bottom_share": 0.933
+      },
+      {
+        "ticker": "VMRK",
+        "name": "Vivmark Residential",
+        "default_score": 33.7,
+        "top_share": 0.0,
+        "bottom_share": 0.779
       },
       {
         "ticker": "TMO",
         "name": "Thermo Fisher Scientific",
-        "default_score": 33.5,
+        "default_score": 33.3,
         "top_share": 0.0,
-        "bottom_share": 0.963
+        "bottom_share": 0.965
       },
       {
         "ticker": "HON",
         "name": "Honeywell Technologies",
         "default_score": 33.2,
         "top_share": 0.0,
-        "bottom_share": 0.957
+        "bottom_share": 0.956
       },
       {
         "ticker": "CCI",
         "name": "Crown Castle",
-        "default_score": 32.8,
+        "default_score": 32.5,
         "top_share": 0.0,
-        "bottom_share": 0.935
+        "bottom_share": 0.938
       },
       {
         "ticker": "PFE",
         "name": "Pfizer",
         "default_score": 32.3,
         "top_share": 0.0,
-        "bottom_share": 0.962
+        "bottom_share": 0.961
       },
       {
         "ticker": "TXN",
         "name": "Texas Instruments",
-        "default_score": 32.3,
+        "default_score": 32.1,
         "top_share": 0.0,
-        "bottom_share": 0.954
+        "bottom_share": 0.958
+      },
+      {
+        "ticker": "FIS",
+        "name": "Fidelity National Information Services",
+        "default_score": 32.0,
+        "top_share": 0.0,
+        "bottom_share": 0.984
       },
       {
         "ticker": "PSX",
@@ -3445,23 +3452,16 @@
       {
         "ticker": "WFC",
         "name": "Wells Fargo",
-        "default_score": 31.2,
+        "default_score": 31.1,
         "top_share": 0.0,
         "bottom_share": 0.918
       },
       {
         "ticker": "LHX",
         "name": "L3Harris",
-        "default_score": 30.6,
+        "default_score": 30.5,
         "top_share": 0.0,
-        "bottom_share": 0.979
-      },
-      {
-        "ticker": "FIS",
-        "name": "Fidelity National Information Services",
-        "default_score": 30.1,
-        "top_share": 0.0,
-        "bottom_share": 0.999
+        "bottom_share": 0.982
       },
       {
         "ticker": "ON",
@@ -3475,7 +3475,7 @@
         "name": "Archer Daniels Midland",
         "default_score": 29.7,
         "top_share": 0.0,
-        "bottom_share": 0.927
+        "bottom_share": 0.928
       },
       {
         "ticker": "GE",
@@ -3489,7 +3489,7 @@
         "name": "TKO Group Holdings",
         "default_score": 29.5,
         "top_share": 0.0,
-        "bottom_share": 0.91
+        "bottom_share": 0.909
       },
       {
         "ticker": "KO",
@@ -3508,19 +3508,19 @@
       {
         "ticker": "RVTY",
         "name": "Revvity",
-        "default_score": 23.7,
+        "default_score": 23.8,
         "top_share": 0.0,
         "bottom_share": 0.994
       },
       {
         "ticker": "MCHP",
         "name": "Microchip Technology",
-        "default_score": 20.4,
+        "default_score": 20.5,
         "top_share": 0.0,
         "bottom_share": 1.0
       }
     ]
   },
   "rows": [],
-  "ran_at": "2026-09-13T02:26:03Z"
+  "ran_at": "2026-09-13T06:56:25Z"
 }

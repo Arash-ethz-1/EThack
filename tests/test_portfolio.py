@@ -145,3 +145,16 @@ def test_cap_weighted_benchmark_follows_market_caps_by_cik():
     out = allocate(scores, profile(benchmark="cap", max_weight=1.0), uni, caps).set_index("ticker")
     assert out["benchmark_weight"].to_dict() == pytest.approx({"A": 0.75, "B": 0.25, "C": 0.0})
     assert out.at["C", "status"] == "no_market_cap" and out.at["C", "weight"] == 0
+
+
+def test_carbon_price_profit_at_risk_is_clipped_and_counts_losses():
+    from portfolio.transition import profit_at_risk
+
+    exposure = pd.DataFrame({"tonnes": [0.0, 1e6, 1e6, 1e6, 1e6], "pretax_usd": [None, 1e9, 5e7, -1e8, None]},
+                            index=["NOFAC", "BIG", "SMALL", "LOSS", "UNKNOWN"])
+    risk = profit_at_risk(exposure, 100)
+    assert risk["NOFAC"] == 0.0
+    assert risk["BIG"] == pytest.approx(0.1)  # 1 Mt x $100 = $100m of $1bn
+    assert risk["SMALL"] == 1.0 and risk["LOSS"] == 1.0
+    assert pd.isna(risk["UNKNOWN"])
+    assert profit_at_risk(exposure, 0)["LOSS"] == 0.0  # no price, no bill

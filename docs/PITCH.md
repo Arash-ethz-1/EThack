@@ -21,15 +21,18 @@ All numbers from `docs/PRODUCT.md` (printed by the code). Rehearse with the dash
 
 ## 3. Demo (90 s)
 
-1. **Ranking** - top companies, click one: the chain from source document to score.
-2. **Portfolio** (`#portfolio`) - "This is the fund": 477 holdings, tobacco and oil & gas out.
-   Switch profile to **Net Zero**: carbon intensity 79.6 vs 138.2 for the index (-42%),
-   60% of the money in companies with a science-based climate target vs 45%.
-   Tracking error 1.9% - it still behaves like the S&P 500.
-3. **Evidence A** (`#evidence/A`) - the slide that wins: "If we had run this at the end of 2021,
+1. **Start page** - "You decide what sustainable means": set the three weights, press Compute.
+   The pipeline runs live - scores, fund, the 2021 test, 1,000 weightings, the carbon price.
+2. **Net zero** (`#netzero`) - the bonus answer: sell the fuel, re-weight the rest, keep the market.
+   "Excluding oil & gas alone barely moves it - a $130/t carbon price still takes 8.0% of profit
+   instead of 8.2%. Our tilt inside every sector cuts it to 5.3%." Carbon intensity 79.6 vs 138.2,
+   60% of the money with a science-based target vs 45%, tracking error 1.9%.
+3. **Method** (`#method/NUE`) - one company, every step: the EPA number, its place among 25
+   materials companies, the formula, the dollar amount in the fund.
+4. **Evidence A** (`#evidence/A`) - the slide that wins: "If we had run this at the end of 2021,
    the companies we rated worst in their sector were fined by the EPA 3.3 times as often
    in the following four years (26% vs 8%)."
-4. **Evidence C** (`#evidence/C/NUE`) - "Don't trust us - audit any company": the sentences
+5. **Evidence C** (`#evidence/C/NUE`) - "Don't trust us - audit any company": the sentences
    from its filings, its EPA record, its news.
 
 ## 4. Why it holds (30 s)
@@ -52,6 +55,8 @@ sustainable, same market exposure, and a score that predicted who got caught.
 | Why these weights? | Evidence B: under 1,000 random weightings the ranking correlates 0.87 with ours. The profile lets a committee set its own. |
 | Isn't EPA-fine prediction just size? | Partly possible - big companies run more plants. The score is size-neutral and sector-relative; we state the limit on the exhibit. We also tested employee lawsuits and found no pattern, and we say so. |
 | US data only? | Yes - SEC, EPA, DOL. Foreign plants and practices are mostly invisible. Named on the Method tab. |
+| Why not just sell oil & gas? | We show it: exclusion alone cuts the carbon-price hit from 8.2% to 8.0% of profit. The tilt inside sectors takes it to 5.3% while staying in utilities and materials, where emissions must fall. |
+| Is the carbon price test a forecast? | No. A first-order exposure: Scope 1 US tonnes x price / pre-tax income, no pass-through. The IEA Net Zero 2030/2050 prices are marked for reference. |
 | Targets aren't emissions. | Correct - we use both: SBTi targets *and* EPA-reported facility emissions and fines. |
 | Why exclude oil & gas instead of scoring it? | A policy choice of the fund (GICS sub-industry, not a revenue test); switchable live in the Portfolio tab. |
 | Data quality? | Every value has a source link; extracted values carry the exact quote; wrong matches found by hand are documented in the commit history. |

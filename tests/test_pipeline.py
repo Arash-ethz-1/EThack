@@ -134,3 +134,25 @@ def test_share_classes_are_ranked_once():
 def test_profile_toml_writes_lists():
     p = Profile("x", portfolio={"exclude_sub_industries": ["Tobacco", "Integrated Oil & Gas"]})
     assert profile_from_dict(tomllib.loads(profile_to_toml(p)), "x") == p
+
+
+def test_total_scores_fast_path_matches_score_profile():
+    from common.score import profile_ranks, total_scores
+
+    data = tiny_dataset()
+    for profile in [Profile("p"), Profile("q", category_weights={"economic": 2, "social": 0, "environmental": 1}, sector_relative=True),
+                    Profile("r", indicator_weights={"env2": 3}, min_weight_share=0.9)]:
+        slow = score_profile(data, profile).table.set_index("ticker")["total_score"]
+        fast = total_scores(profile_ranks(data, profile), data.catalog, profile.weights(data.catalog), profile.category_weights, profile.min_weight_share)
+        pd.testing.assert_series_equal(fast.reindex(slow.index), slow, check_names=False, check_dtype=False)
+
+
+def test_peers_reproduces_the_rank_within_sector():
+    from common.score import peers
+
+    data = tiny_dataset()
+    profile = Profile("p", sector_relative=True)
+    result = score_profile(data, profile)
+    cmp = peers(data, profile, "A", "env1")
+    assert cmp["n"] == 2 and [p["ticker"] for p in cmp["peers"]] == ["B", "A"]  # Energy only, lowest value first
+    assert cmp["rank"] == pytest.approx(result.ranks.at["A", "env1"]) == 0.0

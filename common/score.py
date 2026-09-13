@@ -269,15 +269,70 @@ def primary_tickers(universe: pd.DataFrame) -> pd.Series:
     return pd.Series([first[c] for c in cik], index=tickers.values)
 
 
-def score_profile(data: Dataset, profile: Profile) -> Result:
-    weights = profile.weights(data.catalog)
-    chosen = data.catalog[data.catalog["indicator_id"].isin(weights.index)]
+def profile_ranks(data: Dataset, profile: Profile) -> pd.DataFrame:
+    """Step 2 for a profile: the 0..1 rank of every catalog indicator, every ticker. Ranks depend on
+    the data, `sector_relative` and `min_year` only - never on weights - so one table serves every
+    weighting (the weight-robustness evidence re-weights it 1,000 times)."""
     sectors = data.universe.set_index("ticker")["sector"] if profile.sector_relative else None
     values = data.values.where(data.years.reindex_like(data.values) >= profile.min_year)
     primary = primary_tickers(data.universe)
     unique = values.loc[values.index.isin(set(primary))]
-    ranks = rank_table(unique, chosen, sectors)
-    ranks = ranks.reindex(primary.reindex(values.index).values).set_axis(values.index)
+    ranks = rank_table(unique, data.catalog, sectors)
+    return ranks.reindex(primary.reindex(values.index).values).set_axis(values.index)
+
+
+def _active_category_weights(chosen: pd.DataFrame, category_weights: dict) -> pd.Series:
+    active = {
+        c: float(category_weights.get(c, 0))
+        for c in CATEGORIES
+        if (chosen["category"] == c).any() and category_weights.get(c, 0) > 0
+    }
+    return pd.Series(active, dtype=float)
+
+
+def total_scores(
+    ranks: pd.DataFrame, catalog: pd.DataFrame, weights: pd.Series, category_weights: dict, min_weight_share: float
+) -> pd.Series:
+    """Total score per ticker from a rank table - the same arithmetic as score_profile (weighted
+    means with the min_weight_share rule, rounded to 0.1), in plain numpy so many weightings can be
+    scored quickly. `weights`: indicator_id -> weight (> 0 = chosen)."""
+    import numpy as np
+
+    weights = weights[weights > 0]
+    chosen = catalog[catalog["indicator_id"].isin(weights.index)]
+    cat_w = _active_category_weights(chosen, category_weights)
+    parts, cw = [], []
+    for category in CATEGORIES:
+        ids = list(chosen.loc[chosen["category"] == category, "indicator_id"])
+        if not ids:
+            continue
+        r = ranks[ids].to_numpy(dtype=float)
+        w = weights[ids].to_numpy(dtype=float)
+        have = ~np.isnan(r)
+        available = have @ w
+        with np.errstate(invalid="ignore", divide="ignore"):
+            score = np.where(have, r, 0.0) @ w / np.where(available > 0, available, np.nan) * 100
+        score[available / w.sum() < min_weight_share] = np.nan
+        if category in cat_w.index:
+            parts.append(score)
+            cw.append(cat_w[category])
+    if not parts:
+        return pd.Series(np.nan, index=ranks.index)
+    c = np.column_stack(parts) / 100
+    w = np.array(cw)
+    have = ~np.isnan(c)
+    available = have @ w
+    with np.errstate(invalid="ignore", divide="ignore"):
+        total = np.where(have, c, 0.0) @ w / np.where(available > 0, available, np.nan) * 100
+    total[available / w.sum() < min_weight_share] = np.nan
+    return pd.Series(np.round(total, 1), index=ranks.index)
+
+
+def score_profile(data: Dataset, profile: Profile, ranks: pd.DataFrame | None = None) -> Result:
+    """`ranks`: a profile_ranks() table to reuse (same data, sector_relative and min_year)."""
+    weights = profile.weights(data.catalog)
+    chosen = data.catalog[data.catalog["indicator_id"].isin(weights.index)]
+    ranks = (profile_ranks(data, profile) if ranks is None else ranks)[list(chosen["indicator_id"])]
 
     table = data.universe.set_index("ticker")[["name", "sector"]].copy()
     category_scores = {}
@@ -289,12 +344,7 @@ def score_profile(data: Dataset, profile: Profile) -> Result:
         table[f"{category}_n_indicators"] = part["n_indicators"]
         table[f"{category}_weight_share"] = part["weight_share"]
 
-    active = {
-        c: float(profile.category_weights.get(c, 0))
-        for c in CATEGORIES
-        if (chosen["category"] == c).any() and profile.category_weights.get(c, 0) > 0
-    }
-    category_weights = pd.Series(active, dtype=float)
+    category_weights = _active_category_weights(chosen, profile.category_weights)
     total = weighted_score(pd.DataFrame(category_scores) / 100, category_weights, profile.min_weight_share)
     table.insert(2, "total_score", total["score"])
     table.insert(3, "total_weight_share", total["weight_share"])
@@ -302,6 +352,27 @@ def score_profile(data: Dataset, profile: Profile) -> Result:
 
     table = table.reset_index().sort_values(["total_score", "ticker"], ascending=[False, True], na_position="last")
     return Result(table.reset_index(drop=True), ranks, weights, category_weights)
+
+
+def peers(data: Dataset, profile: Profile, ticker: str, indicator_id: str) -> dict:
+    """The comparison behind one rank, for showing the calculation: every value the company was
+    ranked against (same filters as profile_ranks - its sector if sector_relative, values from
+    min_year on, share classes once) and its average position among them (1 = lowest value)."""
+    ind = data.catalog.set_index("indicator_id").loc[indicator_id]
+    better = str(ind["higher_is_better"]).lower() == "true"
+    values = data.values[indicator_id].where(data.years[indicator_id] >= profile.min_year)
+    primary = primary_tickers(data.universe)
+    me = primary.get(ticker, ticker)
+    pool = values[values.index.isin(set(primary))]
+    if profile.sector_relative:
+        sector = data.universe.set_index("ticker")["sector"].replace("", NO_SECTOR).fillna(NO_SECTOR)
+        pool = pool[sector.reindex(pool.index) == sector.get(me, NO_SECTOR)]
+    pool = pool.dropna()
+    out = {"indicator_id": indicator_id, "ticker": me, "higher_is_better": better, "n": int(len(pool)), "value": None, "position": None, "rank": None,
+           "peers": [{"ticker": t, "value": float(v)} for t, v in pool.sort_values().items()]}
+    if me in pool.index:
+        out.update(value=float(pool[me]), position=float(pool.rank(method="average")[me]), rank=float(indicator_ranks(pool, better)[me]))
+    return out
 
 
 def explain(data: Dataset, result: Result, ticker: str) -> pd.DataFrame:

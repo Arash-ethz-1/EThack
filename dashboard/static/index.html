@@ -8,68 +8,84 @@
 </head>
 <body>
 
-<header class="mast">
-  <div class="wrap">
-    <div class="title">
-      <span class="label">EThack · ETH fund</span>
-      <h1>S&amp;P 500 Sustainability</h1>
-      <div class="motto">Every number has a source.</div>
+<!-- 1. start: title, the definition, the weights -->
+<section id="home" class="home" aria-labelledby="home-title">
+  <div class="home-in">
+    <p class="eyebrow">S&amp;P 500 · public records only</p>
+    <h1 id="home-title">How sustainable is<br>the S&amp;P 500?</h1>
+    <p class="home-def">A sustainable company can keep running for decades without wearing down the planet,
+      its people, or its own economic base. You decide how much each of those counts.</p>
+
+    <div class="choose" id="choose" aria-label="Weights"></div>
+
+    <div class="home-go">
+      <button type="button" class="primary" id="go">Compute <span aria-hidden="true">→</span></button>
+      <p class="home-foot" id="home-foot"></p>
     </div>
-    <nav class="tabs" role="tablist">
-      <button type="button" role="tab" id="tab-ranking" aria-selected="true" data-view="ranking">Ranking</button>
-      <button type="button" role="tab" id="tab-portfolio" aria-selected="false" data-view="portfolio">Portfolio</button>
-      <button type="button" role="tab" id="tab-evidence" aria-selected="false" data-view="evidence">Evidence</button>
-      <button type="button" role="tab" id="tab-method" aria-selected="false" data-view="method">Method</button>
-    </nav>
-    <label class="prof"><span class="label">Profile</span><select id="profile"></select></label>
   </div>
-</header>
+</section>
 
-<main class="wrap">
-  <section id="view-ranking">
-    <div class="lede">
-      <div>
-        <h2>Which S&amp;P 500 companies can last - without wearing down the planet, their people or the economy?</h2>
-        <p id="summary"></p>
+<!-- 2. the pipeline, running -->
+<section id="run" class="run" hidden aria-live="polite">
+  <div class="run-in">
+    <p class="eyebrow" id="run-weights"></p>
+    <h2>Computing</h2>
+    <ol class="steps" id="steps"></ol>
+    <button type="button" class="primary" id="see" hidden>See the results <span aria-hidden="true">→</span></button>
+  </div>
+</section>
+
+<!-- 3. results -->
+<div id="app" hidden>
+  <header class="bar">
+    <div class="wrap bar-in">
+      <button type="button" class="mark" id="home-link" title="Back to start">S&amp;P 500 Sustainability</button>
+      <nav class="tabs" role="tablist">
+        <button type="button" role="tab" aria-selected="true" data-view="ranking">Ranking</button>
+        <button type="button" role="tab" aria-selected="false" data-view="portfolio">Fund</button>
+        <button type="button" role="tab" aria-selected="false" data-view="netzero">Net zero</button>
+        <button type="button" role="tab" aria-selected="false" data-view="evidence">Evidence</button>
+        <button type="button" role="tab" aria-selected="false" data-view="method">Method</button>
+      </nav>
+      <button type="button" class="chip" id="weights-chip" title="Change weights"></button>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <section id="view-ranking">
+      <div class="head">
+        <p class="eyebrow">Ranking</p>
+        <h2>Every company, compared only with its own sector.</h2>
+        <p class="lead" id="summary"></p>
       </div>
-      <div class="tools">
-        <input type="search" id="q" placeholder="Company or ticker" aria-label="Search company">
+      <div class="figures" id="overview"></div>
+      <div class="filters">
+        <input type="search" id="q" placeholder="Search company or ticker" aria-label="Search company">
         <select id="sector" aria-label="Sector"></select>
-        <button type="button" class="btn" id="wbtn" aria-expanded="false" aria-controls="weights">Adjust weights</button>
       </div>
-    </div>
-    <div class="overview" id="overview" aria-label="Headline results"></div>
-    <div class="weights" id="weights" hidden></div>
-    <div class="table-wrap">
-      <table class="rank">
-        <thead><tr><th>#</th><th>Company</th><th>Sector</th><th>Indicator fingerprint</th><th class="r">Econ.</th><th class="r">Social</th><th class="r">Env.</th><th class="r">Total</th></tr></thead>
-        <tbody id="rows"></tbody>
-      </table>
-    </div>
-    <p class="legend" id="legend"></p>
-    <button type="button" class="btn more" id="more" hidden></button>
-  </section>
+      <div class="table-wrap">
+        <table class="rank">
+          <thead><tr><th class="r">#</th><th>Company</th><th>Sector</th><th>Indicators</th><th class="r">Econ.</th><th class="r">Social</th><th class="r">Env.</th><th class="r">Total</th></tr></thead>
+          <tbody id="rows"></tbody>
+        </table>
+      </div>
+      <p class="legend" id="legend"></p>
+      <button type="button" class="ghost more" id="more" hidden></button>
+    </section>
 
-  <section id="view-portfolio" hidden></section>
-
-  <section id="view-evidence" hidden>
-    <div class="ev">
-      <aside class="index">
-        <h2>Evidence</h2>
-        <p>A score is only worth something if it means something. Three ways to test ours.</p>
-        <ol id="index"></ol>
-      </aside>
-      <article class="exhibit" id="exhibit"></article>
-    </div>
-  </section>
-  <section id="view-method" hidden></section>
-</main>
+    <section id="view-portfolio" hidden></section>
+    <section id="view-netzero" hidden></section>
+    <section id="view-evidence" hidden></section>
+    <section id="view-method" hidden></section>
+  </main>
+</div>
 
 <div class="scrim" id="scrim" hidden></div>
 <aside class="drawer" id="drawer" hidden aria-label="Company detail"></aside>
 
 <script src="app.js"></script>
 <script src="portfolio.js"></script>
+<script src="netzero.js"></script>
 <script src="evidence.js"></script>
 <script src="method.js"></script>
 </body>

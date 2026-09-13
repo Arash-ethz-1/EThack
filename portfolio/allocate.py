@@ -259,10 +259,13 @@ def allocate(
     universe: pd.DataFrame | None = None,
     marketcaps: pd.Series | None = None,
     overrides: dict | None = None,
+    steps: dict | None = None,
 ) -> pd.DataFrame:
     """scores: Result.table from common.score.score_profile. universe: universe/sp500.csv
     (cik + sub_industry). marketcaps: USD by CIK (only needed for benchmark = "cap").
-    Returns OUTPUT_COLUMNS, one row per company, weights sum to 1, largest first."""
+    Returns OUTPUT_COLUMNS, one row per company, weights sum to 1, largest first.
+    steps: pass a dict to receive every intermediate weight Series (benchmark, eligible, z,
+    tilted, sector_neutral, capped) - the dashboard's Method tab shows them for one company."""
     subs = set(universe["sub_industry"]) if universe is not None and "sub_industry" in universe.columns else None
     s = settings_for(profile, overrides, subs)
     table = companies(scores, universe)
@@ -293,10 +296,15 @@ def allocate(
     else:
         weights = tilt(eligible, z, s["tilt_strength"])
         how = f"tilt {s['tilt_strength']:g}"
+    tilted = weights
     if s["sector_neutral"]:
         weights = sector_neutralise(weights, eligible, sectors)
         how += ", sector-neutral"
+    neutral = weights
     weights = apply_cap(weights, s["max_weight"], sectors if s["sector_neutral"] else None)
+    if steps is not None:
+        steps.update(settings=s, benchmark=bench, eligible=eligible, z=z, tilted=tilted, sector_neutral=neutral, capped=weights,
+                     sectors=sectors, scored_mean=float(total[eligible > 0].mean()), scored_std=float(total[eligible > 0].std(ddof=0)))
 
     status, reasons = [], []
     others = pd.Series(table["other_classes"].to_numpy(), index=idx)

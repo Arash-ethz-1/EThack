@@ -1,12 +1,13 @@
 /* Method tab - dashboard/static/method.js (loaded after app.js, uses its helpers).
-   Plain-language methodology. Indicator facts (name, description, source, coverage, years)
-   come live from GET /api/meta (the catalogs); the pillar questions, UN SDG links and the
-   one-line weak spot per indicator are editorial text kept here. */
+   How a number is made, shown for one real company, step under step: source value -> rank in sector
+   -> pillar score -> total -> weight in the fund. Every number comes from POST /api/trace
+   (common/score.py and portfolio/allocate.py); the browser only lays the arithmetic out.
+   Indicator facts come from GET /api/meta; the pillar questions and weak spots are editorial text. */
 
 const PILLARS = {
-  environmental: { q: "Is it damaging nature - and does it depend on resources that may run out?", sdg: "SDG 12 · 13 · 15" },
-  social: { q: "Does it treat the people who work for it fairly and safely?", sdg: "SDG 3 · 5 · 8 · 10" },
-  economic: { q: "Can it sustain itself and the economy around it?", sdg: "SDG 8 · 9 · 16" },
+  environmental: { q: "Is it damaging nature - and does it depend on resources that may run out?", name: "Planet" },
+  social: { q: "Does it treat the people who work for it fairly and safely?", name: "People" },
+  economic: { q: "Can it sustain itself and the economy around it?", name: "Economic base" },
 };
 const WEAK = {
   tax_rate_gap: "Part of a gap comes from legal R&D credits and foreign tax rates.",
@@ -26,38 +27,123 @@ const WEAK = {
   ghg_intensity: "US facilities above 25,000 t only; no Scope 2 or 3.",
   epa_penalty_intensity: "Federal EPA cases only; fines also reflect how hard a regulator looks.",
 };
+const TRACE = { ticker: null, data: null, ind: null, loading: false };
+const n2 = (v, d = 2) => v == null ? "–" : (+v).toFixed(d);
+
+function strip(cmp, unit) {
+  const W = 1120, H = 74, L = 8, R = 8, n = cmp.peers.length;
+  if (!n) return "";
+  const x = i => L + (W - L - R) * (n === 1 ? .5 : i / (n - 1));
+  let g = `<line class="grid" x1="${L}" x2="${W - R}" y1="34" y2="34"/>`;
+  const mine = cmp.peers.findIndex(p => p.ticker === cmp.ticker);
+  cmp.peers.forEach((p, i) => g += `<circle class="${i === mine ? "dot-me" : "dot"}" cx="${x(i)}" cy="34" r="${i === mine ? 7 : 4.5}"><title>${esc(p.ticker)}: ${fmtVal(p.value, unit)}</title></circle>`);
+  const lo = cmp.peers[0], hi = cmp.peers[n - 1];
+  g += `<text x="${L}" y="66">lowest ${fmtVal(lo.value, unit)} (${esc(lo.ticker)})</text><text x="${W - R}" y="66" text-anchor="end">highest ${fmtVal(hi.value, unit)} (${esc(hi.ticker)})</text>`;
+  if (mine >= 0) g += `<text class="strong" x="${Math.min(Math.max(x(mine), 90), W - 90)}" y="14" text-anchor="middle">${esc(cmp.ticker)} · ${fmtVal(cmp.value, unit)}</text>`;
+  return svg(W, H, g, "Every company in the sector, sorted by value");
+}
+
+async function loadTrace() {
+  TRACE.loading = true;
+  TRACE.data = await postJSON("/api/trace", body({ ticker: TRACE.ticker, settings: PF.settings || {} }));
+  TRACE.loading = false;
+  if (!TRACE.data.error && !TRACE.ind) {
+    const withData = TRACE.data.indicators.filter(x => x.comparison.rank != null);
+    TRACE.ind = (withData.find(x => x.indicator_id === "ghg_intensity") || withData[0] || {}).indicator_id;
+  }
+  if (state.view === "method") renderMethod();
+}
 
 function renderMethod() {
-  const inds = state.meta.indicators;
-  const card = m => `<article class="m-ind">
-      <header><h4>${esc(m.name)}</h4><span class="dir">${m.higher_is_better ? "higher is better" : "lower is better"}</span></header>
-      <p>${esc(m.description)}</p>
-      <dl><div><dt>Source</dt><dd>${esc(m.source)}</dd></div>
-        <div><dt>Coverage</dt><dd>${m.companies} of ${state.meta.companies} companies · ${m.year_min ?? "–"}–${m.year_max ?? "–"}</dd></div>
-        <div><dt>Weak spot</dt><dd>${esc(WEAK[m.id] || "–")}</dd></div></dl>
-    </article>`;
-  $("#view-method").innerHTML = `
-    <div class="lede"><div><span class="label">Method</span>
-      <h2>A sustainable company can keep running for decades without wearing down the planet, its people, or its own economic base.</h2>
-      <p>We score that along the three pillars of sustainability. Every number comes from a public document - SEC filings, US regulators, the Science Based Targets initiative - and every value on this dashboard links back to it.</p></div></div>
+  if (!TRACE.ticker) TRACE.ticker = state.score.rows.find(r => r.ticker === "NUE") ? "NUE" : state.score.rows[0].ticker;
+  if (!TRACE.data || TRACE.data.company?.ticker !== TRACE.ticker) {
+    if (!TRACE.loading) loadTrace();
+    $("#view-method").innerHTML = `<div class="head"><p class="eyebrow">Method</p><h2>Calculating ${esc(TRACE.ticker)}…</h2></div>`;
+    return;
+  }
+  const t = TRACE.data;
+  if (t.error) { $("#view-method").innerHTML = `<p class="muted">${esc(t.error)}</p>`; return; }
+  const c = t.company, inds = t.indicators, fund = t.fund, s = fund.settings;
+  const cur = inds.find(x => x.indicator_id === TRACE.ind) || inds[0], cmp = cur.comparison;
+  const opts = state.score.rows.slice().sort((a, b) => (a.name || "").localeCompare(b.name || ""))
+    .map(r => `<option value="${r.ticker}"${r.ticker === c.ticker ? " selected" : ""}>${esc(r.name)} (${r.ticker})</option>`).join("");
+  const catName = id => (CATS.find(k => k[0] === id) || [id, id])[1];
+  const col = id => `var(${(CATS.find(k => k[0] === id) || CATS[0])[2]})`;
+  const raw = cmp.position != null && cmp.n > 1 ? (cmp.position - 1) / (cmp.n - 1) : null;
 
-    <ol class="m-steps">
-      <li><b>Collect.</b> ${inds.length} indicators, each a script that rebuilds its file from the public source. No number is estimated or filled in: a company without data is a gap.</li>
-      <li><b>Compare within the sector.</b> Each company is ranked 0-100 only against its own GICS sector, so a bank is never compared with a steel maker. Only values from 2022 on count.</li>
-      <li><b>Weigh.</b> Pillar score = weighted mean of its indicators; total = weighted mean of the pillars. A company needs data for at least half the weight to get a score. The weights are a choice - Exhibit B shows the ranking barely depends on them.</li>
-      <li><b>Invest.</b> Start from the S&amp;P 500, drop tobacco and oil &amp; gas, tilt every weight by the score (a company one standard deviation better gets about 1.8x its weight), keep each sector's size, cap any company at 5%.</li>
+  const step = (n, title, text, inner) => `<li class="mstep"><div class="mstep-n num">${n}</div><div class="mstep-b"><h3>${title}</h3><p class="lead">${text}</p>${inner}</div></li>`;
+
+  const sourceTable = `<div class="table-wrap"><table class="mini wide"><thead><tr><th>Indicator</th><th class="r">Value</th><th class="r">Year</th><th>Source</th></tr></thead><tbody>
+    ${inds.map(x => `<tr class="${x.value == null ? "out" : ""}"><td><span class="sw" style="background:${col(x.category)}"></span>${esc(x.name)}</td>
+      <td class="r num">${x.value == null ? "no data" : `${fmtVal(x.value, x.unit)} <span class="muted small">${esc(x.unit || "")}</span>`}</td>
+      <td class="r num">${x.year ?? "–"}</td>
+      <td>${x.source_url ? `<a href="${esc(x.source_url)}" target="_blank" rel="noopener">${esc(x.source || "source")} ↗</a>` : '<span class="muted">–</span>'}</td></tr>`).join("")}
+  </tbody></table></div>`;
+
+  const rankBlock = `<div class="chips">${inds.filter(x => x.comparison.rank != null).map(x => `<button type="button" data-ind="${x.indicator_id}" aria-pressed="${x.indicator_id === cur.indicator_id}">${esc(x.name)}</button>`).join("")}</div>
+    ${cmp.rank != null ? `<figure class="fig flat">${strip(cmp, cur.unit)}<figcaption>${cmp.n} ${esc(c.sector)} companies with a value for “${esc(cur.name)}”, sorted from lowest to highest.</figcaption></figure>
+    <div class="calc">
+      <div><span>position among ${cmp.n}, lowest value first</span><b class="num">p = ${n2(cmp.position, cmp.position % 1 ? 1 : 0)}</b></div>
+      <div><span>rank = (p − 1) / (n − 1)</span><b class="num">(${n2(cmp.position, cmp.position % 1 ? 1 : 0)} − 1) / (${cmp.n} − 1) = ${n2(raw, 3)}</b></div>
+      ${cmp.higher_is_better ? `<div><span>higher is better - keep</span><b class="num">${n2(cmp.rank, 3)}</b></div>` : `<div><span>lower is better - flip: 1 − rank</span><b class="num">1 − ${n2(raw, 3)} = ${n2(cmp.rank, 3)}</b></div>`}
+      <div class="res"><span>points for ${esc(cur.name)}</span><b class="num">${n2(cmp.rank * 100, 1)}</b></div>
+    </div>` : `<p class="muted">No value for this indicator - it is left out, not counted as zero.</p>`}`;
+
+  const pillarBlock = `<div class="calc">${t.pillars.filter(p => p.terms.length).map(p => {
+      const have = p.terms.filter(x => x.points != null);
+      const sumW = have.reduce((a, x) => a + x.weight, 0);
+      return `<div class="calc-p"><span><span class="sw" style="background:${col(p.category)}"></span>${catName(p.category)}
+          ${have.length < p.terms.length ? `<em class="muted small"> · ${p.terms.length - have.length} without data left out (${Math.round(p.weight_share * 100)}% of the weight present)</em>` : ""}</span>
+        <b class="num">${have.length ? `(${have.map(x => `${x.weight}×${n2(x.points, 1)}`).join(" + ")}) / ${sumW} = ` : ""}${p.score == null ? "no score" : n2(p.score, 1)}</b></div>`;
+    }).join("")}</div>`;
+
+  const tw = t.total.weights, pill = t.pillars.filter(p => p.score != null && tw[p.category]);
+  const totalBlock = `<div class="calc"><div class="res"><span>total</span><b class="num">(${pill.map(p => `${tw[p.category]}×${n2(p.score, 1)}`).join(" + ")}) / ${pill.reduce((a, p) => a + tw[p.category], 0)} = ${c.total_score == null ? "no score" : n2(c.total_score, 1)}</b></div>
+    <div><span>position in the ranking</span><b class="num">#${c.position ?? "–"} of ${state.score.scored}</b></div></div>`;
+
+  const held = fund.status === "held";
+  const fundBlock = !held ? `<div class="calc"><div class="res"><span>${esc(fund.reason)}</span><b class="num">0%</b></div></div>` : `<div class="calc">
+      <div><span>start: equal weight, ${fund.companies} companies</span><b class="num">1 / ${fund.companies} = ${pct(fund.benchmark, 3)}</b></div>
+      <div><span>drop excluded sub-industries, ${fund.held_companies} companies left</span><b class="num">${pct(fund.eligible, 3)}</b></div>
+      ${s.method === "tilt" ? `<div><span>how far above or below average: z = (score − mean) / std</span><b class="num">(${n2(fund.total_score, 1)} − ${n2(fund.mean, 1)}) / ${n2(fund.std, 1)} = ${signed(fund.z, 2)}</b></div>
+      <div><span>tilt: × e<sup>strength × z</sup>, then all weights rescaled to 100%</span><b class="num">× e<sup>${s.tilt_strength} × ${signed(fund.z, 2)}</sup> = × ${n2(fund.tilt_factor, 3)} → ${pct(fund.tilted, 3)}</b></div>` : `<div><span>exclude the worst ${pct(s.exclude_bottom_pct, 0)}</span><b class="num">${pct(fund.tilted, 3)}</b></div>`}
+      ${s.sector_neutral ? `<div><span>${esc(fund.sector)} keeps its ${pct(fund.sector_eligible, 2)} of the fund</span><b class="num">× ${pct(fund.sector_eligible, 2)} / ${pct(fund.sector_tilted, 2)} = ${pct(fund.sector_neutral, 3)}</b></div>` : ""}
+      <div><span>cap at ${pct(s.max_weight, 0)} per company</span><b class="num">${fund.capped >= s.max_weight - 1e-9 ? "capped" : "not reached"} → ${pct(fund.capped, 3)}</b></div>
+      <div class="res"><span>in a $1 billion fund${fund.holding !== c.ticker ? ` (held as ${esc(fund.holding)}, the voting share class)` : ""}</span><b class="num">${usd(fund.weight * fund.fund_usd)}</b></div>
+    </div>`;
+
+  const catalog = CATS.slice().reverse().map(([id, name]) => `<tr class="grp"><th colspan="4"><span class="sw" style="background:${col(id)}"></span>${PILLARS[id].name} · ${esc(PILLARS[id].q)}</th></tr>` +
+    state.meta.indicators.filter(m => m.category === id).map(m => `<tr><td><b>${esc(m.name)}</b><div class="sub">${esc(m.description)}</div></td>
+      <td class="small">${m.higher_is_better ? "higher is better" : "lower is better"}<div class="sub">${esc(m.source)}</div></td>
+      <td class="r num small">${m.companies} / ${state.meta.companies}<div class="sub">${m.year_min ?? "–"}–${m.year_max ?? "–"}</div></td>
+      <td class="small muted">${esc(WEAK[m.id] || "–")}</td></tr>`).join("")).join("");
+
+  $("#view-method").innerHTML = `
+    <div class="head"><p class="eyebrow">Method</p>
+      <h2>From a public document to a dollar amount, step by step.</h2>
+      <p class="lead">The same arithmetic runs for all ${state.meta.companies} companies. Here it is for one of them, with your weights (${esc(weightsText())}). No model, no estimate: <code>common/score.py</code> and <code>portfolio/allocate.py</code>.</p></div>
+    <div class="filters"><select id="m-company" aria-label="Company">${opts}</select></div>
+
+    <ol class="msteps">
+      ${step(1, "Collect", `${inds.length} indicators for ${esc(c.name)}, each rebuilt by a script from a public source. A missing value stays missing.`, sourceTable)}
+      ${step(2, "Rank within the sector", `Each value is compared only with other ${esc(c.sector)} companies${t.profile.sector_relative ? "" : " (here: the whole index)"}, from ${t.profile.min_year} on. Pick an indicator:`, rankBlock)}
+      ${step(3, "Combine into pillar scores", `Weighted mean of the points. An indicator without data is left out, not counted as zero; a pillar needs data for at least ${Math.round(t.profile.min_weight_share * 100)}% of its weight.`, pillarBlock)}
+      ${step(4, "Combine into the total", `Weighted mean of the pillars, with the weights you chose on the start page.`, totalBlock)}
+      ${step(5, "Turn the score into a fund weight", `Every company stays investable except the excluded sub-industries; better scores get more money, each sector keeps its size.`, fundBlock)}
+      ${step(6, "Test it", `Would these scores have predicted anything, and do they survive other weights? Computed live on the Evidence tab.`, `<div class="chips"><button type="button" data-go="evidence/A">A · Caught later →</button><button type="button" data-go="evidence/B">B · Robust to weights →</button><button type="button" data-go="netzero">Net zero stress →</button></div>`)}
     </ol>
 
-    ${CATS.map(([id, name, col]) => `<section class="m-pillar">
-      <div class="m-ph"><span class="sw" style="background:var(${col})"></span><h3>${name}</h3><span class="muted">${PILLARS[id].sdg}</span></div>
-      <p class="m-q">${PILLARS[id].q}</p>
-      <div class="m-grid">${inds.filter(m => m.category === id).map(card).join("")}</div>
-    </section>`).join("")}
+    <div class="row-h"><h3 class="h3">The ${state.meta.indicators.length} indicators</h3></div>
+    <div class="table-wrap"><table class="mini wide catalog"><thead><tr><th>Indicator</th><th>Direction · source</th><th class="r">Coverage</th><th>Weak spot</th></tr></thead><tbody>${catalog}</tbody></table></div>
 
-    <section class="m-limits"><h3>What we do not claim</h3><ul>
+    <section class="limits"><h3 class="h3">What we do not claim</h3><ul>
       <li>US data sources: foreign plants, foreign lawsuits and non-US pay practices are mostly invisible.</li>
       <li>Targets are not emissions, and disclosure is not behaviour - we keep both kinds of indicator and label them.</li>
-      <li>No model or AI produces a score. Scores come from deterministic code (<code>common/score.py</code>); anyone can rerun it.</li>
-      <li>This is a sustainability-tilted index fund, not an impact fund: buying shares on the market does not fund new projects.</li>
+      <li>No model or AI produces a score. Anyone can rerun the code and get the same numbers.</li>
+      <li>A sustainability-tilted index fund, not an impact fund: buying shares on the market does not fund new projects.</li>
     </ul></section>`;
+
+  $("#m-company").onchange = e => { TRACE.ticker = e.target.value; TRACE.data = null; renderMethod(); };
+  $$("#view-method .chips button[data-ind]").forEach(b => b.onclick = () => { TRACE.ind = b.dataset.ind; renderMethod(); });
+  $$("#view-method .chips button[data-go]").forEach(b => b.onclick = () => { const [v, sub] = b.dataset.go.split("/"); go(v, sub); });
 }

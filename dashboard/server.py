@@ -13,6 +13,9 @@ ranking or model call happens in the browser or on page load.
     POST /api/explain     {profile, category_weights?, ticker} -> one company's ledger
     POST /api/portfolio   {profile, category_weights?, settings?} -> holdings + fund vs benchmark
     POST /api/audit       {ticker, news?} -> filing quotes, EPA record, recent news for one company
+    POST /api/evidence    {check, profile, category_weights?} -> an evidence check run live on those weights
+    POST /api/netzero     {} -> the bonus answer: index vs exclusion-only vs net-zero fund, carbon price stress
+    POST /api/trace       {profile, category_weights?, ticker} -> every step from source value to fund weight
 
 The server listens on 127.0.0.1 only and POSTs need the X-EThack header, so other
 websites cannot trigger them.
@@ -37,8 +40,9 @@ sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
 import pandas as pd  # noqa: E402
 
-from common.config import CATEGORIES, DEFAULT_PROFILE, check_result_path, indicator_path  # noqa: E402
-from common.score import explain, list_profiles, load_dataset, load_profile, score_profile  # noqa: E402
+from common.config import CATEGORIES, DEFAULT_PROFILE, ROOT, check_result_path, indicator_path  # noqa: E402
+from common.score import explain, list_profiles, load_profile, peers, score_profile  # noqa: E402
+from common.score import load_dataset as _load_dataset  # noqa: E402
 
 STATIC = Path(__file__).resolve().parent / "static"
 CODE_CHECK_IDS = ["caught_later", "weight_robustness", "traceability", "plausibility", "stability", "redundancy", "sector_pattern", "cross_source_tax"]
@@ -47,6 +51,37 @@ CHECK_IDS = CODE_CHECK_IDS + AGENT_CHECK_IDS
 
 
 # ---------------------------------------------------------------- api (plain functions, tested)
+_CACHE: dict = {}
+_LOCK = threading.Lock()
+
+
+def _signature() -> tuple:
+    files = sorted(ROOT.glob("*/indicators/*.csv")) + sorted(ROOT.glob("*/catalog.csv")) + [ROOT / "universe" / "sp500.csv"]
+    return tuple((str(f), f.stat().st_mtime_ns) for f in files if f.exists())
+
+
+def load_dataset():
+    """common.score.load_dataset, re-read only when an indicator, catalog or the universe changed -
+    the start page runs several steps in a row and each would otherwise parse every CSV again."""
+    sig = _signature()
+    with _LOCK:
+        if _CACHE.get("sig") != sig:
+            _CACHE.clear()
+            _CACHE.update(sig=sig, data=_load_dataset())
+        return _CACHE["data"]
+
+
+def cached(key: str, fn):
+    """Memoise a slow, data-derived result for as long as the dataset signature holds."""
+    load_dataset()
+    with _LOCK:
+        if key in _CACHE:
+            return _CACHE[key]
+    value = fn()
+    with _LOCK:
+        _CACHE[key] = value
+    return value
+
 def clean(obj):
     """JSON-safe: NaN -> null, numpy -> python."""
     if isinstance(obj, dict):
@@ -239,6 +274,89 @@ def api_audit(payload: dict) -> dict:
     return clean(audit(str(payload["ticker"]), with_news=payload.get("news", True)))
 
 
+EVIDENCE = {"caught_later": "checks.caught_later", "weight_robustness": "checks.weight_robustness"}
+
+
+def api_evidence(payload: dict) -> dict:
+    """Runs an evidence check on the weights the user chose - the same code as `python run.py verify`,
+    so the exhibit shows what THIS weighting would have done, not a stored result."""
+    import time
+
+    cid = payload.get("check")
+    if cid not in EVIDENCE:
+        raise KeyError(f"unknown evidence check {cid!r}")
+    mod = importlib.import_module(EVIDENCE[cid])
+    profile = _profile_from_payload(payload)
+    key = "evidence:" + cid + ":" + json.dumps({"p": payload.get("profile"), "w": profile.category_weights}, sort_keys=True)
+    started = time.perf_counter()
+    result = cached(key, lambda: {**mod.run(profile=profile, data=load_dataset()), "seconds": round(time.perf_counter() - started, 2)})
+    return clean({"id": cid, "title": mod.TITLE, "exhibit": mod.EXHIBIT, "live": True, **result})
+
+
+def api_netzero(payload: dict) -> dict:
+    """portfolio/transition.py: the bonus question's answer (fixed net_zero profile)."""
+    from portfolio.transition import net_zero_answer
+
+    profile = payload.get("profile", "net_zero")
+    return clean(cached("netzero:" + profile, lambda: net_zero_answer(profile)))
+
+
+def api_trace(payload: dict) -> dict:
+    """One company, every step of the calculation with the numbers that went in - for the Method tab.
+    All numbers come from common/score.py and portfolio/allocate.py; the browser only lays them out."""
+    from portfolio.allocate import allocate, companies
+    from portfolio.allocate import load_universe as load_portfolio_universe
+
+    data = load_dataset()
+    profile = _profile_from_payload(payload)
+    ticker = str(payload["ticker"])
+    result = score_profile(data, profile)
+    row = result.table.set_index("ticker").loc[ticker]
+    indicators = explain(data, result, ticker)
+    steps_ind = []
+    for _, r in indicators.iterrows():
+        src = _source_lookup(r["category"], r["indicator_id"], ticker, r["year"])
+        steps_ind.append({**r.to_dict(), **src, "comparison": peers(data, profile, ticker, r["indicator_id"])})
+    pillars = []
+    for c in CATEGORIES:
+        terms = [{"indicator_id": x["indicator_id"], "name": x["name"], "weight": x["weight"],
+                  "points": None if pd.isna(x["rank"]) else x["rank"] * 100} for x in steps_ind if x["category"] == c]
+        pillars.append({"category": c, "score": row[f"{c}_score"], "weight": float(result.category_weights.get(c, 0.0)),
+                        "weight_share": row[f"{c}_weight_share"], "terms": terms})
+
+    universe = load_portfolio_universe()
+    overrides = {k: v for k, v in (payload.get("settings") or {}).items() if v is not None}
+    steps: dict = {}
+    table = result.table
+    portfolio = allocate(table, profile, universe, None, {**overrides, "benchmark": "equal"}, steps=steps)
+    info = companies(table, universe).set_index("ticker")
+    holding = ticker
+    if ticker not in steps["benchmark"].index:  # a non-voting share class: the company is held under another ticker
+        holding = next(t for t in steps["benchmark"].index if ticker in str(info.at[t, "other_classes"]))
+    sec = steps["sectors"][holding]
+    in_sec = steps["sectors"] == sec
+    p = portfolio.set_index("ticker").loc[holding]
+    fund = {
+        "holding": holding, "settings": steps["settings"], "sector": sec, "status": p["status"], "reason": p["reason"],
+        "total_score": info.at[holding, "total_score"], "mean": steps["scored_mean"], "std": steps["scored_std"],
+        "companies": int(len(steps["benchmark"])), "benchmark": steps["benchmark"][holding], "eligible": steps["eligible"][holding],
+        "z": steps["z"][holding], "tilted": steps["tilted"][holding],
+        "sector_eligible": float(steps["eligible"][in_sec].sum()), "sector_tilted": float(steps["tilted"][in_sec].sum()),
+        "tilt_factor": math.exp(max(-20.0, min(20.0, steps["settings"]["tilt_strength"] * steps["z"][holding]))) if steps["settings"]["method"] == "tilt" else None,
+        "sector_factor": float(steps["eligible"][in_sec].sum() / steps["tilted"][in_sec].sum()) if steps["settings"]["sector_neutral"] and steps["tilted"][in_sec].sum() else None,
+        "held_companies": int((steps["eligible"] > 0).sum()),
+        "sector_neutral": steps["sector_neutral"][holding], "capped": steps["capped"][holding], "weight": p["weight"],
+        "fund_usd": 1e9,
+    }
+    return clean({
+        "company": {"ticker": ticker, **row.to_dict()},
+        "profile": {"sector_relative": profile.sector_relative, "min_year": profile.min_year, "min_weight_share": profile.min_weight_share},
+        "indicators": steps_ind, "pillars": pillars,
+        "total": {"score": row["total_score"], "weights": result.category_weights.to_dict()},
+        "fund": fund,
+    })
+
+
 def api_checks() -> dict:
     out = []
     for cid in CHECK_IDS:
@@ -301,7 +419,8 @@ class Handler(BaseHTTPRequestHandler):
     def do_POST(self):
         if not self.trusted() or self.headers.get("X-EThack") != "1":
             return self.send_error(HTTPStatus.FORBIDDEN)
-        routes = {"/api/score": api_score, "/api/explain": api_explain, "/api/portfolio": api_portfolio, "/api/audit": api_audit}
+        routes = {"/api/score": api_score, "/api/explain": api_explain, "/api/portfolio": api_portfolio, "/api/audit": api_audit,
+                  "/api/evidence": api_evidence, "/api/netzero": api_netzero, "/api/trace": api_trace}
         fn = routes.get(urlparse(self.path).path)
         if fn is None:
             return self.send_error(HTTPStatus.NOT_FOUND)
@@ -321,6 +440,8 @@ def serve(port: int = 8500, open_browser: bool = True) -> None:
             continue
     else:
         raise SystemExit(f"no free port between {port} and {port + 19}")
+    # the net-zero answer parses ~130 SEC files (~15 s) - compute it once in the background now
+    threading.Thread(target=lambda: api_netzero({}), daemon=True).start()
     url = f"http://127.0.0.1:{server.server_port}"
     print(f"dashboard running at {url}  (Ctrl+C to stop)")
     if open_browser:

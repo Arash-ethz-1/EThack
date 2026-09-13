@@ -32,6 +32,13 @@ CIK) are one holding - the voting class (GOOGL, FOX, NWS).
   volatility, hypothetical growth. Not a backtest (look-ahead, today's members only).
 - `summary()["climate"]` - weighted carbon intensity (WACI) and the share of weight with a
   science-based target, fund vs benchmark: the net-zero answer in two numbers.
-- Dashboard: Portfolio tab (`dashboard/static/portfolio.js`, `POST /api/portfolio`).
+- `portfolio/transition.py` - the bonus question (net zero tomorrow, $1bn): index vs
+  exclusion-only vs net-zero fund, and a carbon price stress test - share of pre-tax profit a
+  carbon bill would take (EPA GHGRP Scope 1 tonnes x price / SEC pre-tax income), $0-250/t with the
+  IEA Net Zero 2030/2050 prices marked. `python portfolio/transition.py` prints the table.
+- `allocate(..., steps={})` hands back every intermediate weight (benchmark, eligible, z, tilted,
+  sector-neutral, capped) - the Method tab shows them for one company.
+- Dashboard: Fund tab (`dashboard/static/portfolio.js`, `POST /api/portfolio`), Net zero tab
+  (`dashboard/static/netzero.js`, `POST /api/netzero`).
 
 Open: a point-in-time backtest (most indicators only start in 2022+), float-adjusted caps.

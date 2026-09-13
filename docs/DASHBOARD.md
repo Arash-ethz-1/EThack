@@ -1,5 +1,8 @@
 # Dashboard - build plan
 
+> **Superseded 2026-09-13:** the dashboard as built is described in `docs/PRODUCT.md` (start page with
+> weights -> live pipeline -> Ranking, Fund, Net zero, Evidence, Method). This file is the original plan.
+
 Owner: Arash. **Status: agreed with Arash, not built yet.** Whoever builds it: read this whole
 file first, then `AGENTS.md`. Ask Arash before deviating from anything marked **must**.
 

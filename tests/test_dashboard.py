@@ -66,3 +66,21 @@ def test_portfolio_api_weights_sum_to_one_and_override_is_not_saved():
     assert server.api_portfolio({"profile": "balanced"})["settings"]["tilt_strength"] != 0
     s = result["summary"]["scores"]["total_score"]
     assert abs(s["portfolio"] - s["benchmark"]) < 1.0  # strength 0 = benchmark after exclusions only
+
+
+def test_trace_api_steps_add_up_to_the_fund_weight():
+    body = server.api_trace({"profile": "balanced", "ticker": "AAPL"})
+    json.dumps(body, allow_nan=False)
+    f = body["fund"]
+    assert f["status"] == "held"
+    assert math.isclose(f["tilted"] * f["sector_factor"], f["sector_neutral"], rel_tol=1e-9)
+    assert math.isclose(f["capped"], f["weight"], rel_tol=1e-9)
+    env = next(p for p in body["pillars"] if p["category"] == "environmental")
+    have = [t for t in env["terms"] if t["points"] is not None]
+    assert math.isclose(sum(t["weight"] * t["points"] for t in have) / sum(t["weight"] for t in have), env["score"], abs_tol=0.051)
+
+
+def test_evidence_api_runs_on_the_chosen_weights():
+    body = server.api_evidence({"check": "caught_later", "profile": "balanced", "category_weights": {"economic": 1, "social": 1, "environmental": 0}})
+    assert body["live"] and body["status"] in ("passed", "flagged")
+    assert len(body["numbers"]["total_score"]) == 5
