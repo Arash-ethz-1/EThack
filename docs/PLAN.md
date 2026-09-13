@@ -43,6 +43,11 @@ without a score held at benchmark, sector-neutral, 5% cap per company. Built and
 
 ## Status 2026-09-13 and next steps
 
+> **Update, night of 2026-09-13:** A (SBTi), B (scoring) and C (exclusions) are done; from D,
+> market caps (461/500) and ghg_intensity (reworked, ready) are done. New: median_worker_pay,
+> epa_penalty_intensity, portfolio risk + climate numbers, evidence exhibits, Method tab,
+> redesign. Current state in one page: `docs/PRODUCT.md`. Pitch: `docs/PITCH.md`.
+
 Ready indicators: economic 4 (`tax_rate_gap`, `revenue_volatility`, `employment_growth`,
 `federal_contract_exposure`), social 6, **environmental 1** (`resource_supply_risk`, which
 has one value per GICS sub-industry, not per company). The environmental score is not
@@ -123,3 +128,6 @@ meaningful until the steps below are done. Decisions behind them: see the log (2
 | 2026-09-13 | Ranking **within GICS sector** (`sector_relative = true`) - absolute ranking gave Financials +8 and Utilities -12 points just for their sector. |
 | 2026-09-13 | **Only values from 2022 on** count in the score. |
 | 2026-09-13 | Portfolio = **tilt + exclusions** by GICS sub-industry (tobacco, oil & gas, coal). |
+| 2026-09-13 | Definition: a sustainable company can keep running for decades without wearing down the planet, its people or its own economic base - three pillars, resilience indicators stay in. Never call it an "impact fund". |
+| 2026-09-13 | Evidence = does the score mean something: (A) 2021-as-of scores vs later EPA fines, (B) 1,000 random weightings, (C) live company audit. Old data-hygiene exhibits no longer shown. |
+| 2026-09-13 | Default benchmark stays equal weight (market caps only for 461/500); cap weighting is a toggle. |
