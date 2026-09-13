@@ -34,8 +34,10 @@ function bindTabs() {
     $("#view-ranking").hidden = b.dataset.view !== "ranking";
     $("#view-portfolio").hidden = b.dataset.view !== "portfolio";
     $("#view-evidence").hidden = b.dataset.view !== "evidence";
+    $("#view-method").hidden = b.dataset.view !== "method";
     if (b.dataset.view === "portfolio") renderPortfolio();
     if (b.dataset.view === "evidence") { renderIndex(); renderExhibit(); }
+    if (b.dataset.view === "method") renderMethod();
   }));
 }
 
