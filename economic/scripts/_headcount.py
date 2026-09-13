@@ -135,6 +135,14 @@ SUBSET_AFTER = re.compile(
 # 88,846 shares of Class A common stock to certain employees", "had 2.9 million people
 # visit each month", "have trained over 20,000 of our people".
 NOT_A_HEADCOUNT = re.compile(r"shares|stock|trained|visit", re.IGNORECASE)
+# Every pattern - a percentage ("achieved 100% pay equity for ... employees", MDT) or a
+# US-only count right after the noun ("over 1,400 active employees located in the United
+# States", GEN) is never the company total. Dropping these can only remove wrong
+# candidates: where a real total is also stated it is larger and wins the max anyway.
+PERCENT_AFTER_NUMBER = re.compile(r"^\s*%|^\s*percent", re.IGNORECASE)
+US_ONLY_AFTER = re.compile(
+    r"^\s+(?:located|based|working)\s+in\s+(?:the\s+)?(?:United States|U\.S\.)", re.IGNORECASE
+)
 
 MULTI_YEAR_PATTERN = re.compile(
     r"number of regular employees was\s+([\d,]+)\s*(thousand)?,\s*([\d,]+)\s*(thousand)?,?\s*and\s*"
@@ -250,7 +258,16 @@ def extract_headcount(cik: str, ticker: str, accession: str, primary_doc: str, r
     for pat in PATTERNS:
         for m in pat.finditer(text):
             ctx = text[max(0, m.start() - 120) : m.end() + 30]
-            if BAD_CONTEXT.search(ctx) or NOT_A_HEADCOUNT.search(text[m.start() : m.end() + 30]):
+            if (
+                BAD_CONTEXT.search(ctx)
+                or NOT_A_HEADCOUNT.search(text[m.start() : m.end() + 30])
+                or PERCENT_AFTER_NUMBER.search(text[m.end(1) : m.end(1) + 10])
+                or (  # only when the noun belongs to this number ("4,866 individuals, including
+                    # 2,388 employees based in the United States" keeps the 4,866 total)
+                    not re.search(r"\d", text[m.end(1) : m.end()])
+                    and US_ONLY_AFTER.search(text[m.end() : m.end() + 60])
+                )
+            ):
                 continue
             value = _to_number(m.group(1), m.group(2))
             if value < 50 or value > 5_000_000:  # sanity bounds
