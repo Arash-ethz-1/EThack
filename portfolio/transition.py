@@ -118,6 +118,52 @@ def stress(funds: dict[str, pd.Series], exposure: pd.DataFrame, info: pd.DataFra
     }
 
 
+def facility_map(portfolio: pd.DataFrame, info: pd.DataFrame, year: int = 2023) -> dict:
+    """Every large US facility (EPA GHGRP, > 25 kt) of an S&P 500 company in `year`, with coordinates and
+    what the fund does with its owner: excluded / less money (< 0.9x index weight) / about the same /
+    more money (> 1.1x). Tonnes are the owner's attributed share (environmental/raw/ghg_intensity_matches.csv),
+    coordinates from the EPA facility file. Totals per state for the map's side panel."""
+    import glob
+
+    matches = pd.read_csv(ROOT / "environmental" / "raw" / "ghg_intensity_matches.csv")
+    matches = matches[(matches["year"] == year) & (matches["attributed_co2e_tonnes"] > 0)]
+    rows = []
+    for path in glob.glob(str(ROOT / "environmental" / "raw" / f"pub_dim_facility_{year}_*.json")):
+        rows += json.loads(Path(path).read_text(encoding="utf-8"))
+    facilities = pd.DataFrame(rows)[["facility_id", "latitude", "longitude", "state", "facility_name", "city"]].drop_duplicates("facility_id")
+    df = matches.merge(facilities, on="facility_id", how="inner")
+
+    p = portfolio.set_index("ticker")
+    other = {c.strip(): t for t, classes in info["other_classes"].items() if classes for c in str(classes).split(",")}
+    holding = df["ticker"].map(lambda t: t if t in p.index else other.get(t, t))
+
+    def decision(t: str) -> str:
+        if t not in p.index:
+            return "same"
+        r = p.loc[t]
+        if r["status"] == "excluded_policy":
+            return "excluded"
+        rel = r["weight"] / r["benchmark_weight"] if r["benchmark_weight"] > 0 else 1.0
+        return "less" if rel < 0.9 else "more" if rel > 1.1 else "same"
+
+    df = df.assign(holding=holding, decision=holding.map(decision), name=holding.map(lambda t: info["name"].get(t, t)))
+    points = [{"lat": round(float(r.latitude), 4), "lon": round(float(r.longitude), 4), "t": round(float(r.attributed_co2e_tonnes)),
+               "d": r.decision, "co": r.name, "tk": r.holding, "fac": str(r.facility_name).title(), "st": r.state}
+              for r in df.sort_values("attributed_co2e_tonnes", ascending=False).itertuples()]
+    by_state = df.pivot_table(index="state", columns="decision", values="attributed_co2e_tonnes", aggfunc="sum", fill_value=0.0)
+    for col in ("excluded", "less", "same", "more"):
+        if col not in by_state:
+            by_state[col] = 0.0
+    by_state = by_state.assign(total=by_state.sum(axis=1)).sort_values("total", ascending=False)
+    totals = df.groupby("decision")["attributed_co2e_tonnes"].sum()
+    return {
+        "year": year, "facilities": int(df["facility_id"].nunique()), "companies": int(df["holding"].nunique()),
+        "tonnes": float(df["attributed_co2e_tonnes"].sum()), "by_decision": {k: float(v) for k, v in totals.items()},
+        "states": [{"state": s, **{k: float(v) for k, v in r.items()}} for s, r in by_state.iterrows()],
+        "points": points, "source": "EPA GHGRP facility data (Envirofacts), ownership shares as reported to EPA",
+    }
+
+
 def net_zero_answer(profile_name: str = "net_zero", fund_usd: float = FUND_USD) -> dict:
     """The bonus answer in one object: three funds side by side - the index, the index without
     fossil fuels (exclusion only, tilt 0) and the net-zero fund - with climate numbers, the carbon
@@ -172,6 +218,7 @@ def net_zero_answer(profile_name: str = "net_zero", fund_usd: float = FUND_USD) 
         "added": held.sort_values("change_usd", ascending=False).head(10)[cols].to_dict(orient="records"),
         "cut": held.sort_values("change_usd").head(10)[cols].to_dict(orient="records"),
         "risk": risk_report(fund),
+        "map": facility_map(fund, info),
     }
 
 

@@ -95,6 +95,12 @@ Method: EPA GHGRP Scope 1 tonnes (US facilities > 25 kt, 2023) x carbon price / 
 the same year, capped at 100%, a loss-making emitter counts as 100%. 131 emitters, 3 without income
 on record left out. No pass-through, no Scope 2/3 - stated on the page.
 
+**Map (Net zero tab):** all 2,167 large US plants (EPA GHGRP 2023, with coordinates) of 132 S&P 500 companies,
+dot size = the company's share of the plant's emissions, colour = what the net-zero fund does with the owner.
+Of 1,129 Mt CO2e, 206 Mt belong to companies the fund sells and 833 Mt to companies it gives less money (92%),
+64 Mt to companies it gives more. Top states: TX 224 Mt, LA 80 Mt, FL 65 Mt. Map outlines: us-atlas
+(vendored in dashboard/static/vendor with d3-geo and topojson-client, ISC licence) - no internet needed.
+
 ## Method tab - the calculation for one company
 
 `POST /api/trace` shows every step with the real numbers: source values with links -> position among

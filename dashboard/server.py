@@ -140,6 +140,7 @@ def api_meta() -> dict:
                 "description": p.description,
                 "category_weights": p.category_weights,
                 "min_weight_share": p.min_weight_share,
+                "indicator_weights": p.indicator_weights,
             }
         )
     return clean(

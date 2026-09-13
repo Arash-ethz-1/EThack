@@ -54,6 +54,47 @@ function sectorBars(sectors) {
   return svg(W, H, g, "Dollars per sector, fund vs index");
 }
 
+/* map: every large US facility of an S&P 500 company (EPA GHGRP), coloured by what the fund does with its owner */
+const MAP = { atlas: null, filter: "all" };
+const DECISION = [["excluded", "Sold", "--bad"], ["less", "Less money", "--soc"], ["same", "Unchanged", "--faint"], ["more", "More money", "--good"]];
+const mt = t => t >= 1e6 ? `${(t / 1e6).toFixed(t >= 1e7 ? 0 : 1)} Mt` : `${Math.round(t / 1e3)} kt`;
+
+async function drawMap(m) {
+  const el = $("#nz-map");
+  if (!el || !window.d3 || !window.topojson) return;
+  if (!MAP.atlas) MAP.atlas = await getJSON("vendor/states-albers-10m.json");
+  const us = MAP.atlas, path = d3.geoPath(), proj = d3.geoAlbersUsa().scale(1300).translate([487.5, 305]);
+  const states = topojson.feature(us, us.objects.states).features.map(f => `<path class="st" d="${path(f)}"/>`).join("");
+  const borders = `<path class="st-b" d="${path(topojson.mesh(us, us.objects.states, (a, b) => a !== b))}"/>`;
+  const maxT = m.points[0] ? m.points[0].t : 1;
+  const dots = m.points.slice().reverse().filter(p => MAP.filter === "all" || p.d === MAP.filter).map(p => {
+    const xy = proj([p.lon, p.lat]);
+    if (!xy) return "";
+    return `<circle class="fd fd-${p.d}" cx="${xy[0].toFixed(1)}" cy="${xy[1].toFixed(1)}" r="${Math.max(1.6, Math.sqrt(p.t / maxT) * 22).toFixed(1)}"><title>${esc(p.fac)} · ${esc(p.co)} · ${mt(p.t)} CO₂e</title></circle>`;
+  }).join("");
+  el.innerHTML = `<svg viewBox="0 0 975 610" class="usmap" role="img" aria-label="Large US facilities of S&P 500 companies by emissions">${states}${borders}<g>${dots}</g></svg>`;
+}
+
+function mapCard(m) {
+  const sold = (m.by_decision.excluded || 0) + (m.by_decision.less || 0);
+  const top = m.states.slice(0, 8), max = top[0] ? top[0].total : 1;
+  return `<div class="map-card">
+    <div class="map-h"><div><h3 class="h3">Where the emissions are <span class="muted lg">${m.facilities.toLocaleString("en-US")} large US plants of ${m.companies} companies · ${m.year}</span></h3></div>
+      <div class="seg" role="radiogroup" aria-label="Filter plants">${[["all", "All"], ...DECISION.map(([k, n]) => [k, n])].map(([k, n]) =>
+        `<button type="button" role="radio" data-f="${k}" aria-checked="${MAP.filter === k}">${n}</button>`).join("")}</div></div>
+    <div class="map-grid">
+      <div id="nz-map" class="map-wrap"><p class="muted small">Drawing the map…</p></div>
+      <aside class="map-side">
+        <div class="map-big"><span class="v num">${Math.round(sold / m.tonnes * 100)}%</span><p>of ${mt(m.tonnes)} CO₂e comes from companies the fund sells or gives less money</p></div>
+        <div class="map-legend">${DECISION.map(([k, n, c]) => `<span><i style="background:var(${c})"></i>${n} <b class="num">${mt(m.by_decision[k] || 0)}</b></span>`).join("")}</div>
+        <h4 class="map-sub">Top states</h4>
+        <ul class="st-bars">${top.map(s => `<li><span class="st-n">${s.state}</span><span class="st-bar" style="width:${(s.total / max * 100).toFixed(1)}%">${DECISION.map(([k, , c]) => s[k] ? `<i style="flex:${s[k]};background:var(${c})"></i>` : "").join("")}</span><span class="st-v num">${mt(s.total)}</span></li>`).join("")}</ul>
+      </aside>
+    </div>
+    <p class="small muted map-src">Dot size = the company's share of the plant's emissions. ${esc(m.source)}.</p>
+  </div>`;
+}
+
 function renderNetZero() {
   const a = state.netzero, el = $("#view-netzero");
   if (!a) { el.innerHTML = `<div class="head"><p class="eyebrow">Net zero</p><h2>Computing…</h2></div>`; postJSON("/api/netzero", {}).then(r => { state.netzero = r; renderNetZero(); }); return; }
@@ -72,6 +113,8 @@ function renderNetZero() {
       <h2>Sell the fuel. Re-weight the rest. Keep the market.</h2></div>
 
     <figure class="fig"><h3 class="h3">Profit a $${ref}/t carbon price would take <span class="muted lg">IEA net-zero price for 2030</span></h3>${nzSteps(at(ref), a.excluded.length)}</figure>
+
+    ${a.map ? `<figure class="fig">${mapCard(a.map)}</figure>` : ""}
 
     <div class="figures">
       <div class="fig-n"><span class="label">Carbon intensity</span><span class="v num">${signed((waci("fund") / waci("index") - 1) * 100, 0)}%</span><span class="t">${waci("fund").toFixed(0)} vs ${waci("index").toFixed(0)} tCO₂e/$M</span></div>
@@ -116,4 +159,12 @@ function renderNetZero() {
       <li>Direct emissions of large US plants only; burning oil and gas (Scope 3) is handled by excluding those companies.</li>
       <li>No green-revenue data yet: makers of transition equipment are not overweighted on purpose.</li>
     </ul></details>`;
+  if (a.map) {
+    drawMap(a.map);
+    $$("#view-netzero .map-h .seg button").forEach(b => b.onclick = () => {
+      MAP.filter = b.dataset.f;
+      $$("#view-netzero .map-h .seg button").forEach(x => x.setAttribute("aria-checked", String(x === b)));
+      drawMap(a.map);
+    });
+  }
 }

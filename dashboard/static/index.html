@@ -11,15 +11,27 @@
 <!-- 1. start: title, the definition, the weights -->
 <section id="home" class="home" aria-labelledby="home-title">
   <div class="home-in">
-    <p class="eyebrow">S&amp;P 500 · public records only</p>
-    <h1 id="home-title">How sustainable is<br>the S&amp;P 500?</h1>
-    <p class="home-def">Sustainable = can run for decades without wearing down the planet, its people or its own economic base.
-      <span>You choose what counts.</span></p>
+    <div class="hero">
+      <h1 id="home-title">How sustainable is the S&amp;P&nbsp;500?</h1>
+      <a class="scroll-cue" href="#choose-anchor" aria-label="Scroll to the weights"><span></span></a>
+    </div>
 
-    <div class="choose" id="choose" aria-label="Weights"></div>
-
-    <div class="home-go">
-      <button type="button" class="primary" id="go">Compute <span aria-hidden="true">→</span></button>
+    <div class="screen" id="choose-anchor">
+    <div class="console">
+      <div class="console-h"><div><h2 class="console-t">What counts for you?</h2>
+        <p class="console-def">A company is sustainable if it can run for decades without wearing down the planet, its people or its own economic base.</p>
+        <p class="stats" id="home-stats"></p></div><span id="emph-slot"></span></div>
+      <div class="choose" id="choose" aria-label="Weights"></div>
+      <div class="mix">
+        <div class="mix-top"><span class="small muted">Your score is made of</span><span class="small muted" id="mix-count"></span></div>
+        <div class="mix-bar" id="mix-bar"></div>
+        <div class="mix-legend" id="mix-legend"></div>
+      </div>
+      <div class="home-go">
+        <button type="button" class="primary" id="go">Compute <span aria-hidden="true">→</span></button>
+        <span class="small muted">Scores, a $1bn fund, a 2021 back-test, 1,000 alternative weightings and a carbon price - in about 15 seconds.</span>
+      </div>
+    </div>
     </div>
   </div>
 </section>
@@ -38,7 +50,7 @@
 <div id="app" hidden>
   <header class="bar">
     <div class="wrap bar-in">
-      <button type="button" class="mark" id="home-link" title="Back to start">S&amp;P 500 Sustainability</button>
+      <button type="button" class="mark" id="home-link" title="Back to start"><span class="brand"><i></i><i></i><i></i>S&amp;P 500 Sustainability</span></button>
       <nav class="tabs" role="tablist">
         <button type="button" role="tab" aria-selected="true" data-view="ranking">Ranking</button>
         <button type="button" role="tab" aria-selected="false" data-view="portfolio">Fund</button>
@@ -81,6 +93,9 @@
 <div class="scrim" id="scrim" hidden></div>
 <aside class="drawer" id="drawer" hidden aria-label="Company detail"></aside>
 
+<script src="vendor/d3-array.min.js"></script>
+<script src="vendor/d3-geo.min.js"></script>
+<script src="vendor/topojson-client.min.js"></script>
 <script src="app.js"></script>
 <script src="portfolio.js"></script>
 <script src="netzero.js"></script>

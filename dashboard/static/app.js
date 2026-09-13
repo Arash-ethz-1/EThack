@@ -47,30 +47,50 @@ function weightsText() {
 }
 
 /* ---------- 1. start page ---------- */
+/* effective share of each chosen indicator in the total: pillar weight share x indicator weight share
+   inside the pillar - the weights the user set, shown back as a bar (display only, no scores) */
+function mixShares() {
+  const prof = state.meta.profiles.find(p => p.id === state.profileId) || {};
+  const iw = m => state.off.has(m.id) ? 0 : ((prof.indicator_weights || {})[m.id] ?? m.catalog_weight ?? 1);
+  const pillars = HOME_ORDER.map(([id]) => ({ id, w: state.categoryWeights[id] || 0, inds: state.meta.indicators.filter(m => m.category === id && iw(m) > 0) }))
+    .filter(p => p.w > 0 && p.inds.length);
+  const sumP = pillars.reduce((a, p) => a + p.w, 0) || 1;
+  const out = {};
+  pillars.forEach(p => { const sumI = p.inds.reduce((a, m) => a + iw(m), 0); p.inds.forEach(m => out[m.id] = p.w / sumP * iw(m) / sumI); });
+  return out;
+}
+
 function renderChoose() {
-  const w = state.categoryWeights, sum = Object.values(w).reduce((a, b) => a + b, 0) || 1;
+  const shares = mixShares();
+  const pillarShare = id => state.meta.indicators.filter(m => m.category === id).reduce((a, m) => a + (shares[m.id] || 0), 0);
+  $("#home-stats").innerHTML = [[state.meta.companies, "companies"], [state.meta.indicators.length, "indicators"], [state.meta.sectors.length, "sectors"], ["0", "estimates"]]
+    .map(([v, l]) => `<span><b class="num">${v}</b> ${l}</span>`).join("");
   $("#choose").innerHTML = HOME_ORDER.map(([id, name]) => {
-    const col = CATS.find(c => c[0] === id)[2];
-    const inds = state.meta.indicators.filter(m => m.category === id), on = inds.filter(m => !state.off.has(m.id)).length;
-    return `<div class="pick ${w[id] ? "" : "zero"}">
-      <div class="pick-t"><span class="sw" style="background:var(${col})"></span><b>${name}</b><span class="pick-n num">${on}/${inds.length}</span></div>
-      <div class="pick-c" role="radiogroup" aria-label="${name} weight">${[0, 1, 2, 3].map(k =>
-        `<button type="button" role="radio" data-id="${id}" data-k="${k}" aria-checked="${w[id] === k}">${k}</button>`).join("")}</div>
-      <div class="pick-share"><span class="pick-bar"><i style="width:${(w[id] / sum * 100).toFixed(1)}%;background:var(${col})"></i></span><span class="num">${Math.round(w[id] / sum * 100)}%</span></div>
-      <div class="pick-i">${inds.map(m => `<button type="button" data-ind="${m.id}" data-cat="${id}" aria-pressed="${!state.off.has(m.id)}" title="${esc(m.name)}">${esc(short(m.id))}</button>`).join("")}</div>
+    const col = CATS.find(c => c[0] === id)[2], w = state.categoryWeights[id] || 0;
+    const inds = state.meta.indicators.filter(m => m.category === id);
+    return `<div class="pcard ${w ? "" : "off"}" style="--c:var(${col})">
+      <div class="pcard-h"><span class="pdot"></span><b>${name}</b><span class="pshare num">${Math.round(pillarShare(id) * 100)}<small>%</small></span></div>
+      <div class="stepper" role="radiogroup" aria-label="${name} weight"><span class="small muted">Weight</span>${[0, 1, 2, 3].map(k =>
+        `<button type="button" role="radio" data-id="${id}" data-k="${k}" aria-checked="${w === k}">${k}</button>`).join("")}</div>
+      <ul class="inds">${inds.map(m => `<li><button type="button" role="switch" data-ind="${m.id}" data-cat="${id}" aria-checked="${!state.off.has(m.id)}" title="${esc(m.name)}">
+          <span class="tog"><i></i></span><span class="nm">${esc(short(m.id))}</span><span class="pc num">${shares[m.id] ? (shares[m.id] * 100).toFixed(0) + "%" : "–"}</span></button></li>`).join("")}</ul>
     </div>`;
-  }).join("") + `<div class="emph"><span class="label">Emphasis</span>
-      <div class="seg" role="radiogroup" aria-label="Indicator emphasis">
-        <button type="button" role="radio" data-p="balanced" aria-checked="${state.profileId === "balanced"}">Equal</button>
-        <button type="button" role="radio" data-p="net_zero" aria-checked="${state.profileId === "net_zero"}" title="Emissions and climate targets count 3×">Net zero</button>
-      </div></div>`;
-  $$("#choose .pick-c button").forEach(b => b.onclick = () => {
+  }).join("");
+  $("#emph-slot").innerHTML = `<span class="seg soft" role="radiogroup" aria-label="Indicator emphasis">
+      <button type="button" role="radio" data-p="balanced" aria-checked="${state.profileId === "balanced"}">Equal</button>
+      <button type="button" role="radio" data-p="net_zero" aria-checked="${state.profileId === "net_zero"}" title="Emissions and climate targets count 3×">Net zero</button></span>`;
+  const segs = HOME_ORDER.flatMap(([id]) => state.meta.indicators.filter(m => m.category === id && shares[m.id]).map(m => ({ m, col: CATS.find(c => c[0] === id)[2] })));
+  $("#mix-bar").innerHTML = segs.map(({ m, col }) => `<i style="flex:${shares[m.id]};background:var(${col})" title="${esc(short(m.id))} ${(shares[m.id] * 100).toFixed(1)}%"></i>`).join("");
+  $("#mix-count").textContent = `${segs.length} of ${state.meta.indicators.length} indicators`;
+  $("#mix-legend").innerHTML = HOME_ORDER.map(([id, n]) => `<span><span class="sw" style="background:var(${CATS.find(c => c[0] === id)[2]})"></span>${n} <b class="num">${Math.round(pillarShare(id) * 100)}%</b></span>`).join("");
+
+  $$("#choose .stepper button").forEach(b => b.onclick = () => {
     const next = { ...state.categoryWeights, [b.dataset.id]: +b.dataset.k };
     if (Object.values(next).every(x => !x)) return;
     if (+b.dataset.k > 0) state.meta.indicators.filter(m => m.category === b.dataset.id).forEach(m => state.off.delete(m.id));
     state.categoryWeights = next; renderChoose();
   });
-  $$("#choose .pick-i button").forEach(b => b.onclick = () => {
+  $$("#choose .inds button").forEach(b => b.onclick = () => {
     const id = b.dataset.ind, cat = b.dataset.cat;
     if (state.off.has(id)) { state.off.delete(id); if (!state.categoryWeights[cat]) state.categoryWeights = { ...state.categoryWeights, [cat]: 1 }; }
     else {
@@ -82,7 +102,7 @@ function renderChoose() {
     }
     renderChoose();
   });
-  $$("#choose .emph button").forEach(b => b.onclick = () => {
+  $$("#emph-slot button").forEach(b => b.onclick = () => {
     state.profileId = b.dataset.p;
     const p = state.meta.profiles.find(x => x.id === state.profileId);
     if (p) state.categoryWeights = { ...p.category_weights };
@@ -187,7 +207,7 @@ function bindChrome() {
 function fingerprint(ticker) {
   const fp = (state.score.fingerprints || {})[ticker] || {};
   let prev = null, out = "";
-  state.meta.indicators.filter(m => !state.off.has(m.id)).forEach(m => {
+  HOME_ORDER.flatMap(([id]) => state.meta.indicators.filter(m => m.category === id && !state.off.has(m.id))).forEach(m => {
     if (prev && m.category !== prev) out += `<i class="sp"></i>`;
     prev = m.category;
     const pts = fp[m.id];
@@ -224,7 +244,7 @@ function renderOverview() {
   $("#overview").innerHTML = [
     fig("portfolio", "Fund", t ? signed(t.portfolio - t.benchmark) : "–", "points vs index"),
     fig("portfolio", "Carbon", c && c.benchmark ? `${signed((c.portfolio / c.benchmark - 1) * 100, 0)}%` : "–", "intensity vs index"),
-    fig("netzero", "Carbon price", at ? `${(at.fund * 100).toFixed(1)}%` : "–", at ? `profit hit at $${at.price}/t · index ${(at.index * 100).toFixed(1)}%` : ""),
+    fig("netzero", "Carbon price", at ? `${(at.fund * 100).toFixed(1)}%` : "–", at ? `profit hit at $${at.price}/t` : ""),
     fig("evidence/A", "Caught later", a && a.numbers && a.numbers.worst_to_best_ratio ? `${a.numbers.worst_to_best_ratio.toFixed(1)}×` : "–", "EPA fines, worst vs best"),
     fig("evidence/B", "Robust", b && b.numbers ? b.numbers.median_rho.toFixed(2) : "–", "1,000 other weightings"),
   ].join("");
