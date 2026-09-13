@@ -1,0 +1,437 @@
+{
+  "status": "passed",
+  "verdict": "Of the companies our method would have rated worst in their sector at the end of 2021, 26% were fined by the EPA in 2022-2025 - against 8% of the best-rated (3.3x). Employee lawsuits showed no such pattern.",
+  "numbers": {
+    "as_of": 2021,
+    "outcome_years": [
+      2022,
+      2025
+    ],
+    "companies": 489,
+    "fined": 85,
+    "indicators_used": [
+      "tax_rate_gap",
+      "revenue_volatility",
+      "federal_contract_exposure",
+      "political_alignment",
+      "shareholder_payout_ratio",
+      "resource_supply_risk",
+      "ghg_intensity"
+    ],
+    "left_out": [
+      "epa_penalty_intensity",
+      "labor_litigation_intensity",
+      "sbti_climate_target"
+    ],
+    "total_score": [
+      {
+        "group": "Q1 worst",
+        "companies": 92,
+        "share": 0.2609,
+        "hits": 24
+      },
+      {
+        "group": "Q2",
+        "companies": 98,
+        "share": 0.1735,
+        "hits": 17
+      },
+      {
+        "group": "Q3",
+        "companies": 99,
+        "share": 0.2222,
+        "hits": 22
+      },
+      {
+        "group": "Q4",
+        "companies": 98,
+        "share": 0.1429,
+        "hits": 14
+      },
+      {
+        "group": "Q5 best",
+        "companies": 102,
+        "share": 0.0784,
+        "hits": 8
+      }
+    ],
+    "environmental_score": [
+      {
+        "group": "Q1 worst",
+        "companies": 89,
+        "share": 0.2472,
+        "hits": 22
+      },
+      {
+        "group": "Q2",
+        "companies": 107,
+        "share": 0.215,
+        "hits": 23
+      },
+      {
+        "group": "Q3",
+        "companies": 78,
+        "share": 0.1795,
+        "hits": 14
+      },
+      {
+        "group": "Q4",
+        "companies": 120,
+        "share": 0.1,
+        "hits": 12
+      },
+      {
+        "group": "Q5 best",
+        "companies": 95,
+        "share": 0.1474,
+        "hits": 14
+      }
+    ],
+    "lawsuits_by_social_score": [
+      {
+        "group": "Q1 worst",
+        "median_lawsuits_per_bn": 0.049
+      },
+      {
+        "group": "Q2",
+        "median_lawsuits_per_bn": 0.044
+      },
+      {
+        "group": "Q3",
+        "median_lawsuits_per_bn": 0.044
+      },
+      {
+        "group": "Q4",
+        "median_lawsuits_per_bn": 0.032
+      },
+      {
+        "group": "Q5 best",
+        "median_lawsuits_per_bn": 0.0
+      }
+    ],
+    "worst_to_best_ratio": 3.33
+  },
+  "rows": [
+    {
+      "ticker": "CMI",
+      "year": 2024,
+      "indicator_id": "epa_penalty",
+      "value": 1675000000.0,
+      "detail": "2021 total score 36 - EPA case HQ-2020-0001 (Cummins, Inc.)",
+      "url": "https://echo.epa.gov/enforcement-case-report?id=HQ-2020-0001"
+    },
+    {
+      "ticker": "COP",
+      "year": 2024,
+      "indicator_id": "epa_penalty",
+      "value": 64500000.0,
+      "detail": "2021 total score 51 - EPA case 08-2017-0088 (Marathon Oil Company)",
+      "url": "https://echo.epa.gov/enforcement-case-report?id=08-2017-0088"
+    },
+    {
+      "ticker": "UPS",
+      "year": 2022,
+      "indicator_id": "epa_penalty",
+      "value": 5300000.0,
+      "detail": "2021 total score 56 - EPA case 06-2022-0942 (United Parcel Service, Inc.)",
+      "url": "https://echo.epa.gov/enforcement-case-report?id=06-2022-0942"
+    },
+    {
+      "ticker": "PSX",
+      "year": 2022,
+      "indicator_id": "epa_penalty",
+      "value": 3250000.0,
+      "detail": "2021 total score 42 - EPA case 08-2020-0070 (DCP Midstream)",
+      "url": "https://echo.epa.gov/enforcement-case-report?id=08-2020-0070"
+    },
+    {
+      "ticker": "AES",
+      "year": 2024,
+      "indicator_id": "epa_penalty",
+      "value": 3125000.0,
+      "detail": "2021 total score 48 - EPA case 02-2024-1215 (AES Puerto Rico, L.P.)",
+      "url": "https://echo.epa.gov/enforcement-case-report?id=02-2024-1215"
+    },
+    {
+      "ticker": "PKG",
+      "year": 2022,
+      "indicator_id": "epa_penalty",
+      "value": 2500000.0,
+      "detail": "2021 total score 58 - EPA case 06-2018-3402 (Packaging Corporation of America)",
+      "url": "https://echo.epa.gov/enforcement-case-report?id=06-2018-3402"
+    },
+    {
+      "ticker": "RSG",
+      "year": 2024,
+      "indicator_id": "epa_penalty",
+      "value": 671000.0,
+      "detail": "2021 total score 49 - EPA case 02-2017-0002 (Allied Waste Niagara Falls Landfill, LLC)",
+      "url": "https://echo.epa.gov/enforcement-case-report?id=02-2017-0002"
+    },
+    {
+      "ticker": "IP",
+      "year": 2022,
+      "indicator_id": "epa_penalty",
+      "value": 587300.0,
+      "detail": "2021 total score 30 - EPA case 04-2022-0208 (INTERNATIONAL PAPER COMPANY)",
+      "url": "https://echo.epa.gov/enforcement-case-report?id=04-2022-0208"
+    },
+    {
+      "ticker": "OXY",
+      "year": 2022,
+      "indicator_id": "epa_penalty",
+      "value": 500000.0,
+      "detail": "2021 total score 48 - EPA case 06-2022-3300 (Occidental Chemical Corporation)",
+      "url": "https://echo.epa.gov/enforcement-case-report?id=06-2022-3300"
+    },
+    {
+      "ticker": "WMB",
+      "year": 2023,
+      "indicator_id": "epa_penalty",
+      "value": 438787.5,
+      "detail": "2021 total score 52 - EPA case 06-2023-3408 (The Williams Companies Inc)",
+      "url": "https://echo.epa.gov/enforcement-case-report?id=06-2023-3408"
+    },
+    {
+      "ticker": "EOG",
+      "year": 2025,
+      "indicator_id": "epa_penalty",
+      "value": 412500.0,
+      "detail": "2021 total score 56 - EPA case 06-2025-3303 (EOG Resources Inc)",
+      "url": "https://echo.epa.gov/enforcement-case-report?id=06-2025-3303"
+    },
+    {
+      "ticker": "PH",
+      "year": 2024,
+      "indicator_id": "epa_penalty",
+      "value": 366000.0,
+      "detail": "2021 total score 49 - EPA case 10-2024-0232 (PARKER HANNIFIN)",
+      "url": "https://echo.epa.gov/enforcement-case-report?id=10-2024-0232"
+    },
+    {
+      "ticker": "WM",
+      "year": 2022,
+      "indicator_id": "epa_penalty",
+      "value": 350954.27,
+      "detail": "2021 total score 48 - EPA case 05-2017-9930 (Summit, Inc.)",
+      "url": "https://echo.epa.gov/enforcement-case-report?id=05-2017-9930"
+    },
+    {
+      "ticker": "GM",
+      "year": 2023,
+      "indicator_id": "epa_penalty",
+      "value": 327075.0,
+      "detail": "2021 total score 27 - EPA case HQ-2023-5008 (Ultium Cells LLC)",
+      "url": "https://echo.epa.gov/enforcement-case-report?id=HQ-2023-5008"
+    },
+    {
+      "ticker": "LYB",
+      "year": 2022,
+      "indicator_id": "epa_penalty",
+      "value": 324000.0,
+      "detail": "2021 total score 51 - EPA case 05-2021-5002 (EQUISTAR CHEMICALS)",
+      "url": "https://echo.epa.gov/enforcement-case-report?id=05-2021-5002"
+    },
+    {
+      "ticker": "NSC",
+      "year": 2025,
+      "indicator_id": "epa_penalty",
+      "value": 299000.0,
+      "detail": "2021 total score 49 - EPA case 03-2025-0062 (NORFOLK SOUTHERN RAILWAY COMPANY)",
+      "url": "https://echo.epa.gov/enforcement-case-report?id=03-2025-0062"
+    },
+    {
+      "ticker": "HD",
+      "year": 2022,
+      "indicator_id": "epa_penalty",
+      "value": 285363.43,
+      "detail": "2021 total score 38 - EPA case 06-2022-0937 (Home Depot U.S.A, Inc)",
+      "url": "https://echo.epa.gov/enforcement-case-report?id=06-2022-0937"
+    },
+    {
+      "ticker": "SHW",
+      "year": 2024,
+      "indicator_id": "epa_penalty",
+      "value": 270000.0,
+      "detail": "2021 total score 47 - EPA case 06-2024-0936 (The Sherwin-Williams Company)",
+      "url": "https://echo.epa.gov/enforcement-case-report?id=06-2024-0936"
+    },
+    {
+      "ticker": "NCLH",
+      "year": 2025,
+      "indicator_id": "epa_penalty",
+      "value": 250000.0,
+      "detail": "2021 total score 54 - EPA case 06-2025-0967 (Norwegian Cruise Line Ltd)",
+      "url": "https://echo.epa.gov/enforcement-case-report?id=06-2025-0967"
+    },
+    {
+      "ticker": "TRGP",
+      "year": 2024,
+      "indicator_id": "epa_penalty",
+      "value": 236000.0,
+      "detail": "2021 total score 57 - EPA case 06-2024-0504 (TARGA DOWNSTREAM LLC)",
+      "url": "https://echo.epa.gov/enforcement-case-report?id=06-2024-0504"
+    },
+    {
+      "ticker": "MPC",
+      "year": 2024,
+      "indicator_id": "epa_penalty",
+      "value": 225715.0,
+      "detail": "2021 total score 32 - EPA case 05-2024-5063 (MARATHON PETROLEUM COMPANY LP)",
+      "url": "https://echo.epa.gov/enforcement-case-report?id=05-2024-5063"
+    },
+    {
+      "ticker": "ALB",
+      "year": 2024,
+      "indicator_id": "epa_penalty",
+      "value": 212480.0,
+      "detail": "2021 total score 56 - EPA case 04-2025-6001 (ALBEMARLE CORPORATION)",
+      "url": "https://echo.epa.gov/enforcement-case-report?id=04-2025-6001"
+    },
+    {
+      "ticker": "PNR",
+      "year": 2023,
+      "indicator_id": "epa_penalty",
+      "value": 206600.0,
+      "detail": "2021 total score 54 - EPA case 04-2023-0702 (PENTAIR AQUATIC ECO-SYSTEMS, INC)",
+      "url": "https://echo.epa.gov/enforcement-case-report?id=04-2023-0702"
+    },
+    {
+      "ticker": "DHI",
+      "year": 2024,
+      "indicator_id": "epa_penalty",
+      "value": 200000.0,
+      "detail": "2021 total score 43 - EPA case 04-2014-9006 (D.R. HORTON, INC.)",
+      "url": "https://echo.epa.gov/enforcement-case-report?id=04-2014-9006"
+    },
+    {
+      "ticker": "BRK.B",
+      "year": 2025,
+      "indicator_id": "epa_penalty",
+      "value": 191000.0,
+      "detail": "2021 total score 23 - EPA case 10-2025-0185 (BNSF RAILWAY COMPANY)",
+      "url": "https://echo.epa.gov/enforcement-case-report?id=10-2025-0185"
+    },
+    {
+      "ticker": "CVX",
+      "year": 2024,
+      "indicator_id": "epa_penalty",
+      "value": 165000.0,
+      "detail": "2021 total score 41 - EPA case 06-2024-3352 (Chevron U.S.A. Inc)",
+      "url": "https://echo.epa.gov/enforcement-case-report?id=06-2024-3352"
+    },
+    {
+      "ticker": "TSN",
+      "year": 2022,
+      "indicator_id": "epa_penalty",
+      "value": 151000.0,
+      "detail": "2021 total score 40 - EPA case 01-2022-1032 (Barber Foods LLC)",
+      "url": "https://echo.epa.gov/enforcement-case-report?id=01-2022-1032"
+    },
+    {
+      "ticker": "DOV",
+      "year": 2022,
+      "indicator_id": "epa_penalty",
+      "value": 147617.0,
+      "detail": "2021 total score 53 - EPA case 09-2022-7083 (Transchem, Inc)",
+      "url": "https://echo.epa.gov/enforcement-case-report?id=09-2022-7083"
+    },
+    {
+      "ticker": "LOW",
+      "year": 2022,
+      "indicator_id": "epa_penalty",
+      "value": 141729.75,
+      "detail": "2021 total score 43 - EPA case 06-2023-0901 (Lowe's Home Centers, LLC)",
+      "url": "https://echo.epa.gov/enforcement-case-report?id=06-2023-0901"
+    },
+    {
+      "ticker": "SO",
+      "year": 2024,
+      "indicator_id": "epa_penalty",
+      "value": 139000.0,
+      "detail": "2021 total score 21 - EPA case 04-2024-4200 (ALABAMA POWER COMPANY)",
+      "url": "https://echo.epa.gov/enforcement-case-report?id=04-2024-4200"
+    },
+    {
+      "ticker": "AAPL",
+      "year": 2025,
+      "indicator_id": "epa_penalty",
+      "value": 130641.5,
+      "detail": "2021 total score 38 - EPA case 09-2026-5006 (Apple Inc)",
+      "url": "https://echo.epa.gov/enforcement-case-report?id=09-2026-5006"
+    },
+    {
+      "ticker": "DOW",
+      "year": 2025,
+      "indicator_id": "epa_penalty",
+      "value": 120000.0,
+      "detail": "2021 total score 33 - EPA case 06-2025-3355 (The Dow Chemical Company)",
+      "url": "https://echo.epa.gov/enforcement-case-report?id=06-2025-3355"
+    },
+    {
+      "ticker": "MDT",
+      "year": 2023,
+      "indicator_id": "epa_penalty",
+      "value": 117998.0,
+      "detail": "2021 total score 32 - EPA case 02-2023-1210 (Medtronic Puerto Rico, Inc.)",
+      "url": "https://echo.epa.gov/enforcement-case-report?id=02-2023-1210"
+    },
+    {
+      "ticker": "OKE",
+      "year": 2025,
+      "indicator_id": "epa_penalty",
+      "value": 112000.0,
+      "detail": "2021 total score 52 - EPA case 06-2025-3311 (Magellan Pipeline Terminals, L.P.)",
+      "url": "https://echo.epa.gov/enforcement-case-report?id=06-2025-3311"
+    },
+    {
+      "ticker": "CTVA",
+      "year": 2022,
+      "indicator_id": "epa_penalty",
+      "value": 109400.0,
+      "detail": "2021 total score 55 - EPA case 04-2022-0700 (CORTEVA AGRISCIENCE, LLC)",
+      "url": "https://echo.epa.gov/enforcement-case-report?id=04-2022-0700"
+    },
+    {
+      "ticker": "VLO",
+      "year": 2022,
+      "indicator_id": "epa_penalty",
+      "value": 93450.0,
+      "detail": "2021 total score 48 - EPA case 06-2022-3317 (Diamond Green Diesel LLC)",
+      "url": "https://echo.epa.gov/enforcement-case-report?id=06-2022-3317"
+    },
+    {
+      "ticker": "BG",
+      "year": 2024,
+      "indicator_id": "epa_penalty",
+      "value": 91418.0,
+      "detail": "2021 total score 41 - EPA case 05-2024-7840 (BUNGE NORTH AMERICA, INC.)",
+      "url": "https://echo.epa.gov/enforcement-case-report?id=05-2024-7840"
+    },
+    {
+      "ticker": "CNP",
+      "year": 2024,
+      "indicator_id": "epa_penalty",
+      "value": 81500.0,
+      "detail": "2021 total score 60 - EPA case 05-2024-5026 (CENTERPOINT ENERGY)",
+      "url": "https://echo.epa.gov/enforcement-case-report?id=05-2024-5026"
+    },
+    {
+      "ticker": "SYY",
+      "year": 2025,
+      "indicator_id": "epa_penalty",
+      "value": 77278.0,
+      "detail": "2021 total score 47 - EPA case 04-2025-0307 (SYSCO NASHVILLE, LLC)",
+      "url": "https://echo.epa.gov/enforcement-case-report?id=04-2025-0307"
+    },
+    {
+      "ticker": "FANG",
+      "year": 2024,
+      "indicator_id": "epa_penalty",
+      "value": 72000.0,
+      "detail": "2021 total score 60 - EPA case 06-2024-3364 (Diamondback E&P LLC)",
+      "url": "https://echo.epa.gov/enforcement-case-report?id=06-2024-3364"
+    }
+  ],
+  "ran_at": "2026-09-13T02:18:41Z"
+}

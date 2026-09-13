@@ -11,6 +11,8 @@ ranking or model call happens in the browser or on page load.
     GET  /api/checks     every check's latest result, or "not_run" if it hasn't been
     POST /api/score      {profile, category_weights?} -> ranking table + sector medians
     POST /api/explain     {profile, category_weights?, ticker} -> one company's ledger
+    POST /api/portfolio   {profile, category_weights?, settings?} -> holdings + fund vs benchmark
+    POST /api/audit       {ticker, news?} -> filing quotes, EPA record, recent news for one company
 
 The server listens on 127.0.0.1 only and POSTs need the X-EThack header, so other
 websites cannot trigger them.
@@ -39,7 +41,7 @@ from common.config import CATEGORIES, DEFAULT_PROFILE, check_result_path, indica
 from common.score import explain, list_profiles, load_dataset, load_profile, score_profile  # noqa: E402
 
 STATIC = Path(__file__).resolve().parent / "static"
-CODE_CHECK_IDS = ["traceability", "plausibility", "stability", "redundancy", "sector_pattern", "cross_source_tax"]
+CODE_CHECK_IDS = ["caught_later", "weight_robustness", "traceability", "plausibility", "stability", "redundancy", "sector_pattern", "cross_source_tax"]
 AGENT_CHECK_IDS = ["agent_quote_verify"]
 CHECK_IDS = CODE_CHECK_IDS + AGENT_CHECK_IDS
 
@@ -195,6 +197,48 @@ def api_explain(payload: dict) -> dict:
     return clean({"company": {"ticker": ticker, **row.to_dict()}, "indicators": records(indicators)})
 
 
+def api_portfolio(payload: dict) -> dict:
+    """portfolio/allocate.py on the chosen profile: holdings, fund-vs-benchmark summary,
+    climate numbers and (when price data exists) ex-ante risk. `settings` overrides the
+    profile's [portfolio] block for this request only - nothing is saved."""
+    from portfolio.allocate import SETTINGS, allocate, companies, load_market, settings_for, summary
+    from portfolio.allocate import load_universe as load_portfolio_universe
+    from portfolio.risk import risk_report
+
+    data = load_dataset()
+    profile = _profile_from_payload(payload)
+    overrides = {k: v for k, v in (payload.get("settings") or {}).items() if v is not None}
+    universe = load_portfolio_universe()
+    s = settings_for(profile, overrides, set(universe["sub_industry"]))
+    table = score_profile(data, profile).table
+    caps, market = load_market(universe) if s["benchmark"] == "cap" else (None, {"available": False})
+    portfolio = allocate(table, profile, universe, caps, overrides)
+    sm = summary(table, portfolio, universe)
+    info = companies(table, universe).set_index("ticker")
+    holdings = portfolio.assign(
+        name=portfolio["ticker"].map(info["name"]), sector=portfolio["ticker"].map(info["sector"]),
+        sub_industry=portfolio["ticker"].map(info["sub_industry"]), total_score=portfolio["ticker"].map(info["total_score"]),
+    )
+    sectors = sm.pop("sector_weights").rename_axis("sector").reset_index()
+    return clean({
+        "settings": s,
+        "setting_help": SETTINGS,
+        "sub_industries": sorted(x for x in universe["sub_industry"].unique() if x),
+        "summary": sm,
+        "sectors": records(sectors),
+        "holdings": records(holdings),
+        "market": {k: v for k, v in market.items() if k != "missing"},
+        "risk": risk_report(portfolio),
+    })
+
+
+def api_audit(payload: dict) -> dict:
+    """checks/_audit.py: filing quotes, regulator record and recent news for one company."""
+    from checks._audit import audit
+
+    return clean(audit(str(payload["ticker"]), with_news=payload.get("news", True)))
+
+
 def api_checks() -> dict:
     out = []
     for cid in CHECK_IDS:
@@ -257,7 +301,7 @@ class Handler(BaseHTTPRequestHandler):
     def do_POST(self):
         if not self.trusted() or self.headers.get("X-EThack") != "1":
             return self.send_error(HTTPStatus.FORBIDDEN)
-        routes = {"/api/score": api_score, "/api/explain": api_explain}
+        routes = {"/api/score": api_score, "/api/explain": api_explain, "/api/portfolio": api_portfolio, "/api/audit": api_audit}
         fn = routes.get(urlparse(self.path).path)
         if fn is None:
             return self.send_error(HTTPStatus.NOT_FOUND)

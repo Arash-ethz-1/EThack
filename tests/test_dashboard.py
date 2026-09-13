@@ -56,3 +56,13 @@ def test_checks_api_reads_a_real_result_file(tmp_path, monkeypatch):
     result = server.api_checks()
     trace = next(c for c in result["checks"] if c["id"] == "traceability")
     assert trace["status"] == "passed" and trace["kind"] == "code" and trace["exhibit"] == "A"
+
+
+def test_portfolio_api_weights_sum_to_one_and_override_is_not_saved():
+    result = server.api_portfolio({"profile": "balanced", "settings": {"tilt_strength": 0}})
+    json.dumps(result, allow_nan=False)
+    assert math.isclose(sum(h["weight"] for h in result["holdings"]), 1.0, abs_tol=1e-9)
+    assert result["settings"]["tilt_strength"] == 0
+    assert server.api_portfolio({"profile": "balanced"})["settings"]["tilt_strength"] != 0
+    s = result["summary"]["scores"]["total_score"]
+    assert abs(s["portfolio"] - s["benchmark"]) < 1.0  # strength 0 = benchmark after exclusions only

@@ -365,6 +365,7 @@ def summary(scores: pd.DataFrame, portfolio: pd.DataFrame, universe: pd.DataFram
 
     active = (w - b)
     status = p["status"].value_counts()
+    climate = climate_metrics(table.index, w, b)
     return {
         "holdings": int((w > 0).sum()),
         "companies": int(len(table)),
@@ -382,6 +383,43 @@ def summary(scores: pd.DataFrame, portfolio: pd.DataFrame, universe: pd.DataFram
         "underweights": rows(active[active < 0].sort_values().index[:top]),
         "largest": rows(w[w > 0].sort_values(ascending=False).index[:top]),
         "excluded": rows(p.index[p["status"] == "excluded_policy"]),
+        "climate": climate,
+    }
+
+
+def climate_metrics(tickers: pd.Index, w: pd.Series, b: pd.Series) -> dict:
+    """The net-zero answer in two standard numbers, fund vs benchmark - weighted averages of
+    raw indicator values, not scores:
+    - WACI, weighted average carbon intensity (TCFD): sum of weight x tCO2e per $M revenue
+      (ghg_intensity, latest year), over the weight that has a value
+    - share of weight in companies with a validated science-based target (sbti_climate_target
+      >= 2: a near-term target set, 2 = well-below 2C, 3 = 1.5C, 4 = net-zero validated)"""
+    from common.config import indicator_path
+
+    def latest(category: str, indicator_id: str) -> pd.Series:
+        path = indicator_path(category, indicator_id)
+        if not path.exists():
+            return pd.Series(dtype=float)
+        df = pd.read_csv(path)
+        return df.sort_values("year").groupby("ticker")["value"].last().reindex(tickers)
+
+    ghg, sbti = latest("environmental", "ghg_intensity"), latest("environmental", "sbti_climate_target")
+
+    def waci(weights: pd.Series) -> float | None:
+        m = ghg.notna() & (weights > 0)
+        return float((ghg[m] * weights[m]).sum() / weights[m].sum()) if weights[m].sum() else None
+
+    def target_share(weights: pd.Series) -> float | None:
+        m = sbti.notna() & (weights > 0)
+        return float(weights[m & (sbti >= 2)].sum() / weights[m].sum()) if weights[m].sum() else None
+
+    return {
+        "waci_tco2e_per_musd": {"portfolio": waci(w), "benchmark": waci(b)},
+        "sbti_target_share": {"portfolio": target_share(w), "benchmark": target_share(b)},
+        "net_zero_validated_share": {
+            "portfolio": float(w[sbti == 4].sum() / w[sbti.notna()].sum()) if w[sbti.notna()].sum() else None,
+            "benchmark": float(b[sbti == 4].sum() / b[sbti.notna()].sum()) if b[sbti.notna()].sum() else None,
+        },
     }
 
 
@@ -444,5 +482,10 @@ def build_portfolio(profile_name: str = DEFAULT_PROFILE, fund_usd: float = 1e9) 
         f = "  n/a" if v["portfolio"] is None else f"{v['portfolio']:5.1f}"
         bm = "  n/a" if v["benchmark"] is None else f"{v['benchmark']:5.1f}"
         print(f"  {col:<22} fund {f}   {bench_name} benchmark {bm}")
+    c = sm["climate"]
+    if c["waci_tco2e_per_musd"]["portfolio"] is not None:
+        print(f"  carbon intensity (WACI) fund {c['waci_tco2e_per_musd']['portfolio']:.1f} vs benchmark "
+              f"{c['waci_tco2e_per_musd']['benchmark']:.1f} tCO2e/$M revenue; science-based target share fund "
+              f"{c['sbti_target_share']['portfolio']:.1%} vs {c['sbti_target_share']['benchmark']:.1%}")
     print(f"  wrote {path.relative_to(ROOT).as_posix()} (fund {fund_usd:,.0f} USD)")
     return out

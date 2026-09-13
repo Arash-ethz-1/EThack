@@ -50,7 +50,7 @@ OWNERS = {
 
 # code checks run by default with no argument; agent checks (cost API credits, need
 # ANTHROPIC_API_KEY) only run when named explicitly - see docs/DASHBOARD.md section 4.
-CODE_CHECK_IDS = ["traceability", "plausibility", "stability", "redundancy", "sector_pattern", "cross_source_tax"]
+CODE_CHECK_IDS = ["caught_later", "weight_robustness", "traceability", "plausibility", "stability", "redundancy", "sector_pattern", "cross_source_tax"]
 AGENT_CHECK_IDS = ["agent_quote_verify"]
 CHECK_IDS = CODE_CHECK_IDS + AGENT_CHECK_IDS
 
