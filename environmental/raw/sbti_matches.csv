@@ -1,0 +1,263 @@
+ticker,universe_name,match,sbti_id,company_name,isin,location,near_term_status,near_term_target_classification,net_zero_status,value
+A,Agilent Technologies,isin,40012876,"Agilent Technologies, Inc",US00846U1016,United States of America,Targets set,1.5°C,Targets set,4
+AAPL,Apple Inc.,isin,40003329,"Apple, Inc.",US0378331005,United States of America,Targets set,1.5°C,,3
+ABBV,AbbVie,isin,40009630,AbbVie,US00287Y1091,United States of America,Targets set,1.5°C,,3
+ABNB,Airbnb,isin,40002346,"Airbnb, Inc",US0090661010,United States of America,Targets set,1.5°C,,3
+ABT,Abbott Laboratories,isin,40011504,Abbott,US0028241000,United States of America,Targets set,Well-below 2°C,,2
+ACN,Accenture,isin,40001698,Accenture,IE00B4BNMY34,Ireland,Targets set,1.5°C,Targets set,4
+ADBE,Adobe Inc.,isin,40002432,"Adobe, Inc.",US00724F1012,United States of America,Targets set,1.5°C,Targets set,4
+ADI,Analog Devices,isin,40000069,"Analog Devices, Inc.",US0326541051,United States of America,Targets set,1.5°C,Commitment removed,3
+ADM,Archer Daniels Midland,isin,40002338,Archer Daniels Midland,US0394831020,United States of America,Commitment removed,,,0
+ADSK,Autodesk,isin,40006055,"Autodesk, Inc.",US0527691069,United States of America,Targets set,1.5°C,,3
+AKAM,Akamai Technologies,isin,40008538,Akamai Technologies INC,US00971T1016,United States of America,Commitment removed,,Commitment removed,0
+AMAT,Applied Materials,isin,40007245,Applied Materials,US0382221051,United States of America,Targets set,1.5°C,,3
+AMCR,Amcor,name,40001916,Amcor plc,JE00BJ1F3079,Switzerland,Targets set,1.5°C,Targets set,4
+AMD,Advanced Micro Devices,isin,40015387,"Advanced Micro Devices, Inc",US0079031078,United States of America,Targets set,Well-below 2°C,,2
+AMGN,Amgen,name,40013586,Amgen Inc.,,United States of America,Targets set,1.5°C,,3
+AMT,American Tower,isin,40002602,American Tower Corporation,US03027X1000,United States of America,Targets set,Well-below 2°C,,2
+AMZN,Amazon,isin,40010768,Amazon,US0231351067,United States of America,Commitment removed,,,0
+ANET,Arista Networks,name,40016903,"Arista Networks, Inc.",US0404131064,United States of America,Targets set,1.5°C,Targets set,4
+AON,Aon plc,isin,40010894,Aon plc,IE00BLP1HW54,Ireland,Targets set,1.5°C,,3
+APTV,Aptiv,name,40005379,Aptiv PLC,JE00B783TY65,Ireland,Targets set,1.5°C,,3
+AVGO,Broadcom,isin,40004565,Broadcom Inc.,US11135F1012,United States of America,Commitment removed,,,0
+AVY,Avery Dennison,isin,40009028,Avery Dennison Corporation,US0536111091,United States of America,Targets set,1.5°C,,3
+AXP,American Express,isin,40011545,American Express Company,US0258161092,United States of America,Targets set,1.5°C,Targets set,4
+BALL,Ball Corporation,isin,40000783,Ball Corporation,US0584981064,United States of America,Targets set,1.5°C,,3
+BBY,Best Buy,isin,40002585,"Best Buy Co., Inc.",US0865161014,United States of America,Targets set,1.5°C,,3
+BDX,Becton Dickinson,isin,40000251,"BD (Becton, Dickinson & Company)",US0758871091,United States of America,Targets set,1.5°C,Targets set,4
+BG,Bunge Global,manual,40012156,Bunge Limited,BMG169621056,United States of America,Targets set,Well-below 2°C,,2
+BIIB,Biogen,isin,40008014,Biogen Inc.,US09062X1037,United States of America,Commitment removed,,Commitment removed,0
+BKNG,Booking Holdings,isin,40003698,Booking Holdings Inc.,US09857L1089,United States of America,Targets set,1.5°C,Targets set,4
+BMY,Bristol Myers Squibb,isin,40001526,Bristol Myers Squibb,US1101221083,United States of America,Targets set,1.5°C,Targets set,4
+BR,Broadridge Financial Solutions,isin,40002661,"Broadridge Financial Solutions, Inc.",US11133T1034,United States of America,Targets set,1.5°C,Targets set,4
+BSX,Boston Scientific,isin,40016069,Boston Scientific Corporation,US1011371077,United States of America,Targets set,1.5°C,Targets set,4
+BXP,"BXP, Inc.",isin,40013023,BXP,US1011211018,United States of America,Targets set,1.5°C,Commitment removed,3
+CAH,Cardinal Health,isin,40000125,"Cardinal Health, Inc.",US14149Y1082,United States of America,Targets set,1.5°C,,3
+CARR,Carrier Global,isin,40008060,Carrier Global Corporation,US14448C1045,United States of America,Targets set,1.5°C,Targets set,4
+CBRE,CBRE Group,isin,40005539,CBRE,US12504L1098,United States of America,Targets set,1.5°C,Targets set,4
+CDNS,Cadence Design Systems,isin,40014559,Cadence Design Systems,US1273871087,United States of America,Targets set,1.5°C,Targets set,4
+CDW,CDW Corporation,isin,40010913,CDW Corporation,US12514G1085,United States of America,Targets set,1.5°C,,3
+CHD,Church & Dwight,isin,40001594,Church & Dwight Co. Inc.,US1713401024,United States of America,Targets set,1.5°C,,3
+CI,Cigna,isin,40013591,The Cigna Group,US1255231003,United States of America,Committed,,,1
+CIEN,Ciena,isin,40000064,Ciena Corporation,US1717793095,United States of America,Targets set,1.5°C,,3
+CL,Colgate-Palmolive,isin,40013763,Colgate Palmolive Company,US1941621039,United States of America,Targets set,1.5°C,Targets set,4
+CLX,Clorox,isin,40006501,The Clorox Company,US1890541097,United States of America,Targets set,1.5°C,Commitment removed,3
+CMCSA,Comcast,isin,40005901,Comcast,US20030N1019,United States of America,Targets set,1.5°C,,3
+CMG,Chipotle Mexican Grill,isin,40011261,"Chipotle Mexican Grill, Inc.",US1696561059,United States of America,Targets set,1.5°C,,3
+CMI,Cummins,isin,40010401,Cummins,US2310211063,United States of America,Targets set,1.5°C,,3
+COR,Cencora,isin,40001254,Cencora,US03073E1055,United States of America,Targets set,1.5°C,,3
+CRH,CRH plc,isin,40003836,CRH plc,IE0001827041,Ireland,Targets set,1.5°C,,3
+CRL,Charles River Laboratories,isin,40001945,"Charles River Laboratories, Inc.",US1598641074,United States of America,Targets set,1.5°C,,3
+CRM,Salesforce,isin,40006395,"Salesforce.com, Inc.",US79466L3024,United States of America,Targets set,1.5°C,Targets set,4
+CRWD,CrowdStrike,isin,40008901,CrowdStrike,US22788C1053,United States of America,Targets set,1.5°C,Commitment removed,3
+CSCO,Cisco,isin,40013885,"Cisco Systems, Inc.",US17275R1023,United States of America,Targets set,1.5°C,Targets set,4
+CSGP,CoStar Group,isin,40000740,"CoStar Group, Inc.",US22160N1090,United States of America,Targets set,1.5°C,Targets set,4
+CSX,CSX Corporation,isin,40005090,CSX Corporation,US1264081035,United States of America,Targets set,Well-below 2°C,,2
+CTSH,Cognizant,isin,40009441,Cognizant Technology Solutions Corporation,US1924461023,United States of America,Targets set,1.5°C,Targets set,4
+CTVA,Corteva,isin,40006471,Corteva Agriscience,US22052L1044,United States of America,Commitment removed,,,0
+CVS,CVS Health,isin,40015440,CVS Health,US1266501006,United States of America,Targets set,1.5°C,Targets set,4
+DAL,Delta Air Lines,isin,40006584,Delta Air Lines,US2473617023,United States of America,Targets set,Well-below 2°C,Committed,2
+DD,DuPont,name,40008452,"DuPont de Nemours, Inc.",US26614N1028,United States of America,Targets set,1.5°C,Committed,3
+DE,Deere & Company,isin,40000363,Deere & Company,US2441991054,United States of America,Targets set,1.5°C,,3
+DECK,Deckers Brands,isin,40013855,Deckers Brands,US2435371073,United States of America,Targets set,1.5°C,,3
+DELL,Dell Technologies,name,40003670,Dell Technologies,US24703L1035,United States of America,Targets set,1.5°C,Targets set,4
+DHR,Danaher Corporation,isin,40003214,Danaher Corporation,US2358511028,United States of America,Targets set,1.5°C,Targets set,4
+DIS,Walt Disney Company (The),isin,40009720,The Walt Disney Company,US2546871060,United States of America,Targets set,1.5°C,,3
+DLR,Digital Realty,isin,40001399,Digital Realty,US2538681030,United States of America,Targets set,1.5°C,Committed,3
+DOC,Healthpeak Properties,name,40006397,"Healthpeak Properties, Inc.",US40414L1098,United States of America,Targets set,Well-below 2°C,,2
+DOV,Dover Corporation,isin,40001498,Dover Corporation,US2600031080,United States of America,Targets set,Well-below 2°C,,2
+DPZ,Domino's,isin,40011162,"Domino’s Pizza, Inc.",US25754A2015,United States of America,Targets set,1.5°C,Targets set,4
+DVA,DaVita,isin,40006011,DaVita,US23918K1088,United States of America,Targets set,1.5°C,,3
+DXCM,Dexcom,isin,40013984,"Dexcom, Inc.",US2521311074,United States of America,Commitment removed,,,0
+EBAY,eBay Inc.,isin,40003430,eBay Inc.,US2786421030,United States of America,Targets set,1.5°C,Targets set,4
+ECL,Ecolab,isin,40008610,Ecolab Inc.,US2788651006,United States of America,Targets set,1.5°C,Targets set,4
+EFX,Equifax,name,40014347,Equifax Inc.,,United States of America,Targets set,1.5°C,,3
+EL,Estée Lauder Companies (The),isin,40008489,The Estée Lauder Companies,US5184391044,United States of America,Targets set,1.5°C,,3
+ELV,Elevance Health,isin,40011861,Elevance Health,US0367521038,United States of America,Targets set,1.5°C,,3
+EME,Emcor,name,40010518,"EMCOR Group, Inc.",,United States of America,Commitment removed,,,0
+EMR,Emerson Electric,isin,40012996,Emerson Electric Co.,US2910111044,United States of America,Targets set,1.5°C,Targets set,4
+EQIX,Equinix,isin,40005547,"Equinix, Inc.",US29444U7000,United States of America,Targets set,1.5°C,Targets set,4
+ES,Eversource Energy,name,40015961,Eversource Energy,,United States of America,Commitment removed,,,0
+ESS,Essex Property Trust,isin,40006954,"Essex Property Trust, Inc.",US2971781057,United States of America,Targets set,1.5°C,,3
+ETN,Eaton Corporation,isin,40010794,Eaton,IE00B8KQN827,Ireland,Targets set,1.5°C,Targets set,4
+EW,Edwards Lifesciences,isin,40006807,Edwards Lifesciences,US28176E1082,United States of America,Targets set,1.5°C,,3
+EXPE,Expedia Group,isin,40010462,Expedia Group,US30212P3038,United States of America,Targets set,1.5°C,,3
+F,Ford Motor Company,isin,40002522,Ford Motor Company,US3453708600,United States of America,Targets set,1.5°C/Well-below 2°C,Commitment removed,2
+FCX,Freeport-McMoRan,isin,40012671,Freeport-McMoRan Inc.,US35671D8570,United States of America,Commitment removed,,,0
+FDS,FactSet,isin,40002147,FactSet Research Systems Inc,US3030751057,United States of America,Targets set,1.5°C,,3
+FDX,FedEx,isin,40003401,FedEx Corporation,US31428X1063,United States of America,Targets set,1.5°C,,3
+FFIV,"F5, Inc.",isin,40016096,"F5, Inc.",US3156161024,United States of America,Targets set,1.5°C,,3
+FLEX,Flex Ltd.,isin,40000977,Flex Ltd.,SG9999000020,Singapore,Targets set,1.5°C,,3
+FRT,Federal Realty Investment Trust,name,40013781,Federal Realty Investment Trust,,United States of America,Targets set,1.5°C,,3
+FSLR,First Solar,isin,40009073,First Solar Inc,US3364331070,United States of America,Targets set,1.5°C,Targets set,4
+FTNT,Fortinet,name,40015131,Fortinet,US34959EAB56,United States of America,Targets set,1.5°C,Commitment removed,3
+GEHC,GE HealthCare,isin,40006854,GE Healthcare,US36266G1076,United States of America,Targets set,1.5°C,Targets set,4
+GILD,Gilead Sciences,isin,40009388,"Gilead Sciences, Inc.",US3755581036,United States of America,Targets set,1.5°C,,3
+GIS,General Mills,isin,40007978,General Mills Inc.,US3703341046,United States of America,Targets set,1.5°C,Targets set,4
+GLW,Corning Inc.,isin,40010002,Corning Incorporated,US2193501051,United States of America,Targets set,1.5°C,,3
+GM,General Motors,isin,40001768,General Motors,US37045V1008,United States of America,Targets set,1.5°C/Well-below 2°C,Commitment removed,2
+GOOG,Alphabet Inc. (Class C),isin,40009770,Alphabet Inc.,US02079K1079,United States of America,Targets set,1.5°C,,3
+HAS,Hasbro,isin,40004794,"Hasbro, Inc.",US4180561072,United States of America,Targets set,1.5°C,Targets set,4
+HD,Home Depot (The),isin,40012640,The Home Depot,US4370761029,United States of America,Targets set,1.5°C,,3
+HLT,Hilton Worldwide,isin,40009671,Hilton,US43300A2033,United States of America,Targets set,1.5°C,,3
+HON,Honeywell Technologies,name,40013585,Honeywell International Inc.,US4385161066,United States of America,Targets set,Well-below 2°C,,2
+HPE,Hewlett Packard Enterprise,isin,40000722,Hewlett Packard Enterprise Company,US42824C1099,United States of America,Targets set,1.5°C,Targets set,4
+HPQ,HP Inc.,isin,40005167,HP Inc.,US40434L1052,United States of America,Targets set,1.5°C,Targets set,4
+HRL,Hormel Foods,isin,40015152,Hormel Foods Corporation,US4404521001,United States of America,Targets set,1.5°C,,3
+HSIC,Henry Schein,name,40013152,"Henry Schein, Inc.",,United States of America,Targets set,1.5°C,Targets set,4
+HST,Host Hotels & Resorts,isin,40014983,"Host Hotels & Resorts, Inc.",US44107P1049,United States of America,Targets set,1.5°C,,3
+HSY,Hershey Company (The),isin,40011284,The Hershey Company,US4278661081,United States of America,Targets set,1.5°C,,3
+HUM,Humana,isin,40001977,Humana Inc.,US4448591028,United States of America,Targets set,1.5°C,,3
+IFF,International Flavors & Fragrances,isin,40004510,International Flavors & Fragrances Inc.,US4595061015,United States of America,Targets set,1.5°C,,3
+INTU,Intuit,isin,40010122,Intuit,US4612021034,United States of America,Targets set,1.5°C,Targets set,4
+IP,International Paper,isin,40002456,International Paper Company,US4601461035,United States of America,Targets set,Well-below 2°C,,2
+IQV,IQVIA,isin,40015893,IQVIA Holdings Inc,US46266C1053,United States of America,Targets set,1.5°C,Targets set,4
+IR,Ingersoll Rand,isin,40013052,Ingersoll Rand Inc.,US45687V1061,United States of America,Targets set,1.5°C,Targets set,4
+IRM,Iron Mountain,isin,40007941,Iron Mountain,US46284V1017,United States of America,Targets set,1.5°C,Targets set,4
+IT,Gartner,isin,40011144,"Gartner, Inc.",US3666511072,United States of America,Targets set,1.5°C,,3
+J,Jacobs Solutions,manual,40005053,Jacobs,US4698141078,United States of America,Targets set,1.5°C,Targets set,4
+JBL,Jabil,isin,40014256,Jabil Inc.,US4663131039,United States of America,Commitment removed,,Commitment removed,0
+JCI,Johnson Controls,isin,40009254,Johnson Controls International plc,IE00BY7QL619,Ireland,Targets set,1.5°C,,3
+JKHY,Jack Henry & Associates,name,40009307,"Jack Henry and Associates, Inc.",,United States of America,Commitment removed,,,0
+JNJ,Johnson & Johnson,isin,40007032,Johnson & Johnson,US4781601046,United States of America,Targets set,1.5°C,Commitment removed,3
+KDP,Keurig Dr Pepper,name,40000587,Keurig Dr Pepper,US26138E1091,United States of America,Targets set,1.5°C,,3
+KEYS,Keysight Technologies,isin,40003570,"Keysight Technologies, Inc.",US49338L1035,United States of America,Targets set,1.5°C,,3
+KHC,Kraft Heinz,isin,40004111,The Kraft Heinz Company,US5007541064,United States of America,Targets set,1.5°C,Targets set,4
+KIM,Kimco Realty,isin,40000165,Kimco Realty Corporation,US49446R1095,United States of America,Targets set,Well-below 2°C,,2
+KLAC,KLA Corporation,isin,40003411,KLA Corporation,US4824801009,United States of America,Targets set,1.5°C,,3
+KMB,Kimberly-Clark,isin,40002897,Kimberly-Clark Corporation,US4943681035,United States of America,Targets set,Well-below 2°C,,2
+KR,Kroger,isin,40003560,The Kroger Co.,US5010441013,United States of America,Commitment removed,,,0
+KVUE,Kenvue,isin,40009801,Kenvue Inc.,US49177J1025,United States of America,Targets set,1.5°C,Commitment removed,3
+LH,Labcorp,name,40005137,Labcorp,US50540R4092,United States of America,Targets set,1.5°C,,3
+LII,Lennox International,isin,40012485,Lennox International Inc.,US5261071071,United States of America,Targets set,Well-below 2°C,,2
+LIN,Linde plc,isin,40004033,Linde plc,IE000S9YS762,United Kingdom,Targets set,Well-below 2°C,,2
+LITE,Lumentum,isin,40007469,Lumentum Holdings Inc,US55024U1097,United States of America,Targets set,1.5°C,Targets set,4
+LOW,Lowe's,isin,40008843,"Lowe's Companies, Inc.",US5486611073,United States of America,Commitment removed,,Commitment removed,0
+LRCX,Lam Research,name,40002772,Lam Research Corporation,US5128071082,United States of America,Targets set,1.5°C,,3
+LULU,Lululemon Athletica,isin,40015556,lululemon,US5500211090,Canada,Targets set,1.5°C,Targets set,4
+LVS,Las Vegas Sands,isin,40012647,Las Vegas Sands Corp,US5178341070,United States of America,Targets set,1.5°C,,3
+LYB,LyondellBasell,isin,40016050,LyondellBasell Industries N.V.,NL0009434992,United Kingdom,Commitment removed,,,0
+MA,Mastercard,isin,40014096,Mastercard,US57636Q1040,United States of America,Targets set,1.5°C,,3
+MAR,Marriott International,isin,40012608,"Marriott International, Inc.",US5719032022,United States of America,Targets set,1.5°C,Targets set,4
+MCD,McDonald's,isin,40006743,McDonald's Corporation,US5801351017,United States of America,Targets set,1.5°C,Targets set,4
+MCK,McKesson Corporation,isin,40003977,McKesson Corporation,US58155Q1031,United States of America,Targets set,1.5°C,,3
+MCO,Moody's Corporation,isin,40009531,Moody's Corporation,US6153691059,United States of America,Targets set,1.5°C,Targets set,4
+MDLZ,Mondelez International,isin,40006911,Mondelez International Inc,US6092071058,United States of America,Targets set,1.5°C,Targets set,4
+MDT,Medtronic,isin,40013615,Medtronic PLC,IE00BTN1Y115,Ireland,Targets set,1.5°C,Commitment removed,3
+MET,MetLife,isin,40015075,"MetLife, Inc.",US59156R1086,United States of America,Committed,,,1
+META,Meta Platforms,isin,40011493,"Meta Platforms, Inc.",US30303M1027,United States of America,Targets set,1.5°C,Commitment removed,3
+MGM,MGM Resorts,isin,40012348,MGM Resorts International,US5529531015,United States of America,Targets set,1.5°C,,3
+MKC,McCormick & Company,isin,40000956,"McCormick & Company, Incorporated",US5797802064,United States of America,Targets set,1.5°C,Targets set,4
+MLM,Martin Marietta Materials,isin,40000939,"Martin Marietta Materials, Inc.",US5732841060,United States of America,Targets set,1.5°C,,3
+MMM,3M,isin,40001115,3M,US88579Y1010,United States of America,Targets set,1.5°C,,3
+MNST,Monster Beverage,isin,40015566,Monster Beverage Corporation,US61174X1090,United States of America,Commitment removed,,,0
+MO,Altria,isin,40004335,"Altria Group, Inc.",US02209S1033,United States of America,Targets set,1.5°C,Targets set,4
+MRK,Merck & Co.,isin,40005417,"Merck & Co., Inc., Rahway, NJ USA, which is known as MSD outside the U.S. and Canada",US58933Y1055,United States of America,Targets set,1.5°C,Targets set,4
+MRNA,Moderna,isin,40008085,"Moderna, Inc.",US60770K1079,United States of America,Targets set,1.5°C,Targets set,4
+MRSH,Marsh McLennan,name,40000243,Marsh McLennan,US571748BP64,United States of America,Targets set,1.5°C,Targets set,4
+MRVL,Marvell Technology,isin,40006650,Marvell Technology Inc.,US5738741041,United States of America,Targets set,1.5°C,Commitment removed,3
+MSCI,MSCI,isin,40003345,MSCI Inc.,US55354G1004,United States of America,Targets set,1.5°C,Targets set,4
+MSFT,Microsoft,isin,40005011,Microsoft Corporation,US5949181045,United States of America,Targets set,1.5°C,Commitment removed,3
+MTD,Mettler Toledo,isin,40015377,Mettler-Toledo International Inc.,US5926881054,Switzerland,Targets set,1.5°C,Targets set,4
+NDAQ,"Nasdaq, Inc.",isin,40005542,"Nasdaq, Inc.",US6311031081,United States of America,Targets set,1.5°C,Targets set,4
+NEM,Newmont,isin,40004162,Newmont Corporation,US6516391066,United States of America,Targets set,Well-below 2°C,,2
+NFLX,Netflix,isin,40010747,Netflix,US64110L1061,United States of America,Targets set,1.5°C,Commitment removed,3
+NKE,"Nike, Inc.",isin,40004519,"NIKE, Inc.",US6541061031,United States of America,Targets set,1.5°C,,3
+NOW,ServiceNow,isin,40003116,ServiceNow Inc.,US81762P1021,United States of America,Targets set,1.5°C,,3
+NRG,NRG Energy,isin,40012374,NRG Energy Inc,US6293775085,United States of America,Targets set,1.5°C,Commitment removed,3
+NSC,Norfolk Southern,isin,40015206,Norfolk Southern Corporation,US6558441084,United States of America,Targets set,Well-below 2°C,,2
+NTAP,NetApp,isin,40005427,NetApp Inc.,US64110D1046,United States of America,Targets set,1.5°C,,3
+NTRS,Northern Trust,isin,40005759,Northern Trust,US6658591044,United States of America,Committed,,Committed,1
+NVDA,Nvidia,isin,40018902,NVIDIA,US67066G1040,United States of America,Targets set,1.5°C,,3
+NWS,News Corp (Class B),isin,40007841,News Corp,US65249B2088,United States of America,Targets set,1.5°C,Targets set,4
+NXPI,NXP Semiconductors,isin,40004048,NXP Semiconductors,NL0009538784,Netherlands,Targets set,1.5°C,,3
+OMC,Omnicom Group,isin,40012783,Omnicom Group,US6819191064,United States of America,Targets set,1.5°C,,3
+ON,ON Semiconductor,isin,40003133,onsemi,US6821891057,United States of America,Targets set,1.5°C,,3
+OTIS,Otis Worldwide,isin,40010878,Otis Worldwide Corporation,US68902V1070,United States of America,Targets set,1.5°C,,3
+PANW,Palo Alto Networks,isin,40002883,Palo Alto Networks,US6974351057,United States of America,Targets set,1.5°C,Targets set,4
+PCAR,Paccar,isin,40000021,PACCAR Inc,US6937181088,United States of America,Targets set,Well-below 2°C,,2
+PCG,PG&E Corporation,isin,40015754,PG&E Corporation,US69331C1080,United States of America,Commitment removed,,,0
+PEG,Public Service Enterprise Group,isin,40010459,Public Service Enterprise Group Inc. (PSEG),US7445731067,United States of America,Commitment removed,,,0
+PEP,PepsiCo,isin,40010750,"PepsiCo, Inc.",US7134481081,United States of America,Targets set,1.5°C,Targets set,4
+PFE,Pfizer,isin,40013466,Pfizer Inc.,US7170811035,United States of America,Targets set,1.5°C,Commitment removed,3
+PFG,Principal Financial Group,isin,40000055,"Principal Financial Group, Inc.",US74251V1026,United States of America,Commitment removed,,,0
+PG,Procter & Gamble,isin,40004926,Procter & Gamble Company,US7427181091,United States of America,Targets set,1.5°C,Commitment removed,3
+PH,Parker Hannifin,isin,40005041,Parker Hannifin Corporation,US7010941042,United States of America,Targets set,1.5°C,,3
+PLD,Prologis,isin,40005659,Prologis Inc.,US74340W1036,United States of America,Targets set,1.5°C,Targets set,4
+PLTR,Palantir Technologies,isin,40014284,Palantir Technologies Inc.,US69608A1088,United States of America,Commitment removed,,,0
+PM,Philip Morris International,isin,40002667,Philip Morris International,US7181721090,United States of America,Targets set,1.5°C,Targets set,4
+PPG,PPG Industries,isin,40006010,"PPG Industries, Inc.",US6935061076,United States of America,Targets set,1.5°C,,3
+PSKY,Paramount Skydance Corporation,manual,40013210,Paramount Global,US92556H2067,United States of America,Targets set,1.5°C,Commitment removed,3
+PTC,PTC Inc.,manual,40014590,PTC Inc.,,United States of America,Targets set,1.5°C,Targets set,4
+PYPL,PayPal,isin,40009668,PayPal,US70450Y1038,United States of America,Targets set,1.5°C,,3
+QCOM,Qualcomm,isin,40005716,Qualcomm Incorporated,US7475251036,United States of America,Targets set,1.5°C,Targets set,4
+REG,Regency Centers,isin,40011626,Regency Centers Corporation,US7588491032,United States of America,Targets set,Well-below 2°C,,2
+RL,Ralph Lauren Corporation,isin,40015354,Ralph Lauren Corporation,US7512121010,United States of America,Targets set,1.5°C,Commitment removed,3
+RMD,ResMed|,isin,40008798,ResMed Inc,US7611521078,United States of America,Commitment removed,,Commitment removed,0
+ROK,Rockwell Automation,isin,40001619,Rockwell Automation Inc.,US7739031091,United States of America,Targets set,1.5°C,Targets set,4
+ROP,Roper Technologies,isin,40010844,"Roper Technologies, Inc.",US7766961061,United States of America,Commitment removed,,,0
+RSG,Republic Services,isin,40009241,Republic Services,US7607591002,United States of America,Targets set,Well-below 2°C,,2
+RVTY,Revvity,name,40004278,PerkinElmer,,United States of America,Commitment removed,,,0
+RVTY,Revvity,isin,40011642,"Revvity, Inc.",US7140461093,United States of America,Commitment removed,,,0
+SBAC,SBA Communications,isin,40006957,SBA Communications Corporation,US78410G1040,United States of America,Targets set,1.5°C,,3
+SBUX,Starbucks,isin,40000857,Starbucks,US8552441094,United States of America,Targets set,1.5°C,,3
+SJM,J.M. Smucker Company (The),isin,40000309,The J.M. Smucker Company,US8326964058,United States of America,Targets set,Well-below 2°C,,2
+SMCI,Supermicro,name,40005203,"Super Micro Computer, Inc.",US86800U1043,United States of America,Targets set,1.5°C,,3
+SNDK,Sandisk,name,40026978,Sandisk,,United States of America,Committed,,Committed,1
+SNPS,Synopsys,isin,40001274,"Synopsys, Inc.",US8716071076,United States of America,Targets set,1.5°C,,3
+SOLV,Solventum,isin,40020995,SOLVENTUM CORPORATION,US83444M1018,United States of America,Committed,,Committed,1
+SPG,Simon Property Group,isin,40003858,Simon Property Group,US8288061091,United States of America,Targets set,1.5°C,,3
+SPGI,S&P Global,isin,40003679,S&P Global Inc.,US78409V1044,United States of America,Targets set,1.5°C,Targets set,4
+STE,Steris,isin,40017778,STERIS,IE00BFY8C754,Ireland,Committed,,,1
+STX,Seagate Technology,name,40006753,Seagate Technology,IE00B58JVZ52,Ireland,Targets set,1.5°C,,3
+SW,Smurfit Westrock,manual,40000368,Smurfit Kappa Group,IE00B1RR8406,Ireland,Targets set,Well-below 2°C,,2
+SW,Smurfit Westrock,manual,40007037,WestRock Company,US96145D1054,United States of America,Targets set,Well-below 2°C,,2
+SWK,Stanley Black & Decker,isin,40011620,Stanley Black & Decker,US8545021011,United States of America,Targets set,1.5°C,,3
+SYK,Stryker Corporation,name,40008600,STRYKER CORPORATION,,United States of America,Commitment removed,,,0
+SYY,Sysco,isin,40014225,Sysco Corporation,US8718291078,United States of America,Targets set,Well-below 2°C,,2
+T,AT&T,isin,40013776,AT&T Inc.,US00206R1023,United States of America,Targets set,1.5°C,,3
+TAP,Molson Coors Beverage Company,isin,40001823,Molson Coors Brewing Company,US60871R2094,United States of America,Targets set,1.5°C,Targets set,4
+TECH,Bio-Techne,isin,40016149,Bio-Techne,US09073M1045,United States of America,Targets set,1.5°C,,3
+TEL,TE Connectivity,name,40001391,TE Connectivity Ltd,,Switzerland,Targets set,1.5°C,,3
+TER,Teradyne,isin,40008027,"Teradyne, Inc.",US8807701029,United States of America,Targets set,1.5°C,Targets set,4
+TGT,Target Corporation,isin,40002625,Target Corporation,US87612E1064,United States of America,Targets set,2°C,Committed,2
+TMO,Thermo Fisher Scientific,isin,40002694,Thermo Fisher Scientific Inc.,US8835561023,United States of America,Targets set,1.5°C,Targets set,4
+TMUS,T-Mobile US,isin,40003553,"T-Mobile USA, Inc.",US8725901040,United States of America,Targets set,1.5°C,Targets set,4
+TPR,"Tapestry, Inc.",isin,40010593,"Tapestry, Inc.",US8760301072,United States of America,Targets set,1.5°C,Targets set,4
+TRMB,Trimble Inc.,name,40013292,Trimble Inc,,United States of America,Targets set,1.5°C,,3
+TSCO,Tractor Supply,isin,40007783,Tractor Supply Company,US8923561067,United States of America,Commitment removed,,,0
+TSLA,"Tesla, Inc.",isin,40009923,Tesla Inc.,US88160R1014,United States of America,Commitment removed,,,0
+TSN,Tyson Foods,isin,40001494,"Tyson Foods, Inc.",US9024941034,United States of America,Targets set,2°C,,2
+TT,Trane Technologies,name,40005184,Trane Technologies Plc.,US456873AF50,Ireland,Targets set,1.5°C,Targets set,4
+TTWO,Take-Two Interactive,isin,40004277,"Take-Two Interactive Software, Inc.",US8740541094,United States of America,Targets set,1.5°C,,3
+TXN,Texas Instruments,name,40016887,Texas Instruments,,United States of America,Targets set,1.5°C,,3
+UAL,United Airlines Holdings,isin,40005583,"United Airlines, Inc.",US9100471096,United States of America,Targets set,Well-below 2°C,Commitment removed,2
+UBER,Uber,isin,40000011,"Uber Technologies, Inc.",US90353T1007,United States of America,Targets set,1.5°C,Targets set,4
+UDR,"UDR, Inc.",isin,40013723,UDR,US9026531049,United States of America,Commitment removed,,,0
+ULTA,Ulta Beauty,isin,40012126,"Ulta Beauty, Inc.",US90384S3031,United States of America,Targets set,1.5°C,,3
+UNH,UnitedHealth Group,name,40004642,UnitedHealth Group,,United States of America,Targets set,1.5°C,Committed,3
+UNP,Union Pacific Corporation,isin,40005282,Union Pacific Corporation,US9078181081,United States of America,Targets set,1.5°C,Commitment removed,3
+V,Visa Inc.,isin,40007796,Visa Inc.,US92826C8394,United States of America,Targets set,1.5°C,Targets set,4
+VEEV,Veeva Systems,isin,40005368,Veeva Systems Inc.,US9224751084,United States of America,Targets set,1.5°C,,3
+VLTO,Veralto,isin,40017076,Veralto,US92338C1036,United States of America,Committed,,,1
+VMRK,Vivmark Residential,isin,40006199,Equity Residential,US29476L1070,United States of America,Targets set,Well-below 2°C,,2
+VRSK,Verisk Analytics,isin,40009845,Verisk Analytics,US92345Y1064,United States of America,Targets set,1.5°C,Targets set,4
+VST,Vistra Corp.,isin,40011199,Vistra Corp.,US92840M1027,United States of America,Targets set,1.5°C,,3
+VTR,Ventas,isin,40009376,"Ventas, Inc.",US92276F1003,United States of America,Targets set,1.5°C,,3
+VTRS,Viatris,isin,40000438,Viatris Inc.,US92556V1061,United States of America,Targets set,1.5°C,,3
+VZ,Verizon,isin,40001929,Verizon,US92343V1044,United States of America,Targets set,1.5°C,Committed,3
+WAT,Waters Corporation,isin,40014894,Waters Corporation,US9418481035,United States of America,Targets set,1.5°C,Targets set,4
+WDAY,"Workday, Inc.",isin,40009355,"Workday, Inc.",US98138H1014,United States of America,Targets set,1.5°C,,3
+WDC,Western Digital,isin,40000938,Western Digital,US9581021055,United States of America,Targets set,1.5°C,,3
+WELL,Welltower,name,40006499,Welltower Inc.,,United States of America,Targets set,Well-below 2°C,,2
+WM,Waste Management,isin,40005982,WM,US94106L1098,United States of America,Targets set,1.5°C,,3
+WMT,Walmart,isin,40012486,Walmart Inc.,US9311421039,United States of America,Targets set,1.5°C,Commitment removed,3
+WSM,"Williams-Sonoma, Inc.",isin,40010485,"Williams-Sonoma, Inc.",US9699041011,United States of America,Targets set,1.5°C,,3
+WST,West Pharmaceutical Services,name,40003146,"West Pharmaceutical Services, Inc.",,United States of America,Targets set,1.5°C,,3
+WTW,Willis Towers Watson,isin,40013496,WTW,IE00BDB6Q211,United Kingdom,Targets set,1.5°C,Targets set,4
+WY,Weyerhaeuser,isin,40004853,Weyerhaeuser Company,US9621661043,United States of America,Targets set,1.5°C,Commitment removed,3
+XYL,Xylem Inc.,isin,40007717,Xylem Inc.,US98419M1009,United States of America,Targets set,1.5°C,Commitment removed,3
+XYZ,"Block, Inc.",isin,40007919,"Block, Inc.",US8522341036,United States of America,Targets set,1.5°C,Commitment removed,3
+YUM,Yum! Brands,isin,40001982,"Yum! Brands, Inc.",US9884981013,United States of America,Targets set,1.5°C,Commitment removed,3
+ZBH,Zimmer Biomet,isin,40006164,Zimmer Biomet,US98956P1021,United States of America,Targets set,1.5°C,Targets set,4
+ZBRA,Zebra Technologies,isin,40000674,Zebra Technologies Corporation,US9892071054,United States of America,Targets set,1.5°C,,3

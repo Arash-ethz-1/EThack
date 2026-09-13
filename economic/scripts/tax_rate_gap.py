@@ -44,6 +44,7 @@ def build() -> pd.DataFrame:
             continue
 
         merged = tax.merge(pretax, on="year", suffixes=("_tax", "_pretax"))
+        merged = merged[merged["end_tax"] == merged["end_pretax"]]  # same reporting period only
         for _, r in merged.iterrows():
             if r["value_pretax"] <= 0:
                 continue  # negative/near-zero pretax income makes the ratio meaningless

@@ -78,3 +78,11 @@ social/raw/proxies/
 # Rebuild: python run.py build social employer_retirement_contribution / workplace_injury_rate
 social/raw/form5500/
 social/raw/osha/
+
+# Market data caches for the portfolio benchmark (Arash): SEC XBRL frames (~35 quarterly
+# files), SEC cover pages (R1.htm) of multi-class companies and Yahoo monthly price JSON.
+# Derived, committed: portfolio/raw/shares_outstanding.csv, prices_monthly.csv, splits.csv.
+# Rebuild: python portfolio/marketdata.py
+portfolio/raw/sec_frames/
+portfolio/raw/sec_cover/
+portfolio/raw/yahoo/
