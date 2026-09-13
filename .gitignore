@@ -86,3 +86,8 @@ social/raw/osha/
 portfolio/raw/sec_frames/
 portfolio/raw/sec_cover/
 portfolio/raw/yahoo/
+
+# EPA ECHO bulk enforcement case file: 80 MB zip, only used to derive the small
+# environmental/indicators/epa_penalty_intensity.csv and environmental/raw/epa_penalty_matches.csv,
+# which ARE committed. Rebuild: python run.py build environmental epa_penalty_intensity
+environmental/raw/epa_echo/
