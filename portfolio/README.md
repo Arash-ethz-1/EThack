@@ -22,5 +22,16 @@ Settings under `[portfolio]` in `profiles/<name>.toml` (missing ones use the def
 | `max_weight` | `0.05` | cap per company |
 | `sector_neutral` | `true` | every GICS sector keeps its benchmark weight |
 
-Open: market-cap benchmark (needs market caps in `universe/`; `benchmark_weights` already
-accepts them), dashboard "Build portfolio" button, backtest.
+Also: `exclude_sub_industries` (list of exact GICS sub-industries, weight 0 before the tilt,
+reason per company) and `benchmark = "equal" | "cap"`. Share classes of one company (same
+CIK) are one holding - the voting class (GOOGL, FOX, NWS).
+
+- `portfolio/marketdata.py` - SEC share counts x Yahoo monthly closes -> market caps
+  (461 of 500 companies at 2026-08) and monthly returns. Rebuild: `python portfolio/marketdata.py`.
+- `portfolio/risk.py` - today's weights on the last 36 months of returns: tracking error,
+  volatility, hypothetical growth. Not a backtest (look-ahead, today's members only).
+- `summary()["climate"]` - weighted carbon intensity (WACI) and the share of weight with a
+  science-based target, fund vs benchmark: the net-zero answer in two numbers.
+- Dashboard: Portfolio tab (`dashboard/static/portfolio.js`, `POST /api/portfolio`).
+
+Open: a point-in-time backtest (most indicators only start in 2022+), float-adjusted caps.

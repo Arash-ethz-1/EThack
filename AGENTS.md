@@ -16,11 +16,12 @@ for an ETH-affiliated fund.
 
 | Phase | Goal | Status |
 |---|---|---|
-| **1. Data extraction** | each category has **>= 3 strong sub-indicators** in the shared format | **now** |
-| 2. Scoring | the user picks indicators + weights (**profile**) -> 0-100 score per category + total (`python run.py score`, `python run.py dashboard`) | pipeline + dashboard built, needs data |
-| 3. Portfolio | use a profile's scores to **weight a portfolio allocation** (`python run.py portfolio`) | tilt method built, see `portfolio/README.md` |
+| 1. Data extraction | each category has **>= 3 strong sub-indicators** in the shared format | done: 5 / 6 / 4 ready (2026-09-13) |
+| 2. Scoring | the user picks indicators + weights (**profile**) -> 0-100 score per category + total (`python run.py score`, `python run.py dashboard`) | done: sector-relative, values from 2022 on |
+| 3. Portfolio | use a profile's scores to **weight a portfolio allocation** (`python run.py portfolio`) | done: tilt + exclusions + risk, Portfolio tab |
+| **4. Pitch** | evidence, method page, rehearsal - `docs/PRODUCT.md`, `docs/PITCH.md` | **now** |
 
-Full plan: `docs/PLAN.md`.
+Full plan: `docs/PLAN.md`. What exists today, in one page: `docs/PRODUCT.md`.
 
 ## 2. Who owns what
 
